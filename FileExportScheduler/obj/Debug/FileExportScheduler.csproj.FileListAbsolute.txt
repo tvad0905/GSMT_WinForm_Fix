@@ -173,3 +173,21 @@ F:\ESProjects\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CoreCompi
 F:\ESProjects\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CopyComplete
 F:\ESProjects\FileExportScheduler\obj\Debug\FileExportScheduler.exe
 F:\ESProjects\FileExportScheduler\obj\Debug\FileExportScheduler.pdb
+C:\Users\Khanh Duy\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\FileExportScheduler.exe.config
+C:\Users\Khanh Duy\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\FileExportScheduler.exe
+C:\Users\Khanh Duy\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\FileExportScheduler.pdb
+C:\Users\Khanh Duy\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\log4net.dll
+C:\Users\Khanh Duy\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\Unme.Common.dll
+C:\Users\Khanh Duy\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Khanh Duy\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csprojAssemblyReference.cache
+C:\Users\Khanh Duy\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.DeviceConfiguration.resources
+C:\Users\Khanh Duy\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormDataList.resources
+C:\Users\Khanh Duy\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormMain.resources
+C:\Users\Khanh Duy\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormSetting.resources
+C:\Users\Khanh Duy\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.Properties.Resources.resources
+C:\Users\Khanh Duy\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.ProtocolConfiguration.resources
+C:\Users\Khanh Duy\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.GenerateResource.cache
+C:\Users\Khanh Duy\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CoreCompileInputs.cache
+C:\Users\Khanh Duy\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CopyComplete
+C:\Users\Khanh Duy\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.exe
+C:\Users\Khanh Duy\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.pdb

@@ -1,1 +1,56 @@
-{"a":{"ListDuLieuChoTungPLC":{"co2":{"Ten":"co2","DiaChi":"40001","DonViDo":"ml","GiaTri":null,"ThoiGianDocGiuLieu":"\/Date(-62135596800000)\/"}},"IP":"127.0.0.1","Port":503,"Name":"a","Protocol":"Siemens S7-1200","TypeModel":0,"TrangThaiKetNoi":0},"c":{"ListDuLieuChoTungPLC":{"Co2":{"Ten":"Co2","DiaChi":"00001","DonViDo":"ml","GiaTri":"0","ThoiGianDocGiuLieu":"\/Date(-62135596800000)\/"}},"IP":"127.0.0.1","Port":502,"Name":"c","Protocol":"Modbus TCP/IP","TypeModel":1,"TrangThaiKetNoi":0},"d":{"ListDuLieuChoTungPLC":{"Co2":{"Ten":"Co2","DiaChi":"1","DonViDo":"ml","GiaTri":"0","ThoiGianDocGiuLieu":"\/Date(-62135596800000)\/"}},"Com":"COM4","Baud":9600,"parity":0,"Databit":8,"stopBits":1,"Name":"d","Protocol":"Serial Port","TypeModel":1,"TrangThaiKetNoi":0}}
+{
+  "a": {
+    "ListDuLieuChoTungPLC": {
+      "co2": {
+        "Ten": "co2",
+        "DiaChi": "40001",
+        "DonViDo": "ml",
+        "GiaTri": null,
+        "ThoiGianDocGiuLieu": "\/Date(-62135596800000)\/"
+      }
+    },
+    "IP": "127.0.0.1",
+    "Port": 503,
+    "Name": "a",
+    "Protocol": "Siemens S7-1200",
+    "TypeModel": 0,
+    "TrangThaiKetNoi": 0
+  },
+  "c": {
+    "ListDuLieuChoTungPLC": {
+      "Co2": {
+        "Ten": "Co2",
+        "DiaChi": "00001",
+        "DonViDo": "ml",
+        "GiaTri": "0",
+        "ThoiGianDocGiuLieu": "\/Date(-62135596800000)\/"
+      }
+    },
+    "IP": "127.0.0.1",
+    "Port": 502,
+    "Name": "c",
+    "Protocol": "Modbus TCP/IP",
+    "TypeModel": 1,
+    "TrangThaiKetNoi": 0
+  },
+  "d": {
+    "ListDuLieuChoTungPLC": {
+      "Co2": {
+        "Ten": "Co2",
+        "DiaChi": "1",
+        "DonViDo": "ml",
+        "GiaTri": "0",
+        "ThoiGianDocGiuLieu": "\/Date(-62135596800000)\/"
+      }
+    },
+    "Com": "COM4",
+    "Baud": 9600,
+    "parity": 0,
+    "Databit": 8,
+    "stopBits": 1,
+    "Name": "d",
+    "Protocol": "Serial Port",
+    "TypeModel": 1,
+    "TrangThaiKetNoi": 0
+  }
+}

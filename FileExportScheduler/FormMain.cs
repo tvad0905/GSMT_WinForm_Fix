@@ -180,7 +180,8 @@ namespace FileExportScheduler
         object objW2 = new object();
         private async void getDeviceConnect()
         {
-            string filePath="";
+
+            string filePath = "";
             try
             {
                 using (StreamReader sr = File.OpenText(GetPathJson.getPathConfig(@"\Configuration\Config.json")))
