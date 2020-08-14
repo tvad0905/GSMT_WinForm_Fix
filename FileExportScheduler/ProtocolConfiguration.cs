@@ -148,11 +148,10 @@ namespace FileExportScheduler
                 }
                 foreach (DataGridViewCell dc in dr.Cells)
                 {
-                    if (dc.ColumnIndex == 3)
+                    if (dc.ColumnIndex == 5)
                     {
                         break;
                     }
-
 
                     if (dc.Value == null || dc.Value.ToString().Trim() == string.Empty)
                     {
@@ -163,8 +162,8 @@ namespace FileExportScheduler
                     {
                         dc.ErrorText = "";
                     }
-
-                    if (!Regex.IsMatch(dc.Value.ToString(), @"^[a-zA-Z0-9_-]+$"))
+                    
+                    if (!Regex.IsMatch(dc.Value.ToString(), @"^[a-zA-Z0-9_.-]+$"))
                     {
                         dc.ErrorText = "Sai định dạng";
                         isPassed = false;
@@ -178,7 +177,7 @@ namespace FileExportScheduler
                         dc.ErrorText = "Tên bị trùng";
                         isPassed = false;
                     }
-                    if (dc.ColumnIndex == 1)
+                    if (dc.ColumnIndex == 2)
                     {
                         if (!CheckAddress(dc.Value.ToString()))
                         {
@@ -190,7 +189,16 @@ namespace FileExportScheduler
                             dc.ErrorText = "";
                         }
                     }
-
+                    if(dc.ColumnIndex == 3 )
+                    {
+                        var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+                        if (!regex.IsMatch(dc.Value.ToString()))
+                        {
+                            dc.ErrorText = "Scale Sai định dạng";
+                            isPassed = false;
+                        }
+                        
+                    }
 
                 }
                 list.Add(dr.Cells[0].Value.ToString());
@@ -255,9 +263,10 @@ namespace FileExportScheduler
 
                     DataModel duLieuTemp = new DataModel();
                     duLieuTemp.Ten = dr.Cells[0].Value.ToString();
-                    duLieuTemp.DiaChi = dr.Cells[1].Value.ToString();
-                    duLieuTemp.Scale = Convert.ToDouble(dr.Cells[2].Value.ToString());
-                    duLieuTemp.DonViDo = dr.Cells[3].Value.ToString();
+                    duLieuTemp.ThietBi = dr.Cells[1].Value.ToString();
+                    duLieuTemp.DiaChi = dr.Cells[2].Value.ToString();
+                    duLieuTemp.Scale = dr.Cells[3].Value.ToString();
+                    duLieuTemp.DonViDo = dr.Cells[4].Value.ToString();
 
                     ListDuLieuChoTungPLC.Add(duLieuTemp.Ten, duLieuTemp);
                 }
@@ -377,13 +386,15 @@ namespace FileExportScheduler
             string[] lines = File.ReadAllLines(filePath);
 
             dt.Columns.Add("Ten", typeof(string));
+            dt.Columns.Add("ThietBi", typeof(string));
             dt.Columns.Add("DiaChi", typeof(string));
+            dt.Columns.Add("Scale", typeof(string));
             dt.Columns.Add("DonViDo", typeof(string));
 
             for (int i = 1; i < lines.Length; i++)
             {
                 string[] t = lines[i].Split(',');
-                dt.Rows.Add(t[0], t[1], t[2]);
+                dt.Rows.Add(t[0], t[1], t[2], t[3], t[4]);
             }
 
             dgvDataProtocol.DataSource = dt;
@@ -414,8 +425,10 @@ namespace FileExportScheduler
 
                     DataModel duLieuTemp = new DataModel();
                     duLieuTemp.Ten = dr.Cells[0].Value.ToString();
-                    duLieuTemp.DiaChi = dr.Cells[1].Value.ToString();
-                    duLieuTemp.DonViDo = dr.Cells[2].Value.ToString();
+                    duLieuTemp.ThietBi = dr.Cells[1].Value.ToString();
+                    duLieuTemp.DiaChi = dr.Cells[2].Value.ToString();
+                    duLieuTemp.Scale = dr.Cells[3].Value.ToString();
+                    duLieuTemp.DonViDo = dr.Cells[4].Value.ToString();
 
                     ListDuLieuChoTungPLC.Add(duLieuTemp.Ten, duLieuTemp);
                 }
@@ -434,7 +447,7 @@ namespace FileExportScheduler
             {
                 SaveFileDialog sfd = new SaveFileDialog();
                 sfd.Filter = "CSV (*.csv)|*.csv";
-                sfd.FileName = "Output.csv";
+                sfd.FileName = "Dulieu_cauhinh.csv";
                 bool fileError = false;
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {

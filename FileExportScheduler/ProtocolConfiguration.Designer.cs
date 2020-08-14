@@ -65,6 +65,7 @@
             this.errorGiaoThuc = new System.Windows.Forms.ErrorProvider(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.ten = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ThietBi = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Diachi_P = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Scale = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Donvido_P = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -435,6 +436,7 @@
             this.dgvDataProtocol.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDataProtocol.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ten,
+            this.ThietBi,
             this.Diachi_P,
             this.Scale,
             this.Donvido_P});
@@ -470,21 +472,29 @@
             // 
             this.ten.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.ten.DataPropertyName = "ten";
-            this.ten.HeaderText = "Tên";
+            this.ten.HeaderText = "Tên chất thải";
             this.ten.MinimumWidth = 50;
             this.ten.Name = "ten";
+            // 
+            // ThietBi
+            // 
+            this.ThietBi.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ThietBi.DataPropertyName = "ThietBi";
+            this.ThietBi.HeaderText = "Thiết bị";
+            this.ThietBi.Name = "ThietBi";
             // 
             // Diachi_P
             // 
             this.Diachi_P.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Diachi_P.DataPropertyName = "Diachi";
-            this.Diachi_P.HeaderText = "Địa Chỉ";
+            this.Diachi_P.HeaderText = "Địa chỉ";
             this.Diachi_P.MinimumWidth = 50;
             this.Diachi_P.Name = "Diachi_P";
             // 
             // Scale
             // 
             this.Scale.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Scale.DataPropertyName = "Scale";
             this.Scale.HeaderText = "Scale";
             this.Scale.Name = "Scale";
             // 
@@ -492,7 +502,7 @@
             // 
             this.Donvido_P.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Donvido_P.DataPropertyName = "Donvido";
-            this.Donvido_P.HeaderText = "Đơn Vị Đo";
+            this.Donvido_P.HeaderText = "Đơn vị đo";
             this.Donvido_P.MinimumWidth = 50;
             this.Donvido_P.Name = "Donvido_P";
             // 
@@ -558,6 +568,7 @@
         private System.Windows.Forms.Button btnImport;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.DataGridViewTextBoxColumn ten;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ThietBi;
         private System.Windows.Forms.DataGridViewTextBoxColumn Diachi_P;
         private System.Windows.Forms.DataGridViewTextBoxColumn Scale;
         private System.Windows.Forms.DataGridViewTextBoxColumn Donvido_P;

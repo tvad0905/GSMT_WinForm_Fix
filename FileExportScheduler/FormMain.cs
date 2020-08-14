@@ -26,6 +26,7 @@ namespace FileExportScheduler
         #region Variables Declaration
         bool checkExit = false;
         Dictionary<string, DeviceModel> deviceDic = new Dictionary<string, DeviceModel>();
+        Dictionary<String, List<DataModel>> lstDev = new Dictionary<string, List<DataModel>>();
         Dictionary<string, string> dcExportData = new Dictionary<string, string>();
         ModbusClient mobus = new ModbusClient();
         SerialPort serialPort = new SerialPort();
@@ -190,7 +191,24 @@ namespace FileExportScheduler
                     SettingModel export = JsonConvert.DeserializeObject<SettingModel>(obj.ToString());
                     foreach (KeyValuePair<string, DeviceModel> deviceUnit in deviceDic)
                     {
-                        string filePath = export.ExportFilePath.Substring(0, export.ExportFilePath.LastIndexOf("\\")) + "\\" + $"log({deviceUnit.Value.Name}){ DateTime.Now.ToString("yyyyMMddHHmmss")}.csv";
+                        foreach (KeyValuePair<string, DataModel> duLieuUnit in deviceUnit.Value.ListDuLieuChoTungPLC)
+                        {
+                            string ThietBi = duLieuUnit.Value.ThietBi;
+                            if (lstDev.ContainsKey(ThietBi))
+                            {
+                                lstDev[ThietBi].Add(duLieuUnit.Value);
+                            }
+                            else
+                            {
+                                lstDev.Add(ThietBi, new List<DataModel>());
+                                lstDev[ThietBi].Add(duLieuUnit.Value);
+                            }
+                        }
+                    }
+                    foreach (KeyValuePair<String, List<DataModel>> lstDevUnit in lstDev)
+                    {
+                        string filePath = export.ExportFilePath.Substring(0, export.ExportFilePath.LastIndexOf("\\")) +
+                               "\\" + $"log({lstDevUnit.Key}){ DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_ss")}.csv";
                         ListfilePath.Add(filePath);
                     }
                 }
@@ -399,16 +417,21 @@ namespace FileExportScheduler
             int i = 0;
             foreach (KeyValuePair<string, DeviceModel> deviceUnit in deviceDic)
             {
-                string csvData = "Tagname,TimeStamp,Value,DataQuality" + "\n";
-                foreach (KeyValuePair<string, DataModel> duLieuUnit in deviceUnit.Value.ListDuLieuChoTungPLC)
+                string csvData = "[Data]" + "\n" + "Tagname,TimeStamp,Value,DataQuality" + "\n";
+                foreach (KeyValuePair<String, List<DataModel>> duLieuUnit in lstDev)
                 {
-                    csvData +=  deviceUnit.Key + "," +
-                                duLieuUnit.Value.ThoiGianDocGiuLieu + "," +
-                                (Convert.ToDouble(duLieuUnit.Value.GiaTri)/ duLieuUnit.Value.Scale) + "," +//thieu scale
-                                deviceUnit.Value.TrangThaiKetNoi + "," + "\n";
+                    foreach (DataModel dt in duLieuUnit.Value)
+                    {
+                        csvData +=
+                                   deviceUnit.Key+"."+dt.Ten + "," +
+                                   dt.ThoiGianDocGiuLieu.ToString("MM:ss.fff") + "," +
+                                   (Convert.ToDouble(dt.GiaTri) / Convert.ToDouble(dt.Scale)) + "," +
+                                   deviceUnit.Value.TrangThaiKetNoi + "\n";
+                    }
+                    File.WriteAllText(filePath[i], csvData);
+                    i++;
                 }
-                File.WriteAllText(filePath[i], csvData);
-                i++;
+
             }
         }
     }

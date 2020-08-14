@@ -13,7 +13,8 @@ namespace FileExportScheduler.Models
         public string DiaChi { get; set; }
         public string DonViDo { get; set; }
         public string GiaTri { get; set; }
-        public Double Scale { get; set; }
+        public string Scale { get; set; }
+        public string ThietBi { get; set; }
         public DateTime ThoiGianDocGiuLieu { get; set; }
     }
 }
