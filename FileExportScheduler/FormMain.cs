@@ -304,6 +304,7 @@ namespace FileExportScheduler
                         int[] readHoldingRegister = mobus.ReadHoldingRegisters(Convert.ToInt32(duLieuTemp.DiaChi) - 40001, 1);
                         giaTriDuLieu = readHoldingRegister[0].ToString();
                     }
+
                     try
                     {
                         duLieuTemp.GiaTri = Convert.ToInt32(giaTriDuLieu) + "";
@@ -319,6 +320,7 @@ namespace FileExportScheduler
                 }
                 catch (Exception ex)
                 {
+
                 }
                 finally
                 {
