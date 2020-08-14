@@ -256,7 +256,7 @@ namespace FileExportScheduler
                     DataModel duLieuTemp = new DataModel();
                     duLieuTemp.Ten = dr.Cells[0].Value.ToString();
                     duLieuTemp.DiaChi = dr.Cells[1].Value.ToString();
-                    duLieuTemp.Scale = dr.Cells[2].Value.ToString();
+                    duLieuTemp.Scale = Convert.ToDouble(dr.Cells[2].Value.ToString());
                     duLieuTemp.DonViDo = dr.Cells[3].Value.ToString();
 
                     ListDuLieuChoTungPLC.Add(duLieuTemp.Ten, duLieuTemp);

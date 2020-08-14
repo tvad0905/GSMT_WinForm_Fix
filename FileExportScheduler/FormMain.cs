@@ -404,7 +404,7 @@ namespace FileExportScheduler
                 {
                     csvData +=  deviceUnit.Key + "," +
                                 duLieuUnit.Value.ThoiGianDocGiuLieu + "," +
-                                duLieuUnit.Value.GiaTri + "," +//thieu scale
+                                (Convert.ToDouble(duLieuUnit.Value.GiaTri)/ duLieuUnit.Value.Scale) + "," +//thieu scale
                                 deviceUnit.Value.TrangThaiKetNoi + "," + "\n";
                 }
                 File.WriteAllText(filePath[i], csvData);
