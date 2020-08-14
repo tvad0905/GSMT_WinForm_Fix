@@ -29,8 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Thiết bị", 1, 1);
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Giao thức", 2, 2);
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Cấu hình", 2, 2);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDataList));
             this.ctxMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mnuAdd = new System.Windows.Forms.ToolStripMenuItem();
@@ -82,17 +81,12 @@
             this.tvMain.ImageList = this.imageList;
             this.tvMain.Location = new System.Drawing.Point(0, 0);
             this.tvMain.Name = "tvMain";
-            treeNode1.ImageIndex = 1;
-            treeNode1.Name = "Devices";
-            treeNode1.SelectedImageIndex = 1;
-            treeNode1.Text = "Thiết bị";
-            treeNode2.ImageIndex = 2;
-            treeNode2.Name = "Protocols";
-            treeNode2.SelectedImageIndex = 2;
-            treeNode2.Text = "Giao thức";
+            treeNode1.ImageIndex = 2;
+            treeNode1.Name = "Protocols";
+            treeNode1.SelectedImageIndex = 2;
+            treeNode1.Text = "Cấu hình";
             this.tvMain.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
+            treeNode1});
             this.tvMain.SelectedImageIndex = 0;
             this.tvMain.Size = new System.Drawing.Size(250, 633);
             this.tvMain.TabIndex = 0;
