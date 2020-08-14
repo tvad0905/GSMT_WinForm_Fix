@@ -11,7 +11,7 @@ namespace FileExportScheduler.Models
         public string Name { get; set; }
         public string Protocol { get; set; }
         public TypeEnum TypeModel { get; set; }
-        public int TrangThaiKetNoi { get; set; }
+        public String TrangThaiKetNoi { get; set; }
 
         public Dictionary<string, DataModel> ListDuLieuChoTungPLC = new Dictionary<string, DataModel>();
     }

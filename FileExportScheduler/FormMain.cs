@@ -180,14 +180,19 @@ namespace FileExportScheduler
         object objW2 = new object();
         private async void getDeviceConnect()
         {
-            string filePath="";
+            List<string> ListfilePath = new List<string>();
+
             try
             {
                 using (StreamReader sr = File.OpenText(GetPathJson.getPathConfig(@"\Configuration\Config.json")))
                 {
                     var obj = sr.ReadToEnd();
                     SettingModel export = JsonConvert.DeserializeObject<SettingModel>(obj.ToString());
-                    filePath = export.ExportFilePath.Substring(0, export.ExportFilePath.LastIndexOf("\\")) + "\\" + $"{ DateTime.Now.ToString("yyyyMMddHHmmss")}.csv";
+                    foreach (KeyValuePair<string, DeviceModel> deviceUnit in deviceDic)
+                    {
+                        string filePath = export.ExportFilePath.Substring(0, export.ExportFilePath.LastIndexOf("\\")) + "\\" + $"log({deviceUnit.Value.Name}){ DateTime.Now.ToString("yyyyMMddHHmmss")}.csv";
+                        ListfilePath.Add(filePath);
+                    }
                 }
             }
             catch (Exception ex)
@@ -199,40 +204,40 @@ namespace FileExportScheduler
                 btnStop.PerformClick();
                 btnSetting.PerformClick();
             }
-                foreach (KeyValuePair<string, DeviceModel> deviceUnit in deviceDic)
+            foreach (KeyValuePair<string, DeviceModel> deviceUnit in deviceDic)
+            {
+                if (deviceUnit.Value.Protocol == "Modbus TCP/IP" || deviceUnit.Value.Protocol == "Siemens S7-1200")
                 {
-                    if (deviceUnit.Value.Protocol == "Modbus TCP/IP" || deviceUnit.Value.Protocol == "Siemens S7-1200")
+                    mobus = new ModbusClient(((IPConfigModel)deviceUnit.Value).IP, ((IPConfigModel)deviceUnit.Value).Port);
+                    try
                     {
-                        mobus = new ModbusClient(((IPConfigModel)deviceUnit.Value).IP, ((IPConfigModel)deviceUnit.Value).Port);
-                        try
-                        {
-                            await Task.Run(() => ThreadConnect(filePath, deviceUnit));
-                        }
-                        catch (Exception ex)
-                        {
-
-                        }
+                        await Task.Run(() => ThreadConnect(ListfilePath, deviceUnit));
                     }
-                    else if (deviceUnit.Value.Protocol == "Serial Port")
+                    catch (Exception ex)
                     {
-                        serialPort = new SerialPort(((ComConfigModel)deviceUnit.Value).Com, ((ComConfigModel)deviceUnit.Value).Baud, ((ComConfigModel)deviceUnit.Value).parity, ((ComConfigModel)deviceUnit.Value).Databit, ((ComConfigModel)deviceUnit.Value).stopBits);
-                        try
-                        {
-                            await Task.Run(() => ThreadCOMConnect(filePath, deviceUnit));
-                        }
-                        catch (Exception ex)
-                        {
 
-                        }
                     }
                 }
-                WriteValueToFileCSV(filePath);
-           
-           
+                else if (deviceUnit.Value.Protocol == "Serial Port")
+                {
+                    serialPort = new SerialPort(((ComConfigModel)deviceUnit.Value).Com, ((ComConfigModel)deviceUnit.Value).Baud, ((ComConfigModel)deviceUnit.Value).parity, ((ComConfigModel)deviceUnit.Value).Databit, ((ComConfigModel)deviceUnit.Value).stopBits);
+                    try
+                    {
+                        await Task.Run(() => ThreadCOMConnect(ListfilePath, deviceUnit));
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                }
+            }
+            WriteValueToFileCSV(ListfilePath);
+
+
         }
 
         // tạo 1 thread cho connect
-        void ThreadConnect(string filePath, KeyValuePair<string, DeviceModel> deviceUnit)
+        void ThreadConnect(List<string> filePath, KeyValuePair<string, DeviceModel> deviceUnit)
         {
             try
             {
@@ -243,7 +248,7 @@ namespace FileExportScheduler
             {
                 lock (objW)
                 {
-                    deviceUnit.Value.TrangThaiKetNoi = 0;
+                    deviceUnit.Value.TrangThaiKetNoi = "Bad";
                     WriteValueToFileCSV(filePath);
                     return;
                 }
@@ -251,7 +256,7 @@ namespace FileExportScheduler
             getDataDeviceIP(deviceUnit);
         }
 
-        void ThreadCOMConnect(string filePath, KeyValuePair<string, DeviceModel> deviceUnit)
+        void ThreadCOMConnect(List<string> filePath, KeyValuePair<string, DeviceModel> deviceUnit)
         {
             try
             {
@@ -261,7 +266,7 @@ namespace FileExportScheduler
             {
                 lock (objW2)
                 {
-                    deviceUnit.Value.TrangThaiKetNoi = 0;
+                    deviceUnit.Value.TrangThaiKetNoi = "Bad";
                     WriteValueToFileCSV(filePath);
                     return;
                 }
@@ -308,17 +313,17 @@ namespace FileExportScheduler
 
                         duLieuTemp.GiaTri = giaTriDuLieu;
                     }
-                    
-                   
+
+
 
                 }
                 catch (Exception ex)
                 {
                 }
                 finally
-                { 
+                {
                     duLieuTemp.ThoiGianDocGiuLieu = DateTime.Now;
-                    deviceUnit.Value.TrangThaiKetNoi = 1;
+                    deviceUnit.Value.TrangThaiKetNoi = "Good";
                 }
             }
         }
@@ -366,7 +371,7 @@ namespace FileExportScheduler
                         catch (Exception)
                         {
                             duLieuTemp.GiaTri = giaTriDuLieu;
-                        }    
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -375,7 +380,7 @@ namespace FileExportScheduler
                     finally
                     {
                         duLieuTemp.ThoiGianDocGiuLieu = DateTime.Now;
-                        deviceUnit.Value.TrangThaiKetNoi = 1;
+                        deviceUnit.Value.TrangThaiKetNoi = "Good";
                     }
                 }
 
@@ -387,24 +392,22 @@ namespace FileExportScheduler
             getDeviceConnect();
         }
 
-        private void WriteValueToFileCSV(string filePath)
+        private void WriteValueToFileCSV(List<string> filePath)
         {
-            string csvData = "Thoi_gian,Thiet_bi,Ten_du_lieu,Don_vi_do,Dia_chi,Trang_thai,Gia_tri" + "\n";
-
+            int i = 0;
             foreach (KeyValuePair<string, DeviceModel> deviceUnit in deviceDic)
             {
+                string csvData = "Tagname,TimeStamp,Value,DataQuality" + "\n";
                 foreach (KeyValuePair<string, DataModel> duLieuUnit in deviceUnit.Value.ListDuLieuChoTungPLC)
                 {
-                    csvData += duLieuUnit.Value.ThoiGianDocGiuLieu + "," +
-                            deviceUnit.Key + "," +
-                            duLieuUnit.Key + "," +
-                            duLieuUnit.Value.DonViDo + "," +
-                            duLieuUnit.Value.DiaChi + "," +
-                            deviceUnit.Value.TrangThaiKetNoi + "," +
-                            duLieuUnit.Value.GiaTri + "\n";
+                    csvData +=  deviceUnit.Key + "," +
+                                duLieuUnit.Value.ThoiGianDocGiuLieu + "," +
+                                duLieuUnit.Value.GiaTri + "," +//thieu scale
+                                deviceUnit.Value.TrangThaiKetNoi + "," + "\n";
                 }
+                File.WriteAllText(filePath[i], csvData);
+                i++;
             }
-            File.WriteAllText(filePath, csvData);
         }
     }
 }
