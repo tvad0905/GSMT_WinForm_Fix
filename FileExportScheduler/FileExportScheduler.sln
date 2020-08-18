@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileExportScheduler", "FileExportScheduler.csproj", "{F9B36924-68CC-497E-A829-B43915432060}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "GSMT_Demo", "..\GSMT_Demo\GSMT_Demo.vdproj", "{67F62102-7BF7-47AE-8B85-25571DF860E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{F9B36924-68CC-497E-A829-B43915432060}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9B36924-68CC-497E-A829-B43915432060}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9B36924-68CC-497E-A829-B43915432060}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67F62102-7BF7-47AE-8B85-25571DF860E7}.Debug|Any CPU.ActiveCfg = Debug
+		{67F62102-7BF7-47AE-8B85-25571DF860E7}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

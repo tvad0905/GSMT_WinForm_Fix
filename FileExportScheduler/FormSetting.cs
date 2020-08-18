@@ -46,13 +46,15 @@ namespace FileExportScheduler
             settingModel.Interval = Int32.Parse(udInterval.Value.ToString());
             settingModel.ExportFilePath = txtExportFilePath.Text;
 
-            if(txtExportFilePath.Text == "")
+            var path = GetPathJson.getPathConfig("Config.json");
+
+            if (txtExportFilePath.Text == "")
             {
                 errorProvider1.SetError(txtExportFilePath, "Không được để trống !");
                 return;
             }
 
-            using (StreamWriter sw = File.CreateText(GetPathJson.getPathConfig(@"\Configuration\Config.json")))
+            using (StreamWriter sw = File.CreateText(path))
             {
                 var loadData = JsonConvert.SerializeObject(settingModel);
                 sw.WriteLine(loadData);
@@ -69,10 +71,12 @@ namespace FileExportScheduler
 
         private void FormSetting_Load(object sender, EventArgs e)
         {
-            
-            if (File.Exists(GetPathJson.getPathConfig(@"\Configuration\Config.json")))
+
+            var path = GetPathJson.getPathConfig("Config.json");
+
+            if (File.Exists(path))
             {
-                using (StreamReader sr = File.OpenText(GetPathJson.getPathConfig(@"\Configuration\Config.json")))
+                using (StreamReader sr = File.OpenText(path))
                 {
                     var obj = sr.ReadToEnd();
                     SettingModel export = JsonConvert.DeserializeObject<SettingModel>(obj.ToString());

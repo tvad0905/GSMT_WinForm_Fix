@@ -26,6 +26,7 @@ namespace FileExportScheduler
         TreeView TVMain;
         public FormDataList formDataList;
         public string tenDuLieuDuocChon;
+        
         #endregion
         public DeviceConfiguration(FormDataList formDataList)
         {
@@ -49,10 +50,11 @@ namespace FileExportScheduler
         //Viết từ .json vào 1 list
         public void WriteJsonToList()
         {
+            var path = GetPathJson.getPathConfig("DeviceAndData.json");
             try
             {
                 deviceDic.Clear();
-                JObject jsonObj = JObject.Parse(File.ReadAllText(GetPathJson.getPathConfig(@"\Configuration\DeviceAndData.json")));
+                JObject jsonObj = JObject.Parse(File.ReadAllText(path));
                 Dictionary<string, IPConfigModel> deviceIPs  = jsonObj.ToObject<Dictionary<string, IPConfigModel>>();
                 foreach (var deviceIPUnit in deviceIPs)
                     deviceDic.Add(deviceIPUnit.Key, deviceIPUnit.Value);
@@ -66,8 +68,9 @@ namespace FileExportScheduler
         //Viết từ list vào file .json
         public void WriteListToJson()
         {
+            var path = GetPathJson.getPathConfig("DeviceAndData.json");
             string jsonString = (new JavaScriptSerializer()).Serialize((object)deviceDic);
-            File.WriteAllText(GetPathJson.getPathConfig(@"\Configuration\DeviceAndData.json"), jsonString);
+            File.WriteAllText(path, jsonString);
         }
         #endregion
 

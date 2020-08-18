@@ -38,6 +38,9 @@
     <Reference Include="IPAddressControlLib">
       <HintPath>C:\Users\Khanh Duy\OneDrive\Desktop\VS03-TestIPAddressControl-Rev36\TestIPAddressControl\bin\Release\IPAddressControlLib.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <HintPath>packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Modbus, Version=1.11.0.0, Culture=neutral, PublicKeyToken=b5aba55fcbc8d946, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Download\NModbus_net-3.5_1.11.0.0\bin\net\Modbus.dll</HintPath>
@@ -124,8 +127,9 @@
     <EmbeddedResource Include="ProtocolConfiguration.resx">
       <DependentUpon>ProtocolConfiguration.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="Configuration\Config.json" />
-    <None Include="Configuration\DeviceAndData.json" />
+    <None Include="bin\Debug\Configuration\Config.json" />
+    <None Include="bin\Debug\Configuration\DeviceAndData.json" />
+    <None Include="bin\Debug\FileExportScheduler.exe.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -144,7 +148,19 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="bin\Release\" />
     <Folder Include="Export Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\EasyModbus.dll" />
+    <Content Include="bin\Debug\FileExportScheduler.exe" />
+    <Content Include="bin\Debug\FileExportScheduler.pdb" />
+    <Content Include="bin\Debug\IPAddressControlLib.dll" />
+    <Content Include="bin\Debug\log4net.dll" />
+    <Content Include="bin\Debug\log4net.xml" />
+    <Content Include="bin\Debug\Modbus.dll" />
+    <Content Include="bin\Debug\Newtonsoft.Json.dll" />
+    <Content Include="bin\Debug\Unme.Common.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

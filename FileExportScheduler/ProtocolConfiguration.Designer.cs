@@ -59,16 +59,16 @@
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnAddData = new System.Windows.Forms.Button();
             this.dgvDataProtocol = new System.Windows.Forms.DataGridView();
-            this.errorPort = new System.Windows.Forms.ErrorProvider(this.components);
-            this.errorIP = new System.Windows.Forms.ErrorProvider(this.components);
-            this.errorTenGiaoThuc = new System.Windows.Forms.ErrorProvider(this.components);
-            this.errorGiaoThuc = new System.Windows.Forms.ErrorProvider(this.components);
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.ten = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ThietBi = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Diachi_P = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Scale = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Donvido_P = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.errorPort = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errorIP = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errorTenGiaoThuc = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errorGiaoThuc = new System.Windows.Forms.ErrorProvider(this.components);
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.gbTCPIPProtocol.SuspendLayout();
@@ -355,9 +355,9 @@
             this.label10.Location = new System.Drawing.Point(54, 48);
             this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(53, 13);
+            this.label10.Size = new System.Drawing.Size(40, 13);
             this.label10.TabIndex = 0;
-            this.label10.Text = "Giao thức";
+            this.label10.Text = "Kết nối";
             // 
             // label1
             // 
@@ -365,9 +365,10 @@
             this.label1.Location = new System.Drawing.Point(34, 22);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(73, 13);
+            this.label1.Size = new System.Drawing.Size(60, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Tên giao thức";
+            this.label1.Text = "Tên thiết bị";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // tabPage2
             // 
@@ -448,31 +449,11 @@
             this.dgvDataProtocol.Size = new System.Drawing.Size(999, 676);
             this.dgvDataProtocol.TabIndex = 3;
             // 
-            // errorPort
-            // 
-            this.errorPort.ContainerControl = this;
-            // 
-            // errorIP
-            // 
-            this.errorIP.ContainerControl = this;
-            // 
-            // errorTenGiaoThuc
-            // 
-            this.errorTenGiaoThuc.ContainerControl = this;
-            // 
-            // errorGiaoThuc
-            // 
-            this.errorGiaoThuc.ContainerControl = this;
-            // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.FileName = "openFileDialog1";
-            // 
             // ten
             // 
             this.ten.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.ten.DataPropertyName = "ten";
-            this.ten.HeaderText = "Tên chất thải";
+            this.ten.HeaderText = "Tên";
             this.ten.MinimumWidth = 50;
             this.ten.Name = "ten";
             // 
@@ -480,7 +461,7 @@
             // 
             this.ThietBi.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.ThietBi.DataPropertyName = "ThietBi";
-            this.ThietBi.HeaderText = "Thiết bị";
+            this.ThietBi.HeaderText = "Điểm đo";
             this.ThietBi.Name = "ThietBi";
             // 
             // Diachi_P
@@ -505,6 +486,26 @@
             this.Donvido_P.HeaderText = "Đơn vị đo";
             this.Donvido_P.MinimumWidth = 50;
             this.Donvido_P.Name = "Donvido_P";
+            // 
+            // errorPort
+            // 
+            this.errorPort.ContainerControl = this;
+            // 
+            // errorIP
+            // 
+            this.errorIP.ContainerControl = this;
+            // 
+            // errorTenGiaoThuc
+            // 
+            this.errorTenGiaoThuc.ContainerControl = this;
+            // 
+            // errorGiaoThuc
+            // 
+            this.errorGiaoThuc.ContainerControl = this;
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
             // 
             // ProtocolConfiguration
             // 
@@ -570,7 +571,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ten;
         private System.Windows.Forms.DataGridViewTextBoxColumn ThietBi;
         private System.Windows.Forms.DataGridViewTextBoxColumn Diachi_P;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Scale;
+        private new System.Windows.Forms.DataGridViewTextBoxColumn Scale;
         private System.Windows.Forms.DataGridViewTextBoxColumn Donvido_P;
     }
 }

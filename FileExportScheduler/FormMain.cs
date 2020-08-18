@@ -48,18 +48,19 @@ namespace FileExportScheduler
             btnStart.Enabled = false;
             btnDataList.Enabled = false;
             btnSetting.Enabled = false;
-
-            using (StreamReader sr = File.OpenText(GetPathJson.getPathConfig(@"\Configuration\Config.json")))
+            var path = GetPathJson.getPathConfig("Config.json");
+            using (StreamReader sr = File.OpenText(path))
             {
                 var obj = sr.ReadToEnd();
                 SettingModel export = JsonConvert.DeserializeObject<SettingModel>(obj.ToString());
-                tmrScheduler.Interval = export.Interval * 60000;
+                tmrScheduler.Interval = export.Interval * 1000;
             }
 
             try
             {
+                var pathData = GetPathJson.getPathConfig("DeviceAndData.json");
                 deviceDic.Clear();
-                JObject jsonObj = JObject.Parse(File.ReadAllText(GetPathJson.getPathConfig(@"\Configuration\DeviceAndData.json")));
+                JObject jsonObj = JObject.Parse(File.ReadAllText(pathData));
                 Dictionary<string, IPConfigModel> deviceIP = jsonObj.ToObject<Dictionary<string, IPConfigModel>>();
                 foreach (var deviceIPUnit in deviceIP)
                 {
@@ -158,10 +159,10 @@ namespace FileExportScheduler
 
         private void FormMain_Load_1(object sender, EventArgs e)
         {
-
-            if (File.Exists(GetPathJson.getPathConfig(@"\Configuration\Config.json")))
+            var path = GetPathJson.getPathConfig("Config.json");
+            if (File.Exists(path))
             {
-                using (StreamReader sr = File.OpenText(GetPathJson.getPathConfig(@"\Configuration\Config.json")))
+                using (StreamReader sr = File.OpenText(path))
                 {
                     var obj = sr.ReadToEnd();
                     SettingModel export = JsonConvert.DeserializeObject<SettingModel>(obj.ToString());
@@ -182,13 +183,14 @@ namespace FileExportScheduler
         private async void getDeviceConnect()
         {
             List<string> ListfilePath = new List<string>();
-
+            var path = GetPathJson.getPathConfig("Config.json");
             try
             {
-                using (StreamReader sr = File.OpenText(GetPathJson.getPathConfig(@"\Configuration\Config.json")))
+                using (StreamReader sr = File.OpenText(path))
                 {
                     var obj = sr.ReadToEnd();
                     SettingModel export = JsonConvert.DeserializeObject<SettingModel>(obj.ToString());
+                    lstDev.Clear();
                     foreach (KeyValuePair<string, DeviceModel> deviceUnit in deviceDic)
                     {
                         foreach (KeyValuePair<string, DataModel> duLieuUnit in deviceUnit.Value.ListDuLieuChoTungPLC)
@@ -278,12 +280,17 @@ namespace FileExportScheduler
         {
             try
             {
-                serialPort.Open();
+                if (!serialPort.IsOpen)
+                {
+                    serialPort.Open();
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+
                 lock (objW2)
                 {
+
                     deviceUnit.Value.TrangThaiKetNoi = "Bad";
                     WriteValueToFileCSV(filePath);
                     return;
@@ -307,19 +314,19 @@ namespace FileExportScheduler
                         bool[] readCoil = mobus.ReadCoils(Convert.ToInt32(duLieuTemp.DiaChi), 1);
                         giaTriDuLieu = readCoil[0].ToString();
                     }
-                    else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 19999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 10001)
+                    else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 19999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 10000)
                     {
-                        bool[] discreteInput = mobus.ReadDiscreteInputs(Convert.ToInt32(duLieuTemp.DiaChi) - 10001, 1);
+                        bool[] discreteInput = mobus.ReadDiscreteInputs(Convert.ToInt32(duLieuTemp.DiaChi) - 10000, 1);
                         giaTriDuLieu = discreteInput[0].ToString();
                     }
-                    else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 39999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 30001)
+                    else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 39999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 30000)
                     {
-                        int[] readRegister = mobus.ReadInputRegisters(Convert.ToInt32(duLieuTemp.DiaChi) - 30001, 1);
+                        int[] readRegister = mobus.ReadInputRegisters(Convert.ToInt32(duLieuTemp.DiaChi) - 30000, 1);
                         giaTriDuLieu = readRegister[0].ToString();
                     }
-                    else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 49999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 40001)
+                    else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 49999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 40000)
                     {
-                        int[] readHoldingRegister = mobus.ReadHoldingRegisters(Convert.ToInt32(duLieuTemp.DiaChi) - 40001, 1);
+                        int[] readHoldingRegister = mobus.ReadHoldingRegisters(Convert.ToInt32(duLieuTemp.DiaChi) - 40000, 1);
                         giaTriDuLieu = readHoldingRegister[0].ToString();
                     }
 
@@ -332,9 +339,6 @@ namespace FileExportScheduler
 
                         duLieuTemp.GiaTri = giaTriDuLieu;
                     }
-
-
-
                 }
                 catch (Exception ex)
                 {
@@ -369,19 +373,19 @@ namespace FileExportScheduler
                             bool[] readCoil = master.ReadCoils(slaveAddress, Convert.ToUInt16(duLieuTemp.DiaChi), numberOfPoint);
                             giaTriDuLieu = readCoil[0].ToString();
                         }
-                        else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 19999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 10001)
+                        else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 19999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 10000)
                         {
-                            bool[] discreteInput = master.ReadInputs(slaveAddress, Convert.ToUInt16(Convert.ToInt32(duLieuTemp.DiaChi) - 10001), numberOfPoint);
+                            bool[] discreteInput = master.ReadInputs(slaveAddress, Convert.ToUInt16(Convert.ToInt32(duLieuTemp.DiaChi) - 10000), numberOfPoint);
                             giaTriDuLieu = discreteInput[0].ToString();
                         }
-                        else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 39999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 30001)
+                        else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 39999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 30000)
                         {
-                            ushort[] readRegister = master.ReadInputRegisters(slaveAddress, Convert.ToUInt16(Convert.ToInt32(duLieuTemp.DiaChi) - 30001), numberOfPoint);
+                            ushort[] readRegister = master.ReadInputRegisters(slaveAddress, Convert.ToUInt16(Convert.ToInt32(duLieuTemp.DiaChi) - 30000), numberOfPoint);
                             giaTriDuLieu = readRegister[0].ToString();
                         }
-                        else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 49999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 40001)
+                        else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 49999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 40000)
                         {
-                            ushort[] result = master.ReadHoldingRegisters(slaveAddress, Convert.ToUInt16(Convert.ToInt32(duLieuTemp.DiaChi) - 40001), numberOfPoint);
+                            ushort[] result = master.ReadHoldingRegisters(slaveAddress, Convert.ToUInt16(Convert.ToInt32(duLieuTemp.DiaChi) - 40000), numberOfPoint);
                             giaTriDuLieu = result[0].ToString();
                         }
                         try
@@ -405,7 +409,7 @@ namespace FileExportScheduler
                 }
 
             }
-            serialPort.Close();
+            //serialPort.Close();
         }
         private void tmrScheduler_Tick(object sender, EventArgs e)
         {
@@ -414,25 +418,27 @@ namespace FileExportScheduler
 
         private void WriteValueToFileCSV(List<string> filePath)
         {
+            //serialPort.Close();
             int i = 0;
             foreach (KeyValuePair<string, DeviceModel> deviceUnit in deviceDic)
             {
-                string csvData = "[Data]" + "\n" + "Tagname,TimeStamp,Value,DataQuality" + "\n";
+
                 foreach (KeyValuePair<String, List<DataModel>> duLieuUnit in lstDev)
                 {
+                    string csvData = "[Data]" + "\n" + "Tagname,TimeStamp,Value,DataQuality" + "\n";
                     foreach (DataModel dt in duLieuUnit.Value)
                     {
                         csvData +=
-                                   deviceUnit.Key+"."+dt.Ten + "," +
-                                   dt.ThoiGianDocGiuLieu.ToString("MM:ss.fff") + "," +
-                                   (Convert.ToDouble(dt.GiaTri) / Convert.ToDouble(dt.Scale)) + "," +
+                                   duLieuUnit.Key + "." + dt.Ten + "," +
+                                   dt.ThoiGianDocGiuLieu.ToString("mm:ss.fff") + "," +
+                                   Math.Round((Convert.ToDouble(dt.GiaTri) / Convert.ToDouble(dt.Scale)), 2) + "," +
                                    deviceUnit.Value.TrangThaiKetNoi + "\n";
                     }
                     File.WriteAllText(filePath[i], csvData);
                     i++;
                 }
-
             }
+
         }
     }
 }

@@ -46,8 +46,9 @@ namespace FileExportScheduler
         {
             try
             {
+                var path = GetPathJson.getPathConfig("DeviceAndData.json");
                 deviceDic.Clear();
-                JObject jsonObj = JObject.Parse(File.ReadAllText(GetPathJson.getPathConfig(@"\Configuration\DeviceAndData.json")));
+                JObject jsonObj = JObject.Parse(File.ReadAllText(path));
                 Dictionary<string, IPConfigModel> deviceIP = jsonObj.ToObject<Dictionary<string, IPConfigModel>>();
                 foreach (var deviceIPUnit in deviceIP)
                 {
@@ -72,8 +73,9 @@ namespace FileExportScheduler
         //Viết từ list vào file .json
         public void WriteListToJson()
         {
+            var path = GetPathJson.getPathConfig("DeviceAndData.json");
             string jsonString = (new JavaScriptSerializer()).Serialize((object)deviceDic);
-            File.WriteAllText(GetPathJson.getPathConfig(@"\Configuration\DeviceAndData.json"), jsonString);
+            File.WriteAllText(path, jsonString);
         }
         #endregion
 
@@ -146,62 +148,70 @@ namespace FileExportScheduler
                 {
                     break;
                 }
-                foreach (DataGridViewCell dc in dr.Cells)
+               
+                for (int i=0;i<dr.Cells.Count-1;i++)
                 {
-                    if (dc.ColumnIndex == 5)
+                    if (dr.Cells[i].ColumnIndex == 5)
                     {
                         break;
                     }
 
-                    if (dc.Value == null || dc.Value.ToString().Trim() == string.Empty)
+                    if (dr.Cells[i].Value == null || dr.Cells[i].Value.ToString().Trim() == string.Empty)
                     {
-                        dc.ErrorText = "Không được để trống";
+                        dr.Cells[i].ErrorText = "Không được để trống";
                         isPassed = false;
+                        continue;
                     }
                     else
                     {
-                        dc.ErrorText = "";
-                    }
-                    
-                    if (!Regex.IsMatch(dc.Value.ToString(), @"^[a-zA-Z0-9_.-]+$"))
-                    {
-                        dc.ErrorText = "Sai định dạng";
-                        isPassed = false;
-                    }
-                    else
-                    {
-                        dc.ErrorText = "";
-                    }
-                    if (list.Contains(dc.Value.ToString()))
-                    {
-                        dc.ErrorText = "Tên bị trùng";
-                        isPassed = false;
-                    }
-                    if (dc.ColumnIndex == 2)
-                    {
-                        if (!CheckAddress(dc.Value.ToString()))
+                        if (!Regex.IsMatch(dr.Cells[i].Value.ToString(), @"^[a-zA-Z0-9_.-]+$"))
                         {
-                            dc.ErrorText = "Sai định dạng";
+                            dr.Cells[i].ErrorText = "Sai định dạng";
                             isPassed = false;
                         }
                         else
                         {
-                            dc.ErrorText = "";
+                            dr.Cells[i].ErrorText = "";
                         }
                     }
-                    if(dc.ColumnIndex == 3 )
+
+
+                    if (list.Contains(dr.Cells[0].Value.ToString() + dr.Cells[1].Value.ToString()))
                     {
-                        var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
-                        if (!regex.IsMatch(dc.Value.ToString()))
+                        if (dr.Cells[i].ColumnIndex == 0 || dr.Cells[i].ColumnIndex == 1)
                         {
-                            dc.ErrorText = "Scale Sai định dạng";
-                            isPassed = false;
+                            dr.Cells[i].ErrorText = "Tên bị trùng";
                         }
                         
+                        isPassed = false;
+                    }
+
+                    if (dr.Cells[i].ColumnIndex == 2)
+                    {
+                        if (!CheckAddress(dr.Cells[i].Value.ToString()))
+                        {
+                            dr.Cells[i].ErrorText = "Sai định dạng";
+                            isPassed = false;
+                        }
+                        else
+                        {
+                            dr.Cells[i].ErrorText = "";
+                        }
+                    }
+                    if (dr.Cells[i].ColumnIndex == 3)
+                    {
+                        var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+                        if (!regex.IsMatch(dr.Cells[i].Value.ToString()))
+                        {
+                            dr.Cells[i].ErrorText = "Scale Sai định dạng";
+                            isPassed = false;
+                        }
+
                     }
 
                 }
-                list.Add(dr.Cells[0].Value.ToString());
+
+                list.Add(dr.Cells[0].Value.ToString() + dr.Cells[1].Value.ToString());
             }
             if (list.Count == 0)
             {
@@ -219,9 +229,9 @@ namespace FileExportScheduler
             try
             {
                 int address = Convert.ToInt32(addressStr);
-                if (address < 1 || (address == 10000) ||
-                    (address > 19999 && address < 30001) ||
-                    (address == 40000) ||
+                if (address < 1 || (address < 10000) ||
+                    (address > 19999 && address < 30000) ||
+                    (address < 40000) ||
                     address > 49999)
                 {
 
@@ -268,7 +278,7 @@ namespace FileExportScheduler
                     duLieuTemp.Scale = dr.Cells[3].Value.ToString();
                     duLieuTemp.DonViDo = dr.Cells[4].Value.ToString();
 
-                    ListDuLieuChoTungPLC.Add(duLieuTemp.Ten, duLieuTemp);
+                    ListDuLieuChoTungPLC.Add(duLieuTemp.Ten + duLieuTemp.ThietBi, duLieuTemp);
                 }
 
                 deviceDic[txtTenGiaoThuc.Text].ListDuLieuChoTungPLC = ListDuLieuChoTungPLC;
@@ -277,7 +287,7 @@ namespace FileExportScheduler
             }
             else
             {
-                MessageBox.Show("Dữ liệu sai định dạng !", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Lỗi lưu dữ liệu!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
         //Xóa dữ liệu protocol
@@ -381,31 +391,42 @@ namespace FileExportScheduler
         }
         private void BindDataCSV(string filePath)
         {
-            //dgvShowDuLieu.Columns.Clear();
-            DataTable dt = new DataTable();
-            string[] lines = File.ReadAllLines(filePath);
-
-            dt.Columns.Add("Ten", typeof(string));
-            dt.Columns.Add("ThietBi", typeof(string));
-            dt.Columns.Add("DiaChi", typeof(string));
-            dt.Columns.Add("Scale", typeof(string));
-            dt.Columns.Add("DonViDo", typeof(string));
-
-            for (int i = 1; i < lines.Length; i++)
+            try
             {
-                string[] t = lines[i].Split(',');
-                dt.Rows.Add(t[0], t[1], t[2], t[3], t[4]);
-            }
+                //dgvShowDuLieu.Columns.Clear();
+                DataTable dt = new DataTable();
+                string[] lines = File.ReadAllLines(filePath);
 
-            dgvDataProtocol.DataSource = dt;
-            if (saveToJson())
-            {
-                MessageBox.Show("Nhập file thành công !", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                dt.Columns.Add("Ten", typeof(string));
+                dt.Columns.Add("ThietBi", typeof(string));
+                dt.Columns.Add("DiaChi", typeof(string));
+                dt.Columns.Add("Scale", typeof(string));
+                dt.Columns.Add("DonViDo", typeof(string));
+
+                for (int i = 1; i < lines.Length; i++)
+                {
+                    string[] t = lines[i].Split(',');
+                    dt.Rows.Add(t[0], t[1], t[2], t[3], t[4]);
+                }
+
+                dgvDataProtocol.DataSource = dt;
+                if (saveToJson())
+                {
+                    MessageBox.Show("Nhập file thành công !", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Dữ liệu sai định dạng", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
-            else
+            catch (IOException ex)
             {
-                MessageBox.Show("Dữ liệu sai định dạng", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                MessageBox.Show("File đang mở, vui lòng đóng file và thử lại!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+            
+
+            
 
         }
         //Lưu dữ liệu từ datagridview vào list
@@ -430,7 +451,7 @@ namespace FileExportScheduler
                     duLieuTemp.Scale = dr.Cells[3].Value.ToString();
                     duLieuTemp.DonViDo = dr.Cells[4].Value.ToString();
 
-                    ListDuLieuChoTungPLC.Add(duLieuTemp.Ten, duLieuTemp);
+                    ListDuLieuChoTungPLC.Add(duLieuTemp.Ten+ duLieuTemp.ThietBi, duLieuTemp);
                 }
                 deviceDic[txtTenGiaoThuc.Text].ListDuLieuChoTungPLC = ListDuLieuChoTungPLC;
                 WriteListToJson();
@@ -567,7 +588,7 @@ namespace FileExportScheduler
                     deviceDic.Remove(formDataList.selectedNodeDouble.Text);
                     deviceDic.Add(deviceObj1.Name, deviceObj1);
                 }
-                
+
             }
             WriteListToJson();
             formDataList.selectedNodeDouble.Text = txtTenGiaoThuc.Text;
@@ -596,5 +617,9 @@ namespace FileExportScheduler
         }
         #endregion
 
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
