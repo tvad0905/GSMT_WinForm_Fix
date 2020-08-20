@@ -18,8 +18,13 @@ namespace FileExportScheduler.Models
             set
             {
                 if (value == null)
-                { donViDo = ""; }
-                else { donViDo = value; }
+                {
+                    donViDo = "";
+                }
+                else
+                {
+                    donViDo = value;
+                }
             }
         }
         public string GiaTri { get; set; }
