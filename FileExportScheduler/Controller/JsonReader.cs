@@ -1,0 +1,113 @@
+﻿using FileExportScheduler.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace FileExportScheduler.Controller
+{
+    public static class JsonReader
+    {
+
+        /// <summary>
+        /// lấy thời gian giữa các lần ghi
+        /// </summary>
+        /// <returns>thời gian giữa các lần ghi</returns>
+        public static int GetTimeInterval()
+        {
+            int timeInterval = 1;
+            var path = GetPathJson.getPathConfig("Config.json");
+            using (System.IO.StreamReader sr = File.OpenText(path))
+            {
+                var obj = sr.ReadToEnd();
+                SettingModel export = JsonConvert.DeserializeObject<SettingModel>(obj.ToString());
+                timeInterval = export.Interval * 1000;
+            }
+            return timeInterval;
+        }
+        /// <summary>
+        /// lấy danh sách đường dẫn theo điểm đo
+        /// </summary>
+        /// <param name="deviceDic">danh sách thiết bị</param>
+        /// <param name="dsDiemDo">danh sách điểm đo</param>
+        /// <returns>danh sách đường dẫn theo điểm đo</returns>
+        public static List<string> LayDsDuongDanTheoTenDiemDo(Dictionary<string, DeviceModel> deviceDic, ref Dictionary<String, List<DataModel>> dsDiemDo)
+        {
+            List<string> dsDuongDanTheoTenThietBi = new List<string>();//
+            
+            var path = GetPathJson.getPathConfig("Config.json");
+            try
+            {
+                using (StreamReader sr = File.OpenText(path))
+                {
+                    var obj = sr.ReadToEnd();
+                    SettingModel export = JsonConvert.DeserializeObject<SettingModel>(obj.ToString());
+                    dsDiemDo.Clear();
+                    foreach (KeyValuePair<string, DeviceModel> deviceUnit in deviceDic)
+                    {
+                        foreach (KeyValuePair<string, DataModel> duLieuUnit in deviceUnit.Value.ListDuLieuChoTungPLC)
+                        {
+                            string ThietBi = duLieuUnit.Value.ThietBi;
+                            if (dsDiemDo.ContainsKey(ThietBi))
+                            {
+                                dsDiemDo[ThietBi].Add(duLieuUnit.Value);
+                            }
+                            else
+                            {
+                                dsDiemDo.Add(ThietBi, new List<DataModel>());
+                                dsDiemDo[ThietBi].Add(duLieuUnit.Value);
+                            }
+                        }
+                    }
+                    foreach (KeyValuePair<String, List<DataModel>> dsDiemDoUnit in dsDiemDo)
+                    {
+                        string filePath = export.ExportFilePath.Substring(0, export.ExportFilePath.LastIndexOf("\\")) +
+                               "\\" + $"log({dsDiemDoUnit.Key}){ DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_ss")}.csv";
+                        dsDuongDanTheoTenThietBi.Add(filePath);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return dsDuongDanTheoTenThietBi;
+        }
+        public static Dictionary<string, DeviceModel> LayDanhSachThongSoCuaTungThietBi()
+        {
+            Dictionary<string, DeviceModel> dsThietBi=new Dictionary<string, DeviceModel>();
+            try
+            {
+                var pathData = GetPathJson.getPathConfig("DeviceAndData.json");
+                dsThietBi.Clear();
+                JObject jsonObj = JObject.Parse(File.ReadAllText(pathData));
+                Dictionary<string, IPConfigModel> deviceIP = jsonObj.ToObject<Dictionary<string, IPConfigModel>>();
+                foreach (var deviceIPUnit in deviceIP)
+                {
+                    if (deviceIPUnit.Value.Protocol == "Modbus TCP/IP" || deviceIPUnit.Value.Protocol == "Siemens S7-1200")
+                    {
+                        dsThietBi.Add(deviceIPUnit.Key, deviceIPUnit.Value);
+                    }
+                }
+                Dictionary<string, ComConfigModel> deviceCom = jsonObj.ToObject<Dictionary<string, ComConfigModel>>();
+                foreach (var deviceComUnit in deviceCom)
+                {
+                    if (deviceComUnit.Value.Protocol == "Serial Port")
+                    {
+                        dsThietBi.Add(deviceComUnit.Key, deviceComUnit.Value);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            return dsThietBi;
+
+        }
+    }
+}

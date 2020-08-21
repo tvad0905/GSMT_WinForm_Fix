@@ -25,8 +25,8 @@ namespace FileExportScheduler
     {
         #region Variables Declaration
         bool checkExit = false;
-        Dictionary<string, DeviceModel> deviceDic = new Dictionary<string, DeviceModel>();
-        Dictionary<String, List<DataModel>> lstDev = new Dictionary<string, List<DataModel>>();
+        Dictionary<string, DeviceModel> dsThietBi = new Dictionary<string, DeviceModel>();
+        Dictionary<String, List<DataModel>> dsDiemDo = new Dictionary<string, List<DataModel>>();
         Dictionary<string, string> dcExportData = new Dictionary<string, string>();
         ModbusClient mobus = new ModbusClient();
         SerialPort serialPort = new SerialPort();
@@ -48,41 +48,14 @@ namespace FileExportScheduler
             btnStart.Enabled = false;
             btnDataList.Enabled = false;
             btnSetting.Enabled = false;
-            var path = GetPathJson.getPathConfig("Config.json");
-            using (StreamReader sr = File.OpenText(path))
-            {
-                var obj = sr.ReadToEnd();
-                SettingModel export = JsonConvert.DeserializeObject<SettingModel>(obj.ToString());
-                tmrScheduler.Interval = export.Interval * 1000;
-            }
 
-            try
-            {
-                var pathData = GetPathJson.getPathConfig("DeviceAndData.json");
-                deviceDic.Clear();
-                JObject jsonObj = JObject.Parse(File.ReadAllText(pathData));
-                Dictionary<string, IPConfigModel> deviceIP = jsonObj.ToObject<Dictionary<string, IPConfigModel>>();
-                foreach (var deviceIPUnit in deviceIP)
-                {
-                    if (deviceIPUnit.Value.Protocol == "Modbus TCP/IP" || deviceIPUnit.Value.Protocol == "Siemens S7-1200")
-                    {
-                        deviceDic.Add(deviceIPUnit.Key, deviceIPUnit.Value);
-                    }
-                }
-                Dictionary<string, ComConfigModel> deviceCom = jsonObj.ToObject<Dictionary<string, ComConfigModel>>();
-                foreach (var deviceComUnit in deviceCom)
-                {
-                    if (deviceComUnit.Value.Protocol == "Serial Port")
-                    {
-                        deviceDic.Add(deviceComUnit.Key, deviceComUnit.Value);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-            }
+            //xét chu kì ghi file theo json 
+            tmrScheduler.Interval = Controller.JsonReader.GetTimeInterval();
 
-            foreach (KeyValuePair<string, DeviceModel> deviceUnit in deviceDic)
+            //quét danh sách thông số cho từng thiết bị từ json
+            dsThietBi = Controller.JsonReader.LayDanhSachThongSoCuaTungThietBi();
+
+            foreach (KeyValuePair<string, DeviceModel> deviceUnit in dsThietBi)
             {
                 if (deviceUnit.Value.Protocol == "Serial Port")
                 {
@@ -120,7 +93,7 @@ namespace FileExportScheduler
         {
             FormDataList f = new FormDataList();
             f.ShowDialog();
-            //
+
         }
 
         private void btnSetting_Click(object sender, EventArgs e)
@@ -182,8 +155,8 @@ namespace FileExportScheduler
                 using (StreamReader sr = File.OpenText(path))
                 {
                     var obj = sr.ReadToEnd();
-                    SettingModel export = JsonConvert.DeserializeObject<SettingModel>(obj.ToString());
-                    if (export.AutoRun == true)
+                    SettingModel setting = JsonConvert.DeserializeObject<SettingModel>(obj.ToString());
+                    if (setting.AutoRun == true)
                     {
                         btnStart.PerformClick();
                     }
@@ -199,49 +172,27 @@ namespace FileExportScheduler
         object objW2 = new object();
         private async void getDeviceConnect()
         {
+
+            #region lấy danh sách đường dẫn file csv
+
             List<string> ListfilePath = new List<string>();
-            var path = GetPathJson.getPathConfig("Config.json");
             try
             {
-                using (StreamReader sr = File.OpenText(path))
-                {
-                    var obj = sr.ReadToEnd();
-                    SettingModel export = JsonConvert.DeserializeObject<SettingModel>(obj.ToString());
-                    lstDev.Clear();
-                    foreach (KeyValuePair<string, DeviceModel> deviceUnit in deviceDic)
-                    {
-                        foreach (KeyValuePair<string, DataModel> duLieuUnit in deviceUnit.Value.ListDuLieuChoTungPLC)
-                        {
-                            string ThietBi = duLieuUnit.Value.ThietBi;
-                            if (lstDev.ContainsKey(ThietBi))
-                            {
-                                lstDev[ThietBi].Add(duLieuUnit.Value);
-                            }
-                            else
-                            {
-                                lstDev.Add(ThietBi, new List<DataModel>());
-                                lstDev[ThietBi].Add(duLieuUnit.Value);
-                            }
-                        }
-                    }
-                    foreach (KeyValuePair<String, List<DataModel>> lstDevUnit in lstDev)
-                    {
-                        string filePath = export.ExportFilePath.Substring(0, export.ExportFilePath.LastIndexOf("\\")) +
-                               "\\" + $"log({lstDevUnit.Key}){ DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_ss")}.csv";
-                        ListfilePath.Add(filePath);
-                    }
-                }
+                ListfilePath = Controller.JsonReader.LayDsDuongDanTheoTenDiemDo(dsThietBi, ref dsDiemDo);
             }
             catch (Exception ex)
             {
-                //tmrScheduler.Stop();
+                tmrScheduler.Stop();
                 MessageBox.Show("Chọn đường dẫn đến thư mục");
                 WindowState = FormWindowState.Normal;
                 ShowInTaskbar = true;
                 btnStop.PerformClick();
                 btnSetting.PerformClick();
             }
-            foreach (KeyValuePair<string, DeviceModel> deviceUnit in deviceDic)
+            #endregion
+
+
+            foreach (KeyValuePair<string, DeviceModel> deviceUnit in dsThietBi)
             {
                 if (deviceUnit.Value.Protocol == "Modbus TCP/IP" || deviceUnit.Value.Protocol == "Siemens S7-1200")
                 {
@@ -260,7 +211,7 @@ namespace FileExportScheduler
                     try
                     {
                         await Task.Run(() => ThreadCOMConnect(ListfilePath, deviceUnit));
-                        
+
                     }
                     catch (Exception ex)
                     {
@@ -268,7 +219,8 @@ namespace FileExportScheduler
                     }
                 }
             }
-            WriteValueToFileCSV(ListfilePath);
+
+            Controller.ExportFileCSV.WriteDataToFileCSV(ListfilePath, dsThietBi, dsDiemDo);
 
 
         }
@@ -286,7 +238,7 @@ namespace FileExportScheduler
                 lock (objW)
                 {
                     deviceUnit.Value.TrangThaiKetNoi = "Bad";
-                    WriteValueToFileCSV(filePath);
+                    Controller.ExportFileCSV.WriteDataToFileCSV(filePath, dsThietBi, dsDiemDo);
                     return;
                 }
             }
@@ -307,11 +259,11 @@ namespace FileExportScheduler
                     serialPort = new SerialPort(((ComConfigModel)deviceUnit.Value).Com, ((ComConfigModel)deviceUnit.Value).Baud, ((ComConfigModel)deviceUnit.Value).parity, ((ComConfigModel)deviceUnit.Value).Databit, ((ComConfigModel)deviceUnit.Value).stopBits);
 
                     deviceUnit.Value.TrangThaiKetNoi = "Bad";
-                    WriteValueToFileCSV(filePath);
+                    Controller.ExportFileCSV.WriteDataToFileCSV(filePath, dsThietBi, dsDiemDo);
                 }
             }
             getDataCOM(deviceUnit);
-          
+
         }
         //lấy dữ liệu của các thiết bị 
         private void getDataDeviceIP(KeyValuePair<string, DeviceModel> deviceUnit)
@@ -415,7 +367,7 @@ namespace FileExportScheduler
                     catch (Exception ex)
                     {
                         deviceUnit.Value.TrangThaiKetNoi = "Bad";
-                  
+
                         serialPort = new SerialPort(((ComConfigModel)deviceUnit.Value).Com, ((ComConfigModel)deviceUnit.Value).Baud, ((ComConfigModel)deviceUnit.Value).parity, ((ComConfigModel)deviceUnit.Value).Databit, ((ComConfigModel)deviceUnit.Value).stopBits);
 
                     }
@@ -440,28 +392,6 @@ namespace FileExportScheduler
             finally
             {
                 tmrScheduler.Start();
-            }
-        }
-
-        private void WriteValueToFileCSV(List<string> filePath)
-        {
-            int i = 0;
-            foreach (KeyValuePair<string, DeviceModel> deviceUnit in deviceDic)
-            {
-                foreach (KeyValuePair<String, List<DataModel>> duLieuUnit in lstDev)
-                {
-                    string csvData = "[Data]" + "\n" + "Tagname,TimeStamp,Value,DataQuality" + "\n";
-                    foreach (DataModel dt in duLieuUnit.Value)
-                    {
-                        csvData +=
-                                   duLieuUnit.Key + "." + dt.Ten + "," +
-                                   dt.ThoiGianDocGiuLieu.ToString("mm:ss.fff") + "," +
-                                   Math.Round((Convert.ToDouble(dt.GiaTri) / Convert.ToDouble(dt.Scale)), 2) + "," +
-                                   deviceUnit.Value.TrangThaiKetNoi + "\n";
-                    }
-                    File.WriteAllText(filePath[i], csvData);
-                    i++;
-                }
             }
         }
     }
