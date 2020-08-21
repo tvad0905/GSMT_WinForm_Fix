@@ -25,8 +25,8 @@ namespace FileExportScheduler
     {
         #region Variables Declaration
         bool checkExit = false;
-        Dictionary<string, DeviceModel> dsThietBi = new Dictionary<string, DeviceModel>();
-        Dictionary<String, List<DataModel>> dsDiemDo = new Dictionary<string, List<DataModel>>();
+        Dictionary<string, DeviceModel> dsThietBi = new Dictionary<string, DeviceModel>();//danh sách các thiêt bị
+        Dictionary<String, List<DataModel>> dsDiemDo = new Dictionary<string, List<DataModel>>();// danh sách các điểm đo
         Dictionary<string, string> dcExportData = new Dictionary<string, string>();
         ModbusClient mobus = new ModbusClient();
         SerialPort serialPort = new SerialPort();
@@ -180,7 +180,7 @@ namespace FileExportScheduler
             {
                 ListfilePath = Controller.JsonReader.LayDsDuongDanTheoTenDiemDo(dsThietBi, ref dsDiemDo);
             }
-            catch (Exception ex)
+            catch (Exception ex)//khi đường dẫn export file ko có trong config thì bắt người dùng nhập lại
             {
                 tmrScheduler.Stop();
                 MessageBox.Show("Chọn đường dẫn đến thư mục");
@@ -270,43 +270,15 @@ namespace FileExportScheduler
         {
             for (int i = 0; i < deviceUnit.Value.ListDuLieuChoTungPLC.Count; i++)
             {
+
                 DataModel duLieuTemp = deviceUnit.Value.ListDuLieuChoTungPLC.ElementAt(i).Value;
-                string giaTriDuLieu = "";
-                try
+                try//lấy dữ liệu thành công
                 {
-                    if (Convert.ToInt32(duLieuTemp.DiaChi) <= 9999)
-                    {
-                        bool[] readCoil = mobus.ReadCoils(Convert.ToInt32(duLieuTemp.DiaChi), 1);
-                        giaTriDuLieu = readCoil[0].ToString();
-                    }
-                    else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 19999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 10000)
-                    {
-                        bool[] discreteInput = mobus.ReadDiscreteInputs(Convert.ToInt32(duLieuTemp.DiaChi) - 10000, 1);
-                        giaTriDuLieu = discreteInput[0].ToString();
-                    }
-                    else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 39999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 30000)
-                    {
-                        int[] readRegister = mobus.ReadInputRegisters(Convert.ToInt32(duLieuTemp.DiaChi) - 30000, 1);
-                        giaTriDuLieu = readRegister[0].ToString();
-                    }
-                    else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 49999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 40000)
-                    {
-                        int[] readHoldingRegister = mobus.ReadHoldingRegisters(Convert.ToInt32(duLieuTemp.DiaChi) - 40000, 1);
-                        giaTriDuLieu = readHoldingRegister[0].ToString();
-                    }
+                    duLieuTemp.GiaTri = Convert.ToInt32(Data.Data.LayDuLieuTCPIP(mobus, duLieuTemp)) + "";
 
-                    try
-                    {
-                        duLieuTemp.GiaTri = Convert.ToInt32(giaTriDuLieu) + "";
-                    }
-                    catch (Exception)
-                    {
-
-                        duLieuTemp.GiaTri = giaTriDuLieu;
-                    }
                     deviceUnit.Value.TrangThaiKetNoi = "Good";
                 }
-                catch (Exception ex)
+                catch (Exception ex)//lấy dữ liệu thất bại
                 {
                     deviceUnit.Value.TrangThaiKetNoi = "Bad";
                 }
@@ -315,6 +287,7 @@ namespace FileExportScheduler
                     duLieuTemp.ThoiGianDocGiuLieu = DateTime.Now;
 
                 }
+
             }
         }
 
@@ -322,60 +295,28 @@ namespace FileExportScheduler
         {
             for (int i = 0; i < deviceUnit.Value.ListDuLieuChoTungPLC.Count; i++)
             {
-                if (deviceUnit.Value.Protocol == "Serial Port")
+
+                DataModel duLieuTemp = deviceUnit.Value.ListDuLieuChoTungPLC.ElementAt(i).Value;
+                
+                //lấy dữ liệu thành công
+                try
                 {
-                    DataModel duLieuTemp = deviceUnit.Value.ListDuLieuChoTungPLC.ElementAt(i).Value;
-
-                    string giaTriDuLieu = "";
-                    try
-                    {
-                        byte slaveAddress = 1;
-                        ushort numberOfPoint = 1;
-
-                        IModbusMaster master = ModbusSerialMaster.CreateRtu(serialPort);
-                        if (Convert.ToInt32(duLieuTemp.DiaChi) <= 9999)
-                        {
-                            bool[] readCoil = master.ReadCoils(slaveAddress, Convert.ToUInt16(duLieuTemp.DiaChi), numberOfPoint);
-                            giaTriDuLieu = readCoil[0].ToString();
-                        }
-                        else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 19999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 10000)
-                        {
-                            bool[] discreteInput = master.ReadInputs(slaveAddress, Convert.ToUInt16(Convert.ToInt32(duLieuTemp.DiaChi) - 10000), numberOfPoint);
-                            giaTriDuLieu = discreteInput[0].ToString();
-                        }
-                        else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 39999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 30000)
-                        {
-                            ushort[] readRegister = master.ReadInputRegisters(slaveAddress, Convert.ToUInt16(Convert.ToInt32(duLieuTemp.DiaChi) - 30000), numberOfPoint);
-                            giaTriDuLieu = readRegister[0].ToString();
-                        }
-                        else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 49999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 40000)
-                        {
-                            ushort[] result = master.ReadHoldingRegisters(slaveAddress, Convert.ToUInt16(Convert.ToInt32(duLieuTemp.DiaChi) - 40000), numberOfPoint);
-                            giaTriDuLieu = result[0].ToString();
-                        }
-                        try
-                        {
-                            duLieuTemp.GiaTri = ushort.Parse(giaTriDuLieu) + "";
-                        }
-                        catch (Exception)
-                        {
-                            duLieuTemp.GiaTri = giaTriDuLieu;
-                        }
-                        deviceUnit.Value.TrangThaiKetNoi = "Good";
-
-                    }
-                    catch (Exception ex)
-                    {
-                        deviceUnit.Value.TrangThaiKetNoi = "Bad";
-
-                        serialPort = new SerialPort(((ComConfigModel)deviceUnit.Value).Com, ((ComConfigModel)deviceUnit.Value).Baud, ((ComConfigModel)deviceUnit.Value).parity, ((ComConfigModel)deviceUnit.Value).Databit, ((ComConfigModel)deviceUnit.Value).stopBits);
-
-                    }
-                    finally
-                    {
-                        duLieuTemp.ThoiGianDocGiuLieu = DateTime.Now;
-                    }
+                    duLieuTemp.GiaTri = ushort.Parse(Data.Data.LayDuLieuCOM(duLieuTemp, serialPort)) + "";
+                    deviceUnit.Value.TrangThaiKetNoi = "Good";
                 }
+                //lấy dữ liệu thất bại
+                catch (Exception ex)
+                {
+                    deviceUnit.Value.TrangThaiKetNoi = "Bad";
+
+                    serialPort = new SerialPort(((ComConfigModel)deviceUnit.Value).Com, ((ComConfigModel)deviceUnit.Value).Baud, ((ComConfigModel)deviceUnit.Value).parity, ((ComConfigModel)deviceUnit.Value).Databit, ((ComConfigModel)deviceUnit.Value).stopBits);
+
+                }
+                finally
+                {
+                    duLieuTemp.ThoiGianDocGiuLieu = DateTime.Now;
+                }
+
             }
         }
         private void tmrScheduler_Tick(object sender, EventArgs e)
