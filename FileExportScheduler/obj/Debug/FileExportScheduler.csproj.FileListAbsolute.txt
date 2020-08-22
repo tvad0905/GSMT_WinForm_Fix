@@ -1,0 +1,17 @@
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\FileExportScheduler.exe.config
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\FileExportScheduler.exe
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\FileExportScheduler.pdb
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\Unme.Common.dll
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\log4net.xml
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csprojAssemblyReference.cache
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.DeviceConfiguration.resources
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormDataList.resources
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormMain.resources
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormSetting.resources
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.Properties.Resources.resources
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.ProtocolConfiguration.resources
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.GenerateResource.cache
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CoreCompileInputs.cache
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CopyComplete
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.exe
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.pdb

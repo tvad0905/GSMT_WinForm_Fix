@@ -61,7 +61,10 @@ namespace FileExportScheduler
                 {
                     serialPort.DtrEnable = true;
                     serialPort.RtsEnable = true;
-                    serialPort = new SerialPort(((ComConfigModel)deviceUnit.Value).Com, ((ComConfigModel)deviceUnit.Value).Baud, ((ComConfigModel)deviceUnit.Value).parity, ((ComConfigModel)deviceUnit.Value).Databit, ((ComConfigModel)deviceUnit.Value).stopBits);
+                    var port = (ComConfigModel)deviceUnit.Value;
+                    serialPort = new SerialPort(port.Com, port.Baud, port.parity, port.Databit, port.stopBits);
+
+
                     try
                     {
                         if (!serialPort.IsOpen)
@@ -163,6 +166,7 @@ namespace FileExportScheduler
                 }
             }
         }
+
         /// <summary>
         /// lấy kết nối của thiết bị
         /// </summary>
@@ -199,7 +203,7 @@ namespace FileExportScheduler
                     mobus = new ModbusClient(((IPConfigModel)deviceUnit.Value).IP, ((IPConfigModel)deviceUnit.Value).Port);
                     try
                     {
-                        await Task.Run(() => ThreadIPConnect(ListfilePath, deviceUnit));
+                        await Task.Run(() => IPConnect(ListfilePath, deviceUnit));
                     }
                     catch (Exception ex)
                     {
@@ -210,8 +214,9 @@ namespace FileExportScheduler
                 {
                     try
                     {
-                        await Task.Run(() => ThreadCOMConnect(ListfilePath, deviceUnit));
+                        await Task.Run(() => COMConnect(ListfilePath, deviceUnit));
 
+                        //Thread t = new Thread(() => { ThreadCOMConnect(ListfilePath, deviceUnit);Thread.Sleep(3000); }); t.Start();
                     }
                     catch (Exception ex)
                     {
@@ -226,7 +231,7 @@ namespace FileExportScheduler
         }
 
         // tạo 1 thread cho connect
-        void ThreadIPConnect(List<string> filePath, KeyValuePair<string, DeviceModel> deviceUnit)
+        void IPConnect(List<string> filePath, KeyValuePair<string, DeviceModel> deviceUnit)
         {
             try
             {
@@ -245,7 +250,7 @@ namespace FileExportScheduler
             getDataDeviceIP(deviceUnit);
         }
 
-        void ThreadCOMConnect(List<string> filePath, KeyValuePair<string, DeviceModel> deviceUnit)
+        void COMConnect(List<string> filePath, KeyValuePair<string, DeviceModel> deviceUnit)
         {
             if (!serialPort.IsOpen)
             {
@@ -256,14 +261,12 @@ namespace FileExportScheduler
                 }
                 catch (Exception ex)
                 {
-                    serialPort = new SerialPort(((ComConfigModel)deviceUnit.Value).Com, ((ComConfigModel)deviceUnit.Value).Baud, ((ComConfigModel)deviceUnit.Value).parity, ((ComConfigModel)deviceUnit.Value).Databit, ((ComConfigModel)deviceUnit.Value).stopBits);
 
                     deviceUnit.Value.TrangThaiKetNoi = "Bad";
                     Controller.ExportFileCSV.WriteDataToFileCSV(filePath, dsThietBi, dsDiemDo);
                 }
             }
             getDataCOM(deviceUnit);
-
         }
         //lấy dữ liệu của các thiết bị 
         private void getDataDeviceIP(KeyValuePair<string, DeviceModel> deviceUnit)
@@ -274,7 +277,7 @@ namespace FileExportScheduler
                 DataModel duLieuTemp = deviceUnit.Value.ListDuLieuChoTungPLC.ElementAt(i).Value;
                 try//lấy dữ liệu thành công
                 {
-                    duLieuTemp.GiaTri = Convert.ToInt32(Data.Data.LayDuLieuTCPIP(mobus, duLieuTemp)) + "";
+                    duLieuTemp.GiaTri = Convert.ToInt32(Data.Data.LayDuLieuTCPIP(mobus, duLieuTemp)).ToString();
 
                     deviceUnit.Value.TrangThaiKetNoi = "Good";
                 }
@@ -293,23 +296,26 @@ namespace FileExportScheduler
 
         private void getDataCOM(KeyValuePair<string, DeviceModel> deviceUnit)
         {
+
             for (int i = 0; i < deviceUnit.Value.ListDuLieuChoTungPLC.Count; i++)
             {
 
                 DataModel duLieuTemp = deviceUnit.Value.ListDuLieuChoTungPLC.ElementAt(i).Value;
-                
+
                 //lấy dữ liệu thành công
                 try
                 {
-                    duLieuTemp.GiaTri = ushort.Parse(Data.Data.LayDuLieuCOM(duLieuTemp, serialPort)) + "";
+
+                    duLieuTemp.GiaTri = ushort.Parse(Data.Data.LayDuLieuCOM(duLieuTemp, serialPort)).ToString();
                     deviceUnit.Value.TrangThaiKetNoi = "Good";
+
                 }
                 //lấy dữ liệu thất bại
                 catch (Exception ex)
                 {
                     deviceUnit.Value.TrangThaiKetNoi = "Bad";
 
-                    serialPort = new SerialPort(((ComConfigModel)deviceUnit.Value).Com, ((ComConfigModel)deviceUnit.Value).Baud, ((ComConfigModel)deviceUnit.Value).parity, ((ComConfigModel)deviceUnit.Value).Databit, ((ComConfigModel)deviceUnit.Value).stopBits);
+                    //serialPort = new SerialPort(((ComConfigModel)deviceUnit.Value).Com, ((ComConfigModel)deviceUnit.Value).Baud, ((ComConfigModel)deviceUnit.Value).parity, ((ComConfigModel)deviceUnit.Value).Databit, ((ComConfigModel)deviceUnit.Value).stopBits);
 
                 }
                 finally

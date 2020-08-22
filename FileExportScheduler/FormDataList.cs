@@ -226,6 +226,7 @@ namespace FileExportScheduler
         {
             var ports = SerialPort.GetPortNames();
             splitContainer.Panel2.Controls.Clear();
+            
             switch (selectedNode.Name)
             {
                 case "Devices":
@@ -242,7 +243,7 @@ namespace FileExportScheduler
                     protocolConfiguration.btnEditProtocol.Visible = false;
                     protocolConfiguration.btnSaveProtocol.Visible = true;
                     splitContainer.Panel2.Controls.Add(protocolConfiguration);
-
+                    protocolConfiguration.dgvDataProtocol.Refresh();
                     protocolConfiguration.cbCOM.DataSource = ports;
                     break;
 

@@ -18,9 +18,10 @@ namespace FileExportScheduler.Controller
         /// <param name="dsDiemDo">danh sách điểm đo</param>
         public static void WriteDataToFileCSV(List<string> filePath, Dictionary<string, DeviceModel> dsThietBi, Dictionary<String, List<DataModel>> dsDiemDo)
         {
-            int i = 0;
+
             foreach (KeyValuePair<string, DeviceModel> deviceUnit in dsThietBi)
             {
+                int i = 0;
                 foreach (KeyValuePair<String, List<DataModel>> duLieuUnit in dsDiemDo)
                 {
                     string csvData = "[Data]" + "\n" + "Tagname,TimeStamp,Value,DataQuality" + "\n";
@@ -33,6 +34,7 @@ namespace FileExportScheduler.Controller
                                    deviceUnit.Value.TrangThaiKetNoi + "\n";
                     }
                     File.WriteAllText(filePath[i], csvData);
+
                     i++;
                 }
             }

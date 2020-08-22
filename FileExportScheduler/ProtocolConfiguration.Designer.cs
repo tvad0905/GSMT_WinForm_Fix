@@ -561,7 +561,7 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Button btnDelete;
         public System.Windows.Forms.Button btnAddData;
-        private System.Windows.Forms.DataGridView dgvDataProtocol;
+        public System.Windows.Forms.DataGridView dgvDataProtocol;
         private System.Windows.Forms.Label label10;
         public System.Windows.Forms.ComboBox cbProtocol;
         private System.Windows.Forms.ErrorProvider errorGiaoThuc;

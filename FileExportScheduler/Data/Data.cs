@@ -44,15 +44,16 @@ namespace FileExportScheduler.Data
             }
             return giaTriDuLieu;
         }
-        public static string LayDuLieuCOM(Models.DataModel duLieuTemp, SerialPort serialPort)
+        public  static  string LayDuLieuCOM(Models.DataModel duLieuTemp, SerialPort serialPort)
         {
-            string giaTriDuLieu = "";
+            string giaTriDuLieu = ""; 
+            IModbusMaster master = ModbusSerialMaster.CreateRtu(serialPort);
             try
             {
+
                 byte slaveAddress = 1;
                 ushort numberOfPoint = 1;
 
-                IModbusMaster master = ModbusSerialMaster.CreateRtu(serialPort);
                 if (Convert.ToInt32(duLieuTemp.DiaChi) <= 9999)
                 {
                     bool[] readCoil = master.ReadCoils(slaveAddress, Convert.ToUInt16(duLieuTemp.DiaChi), numberOfPoint);
@@ -74,8 +75,9 @@ namespace FileExportScheduler.Data
                     giaTriDuLieu = result[0].ToString();
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                master.Transport.ReadTimeout = 2000;
                 throw;
             }
             return giaTriDuLieu;
