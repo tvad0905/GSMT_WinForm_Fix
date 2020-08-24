@@ -44,7 +44,7 @@ namespace FileExportScheduler.Data
             }
             return giaTriDuLieu;
         }
-        public  static  string LayDuLieuCOM(Models.DataModel duLieuTemp, SerialPort serialPort)
+        public static string LayDuLieuCOM(Models.DataModel duLieuTemp, SerialPort serialPort)
         {
             string giaTriDuLieu = ""; 
             IModbusMaster master = ModbusSerialMaster.CreateRtu(serialPort);
@@ -71,13 +71,13 @@ namespace FileExportScheduler.Data
                 }
                 else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 49999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 40000)
                 {
-                    ushort[] result = master.ReadHoldingRegisters(slaveAddress, Convert.ToUInt16(Convert.ToInt32(duLieuTemp.DiaChi) - 40000), numberOfPoint);
-                    giaTriDuLieu = result[0].ToString();
+                    ushort[] readHoldingRegisters = master.ReadHoldingRegisters(slaveAddress, Convert.ToUInt16(Convert.ToInt32(duLieuTemp.DiaChi) - 40000), numberOfPoint);
+                    giaTriDuLieu = readHoldingRegisters[0].ToString();
                 }
             }
-            catch (Exception ex)
+             catch (Exception ex)
             {
-                master.Transport.ReadTimeout = 2000;
+                //master.Transport.ReadTimeout = 200;
                 throw;
             }
             return giaTriDuLieu;

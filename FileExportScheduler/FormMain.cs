@@ -64,7 +64,7 @@ namespace FileExportScheduler
                     var port = (ComConfigModel)deviceUnit.Value;
                     serialPort = new SerialPort(port.Com, port.Baud, port.parity, port.Databit, port.stopBits);
 
-
+                    serialPort.ReadTimeout = 20;
                     try
                     {
                         if (!serialPort.IsOpen)
@@ -224,10 +224,8 @@ namespace FileExportScheduler
                     }
                 }
             }
-
             Controller.ExportFileCSV.WriteDataToFileCSV(ListfilePath, dsThietBi, dsDiemDo);
-
-
+            var testing = dsThietBi;
         }
 
         // tạo 1 thread cho connect
@@ -243,7 +241,7 @@ namespace FileExportScheduler
                 lock (objW)
                 {
                     deviceUnit.Value.TrangThaiKetNoi = "Bad";
-                    Controller.ExportFileCSV.WriteDataToFileCSV(filePath, dsThietBi, dsDiemDo);
+                    //Controller.ExportFileCSV.WriteDataToFileCSV(filePath, dsThietBi, dsDiemDo);
                     return;
                 }
             }
@@ -261,9 +259,12 @@ namespace FileExportScheduler
                 }
                 catch (Exception ex)
                 {
-
-                    deviceUnit.Value.TrangThaiKetNoi = "Bad";
-                    Controller.ExportFileCSV.WriteDataToFileCSV(filePath, dsThietBi, dsDiemDo);
+                    lock (objW2)
+                    {
+                        deviceUnit.Value.TrangThaiKetNoi = "Bad";
+                        //Controller.ExportFileCSV.WriteDataToFileCSV(filePath, dsThietBi, dsDiemDo);
+                        return;
+                    }
                 }
             }
             getDataCOM(deviceUnit);
@@ -313,9 +314,8 @@ namespace FileExportScheduler
                 //lấy dữ liệu thất bại
                 catch (Exception ex)
                 {
+                    //serialPort.ReadTimeout = 2000;
                     deviceUnit.Value.TrangThaiKetNoi = "Bad";
-
-                    //serialPort = new SerialPort(((ComConfigModel)deviceUnit.Value).Com, ((ComConfigModel)deviceUnit.Value).Baud, ((ComConfigModel)deviceUnit.Value).parity, ((ComConfigModel)deviceUnit.Value).Databit, ((ComConfigModel)deviceUnit.Value).stopBits);
 
                 }
                 finally

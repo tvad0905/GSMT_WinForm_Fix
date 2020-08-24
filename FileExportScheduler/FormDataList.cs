@@ -31,6 +31,7 @@ namespace FileExportScheduler
         {
             InitializeComponent();
         }
+
         //set context menu strip cho các node
         private void setMenu(TreeNode node)
         {
@@ -74,6 +75,7 @@ namespace FileExportScheduler
             {
             }
         }
+
         //viết vào file json
         private void WriteListObjectToJson()
         {
@@ -111,6 +113,7 @@ namespace FileExportScheduler
             }
             WindowState = FormWindowState.Maximized;
         }
+
         private void FormDataList_Load(object sender, EventArgs e)
         {
             LoadTreeView();
@@ -121,6 +124,7 @@ namespace FileExportScheduler
             deviceConfiguration.cbCOM.DataSource = ports;
             protocolConfiguration.cbCOM.DataSource = ports;
         }
+
         private void tvMain_DoubleClick(object sender, EventArgs e)
         {
             selectedNodeDouble = tvMain.SelectedNode;
@@ -178,6 +182,7 @@ namespace FileExportScheduler
                 }
             }
         }
+
         private void delToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show("Bạn có muốn xóa ?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
@@ -222,6 +227,7 @@ namespace FileExportScheduler
                 e.Node.ContextMenuStrip = tx2;
             }
         }
+
         private void mnuAdd_Click(object sender, EventArgs e)
         {
             var ports = SerialPort.GetPortNames();

@@ -25,7 +25,7 @@ namespace FileExportScheduler.Controller
             {
                 var obj = sr.ReadToEnd();
                 SettingModel export = JsonConvert.DeserializeObject<SettingModel>(obj.ToString());
-                timeInterval = export.Interval * 1000;
+                timeInterval = export.Interval * 60000;
             }
             return timeInterval;
         }
