@@ -22,7 +22,7 @@ namespace FileExportScheduler
     {
         #region biến toàn cục
         //List<Device> lstDevices;
-        public Dictionary<string, DeviceModel> deviceDic = new Dictionary<string, DeviceModel>();
+        public Dictionary<string, ThietBiGiamSat> deviceDic = new Dictionary<string, ThietBiGiamSat>();
         TreeView TVMain;
         public FormDataList formDataList;
         public string tenDuLieuDuocChon;
@@ -110,13 +110,13 @@ namespace FileExportScheduler
                 return;
             }
 
-            DeviceModel deviceObj = new IPConfigModel
+            ThietBiGiamSat deviceObj = new IPConfigModel
             {
                 Name = txtName.Text,
                 IP = txtIPAdress.Text,
                 Port = Convert.ToInt32(txtPort.Text),
                 Protocol = cbConnect.SelectedItem.ToString(),
-                ListDuLieuChoTungPLC = new Dictionary<string, DataModel>(),
+                ListDuLieuChoTungPLC = new Dictionary<string, DuLieuGiamSat>(),
 
             };
 
@@ -384,7 +384,7 @@ namespace FileExportScheduler
         {
             if (validation())
             {
-                Dictionary<string, DataModel> ListDuLieuChoTungPLC = new Dictionary<string, DataModel>();
+                Dictionary<string, DuLieuGiamSat> ListDuLieuChoTungPLC = new Dictionary<string, DuLieuGiamSat>();
 
                 foreach (DataGridViewRow dr in dgvShowDuLieu.Rows)
                 {
@@ -393,7 +393,7 @@ namespace FileExportScheduler
                         break;
                     }
 
-                    DataModel duLieuTemp = new DataModel();
+                    DuLieuGiamSat duLieuTemp = new DuLieuGiamSat();
                     duLieuTemp.Ten = dr.Cells[0].Value.ToString();
                     duLieuTemp.DiaChi = dr.Cells[1].Value.ToString();
                     duLieuTemp.DonViDo = dr.Cells[2].Value.ToString();

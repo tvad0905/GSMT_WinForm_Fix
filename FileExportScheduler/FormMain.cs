@@ -25,8 +25,8 @@ namespace FileExportScheduler
     {
         #region Variables Declaration
         bool checkExit = false;
-        Dictionary<string, DeviceModel> dsThietBi = new Dictionary<string, DeviceModel>();//danh sách các thiêt bị
-        Dictionary<String, List<DataModel>> dsDiemDo = new Dictionary<string, List<DataModel>>();// danh sách các điểm đo
+        Dictionary<string, ThietBiGiamSat> dsThietBi = new Dictionary<string, ThietBiGiamSat>();//danh sách các thiêt bị
+        Dictionary<String, List<DuLieuGiamSat>> dsDiemDo = new Dictionary<string, List<DuLieuGiamSat>>();// danh sách các điểm đo
         Dictionary<string, string> dcExportData = new Dictionary<string, string>();
         ModbusClient mobus = new ModbusClient();
         SerialPort serialPort = new SerialPort();
@@ -55,7 +55,7 @@ namespace FileExportScheduler
             //quét danh sách thông số cho từng thiết bị từ json
             dsThietBi = Controller.JsonReader.LayDanhSachThongSoCuaTungThietBi();
 
-            foreach (KeyValuePair<string, DeviceModel> deviceUnit in dsThietBi)
+            foreach (KeyValuePair<string, ThietBiGiamSat> deviceUnit in dsThietBi)
             {
                 if (deviceUnit.Value.Protocol == "Serial Port")
                 {
@@ -196,7 +196,7 @@ namespace FileExportScheduler
             #endregion
 
 
-            foreach (KeyValuePair<string, DeviceModel> deviceUnit in dsThietBi)
+            foreach (KeyValuePair<string, ThietBiGiamSat> deviceUnit in dsThietBi)
             {
                 if (deviceUnit.Value.Protocol == "Modbus TCP/IP" || deviceUnit.Value.Protocol == "Siemens S7-1200")
                 {
@@ -229,7 +229,7 @@ namespace FileExportScheduler
         }
 
         // tạo 1 thread cho connect
-        void IPConnect(List<string> filePath, KeyValuePair<string, DeviceModel> deviceUnit)
+        void IPConnect(List<string> filePath, KeyValuePair<string, ThietBiGiamSat> deviceUnit)
         {
             try
             {
@@ -248,7 +248,7 @@ namespace FileExportScheduler
             getDataDeviceIP(deviceUnit);
         }
 
-        void COMConnect(List<string> filePath, KeyValuePair<string, DeviceModel> deviceUnit)
+        void COMConnect(List<string> filePath, KeyValuePair<string, ThietBiGiamSat> deviceUnit)
         {
             if (!serialPort.IsOpen)
             {
@@ -270,12 +270,12 @@ namespace FileExportScheduler
             getDataCOM(deviceUnit);
         }
         //lấy dữ liệu của các thiết bị 
-        private void getDataDeviceIP(KeyValuePair<string, DeviceModel> deviceUnit)
+        private void getDataDeviceIP(KeyValuePair<string, ThietBiGiamSat> deviceUnit)
         {
             for (int i = 0; i < deviceUnit.Value.ListDuLieuChoTungPLC.Count; i++)
             {
 
-                DataModel duLieuTemp = deviceUnit.Value.ListDuLieuChoTungPLC.ElementAt(i).Value;
+                DuLieuGiamSat duLieuTemp = deviceUnit.Value.ListDuLieuChoTungPLC.ElementAt(i).Value;
                 try//lấy dữ liệu thành công
                 {
                     duLieuTemp.GiaTri = Convert.ToInt32(Data.Data.LayDuLieuTCPIP(mobus, duLieuTemp)).ToString();
@@ -295,13 +295,13 @@ namespace FileExportScheduler
             }
         }
 
-        private void getDataCOM(KeyValuePair<string, DeviceModel> deviceUnit)
+        private void getDataCOM(KeyValuePair<string, ThietBiGiamSat> deviceUnit)
         {
 
             for (int i = 0; i < deviceUnit.Value.ListDuLieuChoTungPLC.Count; i++)
             {
 
-                DataModel duLieuTemp = deviceUnit.Value.ListDuLieuChoTungPLC.ElementAt(i).Value;
+                DuLieuGiamSat duLieuTemp = deviceUnit.Value.ListDuLieuChoTungPLC.ElementAt(i).Value;
 
                 //lấy dữ liệu thành công
                 try

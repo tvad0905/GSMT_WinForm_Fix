@@ -23,7 +23,7 @@ namespace FileExportScheduler
     {
         #region biến toàn cục
         // List<Device> lstDevices;
-        Dictionary<string, DeviceModel> deviceDic = new Dictionary<string, DeviceModel>();
+        Dictionary<string, ThietBiGiamSat> deviceDic = new Dictionary<string, ThietBiGiamSat>();
         public TreeNode selectedNode = new TreeNode();
         public TreeNode selectedNodeDouble = new TreeNode();
         #endregion
@@ -90,7 +90,7 @@ namespace FileExportScheduler
         {
             JsonToList();
 
-            foreach (KeyValuePair<string, DeviceModel> device in deviceDic)
+            foreach (KeyValuePair<string, ThietBiGiamSat> device in deviceDic)
             {
                 if (device.Value.TypeModel == TypeEnum.Device)
                 {

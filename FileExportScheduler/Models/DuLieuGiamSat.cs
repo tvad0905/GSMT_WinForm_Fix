@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FileExportScheduler.Models
 {
-    public class DataModel
+    public class DuLieuGiamSat
 
     {
         public string donViDo;

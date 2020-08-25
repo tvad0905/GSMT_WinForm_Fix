@@ -20,7 +20,7 @@ namespace FileExportScheduler
     public partial class ProtocolConfiguration : UserControl
     {
         #region biến toàn cục
-        public Dictionary<string, DeviceModel> deviceDic = new Dictionary<string, DeviceModel>();
+        public Dictionary<string, ThietBiGiamSat> deviceDic = new Dictionary<string, ThietBiGiamSat>();
         TreeView TVMain;
         public FormDataList formDataList;
         public string tenDuLieuDuocChon;
@@ -262,7 +262,7 @@ namespace FileExportScheduler
         {
             if (validation())
             {
-                Dictionary<string, DataModel> ListDuLieuChoTungPLC = new Dictionary<string, DataModel>();
+                Dictionary<string, DuLieuGiamSat> ListDuLieuChoTungPLC = new Dictionary<string, DuLieuGiamSat>();
 
                 foreach (DataGridViewRow dr in dgvDataProtocol.Rows)
                 {
@@ -271,7 +271,7 @@ namespace FileExportScheduler
                         break;
                     }
 
-                    DataModel duLieuTemp = new DataModel();
+                    DuLieuGiamSat duLieuTemp = new DuLieuGiamSat();
                     duLieuTemp.Ten = dr.Cells[0].Value.ToString();
                     duLieuTemp.ThietBi = dr.Cells[1].Value.ToString();
                     duLieuTemp.DiaChi = dr.Cells[2].Value.ToString();
@@ -325,21 +325,21 @@ namespace FileExportScheduler
                 {
                     return;
                 }
-                DeviceModel deviceObj = new IPConfigModel
+                ThietBiGiamSat deviceObj = new IPConfigModel
                 {
                     Name = txtTenGiaoThuc.Text,
                     IP = txtIPAdress.Text,
                     Port = Convert.ToInt32(txtPort.Text),
                     Protocol = cbProtocol.SelectedItem.ToString(),
                     TypeModel = TypeEnum.Protocol,
-                    ListDuLieuChoTungPLC = new Dictionary<string, DataModel>(),
+                    ListDuLieuChoTungPLC = new Dictionary<string, DuLieuGiamSat>(),
                 };
 
                 deviceDic.Add(deviceObj.Name, deviceObj);
             }
             else if (cbProtocol.SelectedItem.ToString() == "Serial Port")
             {
-                DeviceModel deviceObj1 = new ComConfigModel
+                ThietBiGiamSat deviceObj1 = new ComConfigModel
                 {
                     Name = txtTenGiaoThuc.Text,
                     Com = cbCOM.SelectedItem.ToString(),
@@ -349,7 +349,7 @@ namespace FileExportScheduler
                     stopBits = (StopBits)Enum.Parse(typeof(StopBits), cbStopBit.SelectedItem.ToString()),
                     TypeModel = TypeEnum.Protocol,
                     Protocol = cbProtocol.SelectedItem.ToString(),
-                    ListDuLieuChoTungPLC = new Dictionary<string, DataModel>(),
+                    ListDuLieuChoTungPLC = new Dictionary<string, DuLieuGiamSat>(),
                 };
                 deviceDic.Add(deviceObj1.Name, deviceObj1);
             }
@@ -434,7 +434,7 @@ namespace FileExportScheduler
         {
             if (validation())
             {
-                Dictionary<string, DataModel> ListDuLieuChoTungPLC = new Dictionary<string, DataModel>();
+                Dictionary<string, DuLieuGiamSat> ListDuLieuChoTungPLC = new Dictionary<string, DuLieuGiamSat>();
                 string a = dgvDataProtocol.Rows[0].Cells[0].Value.ToString();
 
                 foreach (DataGridViewRow dr in dgvDataProtocol.Rows)
@@ -444,7 +444,7 @@ namespace FileExportScheduler
                         break;
                     }
 
-                    DataModel duLieuTemp = new DataModel();
+                    DuLieuGiamSat duLieuTemp = new DuLieuGiamSat();
                     duLieuTemp.Ten = dr.Cells[0].Value.ToString();
                     duLieuTemp.ThietBi = dr.Cells[1].Value.ToString();
                     duLieuTemp.DiaChi = dr.Cells[2].Value.ToString();
@@ -544,14 +544,14 @@ namespace FileExportScheduler
                 }
                 else
                 {
-                    DeviceModel deviceObj = new IPConfigModel
+                    ThietBiGiamSat deviceObj = new IPConfigModel
                     {
                         Name = txtTenGiaoThuc.Text,
                         IP = txtIPAdress.Text,
                         Port = Convert.ToInt32(txtPort.Text),
                         Protocol = cbProtocol.SelectedItem.ToString(),
                         TypeModel = TypeEnum.Protocol,
-                        ListDuLieuChoTungPLC = new Dictionary<string, DataModel>(),
+                        ListDuLieuChoTungPLC = new Dictionary<string, DuLieuGiamSat>(),
                     };
                     deviceDic.Remove(formDataList.selectedNodeDouble.Text);
                     deviceDic.Add(deviceObj.Name, deviceObj);
@@ -573,7 +573,7 @@ namespace FileExportScheduler
                 }
                 else
                 {
-                    DeviceModel deviceObj1 = new ComConfigModel
+                    ThietBiGiamSat deviceObj1 = new ComConfigModel
                     {
                         Name = txtTenGiaoThuc.Text,
                         Com = cbCOM.SelectedItem.ToString(),
@@ -583,7 +583,7 @@ namespace FileExportScheduler
                         stopBits = (StopBits)Enum.Parse(typeof(StopBits), cbStopBit.SelectedItem.ToString()),
                         TypeModel = TypeEnum.Protocol,
                         Protocol = cbProtocol.SelectedItem.ToString(),
-                        ListDuLieuChoTungPLC = new Dictionary<string, DataModel>(),
+                        ListDuLieuChoTungPLC = new Dictionary<string, DuLieuGiamSat>(),
                     };
                     deviceDic.Remove(formDataList.selectedNodeDouble.Text);
                     deviceDic.Add(deviceObj1.Name, deviceObj1);

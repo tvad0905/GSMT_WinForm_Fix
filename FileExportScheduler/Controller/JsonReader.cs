@@ -35,7 +35,7 @@ namespace FileExportScheduler.Controller
         /// <param name="deviceDic">danh sách thiết bị</param>
         /// <param name="dsDiemDo">danh sách điểm đo</param>
         /// <returns>danh sách đường dẫn theo điểm đo</returns>
-        public static List<string> LayDsDuongDanTheoTenDiemDo(Dictionary<string, DeviceModel> deviceDic, ref Dictionary<String, List<DataModel>> dsDiemDo)
+        public static List<string> LayDsDuongDanTheoTenDiemDo(Dictionary<string, ThietBiGiamSat> deviceDic, ref Dictionary<String, List<DuLieuGiamSat>> dsDiemDo)
         {
             List<string> dsDuongDanTheoTenThietBi = new List<string>();//
             
@@ -47,9 +47,9 @@ namespace FileExportScheduler.Controller
                     var obj = sr.ReadToEnd();
                     SettingModel export = JsonConvert.DeserializeObject<SettingModel>(obj.ToString());
                     dsDiemDo.Clear();
-                    foreach (KeyValuePair<string, DeviceModel> deviceUnit in deviceDic)
+                    foreach (KeyValuePair<string, ThietBiGiamSat> deviceUnit in deviceDic)
                     {
-                        foreach (KeyValuePair<string, DataModel> duLieuUnit in deviceUnit.Value.ListDuLieuChoTungPLC)
+                        foreach (KeyValuePair<string, DuLieuGiamSat> duLieuUnit in deviceUnit.Value.ListDuLieuChoTungPLC)
                         {
                             string ThietBi = duLieuUnit.Value.ThietBi;
                             if (dsDiemDo.ContainsKey(ThietBi))
@@ -58,12 +58,12 @@ namespace FileExportScheduler.Controller
                             }
                             else
                             {
-                                dsDiemDo.Add(ThietBi, new List<DataModel>());
+                                dsDiemDo.Add(ThietBi, new List<DuLieuGiamSat>());
                                 dsDiemDo[ThietBi].Add(duLieuUnit.Value);
                             }
                         }
                     }
-                    foreach (KeyValuePair<String, List<DataModel>> dsDiemDoUnit in dsDiemDo)
+                    foreach (KeyValuePair<String, List<DuLieuGiamSat>> dsDiemDoUnit in dsDiemDo)
                     {
                         string filePath = export.ExportFilePath.Substring(0, export.ExportFilePath.LastIndexOf("\\")) +
                                "\\" + $"log({dsDiemDoUnit.Key}){ DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_ss")}.csv";
@@ -78,9 +78,9 @@ namespace FileExportScheduler.Controller
 
             return dsDuongDanTheoTenThietBi;
         }
-        public static Dictionary<string, DeviceModel> LayDanhSachThongSoCuaTungThietBi()
+        public static Dictionary<string, ThietBiGiamSat> LayDanhSachThongSoCuaTungThietBi()
         {
-            Dictionary<string, DeviceModel> dsThietBi=new Dictionary<string, DeviceModel>();
+            Dictionary<string, ThietBiGiamSat> dsThietBi=new Dictionary<string, ThietBiGiamSat>();
             try
             {
                 var pathData = GetPathJson.getPathConfig("DeviceAndData.json");
