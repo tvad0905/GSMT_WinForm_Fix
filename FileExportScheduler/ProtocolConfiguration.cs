@@ -228,12 +228,8 @@ namespace FileExportScheduler
             try
             {
                 int address = Convert.ToInt32(addressStr);
-                if (address < 1 || (address < 10000) ||
-                    (address > 19999 && address < 30000) ||
-                    (address < 40000) ||
-                    address > 49999)
+                if (address < 0 || (address > 19999 && address < 30000) || (address > 39999 && address < 40000) || address > 49999)
                 {
-
                     error = false;
                 }
             }
