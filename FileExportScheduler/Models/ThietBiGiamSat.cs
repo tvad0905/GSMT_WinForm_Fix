@@ -13,6 +13,6 @@ namespace FileExportScheduler.Models
         public TypeEnum TypeModel { get; set; }
         public String TrangThaiKetNoi { get; set; }
 
-        public Dictionary<string, DuLieuGiamSat> ListDuLieuChoTungPLC = new Dictionary<string, DuLieuGiamSat>();
+        public Dictionary<string, DiemDoGiamSat> dsDiemDoGiamSat = new Dictionary<string, DiemDoGiamSat>();
     }
 }

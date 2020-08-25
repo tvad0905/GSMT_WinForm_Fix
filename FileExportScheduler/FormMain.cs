@@ -26,7 +26,6 @@ namespace FileExportScheduler
         #region Variables Declaration
         bool checkExit = false;
         Dictionary<string, ThietBiGiamSat> dsThietBi = new Dictionary<string, ThietBiGiamSat>();//danh sách các thiêt bị
-        Dictionary<String, List<DuLieuGiamSat>> dsDiemDo = new Dictionary<string, List<DuLieuGiamSat>>();// danh sách các điểm đo
         Dictionary<string, string> dcExportData = new Dictionary<string, string>();
         ModbusClient mobus = new ModbusClient();
         SerialPort serialPort = new SerialPort();
@@ -182,7 +181,7 @@ namespace FileExportScheduler
             List<string> ListfilePath = new List<string>();
             try
             {
-                ListfilePath = Controller.JsonReader.LayDsDuongDanTheoTenDiemDo(dsThietBi, ref dsDiemDo);
+                ListfilePath = Controller.JsonReader.LayDsDuongDanTheoTenDiemDo(dsThietBi);
             }
             catch (Exception ex)//khi đường dẫn export file ko có trong config thì bắt người dùng nhập lại
             {
@@ -200,7 +199,7 @@ namespace FileExportScheduler
             {
                 if (deviceUnit.Value.Protocol == "Modbus TCP/IP" || deviceUnit.Value.Protocol == "Siemens S7-1200")
                 {
-                    mobus = new ModbusClient(((IPConfigModel)deviceUnit.Value).IP, ((IPConfigModel)deviceUnit.Value).Port);
+                    mobus = new ModbusClient(((ThietBiIP)deviceUnit.Value).IP, ((ThietBiIP)deviceUnit.Value).Port);
                     try
                     {
                         await Task.Run(() => IPConnect(ListfilePath, deviceUnit));
@@ -224,7 +223,7 @@ namespace FileExportScheduler
                     }
                 }
             }
-            Controller.ExportFileCSV.WriteDataToFileCSV(ListfilePath, dsThietBi, dsDiemDo);
+            Controller.ExportFileCSV.WriteDataToFileCSV(ListfilePath, dsThietBi);
             var testing = dsThietBi;
         }
 
@@ -272,57 +271,54 @@ namespace FileExportScheduler
         //lấy dữ liệu của các thiết bị 
         private void getDataDeviceIP(KeyValuePair<string, ThietBiGiamSat> deviceUnit)
         {
-            for (int i = 0; i < deviceUnit.Value.ListDuLieuChoTungPLC.Count; i++)
+            foreach (KeyValuePair<string, DiemDoGiamSat> diemDo in deviceUnit.Value.dsDiemDoGiamSat)
             {
-
-                DuLieuGiamSat duLieuTemp = deviceUnit.Value.ListDuLieuChoTungPLC.ElementAt(i).Value;
-                try//lấy dữ liệu thành công
+                foreach (KeyValuePair<string, DuLieuGiamSat> dulieu in diemDo.Value.DsDulieu)
                 {
-                    duLieuTemp.GiaTri = Convert.ToInt32(Data.Data.LayDuLieuTCPIP(mobus, duLieuTemp)).ToString();
 
-                    deviceUnit.Value.TrangThaiKetNoi = "Good";
-                }
-                catch (Exception ex)//lấy dữ liệu thất bại
-                {
-                    deviceUnit.Value.TrangThaiKetNoi = "Bad";
-                }
-                finally
-                {
-                    duLieuTemp.ThoiGianDocGiuLieu = DateTime.Now;
+                    try//lấy dữ liệu thành công
+                    {
+                        dulieu.Value.GiaTri = Convert.ToInt32(Data.Data.LayDuLieuTCPIP(mobus, dulieu.Value)).ToString();
 
+                        deviceUnit.Value.TrangThaiKetNoi = "Good";
+                    }
+                    catch (Exception ex)//lấy dữ liệu thất bại
+                    {
+                        deviceUnit.Value.TrangThaiKetNoi = "Bad";
+                    }
+                    finally
+                    {
+                        dulieu.Value.ThoiGianDocGiuLieu = DateTime.Now;
+                    }
                 }
-
             }
         }
-
         private void getDataCOM(KeyValuePair<string, ThietBiGiamSat> deviceUnit)
         {
-
-            for (int i = 0; i < deviceUnit.Value.ListDuLieuChoTungPLC.Count; i++)
+            foreach (KeyValuePair<string, DiemDoGiamSat> diemDo in deviceUnit.Value.dsDiemDoGiamSat)
             {
-
-                DuLieuGiamSat duLieuTemp = deviceUnit.Value.ListDuLieuChoTungPLC.ElementAt(i).Value;
-
-                //lấy dữ liệu thành công
-                try
+                foreach (KeyValuePair<string, DuLieuGiamSat> dulieu in diemDo.Value.DsDulieu)
                 {
+                    //lấy dữ liệu thành công
+                    try
+                    {
 
-                    duLieuTemp.GiaTri = ushort.Parse(Data.Data.LayDuLieuCOM(duLieuTemp, serialPort)).ToString();
-                    deviceUnit.Value.TrangThaiKetNoi = "Good";
+                        dulieu.Value.GiaTri = ushort.Parse(Data.Data.LayDuLieuCOM(dulieu.Value, serialPort)).ToString();
+                        deviceUnit.Value.TrangThaiKetNoi = "Good";
 
+                    }
+                    //lấy dữ liệu thất bại
+                    catch (Exception ex)
+                    {
+                        //serialPort.ReadTimeout = 2000;
+                        deviceUnit.Value.TrangThaiKetNoi = "Bad";
+
+                    }
+                    finally
+                    {
+                        dulieu.Value.ThoiGianDocGiuLieu = DateTime.Now;
+                    }
                 }
-                //lấy dữ liệu thất bại
-                catch (Exception ex)
-                {
-                    //serialPort.ReadTimeout = 2000;
-                    deviceUnit.Value.TrangThaiKetNoi = "Bad";
-
-                }
-                finally
-                {
-                    duLieuTemp.ThoiGianDocGiuLieu = DateTime.Now;
-                }
-
             }
         }
         private void tmrScheduler_Tick(object sender, EventArgs e)

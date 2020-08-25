@@ -54,7 +54,7 @@ namespace FileExportScheduler
                 var path = GetPathJson.getPathConfig("DeviceAndData.json");
                 deviceDic.Clear();
                 JObject jsonObj = JObject.Parse(File.ReadAllText(path));
-                Dictionary<string, IPConfigModel> deviceIP = jsonObj.ToObject<Dictionary<string, IPConfigModel>>();
+                Dictionary<string, ThietBiIP> deviceIP = jsonObj.ToObject<Dictionary<string, ThietBiIP>>();
                 foreach (var deviceIPUnit in deviceIP)
                 {
                     if (deviceIPUnit.Value.Protocol == "Modbus TCP/IP" || deviceIPUnit.Value.Protocol == "Siemens S7-1200")
@@ -65,7 +65,7 @@ namespace FileExportScheduler
                 Dictionary<string, ComConfigModel> deviceCom = jsonObj.ToObject<Dictionary<string, ComConfigModel>>();
                 foreach (var deviceComUnit in deviceCom)
                 {
-                    if(deviceComUnit.Value.Protocol == "Serial Port")
+                    if (deviceComUnit.Value.Protocol == "Serial Port")
                     {
                         deviceDic.Add(deviceComUnit.Key, deviceComUnit.Value);
                     }
@@ -117,11 +117,9 @@ namespace FileExportScheduler
         private void FormDataList_Load(object sender, EventArgs e)
         {
             LoadTreeView();
-            DeviceConfiguration deviceConfiguration = new DeviceConfiguration(this);
             ProtocolConfiguration protocolConfiguration = new ProtocolConfiguration(this);
 
             var ports = SerialPort.GetPortNames();
-            deviceConfiguration.cbCOM.DataSource = ports;
             protocolConfiguration.cbCOM.DataSource = ports;
         }
 
@@ -132,22 +130,6 @@ namespace FileExportScheduler
             JsonToList();
             if (tvMain.SelectedNode.Parent != null)
             {
-                if (tvMain.SelectedNode.Parent.Name.ToLower() == "devices")
-                {
-                    splitContainer.Panel2.Controls.Clear();
-
-                    DeviceConfiguration deviceConfiguration = new DeviceConfiguration(this);
-                    deviceConfiguration.Dock = DockStyle.Fill;
-                    deviceConfiguration.txtName.Text = tvMain.SelectedNode.Text;
-                    IPConfigModel deviceTemp = deviceDic[deviceConfiguration.txtName.Text] as IPConfigModel;
-                    deviceConfiguration.btnSave.Enabled = false;
-                    deviceConfiguration.txtIPAdress.Text = deviceTemp.IP;
-                    deviceConfiguration.txtPort.Text = deviceTemp.Port.ToString();
-                    deviceConfiguration.cbConnect.Text = deviceTemp.Protocol.ToString();
-                    splitContainer.Panel2.Controls.Add(deviceConfiguration);
-
-                    deviceConfiguration.cbCOM.DataSource = ports;
-                }
                 if (tvMain.SelectedNode.Parent.Name.ToLower() == "protocols")
                 {
                     splitContainer.Panel2.Controls.Clear();
@@ -158,10 +140,10 @@ namespace FileExportScheduler
                     protocolConfiguration.cbCOM.DataSource = ports;
                     protocolConfiguration.btnEditProtocol.Visible = true;
                     protocolConfiguration.btnSaveProtocol.Visible = false;
-                    
+
                     //
-                    IPConfigModel deviceTemp = deviceDic[protocolConfiguration.txtTenGiaoThuc.Text] as IPConfigModel;
-                    if(deviceTemp == null)
+                    ThietBiIP deviceTemp = deviceDic[protocolConfiguration.txtTenGiaoThuc.Text] as ThietBiIP;
+                    if (deviceTemp == null)
                     {
                         ComConfigModel comTemp = deviceDic[protocolConfiguration.txtTenGiaoThuc.Text] as ComConfigModel;
                         protocolConfiguration.cbCOM.Text = comTemp.Com;
@@ -176,7 +158,7 @@ namespace FileExportScheduler
                         protocolConfiguration.txtIPAdress.Text = deviceTemp.IP;
                         protocolConfiguration.txtPort.Text = deviceTemp.Port.ToString();
                         protocolConfiguration.cbProtocol.Text = deviceTemp.Protocol.ToString();
-                        
+
                     }
                     splitContainer.Panel2.Controls.Add(protocolConfiguration);
                 }
@@ -232,30 +214,16 @@ namespace FileExportScheduler
         {
             var ports = SerialPort.GetPortNames();
             splitContainer.Panel2.Controls.Clear();
-            
-            switch (selectedNode.Name)
-            {
-                case "Devices":
-                    DeviceConfiguration deviceConfiguration = new DeviceConfiguration(this);
-                    deviceConfiguration.Dock = DockStyle.Fill;
-                    deviceConfiguration.btnEdit.Visible = false;
-                    splitContainer.Panel2.Controls.Add(deviceConfiguration);
 
-                    deviceConfiguration.cbCOM.DataSource = ports;
-                    break;
-                case "Protocols":
-                    ProtocolConfiguration protocolConfiguration = new ProtocolConfiguration(this);
-                    protocolConfiguration.Dock = DockStyle.Fill;
-                    protocolConfiguration.btnEditProtocol.Visible = false;
-                    protocolConfiguration.btnSaveProtocol.Visible = true;
-                    splitContainer.Panel2.Controls.Add(protocolConfiguration);
-                    protocolConfiguration.dgvDataProtocol.Refresh();
-                    protocolConfiguration.cbCOM.DataSource = ports;
-                    break;
-
-            }
-        }
-        #endregion
+            ProtocolConfiguration protocolConfiguration = new ProtocolConfiguration(this);
+            protocolConfiguration.Dock = DockStyle.Fill;
+            protocolConfiguration.btnEditProtocol.Visible = false;
+            protocolConfiguration.btnSaveProtocol.Visible = true;
+            splitContainer.Panel2.Controls.Add(protocolConfiguration);
+            protocolConfiguration.dgvDataProtocol.Refresh();
+            protocolConfiguration.cbCOM.DataSource = ports;
     }
+    #endregion
+}
 }
 

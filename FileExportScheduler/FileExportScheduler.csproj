@@ -69,12 +69,6 @@
     <Compile Include="Controller\GetPathJson.cs" />
     <Compile Include="Controller\JsonReader.cs" />
     <Compile Include="Data\Data.cs" />
-    <Compile Include="DeviceConfiguration.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="DeviceConfiguration.Designer.cs">
-      <DependentUpon>DeviceConfiguration.cs</DependentUpon>
-    </Compile>
     <Compile Include="FormDataList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -108,9 +102,6 @@
     <Compile Include="ProtocolConfiguration.Designer.cs">
       <DependentUpon>ProtocolConfiguration.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="DeviceConfiguration.resx">
-      <DependentUpon>DeviceConfiguration.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="FormDataList.resx">
       <DependentUpon>FormDataList.cs</DependentUpon>
     </EmbeddedResource>

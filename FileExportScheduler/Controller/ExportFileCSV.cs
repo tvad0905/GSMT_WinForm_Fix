@@ -16,22 +16,22 @@ namespace FileExportScheduler.Controller
         /// <param name="filePath">danh sách đường dẫn file csv</param>
         /// <param name="dsThietBi">danh sách thiết bị</param>
         /// <param name="dsDiemDo">danh sách điểm đo</param>
-        public static void WriteDataToFileCSV(List<string> filePath, Dictionary<string, ThietBiGiamSat> dsThietBi, Dictionary<string, List<DuLieuGiamSat>> dsDiemDo)
+        public static void WriteDataToFileCSV(List<string> filePath, Dictionary<string, ThietBiGiamSat> dsThietBi)
         {
 
-            foreach (KeyValuePair<string, ThietBiGiamSat> deviceUnit in dsThietBi)
+            foreach (KeyValuePair<string, ThietBiGiamSat> thietBi in dsThietBi)
             {
                 int i = 0;
-                foreach (KeyValuePair<string, List<DuLieuGiamSat>> duLieuUnit in dsDiemDo)
+                foreach (KeyValuePair<string, DiemDoGiamSat> diemDo in thietBi.Value.dsDiemDoGiamSat)
                 {
                     string csvData = "[Data]" + "\n" + "Tagname,TimeStamp,Value,DataQuality" + "\n";
-                    foreach (DuLieuGiamSat dt in duLieuUnit.Value)
+                    foreach (KeyValuePair<string, DuLieuGiamSat> duLieu in diemDo.Value.DsDulieu)
                     {
                         csvData +=
-                                   duLieuUnit.Key + "." + dt.Ten + "," +
-                                   dt.ThoiGianDocGiuLieu.ToString("mm:ss.fff") + "," +
-                                   Math.Round((Convert.ToDouble(dt.GiaTri) / Convert.ToDouble(dt.Scale)), 2) + "," +
-                                   deviceUnit.Value.TrangThaiKetNoi + "\n";
+                                   duLieu.Key + "." + duLieu.Value.Ten + "," +
+                                   duLieu.Value.ThoiGianDocGiuLieu.ToString("mm:ss.fff") + "," +
+                                   Math.Round((Convert.ToDouble(duLieu.Value.GiaTri) / Convert.ToDouble(duLieu.Value.Scale)), 2) + "," +
+                                   thietBi.Value.TrangThaiKetNoi + "\n";
                     }
                     File.WriteAllText(filePath[i], csvData);
                     i++;
