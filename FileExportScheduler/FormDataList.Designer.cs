@@ -127,6 +127,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Quản lý dữ liệu";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormDataList_FormClosing);
             this.Load += new System.EventHandler(this.FormDataList_Load);
             this.ctxMenu.ResumeLayout(false);
             this.splitContainer.Panel1.ResumeLayout(false);

@@ -223,7 +223,12 @@ namespace FileExportScheduler
             protocolConfiguration.dgvDataProtocol.Refresh();
             protocolConfiguration.cbCOM.DataSource = ports;
     }
-    #endregion
-}
+        #endregion
+
+        private void FormDataList_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
+        }
+    }
 }
 

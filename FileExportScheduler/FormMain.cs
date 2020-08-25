@@ -240,7 +240,6 @@ namespace FileExportScheduler
                 lock (objW)
                 {
                     deviceUnit.Value.TrangThaiKetNoi = "Bad";
-                    //Controller.ExportFileCSV.WriteDataToFileCSV(filePath, dsThietBi, dsDiemDo);
                     return;
                 }
             }
@@ -261,7 +260,6 @@ namespace FileExportScheduler
                     lock (objW2)
                     {
                         deviceUnit.Value.TrangThaiKetNoi = "Bad";
-                        //Controller.ExportFileCSV.WriteDataToFileCSV(filePath, dsThietBi, dsDiemDo);
                         return;
                     }
                 }

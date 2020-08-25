@@ -4,7 +4,6 @@ C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\Fi
 C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\Unme.Common.dll
 C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\log4net.xml
 C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csprojAssemblyReference.cache
-C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.DeviceConfiguration.resources
 C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormDataList.resources
 C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormMain.resources
 C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormSetting.resources
