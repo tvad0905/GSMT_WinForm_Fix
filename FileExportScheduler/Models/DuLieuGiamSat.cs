@@ -31,5 +31,7 @@ namespace FileExportScheduler.Models
         public string Scale { get; set; }
         public string DiemDo { get; set; }
         public DateTime ThoiGianDocGiuLieu { get; set; }
+
+        public string CuongDoTinHieu { get; set; }
     }
 }

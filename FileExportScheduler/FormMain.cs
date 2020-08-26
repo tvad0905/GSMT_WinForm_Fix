@@ -239,8 +239,6 @@ namespace FileExportScheduler
             {
                 lock (objW)
                 {
-                    deviceUnit.Value.TrangThaiKetNoi = "Bad";
-                    //Controller.ExportFileCSV.WriteDataToFileCSV(filePath, dsThietBi, dsDiemDo);
                     return;
                 }
             }
@@ -260,8 +258,6 @@ namespace FileExportScheduler
                 {
                     lock (objW2)
                     {
-                        deviceUnit.Value.TrangThaiKetNoi = "Bad";
-                        //Controller.ExportFileCSV.WriteDataToFileCSV(filePath, dsThietBi, dsDiemDo);
                         return;
                     }
                 }
@@ -280,11 +276,11 @@ namespace FileExportScheduler
                     {
                         dulieu.Value.GiaTri = Convert.ToInt32(Data.Data.LayDuLieuTCPIP(mobus, dulieu.Value)).ToString();
 
-                        deviceUnit.Value.TrangThaiKetNoi = "Good";
+                        dulieu.Value.CuongDoTinHieu = "Good";
                     }
                     catch (Exception ex)//lấy dữ liệu thất bại
                     {
-                        deviceUnit.Value.TrangThaiKetNoi = "Bad";
+                        dulieu.Value.CuongDoTinHieu = "Bad";
                     }
                     finally
                     {
@@ -304,15 +300,14 @@ namespace FileExportScheduler
                     {
 
                         dulieu.Value.GiaTri = ushort.Parse(Data.Data.LayDuLieuCOM(dulieu.Value, serialPort)).ToString();
-                        deviceUnit.Value.TrangThaiKetNoi = "Good";
+                        dulieu.Value.CuongDoTinHieu = "Good";
 
                     }
                     //lấy dữ liệu thất bại
                     catch (Exception ex)
                     {
                         //serialPort.ReadTimeout = 2000;
-                        deviceUnit.Value.TrangThaiKetNoi = "Bad";
-
+                        dulieu.Value.CuongDoTinHieu = "Bad";
                     }
                     finally
                     {

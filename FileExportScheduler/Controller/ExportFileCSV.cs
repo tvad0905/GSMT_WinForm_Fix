@@ -31,7 +31,7 @@ namespace FileExportScheduler.Controller
                                    duLieu.Key + "." + duLieu.Value.Ten + "," +
                                    duLieu.Value.ThoiGianDocGiuLieu.ToString("mm:ss.fff") + "," +
                                    Math.Round((Convert.ToDouble(duLieu.Value.GiaTri) / Convert.ToDouble(duLieu.Value.Scale)), 2) + "," +
-                                   thietBi.Value.TrangThaiKetNoi + "\n";
+                                   duLieu.Value.CuongDoTinHieu + "\n";
                     }
                     File.WriteAllText(filePath[i], csvData);
                     i++;
