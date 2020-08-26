@@ -222,7 +222,7 @@ namespace FileExportScheduler
             splitContainer.Panel2.Controls.Add(protocolConfiguration);
             protocolConfiguration.dgvDataProtocol.Refresh();
             protocolConfiguration.cbCOM.DataSource = ports;
-    }
+        }
         #endregion
 
         private void FormDataList_FormClosing(object sender, FormClosingEventArgs e)

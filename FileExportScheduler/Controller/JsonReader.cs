@@ -29,6 +29,24 @@ namespace FileExportScheduler.Controller
             }
             return timeInterval;
         }
+
+        /// <summary>
+        /// lấy thời gian để xóa File cũ
+        /// </summary>
+        /// <returns>thời gian giữa các lần ghi</returns>
+        public static int LayThoiGianXoaFile()
+        {
+            int thoiGianXoa = 1;
+            var path = GetPathJson.getPathConfig("Config.json");
+            using (System.IO.StreamReader sr = File.OpenText(path))
+            {
+                var obj = sr.ReadToEnd();
+                SettingModel export = JsonConvert.DeserializeObject<SettingModel>(obj.ToString());
+                thoiGianXoa = export.ChuKiXoaDuLieu;
+            }
+            return thoiGianXoa;
+        }
+
         /// <summary>
         /// lấy danh sách đường dẫn theo điểm đo
         /// </summary>
@@ -94,6 +112,17 @@ namespace FileExportScheduler.Controller
             }
             return dsThietBi;
 
+        }
+
+        public static string DuongDanThuMucDuLieu()
+        {
+            var path = GetPathJson.getPathConfig("Config.json");
+            using (StreamReader sr = File.OpenText(path))
+            {
+                var obj = sr.ReadToEnd();
+                SettingModel export = JsonConvert.DeserializeObject<SettingModel>(obj.ToString());
+                return export.ExportFilePath.Substring(0, export.ExportFilePath.LastIndexOf("\\"));
+            }
         }
     }
 }

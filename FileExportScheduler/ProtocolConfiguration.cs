@@ -24,6 +24,7 @@ namespace FileExportScheduler
         TreeView TVMain;
         public FormDataList formDataList;
         public string tenDuLieuDuocChon;
+
         #endregion
         public ProtocolConfiguration(FormDataList formDataList)
         {
@@ -42,7 +43,7 @@ namespace FileExportScheduler
         }
         #region thao tác với json
         //Xuất từ file .json ra 1 list
-        public void DocDsThietBiTuFileJson()
+        private void DocDsThietBiTuFileJson()
         {
             try
             {
@@ -265,7 +266,7 @@ namespace FileExportScheduler
                     {
                         break;
                     }
-                    
+
                     DuLieuGiamSat duLieu = new DuLieuGiamSat();
                     duLieu.Ten = dr.Cells[0].Value.ToString();
                     duLieu.DiemDo = dr.Cells[1].Value.ToString();
@@ -297,23 +298,39 @@ namespace FileExportScheduler
             {
                 MessageBox.Show("Lỗi lưu dữ liệu!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            
+
         }
         //Xóa dữ liệu protocol
         private void btnDelete_Click_1(object sender, EventArgs e)
         {
             DialogResult dl = MessageBox.Show("Bạn có muốn xóa ?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (dl == DialogResult.Yes)
+            try
             {
-                foreach (DataGridViewRow row in dgvDataProtocol.SelectedRows)//đọc danh sách các dòng dữ liệu được chọn
+                if (dl == DialogResult.Yes)
                 {
-                    dsThietBiGiamSat[txtTenGiaoThuc.Text].//lấy ra thiết bị
-                        dsDiemDoGiamSat[row.Cells[1].Value.ToString()].//lấy ra điểm đo
-                        DsDulieu.Remove(row.Cells[0].Value.ToString());//xóa 1 dữ liệu trong danh sách dữ liệu
-                    dgvDataProtocol.Rows.Remove(row);
+                    foreach (DataGridViewRow row in dgvDataProtocol.SelectedRows)//đọc danh sách các dòng dữ liệu được chọn
+                    {
+                        if (row.Cells[0].Value != null)
+                        {
+                            dsThietBiGiamSat[txtTenGiaoThuc.Text].//lấy ra thiết bị
+                                 dsDiemDoGiamSat[row.Cells[1].Value.ToString()].//lấy ra điểm đo
+                                     DsDulieu.Remove(row.Cells[0].Value.ToString());//xóa 1 dữ liệu trong danh sách dữ liệu
+                        }
+                        else
+                        {
+                            break;
+                        }
+
+                        dgvDataProtocol.Rows.Remove(row);
+                    }
+                    GhiDsThietBiRaFileJson();
                 }
-                GhiDsThietBiRaFileJson();
             }
+            catch (Exception ex)
+            {
+
+            }
+
         }
         //lưu cấu hình protocol
         private void btnSaveProtocol_Click_1(object sender, EventArgs e)
@@ -580,10 +597,10 @@ namespace FileExportScheduler
             try
             {
                 var thietBiGiamSatDuocChon = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text];
-                var dsDuLieuDiemDoHienThi= thietBiGiamSatDuocChon.dsDiemDoGiamSat.ElementAt(0).Value.DsDulieu.Select(x => x.Value).ToList();//lấy danh sách dữ liệu của điểm đo đầu tiên
+                var dsDuLieuDiemDoHienThi = thietBiGiamSatDuocChon.dsDiemDoGiamSat.ElementAt(0).Value.DsDulieu.Select(x => x.Value).ToList();//lấy danh sách dữ liệu của điểm đo đầu tiên
                 for (int i = 1; i < thietBiGiamSatDuocChon.dsDiemDoGiamSat.Count; i++)
                 {
-                    var dsDuLieuDiemDoThuI= thietBiGiamSatDuocChon.dsDiemDoGiamSat.ElementAt(i).Value.DsDulieu.Select(x => x.Value).ToList();
+                    var dsDuLieuDiemDoThuI = thietBiGiamSatDuocChon.dsDiemDoGiamSat.ElementAt(i).Value.DsDulieu.Select(x => x.Value).ToList();
                     dsDuLieuDiemDoHienThi.AddRange(dsDuLieuDiemDoThuI);
                 }
                 var bindingSource = new BindingSource();

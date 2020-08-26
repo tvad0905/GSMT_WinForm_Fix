@@ -48,8 +48,11 @@ namespace FileExportScheduler
             btnDataList.Enabled = false;
             btnSetting.Enabled = false;
 
-            //xét chu kì ghi file theo json 
+            //set chu kì ghi file theo json 
             tmrScheduler.Interval = Controller.JsonReader.GetTimeInterval();
+
+            //set chu kỳ xóa file
+            tmrChukyXoaFile.Interval = 30000;
 
             //quét danh sách thông số cho từng thiết bị từ json
             dsThietBi = Controller.JsonReader.LayDanhSachThongSoCuaTungThietBi();
@@ -62,7 +65,6 @@ namespace FileExportScheduler
                     serialPort.RtsEnable = true;
                     var port = (ComConfigModel)deviceUnit.Value;
                     serialPort = new SerialPort(port.Com, port.Baud, port.parity, port.Databit, port.stopBits);
-
                     serialPort.ReadTimeout = 200;
                     try
                     {
@@ -73,10 +75,10 @@ namespace FileExportScheduler
                     {
                         //Lỗi ko kết nối được
                     }
-
                 }
             }
             tmrScheduler.Start();
+            tmrChukyXoaFile.Start();
             lblStatus.Text = "Hệ thống đang chạy !";
         }
 
@@ -87,6 +89,7 @@ namespace FileExportScheduler
             btnDataList.Enabled = true;
             btnSetting.Enabled = true;
             tmrScheduler.Stop();
+            tmrChukyXoaFile.Stop();
             lblStatus.Text = "Hệ thống đã dừng !";
             notifyIcon.ShowBalloonTip(1000, "Hệ thống", "Hệ thống đã dừng !", ToolTipIcon.Warning);
         }
@@ -186,6 +189,7 @@ namespace FileExportScheduler
             catch (Exception ex)//khi đường dẫn export file ko có trong config thì bắt người dùng nhập lại
             {
                 tmrScheduler.Stop();
+                tmrChukyXoaFile.Stop();
                 MessageBox.Show("Chọn đường dẫn đến thư mục");
                 WindowState = FormWindowState.Normal;
                 ShowInTaskbar = true;
@@ -276,11 +280,11 @@ namespace FileExportScheduler
                     {
                         dulieu.Value.GiaTri = Convert.ToInt32(Data.Data.LayDuLieuTCPIP(mobus, dulieu.Value)).ToString();
 
-                        dulieu.Value.CuongDoTinHieu = "Good";
+                        dulieu.Value.TrangThaiTinHieu = "Good";
                     }
                     catch (Exception ex)//lấy dữ liệu thất bại
                     {
-                        dulieu.Value.CuongDoTinHieu = "Bad";
+                        dulieu.Value.TrangThaiTinHieu = "Bad";
                     }
                     finally
                     {
@@ -300,14 +304,14 @@ namespace FileExportScheduler
                     {
 
                         dulieu.Value.GiaTri = ushort.Parse(Data.Data.LayDuLieuCOM(dulieu.Value, serialPort)).ToString();
-                        dulieu.Value.CuongDoTinHieu = "Good";
+                        dulieu.Value.TrangThaiTinHieu = "Good";
 
                     }
                     //lấy dữ liệu thất bại
                     catch (Exception ex)
                     {
                         //serialPort.ReadTimeout = 2000;
-                        dulieu.Value.CuongDoTinHieu = "Bad";
+                        dulieu.Value.TrangThaiTinHieu = "Bad";
                     }
                     finally
                     {
@@ -331,6 +335,12 @@ namespace FileExportScheduler
             {
                 tmrScheduler.Start();
             }
+        }
+
+        private void tmrChukyXoaFile_Tick(object sender, EventArgs e)
+        {
+            FileCu fc = new FileCu(Controller.JsonReader.DuongDanThuMucDuLieu());
+            fc.XoaFileVuotQuaChuKy(Controller.JsonReader.LayThoiGianXoaFile());
         }
     }
 }

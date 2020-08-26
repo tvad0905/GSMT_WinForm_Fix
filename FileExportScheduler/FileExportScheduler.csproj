@@ -68,6 +68,7 @@
     <Compile Include="Controller\ExportFileCSV.cs" />
     <Compile Include="Controller\GetPathJson.cs" />
     <Compile Include="Controller\JsonReader.cs" />
+    <Compile Include="Controller\FileCu.cs" />
     <Compile Include="Data\Data.cs" />
     <Compile Include="FormDataList.cs">
       <SubType>Form</SubType>
@@ -153,10 +154,11 @@
     <Content Include="bin\Debug\FileExportScheduler.pdb" />
     <Content Include="bin\Debug\IPAddressControlLib.dll" />
     <Content Include="bin\Debug\log4net.dll" />
-    <Content Include="bin\Debug\log4net.xml" />
     <Content Include="bin\Debug\Modbus.dll" />
     <Content Include="bin\Debug\Newtonsoft.Json.dll" />
-    <Content Include="bin\Debug\Unme.Common.dll" />
+    <Content Include="bin\Debug\Unme.Common.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -45,6 +45,7 @@
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tmrReadData = new System.Windows.Forms.Timer(this.components);
+            this.tmrChukyXoaFile = new System.Windows.Forms.Timer(this.components);
             this.statusStrip.SuspendLayout();
             this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -172,6 +173,10 @@
             // 
             this.tmrReadData.Interval = 1000;
             // 
+            // tmrChukyXoaFile
+            // 
+            this.tmrChukyXoaFile.Tick += new System.EventHandler(this.tmrChukyXoaFile_Tick);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -217,6 +222,7 @@
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
         private System.Windows.Forms.Timer tmrReadData;
+        private System.Windows.Forms.Timer tmrChukyXoaFile;
     }
 }
 
