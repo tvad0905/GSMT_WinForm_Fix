@@ -259,7 +259,7 @@ namespace FileExportScheduler
             var thietBiGiamSatDuocChon = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text];
             if (validation())
             {
-                Dictionary<string, DiemDoGiamSat> dsDiemDoGiamSat = new Dictionary<string, DiemDoGiamSat>();
+              /*  Dictionary<string, DiemDoGiamSat> dsDiemDoGiamSat = new Dictionary<string, DiemDoGiamSat>();
                 foreach (DataGridViewRow dr in dgvDataProtocol.Rows)
                 {
                     if (dr.Index == dgvDataProtocol.Rows.Count - 1)
@@ -289,8 +289,9 @@ namespace FileExportScheduler
                         );
                         dsDiemDoGiamSat[duLieu.DiemDo].DsDulieu.Add(duLieu.Ten, duLieu);
                     }
-                }
-                thietBiGiamSatDuocChon.dsDiemDoGiamSat = dsDiemDoGiamSat;
+                }*/
+                
+                thietBiGiamSatDuocChon.dsDiemDoGiamSat = XuLyDanhSachDiemDo.LayDsDiemDoTuDgv(dgvDataProtocol);
                 GhiDsThietBiRaFileJson();
                 MessageBox.Show("Lưu dữ liệu thành công!", "thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -310,7 +311,7 @@ namespace FileExportScheduler
                 {
                     foreach (DataGridViewRow row in dgvDataProtocol.SelectedRows)//đọc danh sách các dòng dữ liệu được chọn
                     {
-                        if (row.Cells[0].Value != null)
+                        if (row.Cells[0].Value != null && row.Cells[1].Value != null)
                         {
                             dsThietBiGiamSat[txtTenGiaoThuc.Text].//lấy ra thiết bị
                                  dsDiemDoGiamSat[row.Cells[1].Value.ToString()].//lấy ra điểm đo
@@ -318,6 +319,7 @@ namespace FileExportScheduler
                         }
                         else
                         {
+                            dgvDataProtocol.Rows.Remove(row);
                             break;
                         }
 
@@ -533,20 +535,20 @@ namespace FileExportScheduler
                     dsThietBiGiamSat.Remove(formDataList.selectedNodeDouble.Text);
                     dsThietBiGiamSat.Add(thietBi.Name, thietBi);
                 }
-                //else
-                //{
-                //    ThietBiGiamSat deviceObj = new ThietBiIP
-                //    {
-                //        Name = txtTenGiaoThuc.Text,
-                //        IP = txtIPAdress.Text,
-                //        Port = Convert.ToInt32(txtPort.Text),
-                //        Protocol = cbProtocol.SelectedItem.ToString(),
-                //        TypeModel = TypeEnum.Protocol,
-                //        ListDuLieuChoTungPLC = new Dictionary<string, DuLieuGiamSat>(),
-                //    };
-                //    dsThietBiGiamSat.Remove(formDataList.selectedNodeDouble.Text);
-                //    dsThietBiGiamSat.Add(deviceObj.Name, deviceObj);
-                //}
+                else
+                {
+                    ThietBiGiamSat deviceObj = new ThietBiIP
+                    {
+                        Name = txtTenGiaoThuc.Text,
+                        IP = txtIPAdress.Text,
+                        Port = Convert.ToInt32(txtPort.Text),
+                        Protocol = cbProtocol.SelectedItem.ToString(),
+                        TypeModel = TypeEnum.Protocol,
+                        //dsDiemDoGiamSat = new Dictionary<string, DiemDoGiamSat>(),
+                    };
+                    dsThietBiGiamSat.Remove(formDataList.selectedNodeDouble.Text);
+                    dsThietBiGiamSat.Add(deviceObj.Name, deviceObj);
+                }
             }
             else if (cbProtocol.SelectedItem.ToString() == "Serial Port")
             {
@@ -562,23 +564,23 @@ namespace FileExportScheduler
                     dsThietBiGiamSat.Remove(formDataList.selectedNodeDouble.Text);
                     dsThietBiGiamSat.Add(comTemp.Name, comTemp);
                 }
-                //else
-                //{
-                //    ThietBiGiamSat deviceObj1 = new ComConfigModel
-                //    {
-                //        Name = txtTenGiaoThuc.Text,
-                //        Com = cbCOM.SelectedItem.ToString(),
-                //        Baud = int.Parse(cbBaud.SelectedItem.ToString()),
-                //        parity = (Parity)Enum.Parse(typeof(Parity), cbParity.SelectedItem.ToString()),
-                //        Databit = int.Parse(cbDataBit.SelectedItem.ToString()),
-                //        stopBits = (StopBits)Enum.Parse(typeof(StopBits), cbStopBit.SelectedItem.ToString()),
-                //        TypeModel = TypeEnum.Protocol,
-                //        Protocol = cbProtocol.SelectedItem.ToString(),
-                //        ListDuLieuChoTungPLC = new Dictionary<string, DuLieuGiamSat>(),
-                //    };
-                //    dsThietBiGiamSat.Remove(formDataList.selectedNodeDouble.Text);
-                //    dsThietBiGiamSat.Add(deviceObj1.Name, deviceObj1);
-                //}
+                else
+                {
+                    ThietBiGiamSat deviceObj1 = new ComConfigModel
+                    {
+                        Name = txtTenGiaoThuc.Text,
+                        Com = cbCOM.SelectedItem.ToString(),
+                        Baud = int.Parse(cbBaud.SelectedItem.ToString()),
+                        parity = (Parity)Enum.Parse(typeof(Parity), cbParity.SelectedItem.ToString()),
+                        Databit = int.Parse(cbDataBit.SelectedItem.ToString()),
+                        stopBits = (StopBits)Enum.Parse(typeof(StopBits), cbStopBit.SelectedItem.ToString()),
+                        TypeModel = TypeEnum.Protocol,
+                        Protocol = cbProtocol.SelectedItem.ToString(),
+                        dsDiemDoGiamSat = new Dictionary<string, DiemDoGiamSat>(),
+                    };
+                    dsThietBiGiamSat.Remove(formDataList.selectedNodeDouble.Text);
+                    dsThietBiGiamSat.Add(deviceObj1.Name, deviceObj1);
+                }
 
             }
             GhiDsThietBiRaFileJson();
