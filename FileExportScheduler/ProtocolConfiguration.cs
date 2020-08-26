@@ -30,7 +30,7 @@ namespace FileExportScheduler
             InitializeComponent();
             this.TVMain = formDataList.tvMain;
             this.formDataList = formDataList;
-            GhiDsThietBiTuFileJson();
+            DocDsThietBiTuFileJson();
             LoadDuLieuLenDgv();
 
             cbProtocol.SelectedIndex = cbProtocol.Items.IndexOf("Modbus TCP/IP");
@@ -42,7 +42,7 @@ namespace FileExportScheduler
         }
         #region thao tác với json
         //Xuất từ file .json ra 1 list
-        public void GhiDsThietBiTuFileJson()
+        public void DocDsThietBiTuFileJson()
         {
             try
             {
@@ -139,8 +139,8 @@ namespace FileExportScheduler
         //check nhập vào bên dữ liệu protocol
         private bool validation()
         {
-            List<string> list = new List<string>();
-            list.Clear();
+            List<string> dsKeyDiemDoVaChat = new List<string>();
+            dsKeyDiemDoVaChat.Clear();
             bool isPassed = true;
             foreach (DataGridViewRow dr in dgvDataProtocol.Rows)
             {
@@ -175,8 +175,7 @@ namespace FileExportScheduler
                         }
                     }
 
-
-                    if (list.Contains(dr.Cells[0].Value.ToString() + dr.Cells[1].Value.ToString()))
+                    if (dsKeyDiemDoVaChat.Contains(dr.Cells[0].Value.ToString() + dr.Cells[1].Value.ToString()))
                     {
                         if (dr.Cells[i].ColumnIndex == 0 || dr.Cells[i].ColumnIndex == 1)
                         {
@@ -211,9 +210,9 @@ namespace FileExportScheduler
 
                 }
 
-                list.Add(dr.Cells[0].Value.ToString() + dr.Cells[1].Value.ToString());
+                dsKeyDiemDoVaChat.Add(dr.Cells[0].Value.ToString() + dr.Cells[1].Value.ToString());
             }
-            if (list.Count == 0)
+            if (dsKeyDiemDoVaChat.Count == 0)
             {
 
                 isPassed = false;
@@ -229,12 +228,8 @@ namespace FileExportScheduler
             try
             {
                 int address = Convert.ToInt32(addressStr);
-                if (address < 1 || (address < 10000) ||
-                    (address > 19999 && address < 30000) ||
-                    (address < 40000) ||
-                    address > 49999)
+                if (address < 0 || (address > 19999 && address < 30000) || (address > 39999 && address < 40000) || address > 49999)
                 {
-
                     error = false;
                 }
             }
@@ -260,6 +255,7 @@ namespace FileExportScheduler
         //thêm dữ liệu protocol
         private void btnAddData_Click(object sender, EventArgs e)
         {
+            var thietBiGiamSatDuocChon = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text];
             if (validation())
             {
                 Dictionary<string, DiemDoGiamSat> dsDiemDoGiamSat = new Dictionary<string, DiemDoGiamSat>();
@@ -293,11 +289,15 @@ namespace FileExportScheduler
                         dsDiemDoGiamSat[duLieu.DiemDo].DsDulieu.Add(duLieu.Ten, duLieu);
                     }
                 }
+                thietBiGiamSatDuocChon.dsDiemDoGiamSat = dsDiemDoGiamSat;
+                GhiDsThietBiRaFileJson();
+                MessageBox.Show("Lưu dữ liệu thành công!", "thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
                 MessageBox.Show("Lỗi lưu dữ liệu!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+            
         }
         //Xóa dữ liệu protocol
         private void btnDelete_Click_1(object sender, EventArgs e)
@@ -318,7 +318,7 @@ namespace FileExportScheduler
         //lưu cấu hình protocol
         private void btnSaveProtocol_Click_1(object sender, EventArgs e)
         {
-            GhiDsThietBiTuFileJson();
+            DocDsThietBiTuFileJson();
 
             TreeNode nodeTemp = TVMain.SelectedNode;
             if (nodeTemp.Parent != null)
@@ -407,7 +407,7 @@ namespace FileExportScheduler
                 string[] lines = File.ReadAllLines(filePath);
 
                 dt.Columns.Add("Ten", typeof(string));
-                dt.Columns.Add("ThietBi", typeof(string));
+                dt.Columns.Add("DiemDo", typeof(string));
                 dt.Columns.Add("DiaChi", typeof(string));
                 dt.Columns.Add("Scale", typeof(string));
                 dt.Columns.Add("DonViDo", typeof(string));
@@ -498,7 +498,7 @@ namespace FileExportScheduler
         //sửa cấu hình protocol
         private void btnEditProtocol_Click_1(object sender, EventArgs e)
         {
-            GhiDsThietBiTuFileJson();
+            DocDsThietBiTuFileJson();
 
             if (cbProtocol.SelectedItem.ToString() == "Modbus TCP/IP")
             {
@@ -567,7 +567,7 @@ namespace FileExportScheduler
             GhiDsThietBiRaFileJson();
             formDataList.selectedNodeDouble.Text = txtTenGiaoThuc.Text;
 
-            MessageBox.Show("Sửa thành công !", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Lưu thành công !", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
         }
         #endregion

@@ -51,7 +51,7 @@ namespace FileExportScheduler.Controller
                         foreach (KeyValuePair<string, DiemDoGiamSat> diemDo in thietbi.Value.dsDiemDoGiamSat)
                         {
                             string filePath = export.ExportFilePath.Substring(0, export.ExportFilePath.LastIndexOf("\\")) +
-                               "\\" + $"log({diemDo}){ DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_ss")}.csv";
+                               "\\" + $"log({diemDo.Value.TenDiemDo}){ DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_ss")}.csv";
                             dsDuongDanTheoTenThietBi.Add(filePath);
                         }
                     }

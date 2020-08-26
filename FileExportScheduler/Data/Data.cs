@@ -77,7 +77,6 @@ namespace FileExportScheduler.Data
             }
              catch (Exception ex)
             {
-                //master.Transport.ReadTimeout = 200;
                 throw;
             }
             return giaTriDuLieu;

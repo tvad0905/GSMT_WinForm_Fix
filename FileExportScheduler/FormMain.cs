@@ -63,7 +63,7 @@ namespace FileExportScheduler
                     var port = (ComConfigModel)deviceUnit.Value;
                     serialPort = new SerialPort(port.Com, port.Baud, port.parity, port.Databit, port.stopBits);
 
-                    serialPort.ReadTimeout = 20;
+                    serialPort.ReadTimeout = 200;
                     try
                     {
                         if (!serialPort.IsOpen)

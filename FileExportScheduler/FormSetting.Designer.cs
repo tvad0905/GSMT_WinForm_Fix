@@ -45,28 +45,25 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(16, 11);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(162, 17);
+            this.label1.Size = new System.Drawing.Size(121, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Chu kỳ lưu dữ liệu (phút)";
             // 
             // chkAutoRun
             // 
             this.chkAutoRun.AutoSize = true;
-            this.chkAutoRun.Location = new System.Drawing.Point(20, 118);
-            this.chkAutoRun.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkAutoRun.Location = new System.Drawing.Point(15, 96);
             this.chkAutoRun.Name = "chkAutoRun";
-            this.chkAutoRun.Size = new System.Drawing.Size(147, 21);
+            this.chkAutoRun.Size = new System.Drawing.Size(116, 17);
             this.chkAutoRun.TabIndex = 5;
             this.chkAutoRun.Text = "Tự động khởi chạy";
             this.chkAutoRun.UseVisualStyleBackColor = true;
             // 
             // udInterval
             // 
-            this.udInterval.Location = new System.Drawing.Point(20, 31);
-            this.udInterval.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.udInterval.Location = new System.Drawing.Point(15, 25);
             this.udInterval.Maximum = new decimal(new int[] {
             1440,
             0,
@@ -78,7 +75,7 @@
             0,
             0});
             this.udInterval.Name = "udInterval";
-            this.udInterval.Size = new System.Drawing.Size(437, 22);
+            this.udInterval.Size = new System.Drawing.Size(328, 20);
             this.udInterval.TabIndex = 0;
             this.udInterval.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.udInterval.Value = new decimal(new int[] {
@@ -89,29 +86,25 @@
             // 
             // txtExportFilePath
             // 
-            this.txtExportFilePath.Location = new System.Drawing.Point(20, 86);
-            this.txtExportFilePath.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtExportFilePath.Location = new System.Drawing.Point(15, 70);
             this.txtExportFilePath.Name = "txtExportFilePath";
-            this.txtExportFilePath.ReadOnly = true;
-            this.txtExportFilePath.Size = new System.Drawing.Size(348, 22);
+            this.txtExportFilePath.Size = new System.Drawing.Size(262, 20);
             this.txtExportFilePath.TabIndex = 1;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(16, 66);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(12, 54);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(147, 17);
+            this.label2.Size = new System.Drawing.Size(111, 13);
             this.label2.TabIndex = 2;
             this.label2.Text = "Đường dẫn lưu dữ liệu";
             // 
             // btnBrowse
             // 
-            this.btnBrowse.Location = new System.Drawing.Point(409, 82);
-            this.btnBrowse.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnBrowse.Location = new System.Drawing.Point(306, 70);
             this.btnBrowse.Name = "btnBrowse";
-            this.btnBrowse.Size = new System.Drawing.Size(49, 28);
+            this.btnBrowse.Size = new System.Drawing.Size(37, 20);
             this.btnBrowse.TabIndex = 2;
             this.btnBrowse.Text = "...";
             this.btnBrowse.UseVisualStyleBackColor = true;
@@ -119,10 +112,9 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(76, 146);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSave.Location = new System.Drawing.Point(57, 119);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(100, 33);
+            this.btnSave.Size = new System.Drawing.Size(75, 27);
             this.btnSave.TabIndex = 3;
             this.btnSave.Text = "Lưu";
             this.btnSave.UseVisualStyleBackColor = true;
@@ -131,10 +123,9 @@
             // btnClose
             // 
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(303, 146);
-            this.btnClose.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnClose.Location = new System.Drawing.Point(227, 119);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(100, 33);
+            this.btnClose.Size = new System.Drawing.Size(75, 27);
             this.btnClose.TabIndex = 4;
             this.btnClose.Text = "Đóng";
             this.btnClose.UseVisualStyleBackColor = true;
@@ -147,10 +138,10 @@
             // FormSetting
             // 
             this.AcceptButton = this.btnSave;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(474, 197);
+            this.ClientSize = new System.Drawing.Size(356, 160);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnBrowse);
@@ -160,7 +151,6 @@
             this.Controls.Add(this.chkAutoRun);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FormSetting";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
