@@ -6,6 +6,7 @@ using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace FileExportScheduler.Data
 {
@@ -74,9 +75,11 @@ namespace FileExportScheduler.Data
                     ushort[] readHoldingRegisters = master.ReadHoldingRegisters(slaveAddress, Convert.ToUInt16(Convert.ToInt32(duLieuTemp.DiaChi) - 40000), numberOfPoint);
                     giaTriDuLieu = readHoldingRegisters[0].ToString();
                 }
+
             }
              catch (Exception ex)
             {
+                
                 throw;
             }
             return giaTriDuLieu;

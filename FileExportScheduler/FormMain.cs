@@ -310,6 +310,8 @@ namespace FileExportScheduler
                     //lấy dữ liệu thất bại
                     catch (Exception ex)
                     {
+                        lblTrangThai.Text = "Dữ liệu đọc cổng COM vượt quá!";
+                        lblTrangThai.ForeColor="#";
                         //serialPort.ReadTimeout = 2000;
                         dulieu.Value.TrangThaiTinHieu = "Bad";
                     }

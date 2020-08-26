@@ -259,38 +259,6 @@ namespace FileExportScheduler
             var thietBiGiamSatDuocChon = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text];
             if (validation())
             {
-              /*  Dictionary<string, DiemDoGiamSat> dsDiemDoGiamSat = new Dictionary<string, DiemDoGiamSat>();
-                foreach (DataGridViewRow dr in dgvDataProtocol.Rows)
-                {
-                    if (dr.Index == dgvDataProtocol.Rows.Count - 1)
-                    {
-                        break;
-                    }
-
-                    DuLieuGiamSat duLieu = new DuLieuGiamSat();
-                    duLieu.Ten = dr.Cells[0].Value.ToString();
-                    duLieu.DiemDo = dr.Cells[1].Value.ToString();
-                    duLieu.DiaChi = dr.Cells[2].Value.ToString();
-                    duLieu.Scale = dr.Cells[3].Value.ToString();
-                    duLieu.DonViDo = dr.Cells[4].Value.ToString();
-
-                    if (dsDiemDoGiamSat.ContainsKey(duLieu.DiemDo))
-                    {
-                        dsDiemDoGiamSat[duLieu.DiemDo].DsDulieu.Add(duLieu.Ten, duLieu);
-                    }
-                    else
-                    {
-                        dsDiemDoGiamSat.Add(
-                            duLieu.DiemDo,
-                            new DiemDoGiamSat(
-                                duLieu.DiemDo,
-                                new Dictionary<string, DuLieuGiamSat>()
-                                )
-                        );
-                        dsDiemDoGiamSat[duLieu.DiemDo].DsDulieu.Add(duLieu.Ten, duLieu);
-                    }
-                }*/
-                
                 thietBiGiamSatDuocChon.dsDiemDoGiamSat = XuLyDanhSachDiemDo.LayDsDiemDoTuDgv(dgvDataProtocol);
                 GhiDsThietBiRaFileJson();
                 MessageBox.Show("Lưu dữ liệu thành công!", "thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -319,8 +287,11 @@ namespace FileExportScheduler
                         }
                         else
                         {
-                            dgvDataProtocol.Rows.Remove(row);
-                            break;
+                            if (row.IsNewRow == false)
+                            {
+                                dgvDataProtocol.Rows.Remove(row);
+                            }
+                            continue;
                         }
 
                         dgvDataProtocol.Rows.Remove(row);
@@ -417,6 +388,7 @@ namespace FileExportScheduler
             openFileDialog1.ShowDialog();
             BindDataFromCSV(openFileDialog1.FileName);
         }
+
         private void BindDataFromCSV(string filePath)
         {
             try
@@ -544,7 +516,7 @@ namespace FileExportScheduler
                         Port = Convert.ToInt32(txtPort.Text),
                         Protocol = cbProtocol.SelectedItem.ToString(),
                         TypeModel = TypeEnum.Protocol,
-                        //dsDiemDoGiamSat = new Dictionary<string, DiemDoGiamSat>(),
+                        dsDiemDoGiamSat = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text].dsDiemDoGiamSat
                     };
                     dsThietBiGiamSat.Remove(formDataList.selectedNodeDouble.Text);
                     dsThietBiGiamSat.Add(deviceObj.Name, deviceObj);
@@ -576,7 +548,8 @@ namespace FileExportScheduler
                         stopBits = (StopBits)Enum.Parse(typeof(StopBits), cbStopBit.SelectedItem.ToString()),
                         TypeModel = TypeEnum.Protocol,
                         Protocol = cbProtocol.SelectedItem.ToString(),
-                        dsDiemDoGiamSat = new Dictionary<string, DiemDoGiamSat>(),
+                        dsDiemDoGiamSat = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text].dsDiemDoGiamSat
+
                     };
                     dsThietBiGiamSat.Remove(formDataList.selectedNodeDouble.Text);
                     dsThietBiGiamSat.Add(deviceObj1.Name, deviceObj1);
