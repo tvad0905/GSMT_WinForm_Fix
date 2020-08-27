@@ -240,17 +240,18 @@ namespace FileExportScheduler
             try
             {
                 modbus.Connect();
-
+                getDataDeviceIP(deviceUnit);
             }
             catch (Exception ex)
             {
                 lock (objW)
                 {
+                    deviceUnit = ThietBiGiamSatController.SetTrangThaiBad(deviceUnit);// set trang thai bad cho dư lieu tung thiet bi
                     return;
                 }
             }
 
-            getDataDeviceIP(deviceUnit);
+           
 
 
         }

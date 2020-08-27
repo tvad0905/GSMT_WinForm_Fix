@@ -69,6 +69,7 @@
     <Compile Include="Controller\GetPathJson.cs" />
     <Compile Include="Controller\JsonReader.cs" />
     <Compile Include="Controller\FileCu.cs" />
+    <Compile Include="Controller\ThietBiGiamSatController.cs" />
     <Compile Include="Controller\XuLyDanhSachDiemDo.cs" />
     <Compile Include="Data\Data.cs" />
     <Compile Include="FormDataList.cs">
