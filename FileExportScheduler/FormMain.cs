@@ -27,7 +27,7 @@ namespace FileExportScheduler
         bool checkExit = false;
         Dictionary<string, ThietBiGiamSat> dsThietBi = new Dictionary<string, ThietBiGiamSat>();//danh sách các thiêt bị
         Dictionary<string, string> dcExportData = new Dictionary<string, string>();
-        ModbusClient mobus = new ModbusClient();
+        ModbusClient modbus = new ModbusClient();
         SerialPort serialPort = new SerialPort();
         #endregion
         public FormMain()
@@ -56,6 +56,8 @@ namespace FileExportScheduler
 
             //quét danh sách thông số cho từng thiết bị từ json
             dsThietBi = Controller.JsonReader.LayDanhSachThongSoCuaTungThietBi();
+
+            
 
             foreach (KeyValuePair<string, ThietBiGiamSat> deviceUnit in dsThietBi)
             {
@@ -203,7 +205,7 @@ namespace FileExportScheduler
             {
                 if (deviceUnit.Value.Protocol == "Modbus TCP/IP" || deviceUnit.Value.Protocol == "Siemens S7-1200")
                 {
-                    mobus = new ModbusClient(((ThietBiIP)deviceUnit.Value).IP, ((ThietBiIP)deviceUnit.Value).Port);
+                    modbus = new ModbusClient(((ThietBiIP)deviceUnit.Value).IP, ((ThietBiIP)deviceUnit.Value).Port);
                     try
                     {
                         await Task.Run(() => IPConnect(ListfilePath, deviceUnit));
@@ -234,9 +236,10 @@ namespace FileExportScheduler
         // tạo 1 thread cho connect
         void IPConnect(List<string> filePath, KeyValuePair<string, ThietBiGiamSat> deviceUnit)
         {
+            //modbus.ConnectionTimeout = 200;
             try
             {
-                mobus.Connect();
+                modbus.Connect();
 
             }
             catch (Exception ex)
@@ -246,7 +249,10 @@ namespace FileExportScheduler
                     return;
                 }
             }
+
             getDataDeviceIP(deviceUnit);
+
+
         }
 
         void COMConnect(List<string> filePath, KeyValuePair<string, ThietBiGiamSat> deviceUnit)
@@ -278,11 +284,11 @@ namespace FileExportScheduler
 
                     try//lấy dữ liệu thành công
                     {
-                        dulieu.Value.GiaTri = Convert.ToInt32(Data.Data.LayDuLieuTCPIP(mobus, dulieu.Value)).ToString();
+                        dulieu.Value.GiaTri = Convert.ToInt32(Data.Data.LayDuLieuTCPIP(modbus, dulieu.Value)).ToString();
 
                         dulieu.Value.TrangThaiTinHieu = "Good";
                     }
-                    catch (Exception ex)//lấy dữ liệu thất bại
+                    catch (IOException ex)//lấy dữ liệu thất bại
                     {
                         dulieu.Value.TrangThaiTinHieu = "Bad";
                     }
@@ -310,8 +316,7 @@ namespace FileExportScheduler
                     //lấy dữ liệu thất bại
                     catch (Exception ex)
                     {
-                        lblTrangThai.Text = "Dữ liệu đọc cổng COM vượt quá!";
-                        lblTrangThai.ForeColor="#";
+
                         //serialPort.ReadTimeout = 2000;
                         dulieu.Value.TrangThaiTinHieu = "Bad";
                     }
@@ -343,6 +348,11 @@ namespace FileExportScheduler
         {
             FileCu fc = new FileCu(Controller.JsonReader.DuongDanThuMucDuLieu());
             fc.XoaFileVuotQuaChuKy(Controller.JsonReader.LayThoiGianXoaFile());
+        }
+
+        private void toolStripStatusLabel1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
