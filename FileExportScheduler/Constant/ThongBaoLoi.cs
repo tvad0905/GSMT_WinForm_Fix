@@ -12,6 +12,7 @@ namespace FileExportScheduler.Constant
         public static readonly string VuotQuaDuLieu = " Số lượng bản ghi cần đọc vượt quá ";
         public static readonly string DiaChiKhongTonTai = " Tồn tại địa chỉ không có dữ liệu ";
         public static readonly string KhongCoTinHieuTraVe = "Không có tín hiệu trả về";
+        public static readonly string HoatDongBinhThuong = "Hoạt động bình thường";
 
         public static List<string> DsThongBaoLoi = new List<string>();
     }

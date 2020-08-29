@@ -17,9 +17,9 @@ namespace FileExportScheduler.Controller
             {
                 dongLoi += loi + ",";
             }
-            if(dongLoi == null)
+            if(dongLoi == "")
             {
-                dongLoi = "Thiết bị hoạt động bình thường";
+                dongLoi = ThongBaoLoi.HoatDongBinhThuong;
             }
             return dongLoi;
         }
