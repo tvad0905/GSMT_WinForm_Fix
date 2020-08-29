@@ -385,8 +385,12 @@ namespace FileExportScheduler
 
         private void btnImport_Click(object sender, EventArgs e)
         {
-            openFileDialog1.ShowDialog();
-            BindDataFromCSV(openFileDialog1.FileName);
+         var openFile=   openFileDialog1.ShowDialog();
+            if(openFile = DialogResult.OK)
+            {
+                BindDataFromCSV(openFileDialog1.FileName);
+
+            }
         }
 
         private void BindDataFromCSV(string filePath)
