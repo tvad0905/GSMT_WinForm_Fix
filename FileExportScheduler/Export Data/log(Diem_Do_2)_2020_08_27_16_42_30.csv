@@ -1,0 +1,6 @@
+[Data]
+Tagname,TimeStamp,Value,DataQuality
+Diem_Do_2.FLOW,42:31.511,721000,Good
+Diem_Do_2.SO22,42:31.543,7120000,Good
+Diem_Do_2.TEMP2,42:31.574,827,Good
+Diem_Do_2.NOX2,42:31.607,708,Good

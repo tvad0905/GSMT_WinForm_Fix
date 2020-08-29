@@ -48,7 +48,7 @@
             // chkAutoRun
             // 
             this.chkAutoRun.AutoSize = true;
-            this.chkAutoRun.Location = new System.Drawing.Point(19, 145);
+            this.chkAutoRun.Location = new System.Drawing.Point(21, 145);
             this.chkAutoRun.Name = "chkAutoRun";
             this.chkAutoRun.Size = new System.Drawing.Size(116, 17);
             this.chkAutoRun.TabIndex = 5;

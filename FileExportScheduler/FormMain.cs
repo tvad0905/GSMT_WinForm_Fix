@@ -250,10 +250,6 @@ namespace FileExportScheduler
                     return;
                 }
             }
-
-           
-
-
         }
 
         void COMConnect(List<string> filePath, KeyValuePair<string, ThietBiGiamSat> deviceUnit)
