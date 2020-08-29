@@ -231,7 +231,7 @@ namespace FileExportScheduler
                     }
                 }
             }
-            Controller.ExportFileCSV.WriteDataToFileCSV(ListfilePath, dsThietBi);
+            Controller.FileDuLieuController.XuatFileDuLieuCSV(ListfilePath, dsThietBi);
 
             lblTrangThaiThietBi.Text = ThongBaoController.DsLoi() ; 
             var testing = dsThietBi;
@@ -365,8 +365,10 @@ namespace FileExportScheduler
 
         private void tmrChukyXoaFile_Tick(object sender, EventArgs e)
         {
-            FileCu fc = new FileCu(Controller.JsonReader.DuongDanThuMucDuLieu());
-            fc.XoaFileVuotQuaChuKy(Controller.JsonReader.LayThoiGianXoaFile());
+            int chuKiXoaFile = Controller.JsonReader.LayThoiGianXoaFile();
+            string duongDanThuMucDuLieu = Controller.JsonReader.DuongDanThuMucDuLieu();
+
+            FileDuLieuController.XoaFileVuotQuaChuKy(chuKiXoaFile, duongDanThuMucDuLieu);
         }
 
         private void toolStripStatusLabel1_Click(object sender, EventArgs e)
