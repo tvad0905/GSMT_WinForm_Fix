@@ -460,8 +460,9 @@
             // ThietBi
             // 
             this.ThietBi.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ThietBi.DataPropertyName = "ThietBi";
+            this.ThietBi.DataPropertyName = "DiemDo";
             this.ThietBi.HeaderText = "Điểm đo";
+            this.ThietBi.MinimumWidth = 6;
             this.ThietBi.Name = "ThietBi";
             // 
             // Diachi_P
@@ -477,6 +478,7 @@
             this.Scale.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Scale.DataPropertyName = "Scale";
             this.Scale.HeaderText = "Scale";
+            this.Scale.MinimumWidth = 6;
             this.Scale.Name = "Scale";
             // 
             // Donvido_P
@@ -571,7 +573,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ten;
         private System.Windows.Forms.DataGridViewTextBoxColumn ThietBi;
         private System.Windows.Forms.DataGridViewTextBoxColumn Diachi_P;
-        private new System.Windows.Forms.DataGridViewTextBoxColumn Scale;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Scale;
         private System.Windows.Forms.DataGridViewTextBoxColumn Donvido_P;
     }
 }

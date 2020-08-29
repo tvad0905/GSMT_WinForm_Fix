@@ -29,16 +29,34 @@ namespace FileExportScheduler.Controller
             }
             return timeInterval;
         }
+
+        /// <summary>
+        /// lấy thời gian để xóa File cũ
+        /// </summary>
+        /// <returns>thời gian giữa các lần ghi</returns>
+        public static int LayThoiGianXoaFile()
+        {
+            int thoiGianXoa = 1;
+            var path = GetPathJson.getPathConfig("Config.json");
+            using (System.IO.StreamReader sr = File.OpenText(path))
+            {
+                var obj = sr.ReadToEnd();
+                SettingModel export = JsonConvert.DeserializeObject<SettingModel>(obj.ToString());
+                thoiGianXoa = export.ChuKiXoaDuLieu;
+            }
+            return thoiGianXoa;
+        }
+
         /// <summary>
         /// lấy danh sách đường dẫn theo điểm đo
         /// </summary>
-        /// <param name="deviceDic">danh sách thiết bị</param>
+        /// <param name="dsThietBiGiamSat">danh sách thiết bị</param>
         /// <param name="dsDiemDo">danh sách điểm đo</param>
         /// <returns>danh sách đường dẫn theo điểm đo</returns>
-        public static List<string> LayDsDuongDanTheoTenDiemDo(Dictionary<string, ThietBiGiamSat> deviceDic, ref Dictionary<String, List<DuLieuGiamSat>> dsDiemDo)
+        public static List<string> LayDsDuongDanTheoTenDiemDo(Dictionary<string, ThietBiGiamSat> dsThietBiGiamSat)
         {
             List<string> dsDuongDanTheoTenThietBi = new List<string>();//
-            
+
             var path = GetPathJson.getPathConfig("Config.json");
             try
             {
@@ -46,28 +64,14 @@ namespace FileExportScheduler.Controller
                 {
                     var obj = sr.ReadToEnd();
                     SettingModel export = JsonConvert.DeserializeObject<SettingModel>(obj.ToString());
-                    dsDiemDo.Clear();
-                    foreach (KeyValuePair<string, ThietBiGiamSat> deviceUnit in deviceDic)
+                    foreach (KeyValuePair<string, ThietBiGiamSat> thietbi in dsThietBiGiamSat)
                     {
-                        foreach (KeyValuePair<string, DuLieuGiamSat> duLieuUnit in deviceUnit.Value.ListDuLieuChoTungPLC)
+                        foreach (KeyValuePair<string, DiemDoGiamSat> diemDo in thietbi.Value.dsDiemDoGiamSat)
                         {
-                            string ThietBi = duLieuUnit.Value.ThietBi;
-                            if (dsDiemDo.ContainsKey(ThietBi))
-                            {
-                                dsDiemDo[ThietBi].Add(duLieuUnit.Value);
-                            }
-                            else
-                            {
-                                dsDiemDo.Add(ThietBi, new List<DuLieuGiamSat>());
-                                dsDiemDo[ThietBi].Add(duLieuUnit.Value);
-                            }
+                            string filePath = export.ExportFilePath.Substring(0, export.ExportFilePath.LastIndexOf("\\")) +
+                               "\\" + $"log({diemDo.Value.TenDiemDo}){ DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_ss")}.csv";
+                            dsDuongDanTheoTenThietBi.Add(filePath);
                         }
-                    }
-                    foreach (KeyValuePair<String, List<DuLieuGiamSat>> dsDiemDoUnit in dsDiemDo)
-                    {
-                        string filePath = export.ExportFilePath.Substring(0, export.ExportFilePath.LastIndexOf("\\")) +
-                               "\\" + $"log({dsDiemDoUnit.Key}){ DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_ss")}.csv";
-                        dsDuongDanTheoTenThietBi.Add(filePath);
                     }
                 }
             }
@@ -80,13 +84,13 @@ namespace FileExportScheduler.Controller
         }
         public static Dictionary<string, ThietBiGiamSat> LayDanhSachThongSoCuaTungThietBi()
         {
-            Dictionary<string, ThietBiGiamSat> dsThietBi=new Dictionary<string, ThietBiGiamSat>();
+            Dictionary<string, ThietBiGiamSat> dsThietBi = new Dictionary<string, ThietBiGiamSat>();
             try
             {
                 var pathData = GetPathJson.getPathConfig("DeviceAndData.json");
                 dsThietBi.Clear();
                 JObject jsonObj = JObject.Parse(File.ReadAllText(pathData));
-                Dictionary<string, IPConfigModel> deviceIP = jsonObj.ToObject<Dictionary<string, IPConfigModel>>();
+                Dictionary<string, ThietBiIP> deviceIP = jsonObj.ToObject<Dictionary<string, ThietBiIP>>();
                 foreach (var deviceIPUnit in deviceIP)
                 {
                     if (deviceIPUnit.Value.Protocol == "Modbus TCP/IP" || deviceIPUnit.Value.Protocol == "Siemens S7-1200")
@@ -108,6 +112,17 @@ namespace FileExportScheduler.Controller
             }
             return dsThietBi;
 
+        }
+
+        public static string DuongDanThuMucDuLieu()
+        {
+            var path = GetPathJson.getPathConfig("Config.json");
+            using (StreamReader sr = File.OpenText(path))
+            {
+                var obj = sr.ReadToEnd();
+                SettingModel export = JsonConvert.DeserializeObject<SettingModel>(obj.ToString());
+                return export.ExportFilePath.Substring(0, export.ExportFilePath.LastIndexOf("\\"));
+            }
         }
     }
 }

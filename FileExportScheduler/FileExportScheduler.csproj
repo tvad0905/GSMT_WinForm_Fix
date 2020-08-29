@@ -64,17 +64,17 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constant\ThongBaoLoi.cs" />
+    <Compile Include="Constant\TrangThaiKetNoi.cs" />
     <Compile Include="Controller\Communication.cs" />
     <Compile Include="Controller\ExportFileCSV.cs" />
     <Compile Include="Controller\GetPathJson.cs" />
     <Compile Include="Controller\JsonReader.cs" />
+    <Compile Include="Controller\FileCu.cs" />
+    <Compile Include="Controller\ThietBiGiamSatController.cs" />
+    <Compile Include="Controller\ThongBaoController.cs" />
+    <Compile Include="Controller\XuLyDanhSachDiemDo.cs" />
     <Compile Include="Data\Data.cs" />
-    <Compile Include="DeviceConfiguration.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="DeviceConfiguration.Designer.cs">
-      <DependentUpon>DeviceConfiguration.cs</DependentUpon>
-    </Compile>
     <Compile Include="FormDataList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -108,9 +108,6 @@
     <Compile Include="ProtocolConfiguration.Designer.cs">
       <DependentUpon>ProtocolConfiguration.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="DeviceConfiguration.resx">
-      <DependentUpon>DeviceConfiguration.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="FormDataList.resx">
       <DependentUpon>FormDataList.cs</DependentUpon>
     </EmbeddedResource>
@@ -162,10 +159,11 @@
     <Content Include="bin\Debug\FileExportScheduler.pdb" />
     <Content Include="bin\Debug\IPAddressControlLib.dll" />
     <Content Include="bin\Debug\log4net.dll" />
-    <Content Include="bin\Debug\log4net.xml" />
     <Content Include="bin\Debug\Modbus.dll" />
     <Content Include="bin\Debug\Newtonsoft.Json.dll" />
-    <Content Include="bin\Debug\Unme.Common.dll" />
+    <Content Include="bin\Debug\Unme.Common.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

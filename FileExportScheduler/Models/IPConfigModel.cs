@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FileExportScheduler.Models
 {
-    public class IPConfigModel : ThietBiGiamSat
+    public class ThietBiIP : ThietBiGiamSat
     {
         //public string Name { get; set; }
         public string IP { get; set; }

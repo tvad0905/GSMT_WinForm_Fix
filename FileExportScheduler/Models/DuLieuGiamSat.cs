@@ -29,7 +29,9 @@ namespace FileExportScheduler.Models
         }
         public string GiaTri { get; set; }
         public string Scale { get; set; }
-        public string ThietBi { get; set; }
+        public string DiemDo { get; set; }
         public DateTime ThoiGianDocGiuLieu { get; set; }
+
+        public string TrangThaiTinHieu { get; set; }
     }
 }
