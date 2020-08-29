@@ -6,13 +6,14 @@ using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace FileExportScheduler.Data
 {
     public static class Data
     {
         public static string LayDuLieuTCPIP(ModbusClient mobus, Models.DuLieuGiamSat duLieuTemp)
-        {
+         {
             string giaTriDuLieu = "";
             try
             {
@@ -38,7 +39,7 @@ namespace FileExportScheduler.Data
                     giaTriDuLieu = readHoldingRegister[0].ToString();
                 }
             }
-            catch
+            catch(Exception ex)
             {
                 throw;
             }
@@ -74,10 +75,10 @@ namespace FileExportScheduler.Data
                     ushort[] readHoldingRegisters = master.ReadHoldingRegisters(slaveAddress, Convert.ToUInt16(Convert.ToInt32(duLieuTemp.DiaChi) - 40000), numberOfPoint);
                     giaTriDuLieu = readHoldingRegisters[0].ToString();
                 }
+
             }
-             catch (Exception ex)
+            catch (Exception ex)
             {
-                //master.Transport.ReadTimeout = 200;
                 throw;
             }
             return giaTriDuLieu;

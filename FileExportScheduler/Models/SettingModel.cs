@@ -11,5 +11,7 @@ namespace FileExportScheduler.Models
         public bool AutoRun { get; set; }
         public int Interval { get; set; }
         public string ExportFilePath { get; set; }
+
+        public int ChuKiXoaDuLieu { get; set; }
     }
 }

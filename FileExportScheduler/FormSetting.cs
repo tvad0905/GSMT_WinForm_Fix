@@ -45,6 +45,7 @@ namespace FileExportScheduler
             settingModel.AutoRun = chkAutoRun.Checked;
             settingModel.Interval = Int32.Parse(udInterval.Value.ToString());
             settingModel.ExportFilePath = txtExportFilePath.Text;
+            settingModel.ChuKiXoaDuLieu = Int32.Parse(numChuKiXoaDuLieu.Value.ToString());
 
             var path = GetPathJson.getPathConfig("Config.json");
 
@@ -83,6 +84,7 @@ namespace FileExportScheduler
                     udInterval.Value = export.Interval;
                     txtExportFilePath.Text = export.ExportFilePath;
                     chkAutoRun.Checked = export.AutoRun;
+                    numChuKiXoaDuLieu.Value = export.ChuKiXoaDuLieu;
                 }
             }
         }
