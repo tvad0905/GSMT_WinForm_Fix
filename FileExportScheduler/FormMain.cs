@@ -1,4 +1,6 @@
 ﻿using EasyModbus;
+using EasyModbus.Exceptions;
+using FileExportScheduler.Constant;
 using FileExportScheduler.Controller;
 using FileExportScheduler.Models;
 using Modbus.Device;
@@ -57,7 +59,7 @@ namespace FileExportScheduler
             //quét danh sách thông số cho từng thiết bị từ json
             dsThietBi = Controller.JsonReader.LayDanhSachThongSoCuaTungThietBi();
 
-            
+
 
             foreach (KeyValuePair<string, ThietBiGiamSat> deviceUnit in dsThietBi)
             {
@@ -200,7 +202,7 @@ namespace FileExportScheduler
             }
             #endregion
 
-
+            ThongBaoLoi.DsThongBaoLoi.Clear();
             foreach (KeyValuePair<string, ThietBiGiamSat> deviceUnit in dsThietBi)
             {
                 if (deviceUnit.Value.Protocol == "Modbus TCP/IP" || deviceUnit.Value.Protocol == "Siemens S7-1200")
@@ -230,6 +232,8 @@ namespace FileExportScheduler
                 }
             }
             Controller.ExportFileCSV.WriteDataToFileCSV(ListfilePath, dsThietBi);
+
+            lblTrangThaiThietBi.Text = ThongBaoController.DsLoi() ; 
             var testing = dsThietBi;
         }
 
@@ -242,13 +246,19 @@ namespace FileExportScheduler
                 modbus.Connect();
                 getDataDeviceIP(deviceUnit);
             }
-            catch (Exception ex)
+            catch (ConnectionException ex)
             {
+                //Lỗi không có kết nối 
                 lock (objW)
                 {
+                    ThongBaoLoi.DsThongBaoLoi.Add(ThongBaoLoi.KhongKetNoi);
                     deviceUnit = ThietBiGiamSatController.SetTrangThaiBad(deviceUnit);// set trang thai bad cho dư lieu tung thiet bi
                     return;
                 }
+            }
+            catch (Exception e)
+            {
+
             }
         }
 
@@ -283,11 +293,13 @@ namespace FileExportScheduler
                     {
                         dulieu.Value.GiaTri = Convert.ToInt32(Data.Data.LayDuLieuTCPIP(modbus, dulieu.Value)).ToString();
 
-                        dulieu.Value.TrangThaiTinHieu = "Good";
+                        dulieu.Value.TrangThaiTinHieu = Constant.TrangThaiKetNoi.Good;
                     }
-                    catch (IOException ex)//lấy dữ liệu thất bại
+                    catch (Exception ex)//Lỗi lấy dữ liệu thất bại
                     {
-                        dulieu.Value.TrangThaiTinHieu = "Bad";
+
+                        ThongBaoLoi.DsThongBaoLoi.Add(ThongBaoLoi.KhongCoTinHieuTraVe);
+                        dulieu.Value.TrangThaiTinHieu = Constant.TrangThaiKetNoi.Bad;
                     }
                     finally
                     {
@@ -307,15 +319,25 @@ namespace FileExportScheduler
                     {
 
                         dulieu.Value.GiaTri = ushort.Parse(Data.Data.LayDuLieuCOM(dulieu.Value, serialPort)).ToString();
-                        dulieu.Value.TrangThaiTinHieu = "Good";
+                        dulieu.Value.TrangThaiTinHieu = Constant.TrangThaiKetNoi.Good;
 
                     }
                     //lấy dữ liệu thất bại
+                    catch (TimeoutException ex)
+                    {
+                        //lỗi không đọc được dữ liệu
+                        ThongBaoLoi.DsThongBaoLoi.Add(ThongBaoLoi.KhongKetNoi);
+                        dulieu.Value.TrangThaiTinHieu = Constant.TrangThaiKetNoi.Bad;
+                    }
+                    catch (Modbus.SlaveException ex)
+                    {
+                        //lỗi số bản ghi cần đọc vượt quá lượng bản ghi trả về
+                        ThongBaoLoi.DsThongBaoLoi.Add(ThongBaoLoi.VuotQuaDuLieu);
+                        dulieu.Value.TrangThaiTinHieu = Constant.TrangThaiKetNoi.Bad;
+                    }
                     catch (Exception ex)
                     {
 
-                        //serialPort.ReadTimeout = 2000;
-                        dulieu.Value.TrangThaiTinHieu = "Bad";
                     }
                     finally
                     {

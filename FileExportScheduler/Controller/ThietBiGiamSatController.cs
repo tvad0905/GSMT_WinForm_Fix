@@ -15,7 +15,7 @@ namespace FileExportScheduler.Controller
             {
                 foreach (KeyValuePair<string, DuLieuGiamSat> dulieu in diemDo.Value.DsDulieu)
                 {
-                    dulieu.Value.TrangThaiTinHieu = "Bad";
+                    dulieu.Value.TrangThaiTinHieu = Constant.TrangThaiKetNoi.Bad;
                     dulieu.Value.ThoiGianDocGiuLieu = DateTime.Now;
                 }
             }
