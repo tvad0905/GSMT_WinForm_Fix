@@ -13,7 +13,7 @@ namespace FileExportScheduler.Data
     public static class Data
     {
         public static string LayDuLieuTCPIP(ModbusClient mobus, Models.DuLieuGiamSat duLieuTemp)
-        {
+         {
             string giaTriDuLieu = "";
             try
             {
@@ -77,7 +77,7 @@ namespace FileExportScheduler.Data
                 }
 
             }
-             catch (Exception ex)
+            catch (Exception ex)
             {
                 throw;
             }

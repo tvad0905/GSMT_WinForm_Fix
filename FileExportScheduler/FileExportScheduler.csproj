@@ -64,12 +64,15 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constant\ThongBaoLoi.cs" />
+    <Compile Include="Constant\TrangThaiKetNoi.cs" />
     <Compile Include="Controller\Communication.cs" />
     <Compile Include="Controller\ExportFileCSV.cs" />
     <Compile Include="Controller\GetPathJson.cs" />
     <Compile Include="Controller\JsonReader.cs" />
     <Compile Include="Controller\FileCu.cs" />
     <Compile Include="Controller\ThietBiGiamSatController.cs" />
+    <Compile Include="Controller\ThongBaoController.cs" />
     <Compile Include="Controller\XuLyDanhSachDiemDo.cs" />
     <Compile Include="Data\Data.cs" />
     <Compile Include="FormDataList.cs">
