@@ -45,3 +45,4 @@ C:\Users\admin\Source\Repos\GSMT_WinForm_Fix2\FileExportScheduler\bin\Debug\File
 C:\Users\admin\Source\Repos\GSMT_WinForm_Fix2\FileExportScheduler\bin\Debug\FileExportScheduler.pdb
 C:\Users\admin\Source\Repos\GSMT_WinForm_Fix2\FileExportScheduler\bin\Debug\Unme.Common.dll
 C:\Users\admin\Source\Repos\GSMT_WinForm_Fix2\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CopyComplete
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix2\FileExportScheduler\obj\Debug\FileExportScheduler.csprojAssemblyReference.cache

@@ -51,13 +51,13 @@ namespace FileExportScheduler
             btnSetting.Enabled = false;
 
             //set chu kì ghi file theo json 
-            tmrScheduler.Interval = Controller.JsonReader.GetTimeInterval();
+            tmrScheduler.Interval = Controller.JsonController.GetTimeInterval();
 
             //set chu kỳ xóa file
             tmrChukyXoaFile.Interval = 30000;
 
             //quét danh sách thông số cho từng thiết bị từ json
-            dsThietBi = Controller.JsonReader.LayDanhSachThongSoCuaTungThietBi();
+            dsThietBi = Controller.JsonController.LayDanhSachThongSoCuaTungThietBi();
 
 
 
@@ -75,7 +75,7 @@ namespace FileExportScheduler
                         if (!serialPort.IsOpen)
                             serialPort.Open();
                     }
-                    catch (Exception ex)
+                    catch 
                     {
                         //Lỗi ko kết nối được
                     }
@@ -158,7 +158,7 @@ namespace FileExportScheduler
 
         private void FormMain_Load_1(object sender, EventArgs e)
         {
-            var path = GetPathJson.getPathConfig("Config.json");
+            var path = JsonController.getPathConfig("Config.json");
             if (File.Exists(path))
             {
                 using (StreamReader sr = File.OpenText(path))
@@ -188,9 +188,9 @@ namespace FileExportScheduler
             List<string> ListfilePath = new List<string>();
             try
             {
-                ListfilePath = Controller.JsonReader.LayDsDuongDanTheoTenDiemDo(dsThietBi);
+                ListfilePath = Controller.JsonController.LayDsDuongDanTheoTenDiemDo(dsThietBi);
             }
-            catch (Exception ex)//khi đường dẫn export file ko có trong config thì bắt người dùng nhập lại
+            catch 
             {
                 tmrScheduler.Stop();
                 tmrChukyXoaFile.Stop();
@@ -212,7 +212,7 @@ namespace FileExportScheduler
                     {
                         await Task.Run(() => IPConnect(ListfilePath, deviceUnit));
                     }
-                    catch (Exception ex)
+                    catch 
                     {
 
                     }
@@ -225,7 +225,7 @@ namespace FileExportScheduler
 
                         //Thread t = new Thread(() => { ThreadCOMConnect(ListfilePath, deviceUnit);Thread.Sleep(3000); }); t.Start();
                     }
-                    catch (Exception ex)
+                    catch 
                     {
 
                     }
@@ -256,7 +256,7 @@ namespace FileExportScheduler
                     return;
                 }
             }
-            catch (Exception e)
+            catch
             {
 
             }
@@ -271,7 +271,7 @@ namespace FileExportScheduler
                     serialPort.Open();
                     getDataCOM(deviceUnit);
                 }
-                catch (Exception ex)
+                catch 
                 {
                     lock (objW2)
                     {
@@ -295,7 +295,7 @@ namespace FileExportScheduler
 
                         dulieu.Value.TrangThaiTinHieu = Constant.TrangThaiKetNoi.Good;
                     }
-                    catch (Exception ex)//Lỗi lấy dữ liệu thất bại
+                    catch //Lỗi lấy dữ liệu thất bại
                     {
 
                         ThongBaoLoi.DsThongBaoLoi.Add(ThongBaoLoi.KhongCoTinHieuTraVe);
@@ -335,7 +335,7 @@ namespace FileExportScheduler
                         ThongBaoLoi.DsThongBaoLoi.Add(ThongBaoLoi.VuotQuaDuLieu);
                         dulieu.Value.TrangThaiTinHieu = Constant.TrangThaiKetNoi.Bad;
                     }
-                    catch (Exception ex)
+                    catch 
                     {
 
                     }
@@ -353,7 +353,7 @@ namespace FileExportScheduler
                 tmrScheduler.Stop();
                 getDeviceConnect();
             }
-            catch (Exception ex)
+            catch 
             {
 
             }
@@ -365,8 +365,8 @@ namespace FileExportScheduler
 
         private void tmrChukyXoaFile_Tick(object sender, EventArgs e)
         {
-            int chuKiXoaFile = Controller.JsonReader.LayThoiGianXoaFile();
-            string duongDanThuMucDuLieu = Controller.JsonReader.DuongDanThuMucDuLieu();
+            int chuKiXoaFile = Controller.JsonController.LayThoiGianXoaFile();
+            string duongDanThuMucDuLieu = Controller.JsonController.DuongDanThuMucDuLieu();
 
             FileDuLieuController.XoaFileVuotQuaChuKy(chuKiXoaFile, duongDanThuMucDuLieu);
         }

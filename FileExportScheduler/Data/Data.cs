@@ -39,7 +39,7 @@ namespace FileExportScheduler.Data
                     giaTriDuLieu = readHoldingRegister[0].ToString();
                 }
             }
-            catch(Exception ex)
+            catch
             {
                 throw;
             }
@@ -77,7 +77,7 @@ namespace FileExportScheduler.Data
                 }
 
             }
-            catch (Exception ex)
+            catch 
             {
                 throw;
             }

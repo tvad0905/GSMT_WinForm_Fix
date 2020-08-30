@@ -47,7 +47,7 @@ namespace FileExportScheduler
             settingModel.ExportFilePath = txtExportFilePath.Text;
             settingModel.ChuKiXoaDuLieu = Int32.Parse(numChuKiXoaDuLieu.Value.ToString());
 
-            var path = GetPathJson.getPathConfig("Config.json");
+            var path = JsonController.getPathConfig("Config.json");
 
             if (txtExportFilePath.Text == "")
             {
@@ -73,7 +73,7 @@ namespace FileExportScheduler
         private void FormSetting_Load(object sender, EventArgs e)
         {
 
-            var path = GetPathJson.getPathConfig("Config.json");
+            var path = JsonController.getPathConfig("Config.json");
 
             if (File.Exists(path))
             {

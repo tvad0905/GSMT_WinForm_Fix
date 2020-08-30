@@ -47,7 +47,7 @@ namespace FileExportScheduler
         {
             try
             {
-                var path = GetPathJson.getPathConfig("DeviceAndData.json");
+                var path = JsonController.getPathConfig("DeviceAndData.json");
                 dsThietBiGiamSat.Clear();
                 JObject jsonObj = JObject.Parse(File.ReadAllText(path));
                 Dictionary<string, ThietBiIP> deviceIP = jsonObj.ToObject<Dictionary<string, ThietBiIP>>();
@@ -67,14 +67,14 @@ namespace FileExportScheduler
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
             }
         }
         //Viết từ list vào file .json
         public void GhiDsThietBiRaFileJson()
         {
-            var path = GetPathJson.getPathConfig("DeviceAndData.json");
+            var path = JsonController.getPathConfig("DeviceAndData.json");
             string jsonString = (new JavaScriptSerializer()).Serialize((object)dsThietBiGiamSat);
             File.WriteAllText(path, jsonString);
         }
@@ -234,7 +234,7 @@ namespace FileExportScheduler
                     error = false;
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 error = false;
             }
@@ -259,7 +259,7 @@ namespace FileExportScheduler
             var thietBiGiamSatDuocChon = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text];
             if (validation())
             {
-                thietBiGiamSatDuocChon.dsDiemDoGiamSat = XuLyDanhSachDiemDo.LayDsDiemDoTuDgv(dgvDataProtocol);
+                thietBiGiamSatDuocChon.dsDiemDoGiamSat = XuLyDanhSachDiemDoController.LayDsDiemDoTuDgv(dgvDataProtocol);
                 GhiDsThietBiRaFileJson();
                 MessageBox.Show("Lưu dữ liệu thành công!", "thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -299,7 +299,7 @@ namespace FileExportScheduler
                     GhiDsThietBiRaFileJson();
                 }
             }
-            catch (Exception ex)
+            catch 
             {
 
             }
@@ -586,7 +586,7 @@ namespace FileExportScheduler
                 bindingSource.DataSource = dsDuLieuDiemDoHienThi;
                 dgvDataProtocol.DataSource = bindingSource;
             }
-            catch (Exception ex)
+            catch
             {
 
             }

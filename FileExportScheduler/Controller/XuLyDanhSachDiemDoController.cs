@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace FileExportScheduler.Controller
 {
-    public static class XuLyDanhSachDiemDo
+    public static class XuLyDanhSachDiemDoController
     {
         public static Dictionary<string, DiemDoGiamSat> LayDsDiemDoTuDgv(DataGridView dgvDataProtocol)
         {

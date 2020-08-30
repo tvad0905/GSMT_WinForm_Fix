@@ -51,7 +51,7 @@ namespace FileExportScheduler
         {
             try
             {
-                var path = GetPathJson.getPathConfig("DeviceAndData.json");
+                var path = JsonController.getPathConfig("DeviceAndData.json");
                 deviceDic.Clear();
                 JObject jsonObj = JObject.Parse(File.ReadAllText(path));
                 Dictionary<string, ThietBiIP> deviceIP = jsonObj.ToObject<Dictionary<string, ThietBiIP>>();
@@ -71,7 +71,7 @@ namespace FileExportScheduler
                     }
                 }
             }
-            catch (Exception ex)
+            catch 
             {
             }
         }
@@ -79,7 +79,7 @@ namespace FileExportScheduler
         //viết vào file json
         private void WriteListObjectToJson()
         {
-            var path = GetPathJson.getPathConfig("DeviceAndData.json");
+            var path = JsonController.getPathConfig("DeviceAndData.json");
             string jsonString = (new JavaScriptSerializer()).Serialize((object)deviceDic);
             File.WriteAllText(path, jsonString);
 

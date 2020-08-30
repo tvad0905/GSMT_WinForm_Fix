@@ -7,10 +7,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace FileExportScheduler.Controller
 {
-    public static class JsonReader
+    public static class JsonController
     {
 
         /// <summary>
@@ -20,7 +21,7 @@ namespace FileExportScheduler.Controller
         public static int GetTimeInterval()
         {
             int timeInterval = 1;
-            var path = GetPathJson.getPathConfig("Config.json");
+            var path = JsonController.getPathConfig("Config.json");
             using (System.IO.StreamReader sr = File.OpenText(path))
             {
                 var obj = sr.ReadToEnd();
@@ -37,7 +38,7 @@ namespace FileExportScheduler.Controller
         public static int LayThoiGianXoaFile()
         {
             int thoiGianXoa = 1;
-            var path = GetPathJson.getPathConfig("Config.json");
+            var path = JsonController.getPathConfig("Config.json");
             using (System.IO.StreamReader sr = File.OpenText(path))
             {
                 var obj = sr.ReadToEnd();
@@ -57,7 +58,7 @@ namespace FileExportScheduler.Controller
         {
             List<string> dsDuongDanTheoTenThietBi = new List<string>();//
 
-            var path = GetPathJson.getPathConfig("Config.json");
+            var path = JsonController.getPathConfig("Config.json");
             try
             {
                 using (StreamReader sr = File.OpenText(path))
@@ -75,7 +76,7 @@ namespace FileExportScheduler.Controller
                     }
                 }
             }
-            catch (Exception ex)
+            catch 
             {
                 throw;
             }
@@ -87,7 +88,7 @@ namespace FileExportScheduler.Controller
             Dictionary<string, ThietBiGiamSat> dsThietBi = new Dictionary<string, ThietBiGiamSat>();
             try
             {
-                var pathData = GetPathJson.getPathConfig("DeviceAndData.json");
+                var pathData = JsonController.getPathConfig("DeviceAndData.json");
                 dsThietBi.Clear();
                 JObject jsonObj = JObject.Parse(File.ReadAllText(pathData));
                 Dictionary<string, ThietBiIP> deviceIP = jsonObj.ToObject<Dictionary<string, ThietBiIP>>();
@@ -107,7 +108,7 @@ namespace FileExportScheduler.Controller
                     }
                 }
             }
-            catch (Exception ex)
+            catch 
             {
             }
             return dsThietBi;
@@ -116,7 +117,7 @@ namespace FileExportScheduler.Controller
 
         public static string DuongDanThuMucDuLieu()
         {
-            var path = GetPathJson.getPathConfig("Config.json");
+            var path = JsonController.getPathConfig("Config.json");
             using (StreamReader sr = File.OpenText(path))
             {
                 var obj = sr.ReadToEnd();
@@ -124,5 +125,10 @@ namespace FileExportScheduler.Controller
                 return export.ExportFilePath.Substring(0, export.ExportFilePath.LastIndexOf("\\"));
             }
         }
+        public static string getPathConfig(string fileName)
+        {
+            return Path.Combine(Application.StartupPath, "Configuration", fileName);
+        }
+
     }
 }

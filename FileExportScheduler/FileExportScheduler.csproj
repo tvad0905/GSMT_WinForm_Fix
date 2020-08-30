@@ -67,12 +67,11 @@
     <Compile Include="Constant\ThongBaoLoi.cs" />
     <Compile Include="Constant\TrangThaiKetNoi.cs" />
     <Compile Include="Controller\Communication.cs" />
-    <Compile Include="Controller\GetPathJson.cs" />
-    <Compile Include="Controller\JsonReader.cs" />
+    <Compile Include="Controller\JsonController.cs" />
     <Compile Include="Controller\FileDuLieuController.cs" />
     <Compile Include="Controller\ThietBiGiamSatController.cs" />
     <Compile Include="Controller\ThongBaoController.cs" />
-    <Compile Include="Controller\XuLyDanhSachDiemDo.cs" />
+    <Compile Include="Controller\XuLyDanhSachDiemDoController.cs" />
     <Compile Include="Data\Data.cs" />
     <Compile Include="FormDataList.cs">
       <SubType>Form</SubType>
