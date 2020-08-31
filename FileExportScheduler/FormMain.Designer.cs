@@ -35,8 +35,6 @@
             this.btnDataList = new System.Windows.Forms.Button();
             this.btnSetting = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
-            this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.tmrScheduler = new System.Windows.Forms.Timer(this.components);
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -49,14 +47,13 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblTrangThaiThietBi = new System.Windows.Forms.ToolStripStatusLabel();
-            this.statusStrip.SuspendLayout();
             this.contextMenuStrip.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(41, 35);
+            this.btnStart.Location = new System.Drawing.Point(65, 32);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(154, 46);
             this.btnStart.TabIndex = 0;
@@ -67,7 +64,7 @@
             // btnStop
             // 
             this.btnStop.Enabled = false;
-            this.btnStop.Location = new System.Drawing.Point(201, 35);
+            this.btnStop.Location = new System.Drawing.Point(225, 32);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(154, 46);
             this.btnStop.TabIndex = 1;
@@ -77,7 +74,7 @@
             // 
             // btnDataList
             // 
-            this.btnDataList.Location = new System.Drawing.Point(41, 87);
+            this.btnDataList.Location = new System.Drawing.Point(65, 84);
             this.btnDataList.Name = "btnDataList";
             this.btnDataList.Size = new System.Drawing.Size(100, 23);
             this.btnDataList.TabIndex = 2;
@@ -87,7 +84,7 @@
             // 
             // btnSetting
             // 
-            this.btnSetting.Location = new System.Drawing.Point(147, 87);
+            this.btnSetting.Location = new System.Drawing.Point(171, 84);
             this.btnSetting.Name = "btnSetting";
             this.btnSetting.Size = new System.Drawing.Size(100, 23);
             this.btnSetting.TabIndex = 3;
@@ -97,30 +94,13 @@
             // 
             // btnExit
             // 
-            this.btnExit.Location = new System.Drawing.Point(255, 87);
+            this.btnExit.Location = new System.Drawing.Point(279, 84);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(100, 23);
             this.btnExit.TabIndex = 4;
             this.btnExit.Text = "Thoát";
             this.btnExit.UseVisualStyleBackColor = true;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
-            // 
-            // statusStrip
-            // 
-            this.statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lblStatus});
-            this.statusStrip.Location = new System.Drawing.Point(0, 131);
-            this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(398, 22);
-            this.statusStrip.TabIndex = 5;
-            this.statusStrip.Text = "statusStrip1";
-            // 
-            // lblStatus
-            // 
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(57, 17);
-            this.lblStatus.Text = "Hệ thống";
             // 
             // tmrScheduler
             // 
@@ -176,6 +156,7 @@
             // tmrReadData
             // 
             this.tmrReadData.Interval = 1000;
+            this.tmrReadData.Tick += new System.EventHandler(this.tmrReadData_Tick);
             // 
             // tmrChukyXoaFile
             // 
@@ -183,13 +164,12 @@
             // 
             // statusStrip1
             // 
-            this.statusStrip1.Dock = System.Windows.Forms.DockStyle.Top;
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
             this.lblTrangThaiThietBi});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 0);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 133);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(398, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(444, 22);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 7;
             this.statusStrip1.Text = "statusStrip1";
@@ -199,7 +179,6 @@
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(62, 17);
             this.toolStripStatusLabel1.Text = "Trạng thái:";
-            this.toolStripStatusLabel1.Click += new System.EventHandler(this.toolStripStatusLabel1_Click);
             // 
             // lblTrangThaiThietBi
             // 
@@ -211,9 +190,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(398, 153);
+            this.ClientSize = new System.Drawing.Size(444, 155);
             this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnSetting);
             this.Controls.Add(this.btnDataList);
@@ -228,8 +206,6 @@
             this.Text = "Xuất số liệu định kỳ";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.Load += new System.EventHandler(this.FormMain_Load_1);
-            this.statusStrip.ResumeLayout(false);
-            this.statusStrip.PerformLayout();
             this.contextMenuStrip.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
@@ -245,8 +221,6 @@
         private System.Windows.Forms.Button btnDataList;
         private System.Windows.Forms.Button btnSetting;
         private System.Windows.Forms.Button btnExit;
-        private System.Windows.Forms.StatusStrip statusStrip;
-        private System.Windows.Forms.ToolStripStatusLabel lblStatus;
         private System.Windows.Forms.Timer tmrScheduler;
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;

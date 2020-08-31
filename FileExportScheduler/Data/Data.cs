@@ -1,4 +1,5 @@
 ﻿using EasyModbus;
+using EasyModbus.Exceptions;
 using Modbus.Device;
 using System;
 using System.Collections.Generic;

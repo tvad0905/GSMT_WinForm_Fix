@@ -1,0 +1,7 @@
+[Data]
+Tagname,TimeStamp,Value,DataQuality
+Diem_Do_1.SO2,19:58.218,389.2,Good
+Diem_Do_1.TEMP,19:58.249,389.57,Good
+Diem_Do_1.NOX,19:58.281,389.44,Good
+Diem_Do_1.DUST,19:58.314,388.93,Good
+Diem_Do_1.O2,19:58.348,3889300,Good
