@@ -152,12 +152,12 @@ namespace FileExportScheduler
                     break;
                 }
 
-                for (int i = 0; i < dr.Cells.Count - 1; i++)
+                for (int i = 0; i < dr.Cells.Count - 2; i++)
                 {
-                    if (dr.Cells[i].ColumnIndex == 5)
-                    {
-                        break;
-                    }
+                    //if (dr.Cells[i].ColumnIndex == 5)
+                    //{
+                    //    break;
+                    //}
 
                     if (dr.Cells[i].Value == null || dr.Cells[i].Value.ToString().Trim() == string.Empty)
                     {
@@ -187,8 +187,6 @@ namespace FileExportScheduler
 
                         isPassed = false;
                     }
-
-
 
                     if (dr.Cells[i].ColumnIndex == 2)
                     {
@@ -627,11 +625,6 @@ namespace FileExportScheduler
             }
         }
         #endregion
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
 
         public bool KiemTraCongCOM(String COM)
         {
