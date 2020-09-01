@@ -219,8 +219,13 @@ namespace FileExportScheduler
                     }
 
                 }
-                dsDiaChi.Add(dr.Cells[2].Value.ToString());
-                dsKeyDiemDoVaChat.Add(dr.Cells[0].Value.ToString() + dr.Cells[1].Value.ToString());
+                if(dr.Cells[0].Value != null && dr.Cells[1].Value != null && dr.Cells[2].Value != null)
+                {
+                    dsDiaChi.Add(dr.Cells[2].Value.ToString());
+                    dsKeyDiemDoVaChat.Add(dr.Cells[0].Value.ToString() + dr.Cells[1].Value.ToString());
+                }
+                
+                
             }
             if (dsKeyDiemDoVaChat.Count == 0 && dsDiaChi.Count == 0)
             {
