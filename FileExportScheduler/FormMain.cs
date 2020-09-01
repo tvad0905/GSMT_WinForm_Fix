@@ -53,7 +53,7 @@ namespace FileExportScheduler
             //set thời gian đọc dữ liệu của thiết bị 
 
             //set chu kì đọc dữ liệu
-            tmrScheduler.Interval = 5000;
+            tmrScheduler.Interval = 3000;
 
             //set chu kỳ xóa file
             tmrChukyXoaFile.Interval = 30000;
@@ -100,8 +100,12 @@ namespace FileExportScheduler
             btnSetting.Enabled = true;
             tmrScheduler.Stop();
             tmrChukyXoaFile.Stop();
+            tmrReadData.Stop();
+            serialPort.Close();
+            modbus.Disconnect();
             //lblStatus.Text = "Hệ thống đã dừng !";
             notifyIcon.ShowBalloonTip(100, "Hệ thống", "Hệ thống đã dừng !", ToolTipIcon.Warning);
+            lblTrangThaiThietBi.Text = "Hệ thống đã dừng";
         }
 
         private void btnDataList_Click(object sender, EventArgs e)
@@ -188,9 +192,6 @@ namespace FileExportScheduler
         private async void getDeviceConnect()
         {
 
-            
-
-            
 
             foreach (KeyValuePair<string, ThietBiGiamSat> deviceUnit in dsThietBi)
             {
@@ -322,7 +323,7 @@ namespace FileExportScheduler
                     try
                     {
 
-                        dulieu.Value.GiaTri = ushort.Parse(Data.Data.LayDuLieuCOM(dulieu.Value, serialPort)).ToString();
+                        dulieu.Value.GiaTri = Data.Data.LayDuLieuCOM(dulieu.Value, serialPort).ToString();
                         dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Good;
 
                     }
@@ -376,7 +377,20 @@ namespace FileExportScheduler
 
         private void tmrReadData_Tick(object sender, EventArgs e)
         {
-            XuatRaFileCSV();
+            try
+            {
+                tmrReadData.Stop();
+                XuatRaFileCSV();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                tmrReadData.Start();
+            }
+            
         }
 
         private void XuatRaFileCSV()

@@ -14,6 +14,7 @@ using System.Web.Script.Serialization;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
 using System.IO.Ports;
+using FileExportScheduler.KiemTra;
 
 namespace FileExportScheduler
 {
@@ -137,121 +138,6 @@ namespace FileExportScheduler
 
             return error;
         }
-        //check nhập vào bên dữ liệu protocol
-        private bool validation()
-        {
-            List<string> dsKeyDiemDoVaChat = new List<string>();
-            List<string> dsDiaChi = new List<string>();
-            dsKeyDiemDoVaChat.Clear();
-            dsDiaChi.Clear();
-            bool isPassed = true;
-            foreach (DataGridViewRow dr in dgvDataProtocol.Rows)
-            {
-                if (dr.Index == dgvDataProtocol.Rows.Count - 1)
-                {
-                    break;
-                }
-
-                for (int i = 0; i < dr.Cells.Count - 1; i++)
-                {
-                    if (dr.Cells[i].ColumnIndex == 5)
-                    {
-                        break;
-                    }
-
-                    if (dr.Cells[i].Value == null || dr.Cells[i].Value.ToString().Trim() == string.Empty)
-                    {
-                        dr.Cells[i].ErrorText = "Không được để trống";
-                        isPassed = false;
-                        continue;
-                    }
-                    else
-                    {
-                        if (!Regex.IsMatch(dr.Cells[i].Value.ToString(), @"^[a-zA-Z0-9_.-]+$"))
-                        {
-                            dr.Cells[i].ErrorText = "Sai định dạng";
-                            isPassed = false;
-                        }
-                        else
-                        {
-                            dr.Cells[i].ErrorText = "";
-                        }
-                    }
-
-                    if (dsKeyDiemDoVaChat.Contains(dr.Cells[0].Value.ToString() + dr.Cells[1].Value.ToString()))
-                    {
-                        if (dr.Cells[i].ColumnIndex == 0 || dr.Cells[i].ColumnIndex == 1)
-                        {
-                            dr.Cells[i].ErrorText = "Tên bị trùng";
-                        }
-
-                        isPassed = false;
-                    }
-
-                    if (dr.Cells[i].ColumnIndex == 2)
-                    {
-                        if (!CheckAddress(dr.Cells[i].Value.ToString()))
-                        {
-                            dr.Cells[i].ErrorText = "Sai định dạng";
-                            isPassed = false;
-                        }
-                        else if (dsDiaChi.Contains(dr.Cells[2].Value.ToString()))
-                        {
-                            dr.Cells[i].ErrorText = "Địa chỉ bị trùng";
-                            isPassed = false;
-                        }
-                        else
-                        {
-                            dr.Cells[i].ErrorText = "";
-                        }
-                    }
-                    if (dr.Cells[i].ColumnIndex == 3)
-                    {
-                        var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
-                        if (!regex.IsMatch(dr.Cells[i].Value.ToString()))
-                        {
-                            dr.Cells[i].ErrorText = "Scale sai định dạng";
-                            isPassed = false;
-                        }
-
-                    }
-
-                }
-                if(dr.Cells[0].Value != null && dr.Cells[1].Value != null && dr.Cells[2].Value != null)
-                {
-                    dsDiaChi.Add(dr.Cells[2].Value.ToString());
-                    dsKeyDiemDoVaChat.Add(dr.Cells[0].Value.ToString() + dr.Cells[1].Value.ToString());
-                }
-                
-                
-            }
-            if (dsKeyDiemDoVaChat.Count == 0 && dsDiaChi.Count == 0)
-            {
-
-                isPassed = false;
-            }
-            return isPassed;
-        }
-        //check nhập vào địa chỉ dữ liệu protocol
-        private bool CheckAddress(string addressStr)
-        {
-            if (addressStr.Length != 5)
-                return false;
-            bool error = true;
-            try
-            {
-                int address = Convert.ToInt32(addressStr);
-                if (address < 0 || (address > 19999 && address < 30000) || (address > 39999 && address < 40000) || address > 49999)
-                {
-                    error = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                error = false;
-            }
-            return error;
-        }
         #endregion
 
         #region Sự kiện nút
@@ -269,15 +155,15 @@ namespace FileExportScheduler
         private void btnAddData_Click(object sender, EventArgs e)
         {
             var thietBiGiamSatDuocChon = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text];
-            if (validation())
+            if (DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol))
             {
                 thietBiGiamSatDuocChon.dsDiemDoGiamSat = XuLyDanhSachDiemDo.LayDsDiemDoTuDgv(dgvDataProtocol);
                 GhiDsThietBiRaFileJson();
-                MessageBox.Show("Lưu dữ liệu thành công!", "thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Lưu dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                MessageBox.Show("Lỗi lưu dữ liệu!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Lỗi lưu dữ liệu!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
         }
@@ -291,11 +177,18 @@ namespace FileExportScheduler
                 {
                     foreach (DataGridViewRow row in dgvDataProtocol.SelectedRows)//đọc danh sách các dòng dữ liệu được chọn
                     {
+                        var b = row.Cells[0].Value;
                         if (row.Cells[0].Value != null && row.Cells[1].Value != null)
                         {
-                            dsThietBiGiamSat[txtTenGiaoThuc.Text].//lấy ra thiết bị
-                                 dsDiemDoGiamSat[row.Cells[1].Value.ToString()].//lấy ra điểm đo
-                                     DsDulieu.Remove(row.Cells[0].Value.ToString());//xóa 1 dữ liệu trong danh sách dữ liệu
+                            try
+                            {
+                                var diemDo = dsThietBiGiamSat[txtTenGiaoThuc.Text].//lấy ra thiết bị
+                                                                 dsDiemDoGiamSat[row.Cells[1].Value.ToString()];//lấy ra điểm đo
+                                diemDo.DsDulieu.Remove(row.Cells[0].Value.ToString());//xóa 1 dữ liệu trong danh sách dữ liệu
+
+                            }
+                            catch { }
+                            
                         }
                         else
                         {
@@ -401,9 +294,21 @@ namespace FileExportScheduler
             if (openFile == DialogResult.OK)
             {
                 BindDataFromCSV(openFileDialog1.FileName);
-
             }
-            GhiDsThietBiRaFileJson();
+
+            var thietBiGiamSatDuocChon = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text];
+            if (DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol))
+            {
+                thietBiGiamSatDuocChon.dsDiemDoGiamSat = XuLyDanhSachDiemDo.LayDsDiemDoTuDgv(dgvDataProtocol);
+                GhiDsThietBiRaFileJson();
+               
+            }
+            else
+            {
+                MessageBox.Show("Dữ liệu sai định dạng", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+
         }
 
         private void BindDataFromCSV(string filePath)
@@ -430,14 +335,16 @@ namespace FileExportScheduler
                 }
 
                 dgvDataProtocol.DataSource = dt;
-                if (validation())
+                if (DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol))
                 {
+
                     MessageBox.Show("Đọc dữ liệu thành công !", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
                     MessageBox.Show("Dữ liệu sai định dạng", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
+
             }
             catch (IOException ex)
             {

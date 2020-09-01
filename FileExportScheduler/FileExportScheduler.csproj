@@ -93,6 +93,7 @@
     <Compile Include="FormSetting.Designer.cs">
       <DependentUpon>FormSetting.cs</DependentUpon>
     </Compile>
+    <Compile Include="KiemTra\DuLieuNhapVao.cs" />
     <Compile Include="Models\ComConfigModel.cs" />
     <Compile Include="Models\DiemDoGiamSat.cs" />
     <Compile Include="Models\IPConfigModel.cs" />
