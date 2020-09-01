@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FileExportScheduler.Controller
 {
-    public static class ExportFileCSV
+    public static class FileCSVController
     {
         /// <summary>
         /// Sinh ra file csv trong Export Data folder
@@ -38,6 +38,32 @@ namespace FileExportScheduler.Controller
                 }
             }
 
+        }
+        public static void XoaFileVuotQuaChuKy(int chuKyXoaFile, string duongDanThuMucLuuDuLieu)
+        {
+            DirectoryInfo thuMucghiDuLieu = new DirectoryInfo(duongDanThuMucLuuDuLieu);
+            while (true)
+            {
+                FileSystemInfo fileBiXoa = thuMucghiDuLieu.GetFileSystemInfos().OrderBy(fi => fi.CreationTime).FirstOrDefault();
+                if (fileBiXoa != null)
+                {
+                    DateTime thoiGianFileSinhRa = fileBiXoa.LastWriteTime;
+                    if ((DateTime.Now.Minute - thoiGianFileSinhRa.Minute) >= chuKyXoaFile)
+                    {
+
+                        fileBiXoa.Delete();
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+
+            }
         }
     }
 }

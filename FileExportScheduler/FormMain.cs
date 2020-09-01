@@ -371,8 +371,9 @@ namespace FileExportScheduler
 
         private void tmrChukyXoaFile_Tick(object sender, EventArgs e)
         {
-            FileCu fc = new FileCu(Controller.JsonReader.DuongDanThuMucDuLieu());
-            fc.XoaFileVuotQuaChuKy(Controller.JsonReader.LayThoiGianXoaFile());
+            int chuKiXoaFile = Controller.JsonReader.LayThoiGianXoaFile();
+            string duongDanThuMucDuLieu = Controller.JsonReader.DuongDanThuMucDuLieu();
+            FileCSVController.XoaFileVuotQuaChuKy(chuKiXoaFile, duongDanThuMucDuLieu);
         }
 
         private void tmrReadData_Tick(object sender, EventArgs e)
@@ -413,7 +414,7 @@ namespace FileExportScheduler
                 btnSetting.PerformClick();
             }
             #endregion
-            ExportFileCSV.WriteDataToFileCSV(ListfilePath, dsThietBi);
+            FileCSVController.WriteDataToFileCSV(ListfilePath, dsThietBi);
 
         }
     }
