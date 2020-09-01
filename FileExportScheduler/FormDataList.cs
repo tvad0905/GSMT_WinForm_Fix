@@ -54,7 +54,7 @@ namespace FileExportScheduler
                 var path = JsonController.getPathConfig("DeviceAndData.json");
                 deviceDic.Clear();
                 JObject jsonObj = JObject.Parse(File.ReadAllText(path));
-                Dictionary<string, ThietBiIP> deviceIP = jsonObj.ToObject<Dictionary<string, ThietBiIP>>();
+                Dictionary<string, ThietBiTCPIPModel> deviceIP = jsonObj.ToObject<Dictionary<string, ThietBiTCPIPModel>>();
                 foreach (var deviceIPUnit in deviceIP)
                 {
                     if (deviceIPUnit.Value.Protocol == "Modbus TCP/IP" || deviceIPUnit.Value.Protocol == "Siemens S7-1200")
@@ -62,7 +62,7 @@ namespace FileExportScheduler
                         deviceDic.Add(deviceIPUnit.Key, deviceIPUnit.Value);
                     }
                 }
-                Dictionary<string, ComConfigModel> deviceCom = jsonObj.ToObject<Dictionary<string, ComConfigModel>>();
+                Dictionary<string, ThietBiCOMModel> deviceCom = jsonObj.ToObject<Dictionary<string, ThietBiCOMModel>>();
                 foreach (var deviceComUnit in deviceCom)
                 {
                     if (deviceComUnit.Value.Protocol == "Serial Port")
@@ -142,10 +142,10 @@ namespace FileExportScheduler
                     protocolConfiguration.btnSaveProtocol.Visible = false;
 
                     //
-                    ThietBiIP deviceTemp = deviceDic[protocolConfiguration.txtTenGiaoThuc.Text] as ThietBiIP;
+                    ThietBiTCPIPModel deviceTemp = deviceDic[protocolConfiguration.txtTenGiaoThuc.Text] as ThietBiTCPIPModel;
                     if (deviceTemp == null)
                     {
-                        ComConfigModel comTemp = deviceDic[protocolConfiguration.txtTenGiaoThuc.Text] as ComConfigModel;
+                        ThietBiCOMModel comTemp = deviceDic[protocolConfiguration.txtTenGiaoThuc.Text] as ThietBiCOMModel;
                         protocolConfiguration.cbCOM.Text = comTemp.Com;
                         protocolConfiguration.cbBaud.Text = comTemp.Baud.ToString();
                         protocolConfiguration.cbParity.Text = comTemp.parity.ToString();

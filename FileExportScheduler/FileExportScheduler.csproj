@@ -91,9 +91,9 @@
     <Compile Include="FormSetting.Designer.cs">
       <DependentUpon>FormSetting.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\ComConfigModel.cs" />
+    <Compile Include="Models\ThietBiCOMModel.cs" />
     <Compile Include="Models\DiemDoGiamSat.cs" />
-    <Compile Include="Models\IPConfigModel.cs" />
+    <Compile Include="Models\ThietBiTCPIPModel.cs" />
     <Compile Include="Models\DuLieuGiamSat.cs" />
     <Compile Include="Models\ThietBiGiamSat.cs" />
     <Compile Include="Models\SettingModel.cs" />

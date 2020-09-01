@@ -91,7 +91,7 @@ namespace FileExportScheduler.Controller
                 var pathData = JsonController.getPathConfig("DeviceAndData.json");
                 dsThietBi.Clear();
                 JObject jsonObj = JObject.Parse(File.ReadAllText(pathData));
-                Dictionary<string, ThietBiIP> deviceIP = jsonObj.ToObject<Dictionary<string, ThietBiIP>>();
+                Dictionary<string, ThietBiTCPIPModel> deviceIP = jsonObj.ToObject<Dictionary<string, ThietBiTCPIPModel>>();
                 foreach (var deviceIPUnit in deviceIP)
                 {
                     if (deviceIPUnit.Value.Protocol == "Modbus TCP/IP" || deviceIPUnit.Value.Protocol == "Siemens S7-1200")
@@ -99,7 +99,7 @@ namespace FileExportScheduler.Controller
                         dsThietBi.Add(deviceIPUnit.Key, deviceIPUnit.Value);
                     }
                 }
-                Dictionary<string, ComConfigModel> deviceCom = jsonObj.ToObject<Dictionary<string, ComConfigModel>>();
+                Dictionary<string, ThietBiCOMModel> deviceCom = jsonObj.ToObject<Dictionary<string, ThietBiCOMModel>>();
                 foreach (var deviceComUnit in deviceCom)
                 {
                     if (deviceComUnit.Value.Protocol == "Serial Port")

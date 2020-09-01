@@ -67,7 +67,7 @@ namespace FileExportScheduler
                 {
                     serialPort.DtrEnable = true;
                     serialPort.RtsEnable = true;
-                    var port = (ComConfigModel)deviceUnit.Value;
+                    var port = (ThietBiCOMModel)deviceUnit.Value;
                     serialPort = new SerialPort(port.Com, port.Baud, port.parity, port.Databit, port.stopBits);
                     serialPort.ReadTimeout = 200;
                     try
@@ -207,7 +207,7 @@ namespace FileExportScheduler
             {
                 if (deviceUnit.Value.Protocol == "Modbus TCP/IP" || deviceUnit.Value.Protocol == "Siemens S7-1200")
                 {
-                    modbus = new ModbusClient(((ThietBiIP)deviceUnit.Value).IP, ((ThietBiIP)deviceUnit.Value).Port);
+                    modbus = new ModbusClient(((ThietBiTCPIPModel)deviceUnit.Value).IP, ((ThietBiTCPIPModel)deviceUnit.Value).Port);
                     try
                     {
                         await Task.Run(() => IPConnect(ListfilePath, deviceUnit));
