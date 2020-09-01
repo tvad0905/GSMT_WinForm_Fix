@@ -146,6 +146,7 @@ namespace FileExportScheduler
         {
             this.Parent.Controls.Remove(this);
         }
+
         private void txtIPAdress_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
@@ -167,6 +168,7 @@ namespace FileExportScheduler
             }
 
         }
+
         //Xóa dữ liệu protocol
         private void btnDelete_Click_1(object sender, EventArgs e)
         {
@@ -188,7 +190,7 @@ namespace FileExportScheduler
                                 if(diemDo.DsDulieu.Count()==0)// xóa điểm đo khi dữ liệu của điểm đo trống
                                 {
                                     dsThietBiGiamSat[txtTenGiaoThuc.Text].//lấy ra thiết bị
-                                                                 dsDiemDoGiamSat.Remove(diemDo.TenDiemDo);
+                                           dsDiemDoGiamSat.Remove(diemDo.TenDiemDo);
                                 }    
 
                             }
@@ -215,6 +217,7 @@ namespace FileExportScheduler
             }
 
         }
+
         //lưu cấu hình protocol
         private void btnSaveProtocol_Click_1(object sender, EventArgs e)
         {

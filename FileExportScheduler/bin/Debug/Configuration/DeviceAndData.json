@@ -71,11 +71,6 @@
           }
         },
         "TenDiemDo": "TB_NDMT_KHILO1--TB_NDMT_KHILO11"
-      },
-      "TB_NDMT_KHILO1--TB_NDMT_KHILO22": {
-        "DsDulieu": {
-        },
-        "TenDiemDo": "TB_NDMT_KHILO1--TB_NDMT_KHILO22"
       }
     },
     "IP": "127.0.0.1",

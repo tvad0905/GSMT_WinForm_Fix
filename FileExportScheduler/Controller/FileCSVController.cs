@@ -21,7 +21,7 @@ namespace FileExportScheduler.Controller
             int i = 0;
             foreach (KeyValuePair<string, ThietBiGiamSat> thietBi in dsThietBi)
             {
-               
+
                 foreach (KeyValuePair<string, DiemDoGiamSat> diemDo in thietBi.Value.dsDiemDoGiamSat)
                 {
                     string csvData = "[Data]" + "\n" + "Tagname,TimeStamp,Value,DataQuality" + "\n";
@@ -42,21 +42,28 @@ namespace FileExportScheduler.Controller
         public static void XoaFileVuotQuaChuKy(int chuKyXoaFile, string duongDanThuMucLuuDuLieu)
         {
             DirectoryInfo thuMucghiDuLieu = new DirectoryInfo(duongDanThuMucLuuDuLieu);
-            while (true)
+            for (int i = 0; i < 200000; i++)
             {
                 FileSystemInfo fileBiXoa = thuMucghiDuLieu.GetFileSystemInfos().OrderBy(fi => fi.CreationTime).FirstOrDefault();
                 if (fileBiXoa != null)
                 {
                     DateTime thoiGianFileSinhRa = fileBiXoa.LastWriteTime;
-                    if ((DateTime.Now.Minute - thoiGianFileSinhRa.Minute) >= chuKyXoaFile)
+                    if (chuKyXoaFile != 0)
                     {
-
-                        fileBiXoa.Delete();
+                        if ((DateTime.Now.Minute - thoiGianFileSinhRa.Minute) >= chuKyXoaFile)
+                        {
+                            fileBiXoa.Delete();
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
                     else
                     {
                         break;
                     }
+
                 }
                 else
                 {
