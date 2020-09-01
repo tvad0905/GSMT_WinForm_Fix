@@ -188,20 +188,18 @@ namespace FileExportScheduler
                         isPassed = false;
                     }
 
-                    if (dsDiaChi.Contains(dr.Cells[2].Value.ToString()))
-                     {
-                         if(dr.Cells[i].ColumnIndex == 2)
-                        {
-                            dr.Cells[i].ErrorText = "Địa chỉ bị trùng";
-                        }
-                        isPassed = false;
-                     }
-                    
+
+
                     if (dr.Cells[i].ColumnIndex == 2)
                     {
                         if (!CheckAddress(dr.Cells[i].Value.ToString()))
                         {
                             dr.Cells[i].ErrorText = "Sai định dạng";
+                            isPassed = false;
+                        }
+                        else if (dsDiaChi.Contains(dr.Cells[2].Value.ToString()))
+                        {
+                            dr.Cells[i].ErrorText = "Địa chỉ bị trùng";
                             isPassed = false;
                         }
                         else
