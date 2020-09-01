@@ -185,6 +185,11 @@ namespace FileExportScheduler
                                 var diemDo = dsThietBiGiamSat[txtTenGiaoThuc.Text].//lấy ra thiết bị
                                                                  dsDiemDoGiamSat[row.Cells[1].Value.ToString()];//lấy ra điểm đo
                                 diemDo.DsDulieu.Remove(row.Cells[0].Value.ToString());//xóa 1 dữ liệu trong danh sách dữ liệu
+                                if(diemDo.DsDulieu.Count()==0)// xóa điểm đo khi dữ liệu của điểm đo trống
+                                {
+                                    dsThietBiGiamSat[txtTenGiaoThuc.Text].//lấy ra thiết bị
+                                                                 dsDiemDoGiamSat.Remove(diemDo.TenDiemDo);
+                                }    
 
                             }
                             catch { }
