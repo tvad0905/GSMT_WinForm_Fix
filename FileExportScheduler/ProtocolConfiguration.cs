@@ -152,12 +152,12 @@ namespace FileExportScheduler
                     break;
                 }
 
-                for (int i = 0; i < dr.Cells.Count - 2; i++)
+                for (int i = 0; i < dr.Cells.Count - 1; i++)
                 {
-                    //if (dr.Cells[i].ColumnIndex == 5)
-                    //{
-                    //    break;
-                    //}
+                    if (dr.Cells[i].ColumnIndex == 5)
+                    {
+                        break;
+                    }
 
                     if (dr.Cells[i].Value == null || dr.Cells[i].Value.ToString().Trim() == string.Empty)
                     {
