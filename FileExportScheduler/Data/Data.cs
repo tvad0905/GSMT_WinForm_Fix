@@ -1,4 +1,5 @@
 ﻿using EasyModbus;
+using EasyModbus.Exceptions;
 using Modbus.Device;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace FileExportScheduler.Data
             string giaTriDuLieu = "";
             try
             {
-
+               
                 if (Convert.ToInt32(duLieuTemp.DiaChi) <= 9999)
                 {
                     bool[] readCoil = mobus.ReadCoils(Convert.ToInt32(duLieuTemp.DiaChi), 1);
@@ -51,7 +52,8 @@ namespace FileExportScheduler.Data
             IModbusMaster master = ModbusSerialMaster.CreateRtu(serialPort);
             try
             {
-
+                var b = serialPort.Parity.ToString();
+                var a  = serialPort.ParityReplace.ToString();
                 byte slaveAddress = 1;
                 ushort numberOfPoint = 1;
 
@@ -68,12 +70,13 @@ namespace FileExportScheduler.Data
                 else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 39999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 30000)
                 {
                     ushort[] readRegister = master.ReadInputRegisters(slaveAddress, Convert.ToUInt16(Convert.ToInt32(duLieuTemp.DiaChi) - 30000), numberOfPoint);
-                    giaTriDuLieu = readRegister[0].ToString();
+                    giaTriDuLieu = (Convert.ToInt32(readRegister[0].ToString()) - ((Convert.ToInt32(readRegister[0].ToString()) > 32767) ? 65536 : 0)).ToString();
                 }
                 else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 49999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 40000)
                 {
                     ushort[] readHoldingRegisters = master.ReadHoldingRegisters(slaveAddress, Convert.ToUInt16(Convert.ToInt32(duLieuTemp.DiaChi) - 40000), numberOfPoint);
-                    giaTriDuLieu = readHoldingRegisters[0].ToString();
+                    giaTriDuLieu = (Convert.ToInt32(readHoldingRegisters[0].ToString()) - ((Convert.ToInt32(readHoldingRegisters[0].ToString()) > 32767) ? 65536 : 0)).ToString();
+                   
                 }
 
             }

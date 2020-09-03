@@ -42,7 +42,7 @@ namespace FileExportScheduler
         {
             WindowState = FormWindowState.Minimized;
             ShowInTaskbar = false;
-            notifyIcon.ShowBalloonTip(1000);
+            notifyIcon.ShowBalloonTip(100);
             notifyIcon.Visible = true;
 
             btnStop.Enabled = true;
@@ -50,11 +50,17 @@ namespace FileExportScheduler
             btnDataList.Enabled = false;
             btnSetting.Enabled = false;
 
-            //set chu kì ghi file theo json 
-            tmrScheduler.Interval = Controller.JsonReader.GetTimeInterval();
+            //set thời gian đọc dữ liệu của thiết bị 
+
+            //set chu kì đọc dữ liệu
+            tmrScheduler.Interval = 3000;
 
             //set chu kỳ xóa file
             tmrChukyXoaFile.Interval = 30000;
+
+            //set chu kỳ ghi ra file
+            tmrReadData.Interval = Controller.JsonReader.GetTimeInterval();
+            tmrReadData.Start();
 
             //quét danh sách thông số cho từng thiết bị từ json
             dsThietBi = Controller.JsonReader.LayDanhSachThongSoCuaTungThietBi();
@@ -70,10 +76,16 @@ namespace FileExportScheduler
                     var port = (ComConfigModel)deviceUnit.Value;
                     serialPort = new SerialPort(port.Com, port.Baud, port.parity, port.Databit, port.stopBits);
                     serialPort.ReadTimeout = 200;
+                    serialPort.Handshake = Handshake.None;
+                    serialPort.ParityReplace = (byte)'\0';
+                    serialPort.ReadBufferSize = 128;
+                    serialPort.ErrorReceived += new SerialErrorReceivedEventHandler(sp_SerialErrorReceivedEventHandler);
+
                     try
                     {
                         if (!serialPort.IsOpen)
                             serialPort.Open();
+
                     }
                     catch (Exception ex)
                     {
@@ -83,7 +95,7 @@ namespace FileExportScheduler
             }
             tmrScheduler.Start();
             tmrChukyXoaFile.Start();
-            lblStatus.Text = "Hệ thống đang chạy !";
+            //lblStatus.Text = "Hệ thống đang chạy !";
         }
 
         private void btnStop_Click(object sender, EventArgs e)
@@ -94,8 +106,12 @@ namespace FileExportScheduler
             btnSetting.Enabled = true;
             tmrScheduler.Stop();
             tmrChukyXoaFile.Stop();
-            lblStatus.Text = "Hệ thống đã dừng !";
-            notifyIcon.ShowBalloonTip(1000, "Hệ thống", "Hệ thống đã dừng !", ToolTipIcon.Warning);
+            tmrReadData.Stop();
+            serialPort.Close();
+            modbus.Disconnect();
+            //lblStatus.Text = "Hệ thống đã dừng !";
+            notifyIcon.ShowBalloonTip(100, "Hệ thống", "Hệ thống đã dừng !", ToolTipIcon.Warning);
+            lblTrangThaiThietBi.Text = "Hệ thống đã dừng";
         }
 
         private void btnDataList_Click(object sender, EventArgs e)
@@ -177,32 +193,12 @@ namespace FileExportScheduler
         /// lấy kết nối của thiết bị
         /// </summary>
         /// 
-
         object objW = new object();
         object objW2 = new object();
         private async void getDeviceConnect()
         {
 
-            #region lấy danh sách đường dẫn file csv
 
-            List<string> ListfilePath = new List<string>();
-            try
-            {
-                ListfilePath = Controller.JsonReader.LayDsDuongDanTheoTenDiemDo(dsThietBi);
-            }
-            catch (Exception ex)//khi đường dẫn export file ko có trong config thì bắt người dùng nhập lại
-            {
-                tmrScheduler.Stop();
-                tmrChukyXoaFile.Stop();
-                MessageBox.Show("Chọn đường dẫn đến thư mục");
-                WindowState = FormWindowState.Normal;
-                ShowInTaskbar = true;
-                btnStop.PerformClick();
-                btnSetting.PerformClick();
-            }
-            #endregion
-
-            ThongBaoLoi.DsThongBaoLoi.Clear();
             foreach (KeyValuePair<string, ThietBiGiamSat> deviceUnit in dsThietBi)
             {
                 if (deviceUnit.Value.Protocol == "Modbus TCP/IP" || deviceUnit.Value.Protocol == "Siemens S7-1200")
@@ -210,7 +206,7 @@ namespace FileExportScheduler
                     modbus = new ModbusClient(((ThietBiIP)deviceUnit.Value).IP, ((ThietBiIP)deviceUnit.Value).Port);
                     try
                     {
-                        await Task.Run(() => IPConnect(ListfilePath, deviceUnit));
+                        await Task.Run(() => IPConnect(/*ListfilePath, */deviceUnit));
                     }
                     catch (Exception ex)
                     {
@@ -221,7 +217,7 @@ namespace FileExportScheduler
                 {
                     try
                     {
-                        await Task.Run(() => COMConnect(ListfilePath, deviceUnit));
+                        await Task.Run(() => COMConnect(/*ListfilePath,*/ deviceUnit));
 
                         //Thread t = new Thread(() => { ThreadCOMConnect(ListfilePath, deviceUnit);Thread.Sleep(3000); }); t.Start();
                     }
@@ -231,16 +227,24 @@ namespace FileExportScheduler
                     }
                 }
             }
-            Controller.ExportFileCSV.WriteDataToFileCSV(ListfilePath, dsThietBi);
+            
+            lblTrangThaiThietBi.Text = ThongBaoController.DsLoi();
+            ThongBaoLoi.DsThongBaoLoi.Clear();
+            if (lblTrangThaiThietBi.Text == ThongBaoLoi.HoatDongBinhThuong)
+            {
+                lblTrangThaiThietBi.ForeColor = Color.Green;
+            }
+            else
+            {
+                lblTrangThaiThietBi.ForeColor = Color.Red;
+            }
 
-            lblTrangThaiThietBi.Text = ThongBaoController.DsLoi() ; 
-            var testing = dsThietBi;
         }
 
         // tạo 1 thread cho connect
-        void IPConnect(List<string> filePath, KeyValuePair<string, ThietBiGiamSat> deviceUnit)
+        void IPConnect(/*List<string> filePath, */KeyValuePair<string, ThietBiGiamSat> deviceUnit)
         {
-            //modbus.ConnectionTimeout = 200;
+
             try
             {
                 modbus.Connect();
@@ -262,7 +266,7 @@ namespace FileExportScheduler
             }
         }
 
-        void COMConnect(List<string> filePath, KeyValuePair<string, ThietBiGiamSat> deviceUnit)
+        void COMConnect(/*List<string> filePath, */KeyValuePair<string, ThietBiGiamSat> deviceUnit)
         {
             if (!serialPort.IsOpen)
             {
@@ -281,6 +285,7 @@ namespace FileExportScheduler
             }
             getDataCOM(deviceUnit);
         }
+
         //lấy dữ liệu của các thiết bị 
         private void getDataDeviceIP(KeyValuePair<string, ThietBiGiamSat> deviceUnit)
         {
@@ -293,13 +298,18 @@ namespace FileExportScheduler
                     {
                         dulieu.Value.GiaTri = Convert.ToInt32(Data.Data.LayDuLieuTCPIP(modbus, dulieu.Value)).ToString();
 
-                        dulieu.Value.TrangThaiTinHieu = Constant.TrangThaiKetNoi.Good;
+                        dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Good;
+                    }
+                    catch(ModbusException ex)
+                    {
+                        ThongBaoLoi.DsThongBaoLoi.Add(ThongBaoLoi.VuotQuaDuLieu);
+                        dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
                     }
                     catch (Exception ex)//Lỗi lấy dữ liệu thất bại
                     {
 
                         ThongBaoLoi.DsThongBaoLoi.Add(ThongBaoLoi.KhongCoTinHieuTraVe);
-                        dulieu.Value.TrangThaiTinHieu = Constant.TrangThaiKetNoi.Bad;
+                        dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
                     }
                     finally
                     {
@@ -308,6 +318,7 @@ namespace FileExportScheduler
                 }
             }
         }
+
         private void getDataCOM(KeyValuePair<string, ThietBiGiamSat> deviceUnit)
         {
             foreach (KeyValuePair<string, DiemDoGiamSat> diemDo in deviceUnit.Value.dsDiemDoGiamSat)
@@ -317,9 +328,8 @@ namespace FileExportScheduler
                     //lấy dữ liệu thành công
                     try
                     {
-
-                        dulieu.Value.GiaTri = ushort.Parse(Data.Data.LayDuLieuCOM(dulieu.Value, serialPort)).ToString();
-                        dulieu.Value.TrangThaiTinHieu = Constant.TrangThaiKetNoi.Good;
+                        dulieu.Value.GiaTri = Data.Data.LayDuLieuCOM(dulieu.Value, serialPort).ToString();
+                        dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Good;
 
                     }
                     //lấy dữ liệu thất bại
@@ -327,17 +337,17 @@ namespace FileExportScheduler
                     {
                         //lỗi không đọc được dữ liệu
                         ThongBaoLoi.DsThongBaoLoi.Add(ThongBaoLoi.KhongKetNoi);
-                        dulieu.Value.TrangThaiTinHieu = Constant.TrangThaiKetNoi.Bad;
+                        dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
                     }
                     catch (Modbus.SlaveException ex)
                     {
                         //lỗi số bản ghi cần đọc vượt quá lượng bản ghi trả về
                         ThongBaoLoi.DsThongBaoLoi.Add(ThongBaoLoi.VuotQuaDuLieu);
-                        dulieu.Value.TrangThaiTinHieu = Constant.TrangThaiKetNoi.Bad;
+                        dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
                     }
                     catch (Exception ex)
                     {
-
+                        
                     }
                     finally
                     {
@@ -346,6 +356,15 @@ namespace FileExportScheduler
                 }
             }
         }
+
+        private void sp_SerialErrorReceivedEventHandler(object sender, SerialErrorReceivedEventArgs e)
+        {
+            if (e.EventType == SerialError.RXParity)
+            {
+                lblTrangThaiThietBi.Text += ", Error Parity";
+            }
+        }
+
         private void tmrScheduler_Tick(object sender, EventArgs e)
         {
             try
@@ -365,12 +384,50 @@ namespace FileExportScheduler
 
         private void tmrChukyXoaFile_Tick(object sender, EventArgs e)
         {
-            FileCu fc = new FileCu(Controller.JsonReader.DuongDanThuMucDuLieu());
-            fc.XoaFileVuotQuaChuKy(Controller.JsonReader.LayThoiGianXoaFile());
+            int chuKiXoaFile = Controller.JsonReader.LayThoiGianXoaFile();
+            string duongDanThuMucDuLieu = Controller.JsonReader.DuongDanThuMucDuLieu();
+            FileCSVController.XoaFileVuotQuaChuKy(chuKiXoaFile, duongDanThuMucDuLieu);
         }
 
-        private void toolStripStatusLabel1_Click(object sender, EventArgs e)
+        private void tmrReadData_Tick(object sender, EventArgs e)
         {
+            try
+            {
+                tmrReadData.Stop();
+                XuatRaFileCSV();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                tmrReadData.Start();
+            }
+            
+        }
+
+        private void XuatRaFileCSV()
+        {
+            #region lấy danh sách đường dẫn file csv
+
+            List<string> ListfilePath = new List<string>();
+            try
+            {
+                ListfilePath = Controller.JsonReader.LayDsDuongDanTheoTenDiemDo(dsThietBi);
+            }
+            catch (Exception ex)//khi đường dẫn export file ko có trong config thì bắt người dùng nhập lại
+            {
+                tmrScheduler.Stop();
+                tmrChukyXoaFile.Stop();
+                MessageBox.Show("Chọn đường dẫn đến thư mục");
+                WindowState = FormWindowState.Normal;
+                ShowInTaskbar = true;
+                btnStop.PerformClick();
+                btnSetting.PerformClick();
+            }
+            #endregion
+            FileCSVController.WriteDataToFileCSV(ListfilePath, dsThietBi);
 
         }
     }

@@ -14,6 +14,7 @@ using System.Web.Script.Serialization;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
 using System.IO.Ports;
+using FileExportScheduler.KiemTra;
 
 namespace FileExportScheduler
 {
@@ -137,109 +138,6 @@ namespace FileExportScheduler
 
             return error;
         }
-        //check nhập vào bên dữ liệu protocol
-        private bool validation()
-        {
-            List<string> dsKeyDiemDoVaChat = new List<string>();
-            dsKeyDiemDoVaChat.Clear();
-            bool isPassed = true;
-            foreach (DataGridViewRow dr in dgvDataProtocol.Rows)
-            {
-                if (dr.Index == dgvDataProtocol.Rows.Count - 1)
-                {
-                    break;
-                }
-
-                for (int i = 0; i < dr.Cells.Count - 1; i++)
-                {
-                    if (dr.Cells[i].ColumnIndex == 5)
-                    {
-                        break;
-                    }
-
-                    if (dr.Cells[i].Value == null || dr.Cells[i].Value.ToString().Trim() == string.Empty)
-                    {
-                        dr.Cells[i].ErrorText = "Không được để trống";
-                        isPassed = false;
-                        continue;
-                    }
-                    else
-                    {
-                        if (!Regex.IsMatch(dr.Cells[i].Value.ToString(), @"^[a-zA-Z0-9_.-]+$"))
-                        {
-                            dr.Cells[i].ErrorText = "Sai định dạng";
-                            isPassed = false;
-                        }
-                        else
-                        {
-                            dr.Cells[i].ErrorText = "";
-                        }
-                    }
-
-                    if (dsKeyDiemDoVaChat.Contains(dr.Cells[0].Value.ToString() + dr.Cells[1].Value.ToString()))
-                    {
-                        if (dr.Cells[i].ColumnIndex == 0 || dr.Cells[i].ColumnIndex == 1)
-                        {
-                            dr.Cells[i].ErrorText = "Tên bị trùng";
-                        }
-
-                        isPassed = false;
-                    }
-
-                    if (dr.Cells[i].ColumnIndex == 2)
-                    {
-                        if (!CheckAddress(dr.Cells[i].Value.ToString()))
-                        {
-                            dr.Cells[i].ErrorText = "Sai định dạng";
-                            isPassed = false;
-                        }
-                        else
-                        {
-                            dr.Cells[i].ErrorText = "";
-                        }
-                    }
-                    if (dr.Cells[i].ColumnIndex == 3)
-                    {
-                        var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
-                        if (!regex.IsMatch(dr.Cells[i].Value.ToString()))
-                        {
-                            dr.Cells[i].ErrorText = "Scale Sai định dạng";
-                            isPassed = false;
-                        }
-
-                    }
-
-                }
-
-                dsKeyDiemDoVaChat.Add(dr.Cells[0].Value.ToString() + dr.Cells[1].Value.ToString());
-            }
-            if (dsKeyDiemDoVaChat.Count == 0)
-            {
-
-                isPassed = false;
-            }
-            return isPassed;
-        }
-        //check nhập vào địa chỉ dữ liệu protocol
-        private bool CheckAddress(string addressStr)
-        {
-            if (addressStr.Length != 5)
-                return false;
-            bool error = true;
-            try
-            {
-                int address = Convert.ToInt32(addressStr);
-                if (address < 0 || (address > 19999 && address < 30000) || (address > 39999 && address < 40000) || address > 49999)
-                {
-                    error = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                error = false;
-            }
-            return error;
-        }
         #endregion
 
         #region Sự kiện nút
@@ -248,6 +146,7 @@ namespace FileExportScheduler
         {
             this.Parent.Controls.Remove(this);
         }
+
         private void txtIPAdress_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
@@ -257,18 +156,19 @@ namespace FileExportScheduler
         private void btnAddData_Click(object sender, EventArgs e)
         {
             var thietBiGiamSatDuocChon = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text];
-            if (validation())
+            if (DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol))
             {
                 thietBiGiamSatDuocChon.dsDiemDoGiamSat = XuLyDanhSachDiemDo.LayDsDiemDoTuDgv(dgvDataProtocol);
                 GhiDsThietBiRaFileJson();
-                MessageBox.Show("Lưu dữ liệu thành công!", "thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Lưu dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                MessageBox.Show("Lỗi lưu dữ liệu!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Lỗi lưu dữ liệu!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
         }
+
         //Xóa dữ liệu protocol
         private void btnDelete_Click_1(object sender, EventArgs e)
         {
@@ -279,11 +179,23 @@ namespace FileExportScheduler
                 {
                     foreach (DataGridViewRow row in dgvDataProtocol.SelectedRows)//đọc danh sách các dòng dữ liệu được chọn
                     {
+                        var b = row.Cells[0].Value;
                         if (row.Cells[0].Value != null && row.Cells[1].Value != null)
                         {
-                            dsThietBiGiamSat[txtTenGiaoThuc.Text].//lấy ra thiết bị
-                                 dsDiemDoGiamSat[row.Cells[1].Value.ToString()].//lấy ra điểm đo
-                                     DsDulieu.Remove(row.Cells[0].Value.ToString());//xóa 1 dữ liệu trong danh sách dữ liệu
+                            try
+                            {
+                                var diemDo = dsThietBiGiamSat[txtTenGiaoThuc.Text].//lấy ra thiết bị
+                                                                 dsDiemDoGiamSat[row.Cells[1].Value.ToString()];//lấy ra điểm đo
+                                diemDo.DsDulieu.Remove(row.Cells[0].Value.ToString());//xóa 1 dữ liệu trong danh sách dữ liệu
+                                if(diemDo.DsDulieu.Count()==0)// xóa điểm đo khi dữ liệu của điểm đo trống
+                                {
+                                    dsThietBiGiamSat[txtTenGiaoThuc.Text].//lấy ra thiết bị
+                                           dsDiemDoGiamSat.Remove(diemDo.TenDiemDo);
+                                }    
+
+                            }
+                            catch { }
+                            
                         }
                         else
                         {
@@ -305,6 +217,7 @@ namespace FileExportScheduler
             }
 
         }
+
         //lưu cấu hình protocol
         private void btnSaveProtocol_Click_1(object sender, EventArgs e)
         {
@@ -389,8 +302,21 @@ namespace FileExportScheduler
             if (openFile == DialogResult.OK)
             {
                 BindDataFromCSV(openFileDialog1.FileName);
-
             }
+
+            var thietBiGiamSatDuocChon = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text];
+            if (DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol))
+            {
+                thietBiGiamSatDuocChon.dsDiemDoGiamSat = XuLyDanhSachDiemDo.LayDsDiemDoTuDgv(dgvDataProtocol);
+                GhiDsThietBiRaFileJson();
+               
+            }
+            else
+            {
+                MessageBox.Show("Dữ liệu sai định dạng", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+
         }
 
         private void BindDataFromCSV(string filePath)
@@ -410,18 +336,23 @@ namespace FileExportScheduler
                 for (int i = 1; i < lines.Length; i++)
                 {
                     string[] t = lines[i].Split(',');
-                    dt.Rows.Add(t[0], t[1], t[2], t[3], t[4]);
+                    if (t.Length > 1)
+                    {
+                        dt.Rows.Add(t[0], t[1], t[2], t[3], t[4]);
+                    }
                 }
 
                 dgvDataProtocol.DataSource = dt;
-                if (validation())
+                if (DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol))
                 {
+
                     MessageBox.Show("Đọc dữ liệu thành công !", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
                     MessageBox.Show("Dữ liệu sai định dạng", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
+
             }
             catch (IOException ex)
             {
@@ -458,7 +389,7 @@ namespace FileExportScheduler
                         {
                             int columnCount = dgvDataProtocol.Columns.Count;
                             string columnNames = "";
-                            string[] outputCsv = new string[dgvDataProtocol.Rows.Count + 1];
+                            string[] outputCsv = new string[dgvDataProtocol.Rows.Count];
                             int rowCount = dgvDataProtocol.Rows.Count - 1;
                             for (int i = 0; i < columnCount; i++)
                             {
@@ -513,7 +444,7 @@ namespace FileExportScheduler
                 }
                 else
                 {
-                    ThietBiGiamSat deviceObj = new ThietBiIP
+                    ThietBiGiamSat deviceObjIP = new ThietBiIP
                     {
                         Name = txtTenGiaoThuc.Text,
                         IP = txtIPAdress.Text,
@@ -523,7 +454,7 @@ namespace FileExportScheduler
                         dsDiemDoGiamSat = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text].dsDiemDoGiamSat
                     };
                     dsThietBiGiamSat.Remove(formDataList.selectedNodeDouble.Text);
-                    dsThietBiGiamSat.Add(deviceObj.Name, deviceObj);
+                    dsThietBiGiamSat.Add(deviceObjIP.Name, deviceObjIP);
                 }
             }
             else if (cbProtocol.SelectedItem.ToString() == "Serial Port")
@@ -537,12 +468,20 @@ namespace FileExportScheduler
                     comTemp.parity = (Parity)Enum.Parse(typeof(Parity), cbParity.SelectedItem.ToString());
                     comTemp.Databit = int.Parse(cbDataBit.SelectedItem.ToString());
                     comTemp.stopBits = (StopBits)Enum.Parse(typeof(StopBits), cbStopBit.SelectedItem.ToString());
-                    dsThietBiGiamSat.Remove(formDataList.selectedNodeDouble.Text);
-                    dsThietBiGiamSat.Add(comTemp.Name, comTemp);
+                    if (!KiemTraCongCOM(cbCOM.SelectedItem.ToString()))
+                    {
+                        MessageBox.Show("Không thể chọn cổng này!");
+                        return;
+                    }
+                    else
+                    {
+                        dsThietBiGiamSat.Remove(formDataList.selectedNodeDouble.Text);
+                        dsThietBiGiamSat.Add(comTemp.Name, comTemp);
+                    }
                 }
                 else
                 {
-                    ThietBiGiamSat deviceObj1 = new ComConfigModel
+                    ThietBiGiamSat deviceObjCOM = new ComConfigModel
                     {
                         Name = txtTenGiaoThuc.Text,
                         Com = cbCOM.SelectedItem.ToString(),
@@ -555,8 +494,17 @@ namespace FileExportScheduler
                         dsDiemDoGiamSat = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text].dsDiemDoGiamSat
 
                     };
-                    dsThietBiGiamSat.Remove(formDataList.selectedNodeDouble.Text);
-                    dsThietBiGiamSat.Add(deviceObj1.Name, deviceObj1);
+                    if (!KiemTraCongCOM(cbCOM.SelectedItem.ToString()))
+                    {
+                        MessageBox.Show("Không thể chọn cổng này!");
+                        return;
+                    }
+                    else
+                    {
+                        dsThietBiGiamSat.Remove(formDataList.selectedNodeDouble.Text);
+                        dsThietBiGiamSat.Add(deviceObjCOM.Name, deviceObjCOM);
+                    }
+
                 }
 
             }
@@ -593,9 +541,23 @@ namespace FileExportScheduler
         }
         #endregion
 
-        private void label1_Click(object sender, EventArgs e)
+        public bool KiemTraCongCOM(String COM)
         {
+            using (SerialPort serialPort = new SerialPort(COM))
+            {
+                try
+                {
+                    serialPort.Open();
+                    serialPort.Close();
+                    return true;
 
+                }
+                catch (Exception)
+                {
+
+                    return false;
+                }
+            }
         }
     }
 }

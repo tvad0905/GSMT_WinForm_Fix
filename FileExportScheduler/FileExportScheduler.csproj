@@ -67,10 +67,9 @@
     <Compile Include="Constant\ThongBaoLoi.cs" />
     <Compile Include="Constant\TrangThaiKetNoi.cs" />
     <Compile Include="Controller\Communication.cs" />
-    <Compile Include="Controller\ExportFileCSV.cs" />
+    <Compile Include="Controller\FileCSVController.cs" />
     <Compile Include="Controller\GetPathJson.cs" />
     <Compile Include="Controller\JsonReader.cs" />
-    <Compile Include="Controller\FileCu.cs" />
     <Compile Include="Controller\ThietBiGiamSatController.cs" />
     <Compile Include="Controller\ThongBaoController.cs" />
     <Compile Include="Controller\XuLyDanhSachDiemDo.cs" />
@@ -93,6 +92,7 @@
     <Compile Include="FormSetting.Designer.cs">
       <DependentUpon>FormSetting.cs</DependentUpon>
     </Compile>
+    <Compile Include="KiemTra\DuLieuNhapVao.cs" />
     <Compile Include="Models\ComConfigModel.cs" />
     <Compile Include="Models\DiemDoGiamSat.cs" />
     <Compile Include="Models\IPConfigModel.cs" />

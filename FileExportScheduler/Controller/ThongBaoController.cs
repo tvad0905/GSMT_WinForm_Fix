@@ -11,15 +11,24 @@ namespace FileExportScheduler.Controller
     {
         public static string DsLoi()
         {
-            string dongLoi="";
-            var dsLoi= ThongBaoLoi.DsThongBaoLoi.Distinct().ToList();
-            foreach(string loi in dsLoi)
+            string dongLoi = "";
+            var dsLoi = ThongBaoLoi.DsThongBaoLoi.Distinct().ToList();
+
+            if (dsLoi.Count == 1)
             {
-                dongLoi += loi + ",";
+                dongLoi += dsLoi[0];
             }
-            if(dongLoi == null)
+            else if (dsLoi.Count == 0)
             {
-                dongLoi = "Thiết bị hoạt động bình thường";
+                dongLoi = ThongBaoLoi.HoatDongBinhThuong;
+            }
+            else
+            {
+                foreach (string loi in dsLoi)
+                {
+                    dongLoi += loi + ", ";
+                }
+                dongLoi = dongLoi.Remove(dongLoi.Length - 2);
             }
             return dongLoi;
         }

@@ -184,7 +184,6 @@ namespace FileExportScheduler
                         {
                             deviceDic.Remove(tvMain.SelectedNode.Text);
                             WriteListObjectToJson();
-
                             tvMain.SelectedNode.Parent.Nodes.Remove(tvMain.SelectedNode);
                         }
                     }
