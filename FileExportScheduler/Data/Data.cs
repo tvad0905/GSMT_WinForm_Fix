@@ -18,7 +18,7 @@ namespace FileExportScheduler.Data
             string giaTriDuLieu = "";
             try
             {
-
+               
                 if (Convert.ToInt32(duLieuTemp.DiaChi) <= 9999)
                 {
                     bool[] readCoil = mobus.ReadCoils(Convert.ToInt32(duLieuTemp.DiaChi), 1);
@@ -52,7 +52,8 @@ namespace FileExportScheduler.Data
             IModbusMaster master = ModbusSerialMaster.CreateRtu(serialPort);
             try
             {
-
+                var b = serialPort.Parity.ToString();
+                var a  = serialPort.ParityReplace.ToString();
                 byte slaveAddress = 1;
                 ushort numberOfPoint = 1;
 

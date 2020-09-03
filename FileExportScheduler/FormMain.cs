@@ -76,10 +76,16 @@ namespace FileExportScheduler
                     var port = (ComConfigModel)deviceUnit.Value;
                     serialPort = new SerialPort(port.Com, port.Baud, port.parity, port.Databit, port.stopBits);
                     serialPort.ReadTimeout = 200;
+                    serialPort.Handshake = Handshake.None;
+                    serialPort.ParityReplace = (byte)'\0';
+                    serialPort.ReadBufferSize = 128;
+                    serialPort.ErrorReceived += new SerialErrorReceivedEventHandler(sp_SerialErrorReceivedEventHandler);
+
                     try
                     {
                         if (!serialPort.IsOpen)
                             serialPort.Open();
+
                     }
                     catch (Exception ex)
                     {
@@ -322,7 +328,6 @@ namespace FileExportScheduler
                     //lấy dữ liệu thành công
                     try
                     {
-
                         dulieu.Value.GiaTri = Data.Data.LayDuLieuCOM(dulieu.Value, serialPort).ToString();
                         dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Good;
 
@@ -342,13 +347,21 @@ namespace FileExportScheduler
                     }
                     catch (Exception ex)
                     {
-
+                        
                     }
                     finally
                     {
                         dulieu.Value.ThoiGianDocGiuLieu = DateTime.Now;
                     }
                 }
+            }
+        }
+
+        private void sp_SerialErrorReceivedEventHandler(object sender, SerialErrorReceivedEventArgs e)
+        {
+            if (e.EventType == SerialError.RXParity)
+            {
+                lblTrangThaiThietBi.Text += ", Error Parity";
             }
         }
 

@@ -50,7 +50,9 @@ namespace FileExportScheduler.Controller
                     DateTime thoiGianFileSinhRa = fileBiXoa.LastWriteTime;
                     if (chuKyXoaFile != 0)
                     {
-                        if ((DateTime.Now.Minute - thoiGianFileSinhRa.Minute) >= chuKyXoaFile)
+                        TimeSpan ts = DateTime.Now.Subtract(thoiGianFileSinhRa);
+
+                        if (ts.Minutes >= chuKyXoaFile)
                         {
                             fileBiXoa.Delete();
                         }
@@ -69,7 +71,6 @@ namespace FileExportScheduler.Controller
                 {
                     break;
                 }
-
             }
         }
     }
