@@ -206,7 +206,8 @@ namespace FileExportScheduler
                     modbus = new ModbusClient(((ThietBiIP)deviceUnit.Value).IP, ((ThietBiIP)deviceUnit.Value).Port);
                     try
                     {
-                        await Task.Run(() => IPConnect(/*ListfilePath, */deviceUnit));
+                        this.Invoke(new MethodInvoker(async delegate { await Task.Run(() => IPConnect(/*ListfilePath, */deviceUnit)); }));
+                        
                     }
                     catch (Exception ex)
                     {
@@ -218,8 +219,6 @@ namespace FileExportScheduler
                     try
                     {
                         await Task.Run(() => COMConnect(/*ListfilePath,*/ deviceUnit));
-
-                        //Thread t = new Thread(() => { ThreadCOMConnect(ListfilePath, deviceUnit);Thread.Sleep(3000); }); t.Start();
                     }
                     catch (Exception ex)
                     {
@@ -429,6 +428,12 @@ namespace FileExportScheduler
             #endregion
             FileCSVController.WriteDataToFileCSV(ListfilePath, dsThietBi);
 
+        }
+
+        private void licenseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormAbout fa = new FormAbout();
+            fa.Show();
         }
     }
 }

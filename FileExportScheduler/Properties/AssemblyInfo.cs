@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("FileExportScheduler")]
+[assembly: AssemblyTitle("File Export Scheduler")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("FileExportScheduler")]
-[assembly: AssemblyCopyright("Copyright ©  2020")]
+[assembly: AssemblyCompany("E-Solutions")]
+[assembly: AssemblyProduct("File Export Scheduler")]
+[assembly: AssemblyCopyright("Copyright ©2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
