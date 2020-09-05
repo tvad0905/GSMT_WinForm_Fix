@@ -72,7 +72,6 @@ namespace FileExportScheduler
             dsThietBi = Service.Json.JsonReader.LayDanhSachThongSoCuaTungThietBi();
 
 
-
             foreach (KeyValuePair<string, ThietBiGiamSat> deviceUnit in dsThietBi)
             {
                 if (deviceUnit.Value.Protocol == "Serial Port")
@@ -227,6 +226,7 @@ namespace FileExportScheduler
                 }
             }
 
+            //set thong bao loi
             lblTrangThaiThietBi.Text = ThongBaoService.DsLoi();
             ThongBaoLoi.DsThongBaoLoi.Clear();
             if (lblTrangThaiThietBi.Text == ThongBaoLoi.HoatDongBinhThuong)
