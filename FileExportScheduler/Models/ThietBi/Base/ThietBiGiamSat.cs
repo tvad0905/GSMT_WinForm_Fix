@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FileExportScheduler.Models.ThietBi.Base
 {
-    public class ThietBiGiamSat
+    public abstract class ThietBiGiamSat
     {
         public string Name { get; set; }
         public string Protocol { get; set; }
