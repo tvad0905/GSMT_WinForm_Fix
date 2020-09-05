@@ -8,9 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace FileExportScheduler.Controller
+namespace FileExportScheduler.Service.DiemDo
 {
-    public static class XuLyDanhSachDiemDo
+    public static class DanhSachDiemDoService
     {
         public static Dictionary<string, DiemDoGiamSat> LayDsDiemDoTuDgv(DataGridView dgvDataProtocol)
         {

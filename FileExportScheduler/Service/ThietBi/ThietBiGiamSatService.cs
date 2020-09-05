@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FileExportScheduler.Controller
 {
-    public  static class ThietBiGiamSatController
+    public  static class ThietBiGiamSatService
     {
         public static KeyValuePair<string, ThietBiGiamSat> SetTrangThaiBad(KeyValuePair<string, ThietBiGiamSat> deviceUnit)
         {

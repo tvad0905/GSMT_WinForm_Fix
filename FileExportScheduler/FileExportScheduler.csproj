@@ -67,13 +67,12 @@
   <ItemGroup>
     <Compile Include="Constant\ThongBaoLoi.cs" />
     <Compile Include="Constant\TrangThaiKetNoi.cs" />
-    <Compile Include="Controller\Communication.cs" />
-    <Compile Include="Controller\FileCSVController.cs" />
+    <Compile Include="Service\FileService\FileCSV.cs" />
     <Compile Include="Service\Json\PathJson.cs" />
     <Compile Include="Service\Json\DocJson.cs" />
-    <Compile Include="Controller\ThietBiGiamSatController.cs" />
-    <Compile Include="Controller\ThongBaoController.cs" />
-    <Compile Include="Controller\XuLyDanhSachDiemDo.cs" />
+    <Compile Include="Service\ThietBi\ThietBiGiamSatService.cs" />
+    <Compile Include="Service\ThongBao\ThongBaoService.cs" />
+    <Compile Include="Service\DiemDo\DanhSachDiemDoService.cs" />
     <Compile Include="Data\Data.cs" />
     <Compile Include="FormAbout.cs">
       <SubType>Form</SubType>

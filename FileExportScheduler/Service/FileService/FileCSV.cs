@@ -9,9 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileExportScheduler.Controller
+namespace FileExportScheduler.Service.FileService
 {
-    public static class FileCSVController
+    public static class FileCSV
     {
         /// <summary>
         /// Sinh ra file csv trong Export Data folder

@@ -6,7 +6,9 @@ using FileExportScheduler.Models;
 using FileExportScheduler.Models.DiemDo;
 using FileExportScheduler.Models.DuLieu;
 using FileExportScheduler.Models.ThietBi.Base;
+using FileExportScheduler.Service.FileService;
 using FileExportScheduler.Service.Json;
+using FileExportScheduler.Service.ThongBao;
 using Modbus.Device;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -225,7 +227,7 @@ namespace FileExportScheduler
                 }
             }
 
-            lblTrangThaiThietBi.Text = ThongBaoController.DsLoi();
+            lblTrangThaiThietBi.Text = ThongBaoService.DsLoi();
             ThongBaoLoi.DsThongBaoLoi.Clear();
             if (lblTrangThaiThietBi.Text == ThongBaoLoi.HoatDongBinhThuong)
             {
@@ -253,7 +255,7 @@ namespace FileExportScheduler
                 lock (objW)
                 {
                     ThongBaoLoi.DsThongBaoLoi.Add(ThongBaoLoi.KhongKetNoi);
-                    deviceUnit = ThietBiGiamSatController.SetTrangThaiBad(deviceUnit);// set trang thai bad cho dư lieu tung thiet bi
+                    deviceUnit = ThietBiGiamSatService.SetTrangThaiBad(deviceUnit);// set trang thai bad cho dư lieu tung thiet bi
                     return;
                 }
             }
@@ -379,7 +381,7 @@ namespace FileExportScheduler
         {
             int chuKiXoaFile = Controller.JsonReader.LayThoiGianXoaFile();
             string duongDanThuMucDuLieu = Controller.JsonReader.DuongDanThuMucDuLieu();
-            FileCSVController.XoaFileVuotQuaChuKy(chuKiXoaFile, duongDanThuMucDuLieu);
+            FileCSV.XoaFileVuotQuaChuKy(chuKiXoaFile, duongDanThuMucDuLieu);
         }
 
         private void tmrReadData_Tick(object sender, EventArgs e)
@@ -419,7 +421,7 @@ namespace FileExportScheduler
                 btnSetting.PerformClick();
             }
             #endregion
-            FileCSVController.WriteDataToFileCSV(ListfilePath, dsThietBi);
+            FileCSV.WriteDataToFileCSV(ListfilePath, dsThietBi);
 
         }
 

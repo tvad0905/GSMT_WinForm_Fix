@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileExportScheduler.Controller
+namespace FileExportScheduler.Service.ThongBao
 {
-    public static class ThongBaoController
+    public static class ThongBaoService
     {
         public static string DsLoi()
         {
