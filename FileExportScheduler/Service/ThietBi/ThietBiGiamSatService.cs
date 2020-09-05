@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileExportScheduler.Controller
+namespace FileExportScheduler.Service.ThietBi
 {
     public  static class ThietBiGiamSatService
     {

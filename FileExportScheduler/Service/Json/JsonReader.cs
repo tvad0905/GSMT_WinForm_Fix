@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileExportScheduler.Controller
+namespace FileExportScheduler.Service.Json
 {
     public static class JsonReader
     {

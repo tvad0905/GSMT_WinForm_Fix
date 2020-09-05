@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FileExportScheduler.Models;
 using System.IO;
-using FileExportScheduler.Controller;
 using System.Web.Script.Serialization;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;

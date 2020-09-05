@@ -1,13 +1,13 @@
 ﻿using EasyModbus;
 using EasyModbus.Exceptions;
 using FileExportScheduler.Constant;
-using FileExportScheduler.Controller;
 using FileExportScheduler.Models;
 using FileExportScheduler.Models.DiemDo;
 using FileExportScheduler.Models.DuLieu;
 using FileExportScheduler.Models.ThietBi.Base;
 using FileExportScheduler.Service.FileService;
 using FileExportScheduler.Service.Json;
+using FileExportScheduler.Service.ThietBi;
 using FileExportScheduler.Service.ThongBao;
 using Modbus.Device;
 using Newtonsoft.Json;
@@ -65,11 +65,11 @@ namespace FileExportScheduler
             tmrChukyXoaFile.Interval = 30000;
 
             //set chu kỳ ghi ra file
-            tmrReadData.Interval = Controller.JsonReader.GetTimeInterval();
+            tmrReadData.Interval = Service.Json.JsonReader.GetTimeInterval();
             tmrReadData.Start();
 
             //quét danh sách thông số cho từng thiết bị từ json
-            dsThietBi = Controller.JsonReader.LayDanhSachThongSoCuaTungThietBi();
+            dsThietBi = Service.Json.JsonReader.LayDanhSachThongSoCuaTungThietBi();
 
 
 
@@ -379,8 +379,8 @@ namespace FileExportScheduler
 
         private void tmrChukyXoaFile_Tick(object sender, EventArgs e)
         {
-            int chuKiXoaFile = Controller.JsonReader.LayThoiGianXoaFile();
-            string duongDanThuMucDuLieu = Controller.JsonReader.DuongDanThuMucDuLieu();
+            int chuKiXoaFile = Service.Json.JsonReader.LayThoiGianXoaFile();
+            string duongDanThuMucDuLieu = Service.Json.JsonReader.DuongDanThuMucDuLieu();
             FileCSV.XoaFileVuotQuaChuKy(chuKiXoaFile, duongDanThuMucDuLieu);
         }
 
@@ -408,9 +408,9 @@ namespace FileExportScheduler
             List<string> ListfilePath = new List<string>();
             try
             {
-                ListfilePath = Controller.JsonReader.LayDsDuongDanTheoTenDiemDo(dsThietBi);
+                ListfilePath = Service.Json.JsonReader.LayDsDuongDanTheoTenDiemDo(dsThietBi);
             }
-            catch (Exception ex)//khi đường dẫn export file ko có trong config thì bắt người dùng nhập lại
+            catch//khi đường dẫn export file ko có trong config thì bắt người dùng nhập lại
             {
                 tmrScheduler.Stop();
                 tmrChukyXoaFile.Stop();

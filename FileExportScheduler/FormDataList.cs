@@ -1,5 +1,4 @@
-﻿using FileExportScheduler.Controller;
-using FileExportScheduler.Models;
+﻿using FileExportScheduler.Models;
 using FileExportScheduler.Models.ThietBi.Base;
 using FileExportScheduler.Service.Json;
 using Newtonsoft.Json;
