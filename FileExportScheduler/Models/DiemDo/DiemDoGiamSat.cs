@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-namespace FileExportScheduler.Models
+using FileExportScheduler.Models.DuLieu;
+namespace FileExportScheduler.Models.DiemDo
 {
     public class DiemDoGiamSat
     {
@@ -28,6 +28,6 @@ namespace FileExportScheduler.Models
             }
         }
 
-       
+
     }
 }

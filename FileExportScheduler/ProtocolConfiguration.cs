@@ -59,7 +59,7 @@ namespace FileExportScheduler
                         dsThietBiGiamSat.Add(deviceIPUnit.Key, deviceIPUnit.Value);
                     }
                 }
-                Dictionary<string, ComConfigModel> deviceCom = jsonObj.ToObject<Dictionary<string, ComConfigModel>>();
+                Dictionary<string, ThietBiCOM> deviceCom = jsonObj.ToObject<Dictionary<string, ThietBiCOM>>();
                 foreach (var deviceComUnit in deviceCom)
                 {
                     if (deviceComUnit.Value.Protocol == "Serial Port")
@@ -251,7 +251,7 @@ namespace FileExportScheduler
             }
             else if (cbProtocol.SelectedItem.ToString() == "Serial Port")
             {
-                ThietBiGiamSat deviceObj1 = new ComConfigModel
+                ThietBiGiamSat deviceObj1 = new ThietBiCOM
                 {
                     Name = txtTenGiaoThuc.Text,
                     Com = cbCOM.SelectedItem.ToString(),
@@ -459,7 +459,7 @@ namespace FileExportScheduler
             }
             else if (cbProtocol.SelectedItem.ToString() == "Serial Port")
             {
-                ComConfigModel comTemp = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text] as ComConfigModel;
+                ThietBiCOM comTemp = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text] as ThietBiCOM;
                 if (comTemp != null)
                 {
                     comTemp.Name = txtTenGiaoThuc.Text;
@@ -481,7 +481,7 @@ namespace FileExportScheduler
                 }
                 else
                 {
-                    ThietBiGiamSat deviceObjCOM = new ComConfigModel
+                    ThietBiGiamSat deviceObjCOM = new ThietBiCOM
                     {
                         Name = txtTenGiaoThuc.Text,
                         Com = cbCOM.SelectedItem.ToString(),

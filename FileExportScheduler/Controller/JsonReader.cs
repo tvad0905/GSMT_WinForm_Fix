@@ -24,7 +24,7 @@ namespace FileExportScheduler.Controller
             using (System.IO.StreamReader sr = File.OpenText(path))
             {
                 var obj = sr.ReadToEnd();
-                SettingModel export = JsonConvert.DeserializeObject<SettingModel>(obj.ToString());
+                CaiDatChung export = JsonConvert.DeserializeObject<CaiDatChung>(obj.ToString());
                 timeInterval = export.Interval * 60000;
             }
             return timeInterval;
@@ -41,7 +41,7 @@ namespace FileExportScheduler.Controller
             using (System.IO.StreamReader sr = File.OpenText(path))
             {
                 var obj = sr.ReadToEnd();
-                SettingModel export = JsonConvert.DeserializeObject<SettingModel>(obj.ToString());
+                CaiDatChung export = JsonConvert.DeserializeObject<CaiDatChung>(obj.ToString());
                 thoiGianXoa = export.ChuKiXoaDuLieu;
             }
             return thoiGianXoa;
@@ -63,7 +63,7 @@ namespace FileExportScheduler.Controller
                 using (StreamReader sr = File.OpenText(path))
                 {
                     var obj = sr.ReadToEnd();
-                    SettingModel export = JsonConvert.DeserializeObject<SettingModel>(obj.ToString());
+                    CaiDatChung export = JsonConvert.DeserializeObject<CaiDatChung>(obj.ToString());
                     foreach (KeyValuePair<string, ThietBiGiamSat> thietbi in dsThietBiGiamSat)
                     {
                         foreach (KeyValuePair<string, DiemDoGiamSat> diemDo in thietbi.Value.dsDiemDoGiamSat)
@@ -98,7 +98,7 @@ namespace FileExportScheduler.Controller
                         dsThietBi.Add(deviceIPUnit.Key, deviceIPUnit.Value);
                     }
                 }
-                Dictionary<string, ComConfigModel> deviceCom = jsonObj.ToObject<Dictionary<string, ComConfigModel>>();
+                Dictionary<string, ThietBiCOM> deviceCom = jsonObj.ToObject<Dictionary<string, ThietBiCOM>>();
                 foreach (var deviceComUnit in deviceCom)
                 {
                     if (deviceComUnit.Value.Protocol == "Serial Port")
@@ -120,7 +120,7 @@ namespace FileExportScheduler.Controller
             using (StreamReader sr = File.OpenText(path))
             {
                 var obj = sr.ReadToEnd();
-                SettingModel export = JsonConvert.DeserializeObject<SettingModel>(obj.ToString());
+                CaiDatChung export = JsonConvert.DeserializeObject<CaiDatChung>(obj.ToString());
                 return export.ExportFilePath.Substring(0, export.ExportFilePath.LastIndexOf("\\"));
             }
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FileExportScheduler.Models.ThietBi.Base;
+using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FileExportScheduler.Models
 {
-    public class ComConfigModel : ThietBiGiamSat
+    public class ThietBiCOM : ThietBiGiamSat
     {
         public string Com { get; set; }
         public int Baud { get; set; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FileExportScheduler.Models
 {
-    public class SettingModel
+    public class CaiDatChung
     {
         public bool AutoRun { get; set; }
         public int Interval { get; set; }

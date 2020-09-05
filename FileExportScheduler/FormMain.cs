@@ -73,7 +73,7 @@ namespace FileExportScheduler
                 {
                     serialPort.DtrEnable = true;
                     serialPort.RtsEnable = true;
-                    var port = (ComConfigModel)deviceUnit.Value;
+                    var port = (ThietBiCOM)deviceUnit.Value;
                     serialPort = new SerialPort(port.Com, port.Baud, port.parity, port.Databit, port.stopBits);
                     serialPort.ReadTimeout = 200;
                     serialPort.Handshake = Handshake.None;
@@ -180,7 +180,7 @@ namespace FileExportScheduler
                 using (StreamReader sr = File.OpenText(path))
                 {
                     var obj = sr.ReadToEnd();
-                    SettingModel setting = JsonConvert.DeserializeObject<SettingModel>(obj.ToString());
+                    CaiDatChung setting = JsonConvert.DeserializeObject<CaiDatChung>(obj.ToString());
                     if (setting.AutoRun == true)
                     {
                         btnStart.PerformClick();

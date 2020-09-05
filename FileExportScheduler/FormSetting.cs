@@ -40,7 +40,7 @@ namespace FileExportScheduler
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            SettingModel settingModel = new SettingModel();
+            CaiDatChung settingModel = new CaiDatChung();
 
             settingModel.AutoRun = chkAutoRun.Checked;
             settingModel.Interval = Int32.Parse(udInterval.Value.ToString());
@@ -80,7 +80,7 @@ namespace FileExportScheduler
                 using (StreamReader sr = File.OpenText(path))
                 {
                     var obj = sr.ReadToEnd();
-                    SettingModel export = JsonConvert.DeserializeObject<SettingModel>(obj.ToString());
+                    CaiDatChung export = JsonConvert.DeserializeObject<CaiDatChung>(obj.ToString());
                     udInterval.Value = export.Interval;
                     txtExportFilePath.Text = export.ExportFilePath;
                     chkAutoRun.Checked = export.AutoRun;

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using FileExportScheduler.Models.DiemDo;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileExportScheduler.Models
+namespace FileExportScheduler.Models.ThietBi.Base
 {
     public class ThietBiGiamSat
     {
@@ -13,5 +14,6 @@ namespace FileExportScheduler.Models
         public TypeEnum TypeModel { get; set; }
 
         public Dictionary<string, DiemDoGiamSat> dsDiemDoGiamSat = new Dictionary<string, DiemDoGiamSat>();
+
     }
 }

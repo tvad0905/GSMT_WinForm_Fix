@@ -62,7 +62,7 @@ namespace FileExportScheduler
                         deviceDic.Add(deviceIPUnit.Key, deviceIPUnit.Value);
                     }
                 }
-                Dictionary<string, ComConfigModel> deviceCom = jsonObj.ToObject<Dictionary<string, ComConfigModel>>();
+                Dictionary<string, ThietBiCOM> deviceCom = jsonObj.ToObject<Dictionary<string, ThietBiCOM>>();
                 foreach (var deviceComUnit in deviceCom)
                 {
                     if (deviceComUnit.Value.Protocol == "Serial Port")
@@ -145,7 +145,7 @@ namespace FileExportScheduler
                     ThietBiIP deviceTemp = deviceDic[protocolConfiguration.txtTenGiaoThuc.Text] as ThietBiIP;
                     if (deviceTemp == null)
                     {
-                        ComConfigModel comTemp = deviceDic[protocolConfiguration.txtTenGiaoThuc.Text] as ComConfigModel;
+                        ThietBiCOM comTemp = deviceDic[protocolConfiguration.txtTenGiaoThuc.Text] as ThietBiCOM;
                         protocolConfiguration.cbCOM.Text = comTemp.Com;
                         protocolConfiguration.cbBaud.Text = comTemp.Baud.ToString();
                         protocolConfiguration.cbParity.Text = comTemp.parity.ToString();
