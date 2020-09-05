@@ -11,8 +11,6 @@ namespace FileExportScheduler.Models.ThietBi.Base
     {
         public string Name { get; set; }
         public string Protocol { get; set; }
-        public TypeEnum TypeModel { get; set; }
-
         public Dictionary<string, DiemDoGiamSat> dsDiemDoGiamSat = new Dictionary<string, DiemDoGiamSat>();
 
     }

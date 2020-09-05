@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace FileExportScheduler.Controller
+namespace FileExportScheduler.Service.Json
 {
     public static class GetPathJson
     {

@@ -1,6 +1,7 @@
 ﻿using FileExportScheduler.Controller;
 using FileExportScheduler.Models;
 using FileExportScheduler.Models.ThietBi.Base;
+using FileExportScheduler.Service.Json;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -72,7 +73,7 @@ namespace FileExportScheduler
                     }
                 }
             }
-            catch 
+            catch
             {
             }
         }
@@ -93,16 +94,8 @@ namespace FileExportScheduler
 
             foreach (KeyValuePair<string, ThietBiGiamSat> device in deviceDic)
             {
-                if (device.Value.TypeModel == TypeEnum.Device)
-                {
-                    TreeNode node = new TreeNode(device.Value.Name);
-                    tvMain.Nodes["Devices"].Nodes.Add(node);
-                }
-                else if (device.Value.TypeModel == TypeEnum.Protocol)
-                {
                     TreeNode node = new TreeNode(device.Value.Name);
                     tvMain.Nodes["Protocols"].Nodes.Add(node);
-                }
             }
             foreach (TreeNode node in tvMain.Nodes)
             {

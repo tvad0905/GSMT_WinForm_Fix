@@ -14,9 +14,10 @@ using System.Web.Script.Serialization;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
 using System.IO.Ports;
-using FileExportScheduler.KiemTra;
+using FileExportScheduler.KiemTraDauVao;
 using FileExportScheduler.Models.ThietBi.Base;
 using FileExportScheduler.Models.DiemDo;
+using FileExportScheduler.Service.Json;
 
 namespace FileExportScheduler
 {
@@ -243,7 +244,6 @@ namespace FileExportScheduler
                     IP = txtIPAdress.Text,
                     Port = Convert.ToInt32(txtPort.Text),
                     Protocol = cbProtocol.SelectedItem.ToString(),
-                    TypeModel = TypeEnum.Protocol,
                     dsDiemDoGiamSat = new Dictionary<string, DiemDoGiamSat>(),
                 };
 
@@ -259,7 +259,6 @@ namespace FileExportScheduler
                     parity = (Parity)Enum.Parse(typeof(Parity), cbParity.SelectedItem.ToString()),
                     Databit = int.Parse(cbDataBit.SelectedItem.ToString()),
                     stopBits = (StopBits)Enum.Parse(typeof(StopBits), cbStopBit.SelectedItem.ToString()),
-                    TypeModel = TypeEnum.Protocol,
                     Protocol = cbProtocol.SelectedItem.ToString(),
                     dsDiemDoGiamSat = new Dictionary<string, DiemDoGiamSat>(),
                 };
@@ -449,7 +448,6 @@ namespace FileExportScheduler
                         IP = txtIPAdress.Text,
                         Port = Convert.ToInt32(txtPort.Text),
                         Protocol = cbProtocol.SelectedItem.ToString(),
-                        TypeModel = TypeEnum.Protocol,
                         dsDiemDoGiamSat = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text].dsDiemDoGiamSat
                     };
                     dsThietBiGiamSat.Remove(formDataList.selectedNodeDouble.Text);
@@ -488,7 +486,6 @@ namespace FileExportScheduler
                         parity = (Parity)Enum.Parse(typeof(Parity), cbParity.SelectedItem.ToString()),
                         Databit = int.Parse(cbDataBit.SelectedItem.ToString()),
                         stopBits = (StopBits)Enum.Parse(typeof(StopBits), cbStopBit.SelectedItem.ToString()),
-                        TypeModel = TypeEnum.Protocol,
                         Protocol = cbProtocol.SelectedItem.ToString(),
                         dsDiemDoGiamSat = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text].dsDiemDoGiamSat
 

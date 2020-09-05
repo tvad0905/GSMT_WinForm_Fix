@@ -6,6 +6,7 @@ using FileExportScheduler.Models;
 using FileExportScheduler.Models.DiemDo;
 using FileExportScheduler.Models.DuLieu;
 using FileExportScheduler.Models.ThietBi.Base;
+using FileExportScheduler.Service.Json;
 using Modbus.Device;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -90,7 +91,7 @@ namespace FileExportScheduler
                             serialPort.Open();
 
                     }
-                    catch 
+                    catch
                     {
                         //Lỗi ko kết nối được
                     }
@@ -212,21 +213,15 @@ namespace FileExportScheduler
                         this.Invoke(new MethodInvoker(async delegate { await Task.Run(() => IPConnect(/*ListfilePath, */deviceUnit)); }));
 
                     }
-                    catch
-                    {
-
-                    }
+                    catch{}
                 }
                 else if (deviceUnit.Value.Protocol == "Serial Port")
                 {
                     try
                     {
-                        await Task.Run(() => COMConnect(/*ListfilePath,*/ deviceUnit));
+                        this.Invoke(new MethodInvoker(async delegate { await Task.Run(() => COMConnect(/*ListfilePath,*/ deviceUnit)); }));
                     }
-                    catch
-                    {
-
-                    }
+                    catch{}
                 }
             }
 
@@ -262,7 +257,7 @@ namespace FileExportScheduler
                     return;
                 }
             }
-            catch 
+            catch
             {
             }
         }
@@ -394,7 +389,7 @@ namespace FileExportScheduler
                 tmrReadData.Stop();
                 XuatRaFileCSV();
             }
-            catch 
+            catch
             {
             }
             finally
