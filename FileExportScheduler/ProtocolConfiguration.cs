@@ -15,6 +15,8 @@ using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
 using System.IO.Ports;
 using FileExportScheduler.KiemTra;
+using FileExportScheduler.Models.ThietBi.Base;
+using FileExportScheduler.Models.DiemDo;
 
 namespace FileExportScheduler
 {
@@ -51,7 +53,7 @@ namespace FileExportScheduler
                 var path = GetPathJson.getPathConfig("DeviceAndData.json");
                 dsThietBiGiamSat.Clear();
                 JObject jsonObj = JObject.Parse(File.ReadAllText(path));
-                Dictionary<string, ThietBiIP> deviceIP = jsonObj.ToObject<Dictionary<string, ThietBiIP>>();
+                Dictionary<string, ThietBiTCPIP> deviceIP = jsonObj.ToObject<Dictionary<string, ThietBiTCPIP>>();
                 foreach (var deviceIPUnit in deviceIP)
                 {
                     if (deviceIPUnit.Value.Protocol == "Modbus TCP/IP" || deviceIPUnit.Value.Protocol == "Siemens S7-1200")
@@ -68,7 +70,7 @@ namespace FileExportScheduler
                     }
                 }
             }
-            catch (Exception ex)
+            catch 
             {
             }
         }
@@ -211,11 +213,9 @@ namespace FileExportScheduler
                     GhiDsThietBiRaFileJson();
                 }
             }
-            catch (Exception ex)
+            catch 
             {
-
             }
-
         }
 
         //lưu cấu hình protocol
@@ -237,7 +237,7 @@ namespace FileExportScheduler
                 {
                     return;
                 }
-                ThietBiGiamSat deviceObj = new ThietBiIP
+                ThietBiGiamSat deviceObj = new ThietBiTCPIP
                 {
                     Name = txtTenGiaoThuc.Text,
                     IP = txtIPAdress.Text,
@@ -356,7 +356,6 @@ namespace FileExportScheduler
             }
             catch (IOException ex)
             {
-
                 MessageBox.Show("File đang mở, vui lòng đóng file và thử lại!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
@@ -433,7 +432,7 @@ namespace FileExportScheduler
                     return;
                 }
 
-                ThietBiIP thietBi = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text] as ThietBiIP;
+                ThietBiTCPIP thietBi = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text] as ThietBiTCPIP;
                 if (thietBi != null)
                 {
                     thietBi.Name = txtTenGiaoThuc.Text;
@@ -444,7 +443,7 @@ namespace FileExportScheduler
                 }
                 else
                 {
-                    ThietBiGiamSat deviceObjIP = new ThietBiIP
+                    ThietBiGiamSat deviceObjIP = new ThietBiTCPIP
                     {
                         Name = txtTenGiaoThuc.Text,
                         IP = txtIPAdress.Text,
@@ -534,9 +533,8 @@ namespace FileExportScheduler
                 bindingSource.DataSource = dsDuLieuDiemDoHienThi;
                 dgvDataProtocol.DataSource = bindingSource;
             }
-            catch (Exception ex)
+            catch 
             {
-
             }
         }
         #endregion

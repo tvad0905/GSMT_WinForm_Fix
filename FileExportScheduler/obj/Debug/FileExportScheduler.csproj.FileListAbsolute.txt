@@ -25,7 +25,6 @@ C:\Users\admin\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\FileE
 C:\Users\admin\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\FileExportScheduler.exe
 C:\Users\admin\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\FileExportScheduler.pdb
 C:\Users\admin\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\Unme.Common.dll
-C:\Users\admin\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\log4net.xml
 C:\Users\admin\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CopyComplete
 C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\bin\Debug\Unme.Common.dll
 C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\Unme.Common.dll
@@ -50,3 +49,7 @@ C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\Fi
 C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.DialogLicence.resources
 C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\Image\logo.jpg
 C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormAbout.resources
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormAbout.resources
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.DialogLicence.resources
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\bin\Debug\Unme.Common.dll
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\Image\logo.jpg

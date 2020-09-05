@@ -9,11 +9,7 @@ namespace FileExportScheduler.Models
 {
     public class ThietBiTCPIP : ThietBiGiamSat
     {
-        //public string Name { get; set; }
         public string IP { get; set; }
         public int Port { get; set; }
-        //public string Protocol { get; set; }
-        
-        
     }
 }

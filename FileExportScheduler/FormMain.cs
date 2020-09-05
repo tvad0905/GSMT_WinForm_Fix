@@ -3,6 +3,9 @@ using EasyModbus.Exceptions;
 using FileExportScheduler.Constant;
 using FileExportScheduler.Controller;
 using FileExportScheduler.Models;
+using FileExportScheduler.Models.DiemDo;
+using FileExportScheduler.Models.DuLieu;
+using FileExportScheduler.Models.ThietBi.Base;
 using Modbus.Device;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -87,7 +90,7 @@ namespace FileExportScheduler
                             serialPort.Open();
 
                     }
-                    catch (Exception ex)
+                    catch 
                     {
                         //Lỗi ko kết nối được
                     }
@@ -203,13 +206,13 @@ namespace FileExportScheduler
             {
                 if (deviceUnit.Value.Protocol == "Modbus TCP/IP" || deviceUnit.Value.Protocol == "Siemens S7-1200")
                 {
-                    modbus = new ModbusClient(((ThietBiIP)deviceUnit.Value).IP, ((ThietBiIP)deviceUnit.Value).Port);
+                    modbus = new ModbusClient(((ThietBiTCPIP)deviceUnit.Value).IP, ((ThietBiTCPIP)deviceUnit.Value).Port);
                     try
                     {
                         this.Invoke(new MethodInvoker(async delegate { await Task.Run(() => IPConnect(/*ListfilePath, */deviceUnit)); }));
-                        
+
                     }
-                    catch (Exception ex)
+                    catch
                     {
 
                     }
@@ -220,13 +223,13 @@ namespace FileExportScheduler
                     {
                         await Task.Run(() => COMConnect(/*ListfilePath,*/ deviceUnit));
                     }
-                    catch (Exception ex)
+                    catch
                     {
 
                     }
                 }
             }
-            
+
             lblTrangThaiThietBi.Text = ThongBaoController.DsLoi();
             ThongBaoLoi.DsThongBaoLoi.Clear();
             if (lblTrangThaiThietBi.Text == ThongBaoLoi.HoatDongBinhThuong)
@@ -259,9 +262,8 @@ namespace FileExportScheduler
                     return;
                 }
             }
-            catch (Exception e)
+            catch 
             {
-
             }
         }
 
@@ -274,7 +276,7 @@ namespace FileExportScheduler
                     serialPort.Open();
                     getDataCOM(deviceUnit);
                 }
-                catch (Exception ex)
+                catch
                 {
                     lock (objW2)
                     {
@@ -296,17 +298,15 @@ namespace FileExportScheduler
                     try//lấy dữ liệu thành công
                     {
                         dulieu.Value.GiaTri = Convert.ToInt32(Data.Data.LayDuLieuTCPIP(modbus, dulieu.Value)).ToString();
-
                         dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Good;
                     }
-                    catch(ModbusException ex)
+                    catch (ModbusException ex)
                     {
                         ThongBaoLoi.DsThongBaoLoi.Add(ThongBaoLoi.VuotQuaDuLieu);
                         dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
                     }
                     catch (Exception ex)//Lỗi lấy dữ liệu thất bại
                     {
-
                         ThongBaoLoi.DsThongBaoLoi.Add(ThongBaoLoi.KhongCoTinHieuTraVe);
                         dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
                     }
@@ -344,9 +344,8 @@ namespace FileExportScheduler
                         ThongBaoLoi.DsThongBaoLoi.Add(ThongBaoLoi.VuotQuaDuLieu);
                         dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
                     }
-                    catch (Exception ex)
+                    catch
                     {
-                        
                     }
                     finally
                     {
@@ -371,7 +370,7 @@ namespace FileExportScheduler
                 tmrScheduler.Stop();
                 getDeviceConnect();
             }
-            catch (Exception ex)
+            catch
             {
 
             }
@@ -395,15 +394,14 @@ namespace FileExportScheduler
                 tmrReadData.Stop();
                 XuatRaFileCSV();
             }
-            catch (Exception ex)
+            catch 
             {
-
             }
             finally
             {
                 tmrReadData.Start();
             }
-            
+
         }
 
         private void XuatRaFileCSV()

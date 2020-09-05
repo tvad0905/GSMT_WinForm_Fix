@@ -1,4 +1,6 @@
 ﻿using FileExportScheduler.Models;
+using FileExportScheduler.Models.DiemDo;
+using FileExportScheduler.Models.ThietBi.Base;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -75,7 +77,7 @@ namespace FileExportScheduler.Controller
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 throw;
             }
@@ -90,7 +92,7 @@ namespace FileExportScheduler.Controller
                 var pathData = GetPathJson.getPathConfig("DeviceAndData.json");
                 dsThietBi.Clear();
                 JObject jsonObj = JObject.Parse(File.ReadAllText(pathData));
-                Dictionary<string, ThietBiIP> deviceIP = jsonObj.ToObject<Dictionary<string, ThietBiIP>>();
+                Dictionary<string, ThietBiTCPIP> deviceIP = jsonObj.ToObject<Dictionary<string, ThietBiTCPIP>>();
                 foreach (var deviceIPUnit in deviceIP)
                 {
                     if (deviceIPUnit.Value.Protocol == "Modbus TCP/IP" || deviceIPUnit.Value.Protocol == "Siemens S7-1200")
@@ -107,7 +109,7 @@ namespace FileExportScheduler.Controller
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
             }
             return dsThietBi;

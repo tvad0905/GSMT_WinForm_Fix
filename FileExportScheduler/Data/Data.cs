@@ -1,5 +1,6 @@
 ﻿using EasyModbus;
 using EasyModbus.Exceptions;
+using FileExportScheduler.Models.DuLieu;
 using Modbus.Device;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace FileExportScheduler.Data
 {
     public static class Data
     {
-        public static string LayDuLieuTCPIP(ModbusClient mobus, Models.DuLieuGiamSat duLieuTemp)
+        public static string LayDuLieuTCPIP(ModbusClient mobus, DuLieuGiamSat duLieuTemp)
          {
             string giaTriDuLieu = "";
             try
@@ -40,13 +41,13 @@ namespace FileExportScheduler.Data
                     giaTriDuLieu = readHoldingRegister[0].ToString();
                 }
             }
-            catch(Exception ex)
+            catch
             {
                 throw;
             }
             return giaTriDuLieu;
         }
-        public static string LayDuLieuCOM(Models.DuLieuGiamSat duLieuTemp, SerialPort serialPort)
+        public static string LayDuLieuCOM(DuLieuGiamSat duLieuTemp, SerialPort serialPort)
         {
             string giaTriDuLieu = ""; 
             IModbusMaster master = ModbusSerialMaster.CreateRtu(serialPort);
@@ -80,7 +81,7 @@ namespace FileExportScheduler.Data
                 }
 
             }
-            catch (Exception ex)
+            catch
             {
                 throw;
             }
