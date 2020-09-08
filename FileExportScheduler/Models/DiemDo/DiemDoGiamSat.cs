@@ -9,9 +9,9 @@ namespace FileExportScheduler.Models.DiemDo
     public class DiemDoGiamSat
     {
         string tenDiemDo;
-        public Dictionary<string, DuLieuGiamSat> DsDulieu = new Dictionary<string, DuLieuGiamSat>();
+        public Dictionary<string, DuLieuGiamSatModel> DsDulieu = new Dictionary<string, DuLieuGiamSatModel>();
 
-        public DiemDoGiamSat(string tenDiemDo, Dictionary<string, DuLieuGiamSat> DsDulieu)
+        public DiemDoGiamSat(string tenDiemDo, Dictionary<string, DuLieuGiamSatModel> DsDulieu)
         {
             this.tenDiemDo = tenDiemDo;
             this.DsDulieu = DsDulieu;

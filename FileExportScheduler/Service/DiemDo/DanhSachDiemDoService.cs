@@ -22,7 +22,7 @@ namespace FileExportScheduler.Service.DiemDo
                     break;
                 }
 
-                DuLieuGiamSat duLieu = new DuLieuGiamSat();
+                DuLieuGiamSatModel duLieu = new DuLieuGiamSatModel();
                 duLieu.Ten = dr.Cells[0].Value.ToString();
                 duLieu.DiemDo = dr.Cells[1].Value.ToString();
                 duLieu.DiaChi = dr.Cells[2].Value.ToString();
@@ -39,7 +39,7 @@ namespace FileExportScheduler.Service.DiemDo
                         duLieu.DiemDo,
                         new DiemDoGiamSat(
                             duLieu.DiemDo,
-                            new Dictionary<string, DuLieuGiamSat>()
+                            new Dictionary<string, DuLieuGiamSatModel>()
                             )
                     );
                     dsDiemDoGiamSat[duLieu.DiemDo].DsDulieu.Add(duLieu.Ten, duLieu);

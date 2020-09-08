@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FileExportScheduler.Models.DuLieu
 {
-    public class DuLieuGiamSat
+    public class DuLieuGiamSatModel
     {
         public string donViDo;
         public string Ten { get; set; }

@@ -14,7 +14,7 @@ namespace FileExportScheduler.Data
 {
     public static class Data
     {
-        public static string LayDuLieuTCPIP(ModbusClient modbus, DuLieuGiamSat duLieuTemp)
+        public static string LayDuLieuTCPIP(ModbusClient modbus, DuLieuGiamSatModel duLieuTemp)
          {
             string giaTriDuLieu = "";
             try
@@ -47,7 +47,7 @@ namespace FileExportScheduler.Data
             }
             return giaTriDuLieu;
         }
-        public static string LayDuLieuCOM(DuLieuGiamSat duLieuTemp, SerialPort serialPort)
+        public static string LayDuLieuCOM(DuLieuGiamSatModel duLieuTemp, SerialPort serialPort)
         {
             string giaTriDuLieu = ""; 
             IModbusMaster master = ModbusSerialMaster.CreateRtu(serialPort);

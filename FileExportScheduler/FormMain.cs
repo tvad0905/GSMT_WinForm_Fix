@@ -33,7 +33,7 @@ namespace FileExportScheduler
     {
         #region Variables Declaration
         bool checkExit = false;
-        Dictionary<string, ThietBiGiamSat> dsThietBi = new Dictionary<string, ThietBiGiamSat>();//danh sách các thiêt bị
+        Dictionary<string, ThietBiGiamSatModel> dsThietBi = new Dictionary<string, ThietBiGiamSatModel>();//danh sách các thiêt bị
         Dictionary<string, string> dcExportData = new Dictionary<string, string>();
         ModbusClient modbus = new ModbusClient();
         SerialPort serialPort = new SerialPort();
@@ -72,7 +72,7 @@ namespace FileExportScheduler
             dsThietBi = Service.Json.JsonReader.LayDanhSachThongSoCuaTungThietBi();
 
 
-            foreach (KeyValuePair<string, ThietBiGiamSat> deviceUnit in dsThietBi)
+            foreach (KeyValuePair<string, ThietBiGiamSatModel> deviceUnit in dsThietBi)
             {
                 if (deviceUnit.Value.Protocol == "Serial Port")
                 {
@@ -204,7 +204,7 @@ namespace FileExportScheduler
         {
 
 
-            foreach (KeyValuePair<string, ThietBiGiamSat> deviceUnit in dsThietBi)
+            foreach (KeyValuePair<string, ThietBiGiamSatModel> deviceUnit in dsThietBi)
             {
                 if (deviceUnit.Value.Protocol == "Modbus TCP/IP" || deviceUnit.Value.Protocol == "Siemens S7-1200")
                 {
@@ -241,7 +241,7 @@ namespace FileExportScheduler
         }
 
         // tạo 1 thread cho connect
-        void IPConnect(/*List<string> filePath, */KeyValuePair<string, ThietBiGiamSat> deviceUnit)
+        void IPConnect(/*List<string> filePath, */KeyValuePair<string, ThietBiGiamSatModel> deviceUnit)
         {
 
             try
@@ -264,7 +264,7 @@ namespace FileExportScheduler
             }
         }
 
-        void COMConnect(/*List<string> filePath, */KeyValuePair<string, ThietBiGiamSat> deviceUnit)
+        void COMConnect(/*List<string> filePath, */KeyValuePair<string, ThietBiGiamSatModel> deviceUnit)
         {
             if (!serialPort.IsOpen)
             {
@@ -285,11 +285,11 @@ namespace FileExportScheduler
         }
 
         //lấy dữ liệu của các thiết bị 
-        private void GetDataDeviceIP(KeyValuePair<string, ThietBiGiamSat> deviceUnit)
+        private void GetDataDeviceIP(KeyValuePair<string, ThietBiGiamSatModel> deviceUnit)
         {
             foreach (KeyValuePair<string, DiemDoGiamSat> diemDo in deviceUnit.Value.dsDiemDoGiamSat)
             {
-                foreach (KeyValuePair<string, DuLieuGiamSat> dulieu in diemDo.Value.DsDulieu)
+                foreach (KeyValuePair<string, DuLieuGiamSatModel> dulieu in diemDo.Value.DsDulieu)
                 {
 
                     try//lấy dữ liệu thành công
@@ -315,11 +315,11 @@ namespace FileExportScheduler
             }
         }
 
-        private void getDataCOM(KeyValuePair<string, ThietBiGiamSat> deviceUnit)
+        private void getDataCOM(KeyValuePair<string, ThietBiGiamSatModel> deviceUnit)
         {
             foreach (KeyValuePair<string, DiemDoGiamSat> diemDo in deviceUnit.Value.dsDiemDoGiamSat)
             {
-                foreach (KeyValuePair<string, DuLieuGiamSat> dulieu in diemDo.Value.DsDulieu)
+                foreach (KeyValuePair<string, DuLieuGiamSatModel> dulieu in diemDo.Value.DsDulieu)
                 {
                     //lấy dữ liệu thành công
                     try
@@ -380,7 +380,7 @@ namespace FileExportScheduler
         private void tmrChukyXoaFile_Tick(object sender, EventArgs e)
         {
             int chuKiXoaFile = Service.Json.JsonReader.LayThoiGianXoaFile();
-            string duongDanThuMucDuLieu = Service.Json.JsonReader.DuongDanThuMucDuLieu();
+            string duongDanThuMucDuLieu = Service.Json.JsonReader.DuongDanThuLog();
             FileCSV.XoaFileVuotQuaChuKy(chuKiXoaFile, duongDanThuMucDuLieu);
         }
 

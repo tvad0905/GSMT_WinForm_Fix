@@ -18,13 +18,14 @@ using FileExportScheduler.Models.ThietBi.Base;
 using FileExportScheduler.Models.DiemDo;
 using FileExportScheduler.Service.Json;
 using FileExportScheduler.Service.DiemDo;
+using FileExportScheduler.Service.ThietBi;
 
 namespace FileExportScheduler
 {
     public partial class ProtocolConfiguration : UserControl
     {
         #region biến toàn cục
-        public Dictionary<string, ThietBiGiamSat> dsThietBiGiamSat = new Dictionary<string, ThietBiGiamSat>();
+        public Dictionary<string, ThietBiGiamSatModel> dsThietBiGiamSat = new Dictionary<string, ThietBiGiamSatModel>();
         TreeView TVMain;
         public FormDataList formDataList;
         public string tenDuLieuDuocChon;
@@ -51,27 +52,10 @@ namespace FileExportScheduler
         {
             try
             {
-                var path = GetPathJson.getPathConfig("DeviceAndData.json");
                 dsThietBiGiamSat.Clear();
-                JObject jsonObj = JObject.Parse(File.ReadAllText(path));
-                Dictionary<string, ThietBiTCPIP> deviceIP = jsonObj.ToObject<Dictionary<string, ThietBiTCPIP>>();
-                foreach (var deviceIPUnit in deviceIP)
-                {
-                    if (deviceIPUnit.Value.Protocol == "Modbus TCP/IP" || deviceIPUnit.Value.Protocol == "Siemens S7-1200")
-                    {
-                        dsThietBiGiamSat.Add(deviceIPUnit.Key, deviceIPUnit.Value);
-                    }
-                }
-                Dictionary<string, ThietBiCOM> deviceCom = jsonObj.ToObject<Dictionary<string, ThietBiCOM>>();
-                foreach (var deviceComUnit in deviceCom)
-                {
-                    if (deviceComUnit.Value.Protocol == "Serial Port")
-                    {
-                        dsThietBiGiamSat.Add(deviceComUnit.Key, deviceComUnit.Value);
-                    }
-                }
+                dsThietBiGiamSat = ThietBiGiamSatService.getDsThietBi();
             }
-            catch 
+            catch
             {
             }
         }
@@ -190,15 +174,15 @@ namespace FileExportScheduler
                                 var diemDo = dsThietBiGiamSat[txtTenGiaoThuc.Text].//lấy ra thiết bị
                                                                  dsDiemDoGiamSat[row.Cells[1].Value.ToString()];//lấy ra điểm đo
                                 diemDo.DsDulieu.Remove(row.Cells[0].Value.ToString());//xóa 1 dữ liệu trong danh sách dữ liệu
-                                if(diemDo.DsDulieu.Count()==0)// xóa điểm đo khi dữ liệu của điểm đo trống
+                                if (diemDo.DsDulieu.Count() == 0)// xóa điểm đo khi dữ liệu của điểm đo trống
                                 {
                                     dsThietBiGiamSat[txtTenGiaoThuc.Text].//lấy ra thiết bị
                                            dsDiemDoGiamSat.Remove(diemDo.TenDiemDo);
-                                }    
+                                }
 
                             }
                             catch { }
-                            
+
                         }
                         else
                         {
@@ -214,7 +198,7 @@ namespace FileExportScheduler
                     GhiDsThietBiRaFileJson();
                 }
             }
-            catch 
+            catch
             {
             }
         }
@@ -238,7 +222,7 @@ namespace FileExportScheduler
                 {
                     return;
                 }
-                ThietBiGiamSat deviceObj = new ThietBiTCPIP
+                ThietBiGiamSatModel deviceObj = new ThietBiTCPIP
                 {
                     Name = txtTenGiaoThuc.Text,
                     IP = txtIPAdress.Text,
@@ -251,7 +235,7 @@ namespace FileExportScheduler
             }
             else if (cbProtocol.SelectedItem.ToString() == "Serial Port")
             {
-                ThietBiGiamSat deviceObj1 = new ThietBiCOM
+                ThietBiGiamSatModel deviceObj1 = new ThietBiCOM
                 {
                     Name = txtTenGiaoThuc.Text,
                     Com = cbCOM.SelectedItem.ToString(),
@@ -308,7 +292,7 @@ namespace FileExportScheduler
             {
                 thietBiGiamSatDuocChon.dsDiemDoGiamSat = DanhSachDiemDoService.LayDsDiemDoTuDgv(dgvDataProtocol);
                 GhiDsThietBiRaFileJson();
-               
+
             }
             else
             {
@@ -442,7 +426,7 @@ namespace FileExportScheduler
                 }
                 else
                 {
-                    ThietBiGiamSat deviceObjIP = new ThietBiTCPIP
+                    ThietBiGiamSatModel deviceObjIP = new ThietBiTCPIP
                     {
                         Name = txtTenGiaoThuc.Text,
                         IP = txtIPAdress.Text,
@@ -478,7 +462,7 @@ namespace FileExportScheduler
                 }
                 else
                 {
-                    ThietBiGiamSat deviceObjCOM = new ThietBiCOM
+                    ThietBiGiamSatModel deviceObjCOM = new ThietBiCOM
                     {
                         Name = txtTenGiaoThuc.Text,
                         Com = cbCOM.SelectedItem.ToString(),
@@ -530,9 +514,8 @@ namespace FileExportScheduler
                 bindingSource.DataSource = dsDuLieuDiemDoHienThi;
                 dgvDataProtocol.DataSource = bindingSource;
             }
-            catch 
-            {
-            }
+            catch
+            { }
         }
         #endregion
 
@@ -553,6 +536,11 @@ namespace FileExportScheduler
                     return false;
                 }
             }
+        }
+
+        private void dgvDataProtocol_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

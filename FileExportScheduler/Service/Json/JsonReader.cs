@@ -56,7 +56,7 @@ namespace FileExportScheduler.Service.Json
         /// <param name="dsThietBiGiamSat">danh sách thiết bị</param>
         /// <param name="dsDiemDo">danh sách điểm đo</param>
         /// <returns>danh sách đường dẫn theo điểm đo</returns>
-        public static List<string> LayDsDuongDanTheoTenDiemDo(Dictionary<string, ThietBiGiamSat> dsThietBiGiamSat)
+        public static List<string> LayDsDuongDanTheoTenDiemDo(Dictionary<string, ThietBiGiamSatModel> dsThietBiGiamSat)
         {
             List<string> dsDuongDanTheoTenThietBi = new List<string>();//
 
@@ -67,7 +67,7 @@ namespace FileExportScheduler.Service.Json
                 {
                     var obj = sr.ReadToEnd();
                     CaiDatChung export = JsonConvert.DeserializeObject<CaiDatChung>(obj.ToString());
-                    foreach (KeyValuePair<string, ThietBiGiamSat> thietbi in dsThietBiGiamSat)
+                    foreach (KeyValuePair<string, ThietBiGiamSatModel> thietbi in dsThietBiGiamSat)
                     {
                         foreach (KeyValuePair<string, DiemDoGiamSat> diemDo in thietbi.Value.dsDiemDoGiamSat)
                         {
@@ -85,9 +85,13 @@ namespace FileExportScheduler.Service.Json
 
             return dsDuongDanTheoTenThietBi;
         }
-        public static Dictionary<string, ThietBiGiamSat> LayDanhSachThongSoCuaTungThietBi()
+        /// <summary>
+        /// trả về danh sách thông số cho thiêt bị
+        /// </summary>
+        /// <returns></returns>
+        public static Dictionary<string, ThietBiGiamSatModel> LayDanhSachThongSoCuaTungThietBi()
         {
-            Dictionary<string, ThietBiGiamSat> dsThietBi = new Dictionary<string, ThietBiGiamSat>();
+            Dictionary<string, ThietBiGiamSatModel> dsThietBi = new Dictionary<string, ThietBiGiamSatModel>();
             try
             {
                 var pathData = GetPathJson.getPathConfig("DeviceAndData.json");
@@ -110,14 +114,11 @@ namespace FileExportScheduler.Service.Json
                     }
                 }
             }
-            catch
-            {
-            }
+            catch{}
             return dsThietBi;
-
         }
 
-        public static string DuongDanThuMucDuLieu()
+        public static string DuongDanThuLog()
         {
             var path = GetPathJson.getPathConfig("Config.json");
             using (StreamReader sr = File.OpenText(path))

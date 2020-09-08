@@ -24,7 +24,7 @@ namespace FileExportScheduler
     {
         #region biến toàn cục
         // List<Device> lstDevices;
-        Dictionary<string, ThietBiGiamSat> deviceDic = new Dictionary<string, ThietBiGiamSat>();
+        Dictionary<string, ThietBiGiamSatModel> deviceDic = new Dictionary<string, ThietBiGiamSatModel>();
         public TreeNode selectedNode = new TreeNode();
         public TreeNode selectedNodeDouble = new TreeNode();
         #endregion
@@ -91,7 +91,7 @@ namespace FileExportScheduler
         {
             JsonToList();
 
-            foreach (KeyValuePair<string, ThietBiGiamSat> device in deviceDic)
+            foreach (KeyValuePair<string, ThietBiGiamSatModel> device in deviceDic)
             {
                     TreeNode node = new TreeNode(device.Value.Name);
                     tvMain.Nodes["Protocols"].Nodes.Add(node);

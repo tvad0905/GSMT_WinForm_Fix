@@ -67,6 +67,13 @@
   <ItemGroup>
     <Compile Include="Constant\ThongBaoLoi.cs" />
     <Compile Include="Constant\TrangThaiKetNoi.cs" />
+    <Compile Include="FormHienThiDuLieu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormHienThiDuLieu.Designer.cs">
+      <DependentUpon>FormHienThiDuLieu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Service\DuLieu\DanhSachDuLieuService.cs" />
     <Compile Include="Service\FileService\FileCSV.cs" />
     <Compile Include="Service\Json\PathJson.cs" />
     <Compile Include="Service\Json\JsonReader.cs" />
@@ -125,6 +132,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormDataList.resx">
       <DependentUpon>FormDataList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormHienThiDuLieu.resx">
+      <DependentUpon>FormHienThiDuLieu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
