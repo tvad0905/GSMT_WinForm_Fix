@@ -200,7 +200,7 @@ namespace FileExportScheduler
         /// 
         object objW = new object();
         object objW2 = new object();
-        private async void getDeviceConnect()
+        private async void GetDeviceConnect()
         {
 
 
@@ -247,7 +247,7 @@ namespace FileExportScheduler
             try
             {
                 modbus.Connect();
-                getDataDeviceIP(deviceUnit);
+                GetDataDeviceIP(deviceUnit);
             }
             catch (ConnectionException ex)
             {
@@ -285,7 +285,7 @@ namespace FileExportScheduler
         }
 
         //lấy dữ liệu của các thiết bị 
-        private void getDataDeviceIP(KeyValuePair<string, ThietBiGiamSat> deviceUnit)
+        private void GetDataDeviceIP(KeyValuePair<string, ThietBiGiamSat> deviceUnit)
         {
             foreach (KeyValuePair<string, DiemDoGiamSat> diemDo in deviceUnit.Value.dsDiemDoGiamSat)
             {
@@ -365,7 +365,7 @@ namespace FileExportScheduler
             try
             {
                 tmrScheduler.Stop();
-                getDeviceConnect();
+                GetDeviceConnect();
             }
             catch
             {

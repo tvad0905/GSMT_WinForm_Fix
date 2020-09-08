@@ -79,7 +79,7 @@
             }
             else
             {
-                MessageBox.Show("Password is incorrect", "Password", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                MessageBox.Show("Đăng ký không thành công", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Hand);
             }
         }
 
@@ -123,7 +123,7 @@
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 5;
-            this.btnOK.Text = "&OK";
+            this.btnOK.Text = "&Active";
             this.btnOK.UseVisualStyleBackColor = false;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
@@ -224,7 +224,7 @@
             this.btnTrial.Name = "btnTrial";
             this.btnTrial.Size = new System.Drawing.Size(75, 23);
             this.btnTrial.TabIndex = 2;
-            this.btnTrial.Text = "OK";
+            this.btnTrial.Text = "&Trial";
             this.btnTrial.UseVisualStyleBackColor = false;
             this.btnTrial.Click += new System.EventHandler(this.btnTrial_Click_1);
             // 
@@ -235,6 +235,7 @@
             this.ClientSize = new System.Drawing.Size(349, 182);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.grbRegister);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "DialogLicence";

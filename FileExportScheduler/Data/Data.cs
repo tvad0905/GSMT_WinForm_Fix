@@ -14,7 +14,7 @@ namespace FileExportScheduler.Data
 {
     public static class Data
     {
-        public static string LayDuLieuTCPIP(ModbusClient mobus, DuLieuGiamSat duLieuTemp)
+        public static string LayDuLieuTCPIP(ModbusClient modbus, DuLieuGiamSat duLieuTemp)
          {
             string giaTriDuLieu = "";
             try
@@ -22,22 +22,22 @@ namespace FileExportScheduler.Data
                
                 if (Convert.ToInt32(duLieuTemp.DiaChi) <= 9999)
                 {
-                    bool[] readCoil = mobus.ReadCoils(Convert.ToInt32(duLieuTemp.DiaChi), 1);
+                    bool[] readCoil = modbus.ReadCoils(Convert.ToInt32(duLieuTemp.DiaChi), 1);
                     giaTriDuLieu = readCoil[0].ToString();
                 }
                 else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 19999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 10000)
                 {
-                    bool[] discreteInput = mobus.ReadDiscreteInputs(Convert.ToInt32(duLieuTemp.DiaChi) - 10000, 1);
+                    bool[] discreteInput = modbus.ReadDiscreteInputs(Convert.ToInt32(duLieuTemp.DiaChi) - 10000, 1);
                     giaTriDuLieu = discreteInput[0].ToString();
                 }
                 else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 39999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 30000)
                 {
-                    int[] readRegister = mobus.ReadInputRegisters(Convert.ToInt32(duLieuTemp.DiaChi) - 30000, 1);
+                    int[] readRegister = modbus.ReadInputRegisters(Convert.ToInt32(duLieuTemp.DiaChi) - 30000, 1);
                     giaTriDuLieu = readRegister[0].ToString();
                 }
                 else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 49999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 40000)
                 {
-                    int[] readHoldingRegister = mobus.ReadHoldingRegisters(Convert.ToInt32(duLieuTemp.DiaChi) - 40000, 1);
+                    int[] readHoldingRegister = modbus.ReadHoldingRegisters(Convert.ToInt32(duLieuTemp.DiaChi) - 40000, 1);
                     giaTriDuLieu = readHoldingRegister[0].ToString();
                 }
             }
