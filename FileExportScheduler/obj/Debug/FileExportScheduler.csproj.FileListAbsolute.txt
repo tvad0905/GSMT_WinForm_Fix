@@ -56,3 +56,4 @@ C:\Users\admin\Source\Repos\GSMT_WinForm_Fix2\FileExportScheduler\obj\Debug\File
 C:\Users\admin\Source\Repos\GSMT_WinForm_Fix2\FileExportScheduler\obj\Debug\FileExportScheduler.FormHienThiDuLieu.resources
 C:\Users\admin\Source\Repos\GSMT_WinForm_Fix2\FileExportScheduler\obj\Debug\FileExportScheduler.DialogLicence.resources
 C:\Users\admin\Source\Repos\GSMT_WinForm_Fix2\FileExportScheduler\bin\Debug\Image\logo.jpg
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormHienThiDuLieu.resources

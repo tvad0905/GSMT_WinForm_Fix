@@ -37,16 +37,13 @@ namespace FileExportScheduler
         Dictionary<string, string> dcExportData = new Dictionary<string, string>();
         ModbusClient modbus = new ModbusClient();
         SerialPort serialPort = new SerialPort();
+        FormHienThiDuLieu formHienThiDuLieu;
         #endregion
+
+
         public FormMain()
         {
             InitializeComponent();
-            FormHienThiDuLieu formHienThiDuLieu = new FormHienThiDuLieu(dsThietBi);
-
-            Thread t2 = new Thread(() => {
-                formHienThiDuLieu.Show();
-            });
-            t2.Start();
         }
         #region Button Events
         private void btnStart_Click(object sender, EventArgs e)
@@ -106,6 +103,8 @@ namespace FileExportScheduler
 
 
             tmrScheduler.Start();
+
+
             tmrChukyXoaFile.Start();
             //lblStatus.Text = "Hệ thống đang chạy !";
         }
@@ -199,6 +198,9 @@ namespace FileExportScheduler
                     }
                 }
             }
+
+            formHienThiDuLieu = new FormHienThiDuLieu(dsThietBi);
+            formHienThiDuLieu.Show();
         }
 
         /// <summary>
@@ -373,6 +375,8 @@ namespace FileExportScheduler
             {
                 tmrScheduler.Stop();
                 GetDeviceConnect();
+
+                formHienThiDuLieu.DsThietBi = dsThietBi;//hien thi du lieu doc duoc len view
             }
             catch
             {
@@ -397,6 +401,7 @@ namespace FileExportScheduler
             {
                 tmrReadData.Stop();
                 XuatRaFileCSV();
+
             }
             catch
             {

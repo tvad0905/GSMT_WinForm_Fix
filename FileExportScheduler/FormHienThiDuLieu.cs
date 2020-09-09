@@ -28,22 +28,25 @@ namespace FileExportScheduler
             InitializeComponent();
             this.dsThietBi = dsThietBi;
         }
-
+        public Dictionary<string, ThietBiModel> DsThietBi
+        {
+            set { dsThietBi = value; }
+        }
 
         private void FormHienThiDuLieu_Load(object sender, EventArgs e)
         {
             dgvHienThiDuLieu.AutoGenerateColumns = false;
-            tmrHienThongSoSuLieu.Interval = 1000;
+            tmrHienThongSoSuLieu.Interval =1000;
             tmrHienThongSoSuLieu.Start();
         }
 
         private void tmrHienThongSoSuLieu_Tick(object sender, EventArgs e)
         {
-
+           
             try
             {
                 bindingSource.DataSource = null;
-                bindingSource.DataSource = DanhSachDuLieuService.GetDsDuLieuCuaTatCaThietBi(dsThietBi);
+                bindingSource.DataSource = DanhSachDuLieuService.GetThongSoGiaTriCuaTatCaThietBi(dsThietBi);
                 dgvHienThiDuLieu.DataSource = bindingSource;
             }
             catch

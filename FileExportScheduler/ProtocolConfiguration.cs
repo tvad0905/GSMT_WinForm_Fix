@@ -254,10 +254,12 @@ namespace FileExportScheduler
             if (TVMain.SelectedNode.Parent == null)
             {
                 TVMain.SelectedNode.Nodes.Add(node);
+                formDataList.selectedNodeDouble = node;
             }
             else if (TVMain.SelectedNode.Parent.Parent == null)
             {
                 TVMain.SelectedNode.Parent.Nodes.Add(node);
+                formDataList.selectedNodeDouble = node;
             }
 
             node.ContextMenuStrip = formDataList.tx2;

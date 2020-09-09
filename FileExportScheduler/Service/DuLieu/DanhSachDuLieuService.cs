@@ -12,7 +12,7 @@ namespace FileExportScheduler.Service.DuLieu
 {
     class DanhSachDuLieuService
     {
-        public static List<DuLieuModel> GetDsDuLieuCuaTatCaThietBi(Dictionary<string, ThietBiModel> dsThietBi)
+       /* public static List<DuLieuModel> GetDsDuLieuCuaTatCaThietBi(Dictionary<string, ThietBiModel> dsThietBi)
         {
             List<DuLieuModel> dsDuLieuGiamSatCuaTatCaThietBi = new List<DuLieuModel>();
             foreach (KeyValuePair<string, ThietBiModel> thietBi in dsThietBi)
@@ -26,23 +26,24 @@ namespace FileExportScheduler.Service.DuLieu
                 }
             }
             return dsDuLieuGiamSatCuaTatCaThietBi;
-        }
+        }*/
         public static List<ThongSoGiaTriModel>GetThongSoGiaTriCuaTatCaThietBi(Dictionary<string, ThietBiModel> dsThietBi)
         {
             List<ThongSoGiaTriModel> dsThongSoGiaTri = new List<ThongSoGiaTriModel>();
-            ThongSoGiaTriModel thongSoGiaTriTemp = new ThongSoGiaTriModel();
+           
             foreach (KeyValuePair<string, ThietBiModel> thietBi in dsThietBi)
             {
 
                 foreach (KeyValuePair<string, DiemDoModel> diemDo in thietBi.Value.dsDiemDoGiamSat)
                 {
-                    string csvData = "[Data]" + "\n" + "Tagname,TimeStamp,Value,DataQuality" + "\n";
+                   
                     foreach (KeyValuePair<string, DuLieuModel> duLieu in diemDo.Value.DsDulieu)
-                    {
+                    { 
+                        ThongSoGiaTriModel thongSoGiaTriTemp = new ThongSoGiaTriModel();
                         thongSoGiaTriTemp.ThietBi = thietBi.Value.Name;
                         thongSoGiaTriTemp.DiemDo  = diemDo.Value.TenDiemDo;
                         thongSoGiaTriTemp.Ten = duLieu.Value.Ten;
-                        thongSoGiaTriTemp.GiaTri = duLieu.Value.GiaTri;
+                        thongSoGiaTriTemp.GiaTri = Convert.ToInt32(duLieu.Value.GiaTri).ToString();
                         thongSoGiaTriTemp.TrangThaiTinHieu = duLieu.Value.TrangThaiTinHieu;
 
                         dsThongSoGiaTri.Add(thongSoGiaTriTemp);
