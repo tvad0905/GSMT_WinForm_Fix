@@ -103,6 +103,8 @@ namespace FileExportScheduler
                     }
                 }
             }
+
+
             tmrScheduler.Start();
             tmrChukyXoaFile.Start();
             //lblStatus.Text = "Hệ thống đang chạy !";

@@ -28,12 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.dgvHienThiDuLieu = new System.Windows.Forms.DataGridView();
             this.ten = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ThietBi = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Diachi_P = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Scale = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Donvido_P = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tmrHienThongSoSuLieu = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dgvHienThiDuLieu)).BeginInit();
             this.SuspendLayout();
             // 
@@ -95,6 +97,10 @@
             this.Donvido_P.MinimumWidth = 50;
             this.Donvido_P.Name = "Donvido_P";
             // 
+            // tmrHienThongSoSuLieu
+            // 
+            this.tmrHienThongSoSuLieu.Tick += new System.EventHandler(this.tmrHienThongSoSuLieu_Tick);
+            // 
             // FormHienThiDuLieu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -117,5 +123,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Diachi_P;
         private System.Windows.Forms.DataGridViewTextBoxColumn Scale;
         private System.Windows.Forms.DataGridViewTextBoxColumn Donvido_P;
+        private System.Windows.Forms.Timer tmrHienThongSoSuLieu;
     }
 }

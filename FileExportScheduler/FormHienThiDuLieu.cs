@@ -21,6 +21,8 @@ namespace FileExportScheduler
     public partial class FormHienThiDuLieu : Form
     {
         Dictionary<string, ThietBiModel> dsThietBi;
+
+        BindingSource bindingSource = new BindingSource();
         public FormHienThiDuLieu(Dictionary<string, ThietBiModel> dsThietBi)
         {
             InitializeComponent();
@@ -31,19 +33,18 @@ namespace FileExportScheduler
         private void FormHienThiDuLieu_Load(object sender, EventArgs e)
         {
             dgvHienThiDuLieu.AutoGenerateColumns = false;
+            tmrHienThongSoSuLieu.Interval = 1000;
+            tmrHienThongSoSuLieu.Start();
+        }
+
+        private void tmrHienThongSoSuLieu_Tick(object sender, EventArgs e)
+        {
+
             try
             {
-                var bindingSource = new BindingSource();
+                bindingSource.DataSource = null;
                 bindingSource.DataSource = DanhSachDuLieuService.GetDsDuLieuCuaTatCaThietBi(dsThietBi);
-
-                for (int i = 0; i < 10; i++)
-                {
-                    bindingSource.DataSource = null;
-                    bindingSource.DataSource = bindingSource.DataSource = DanhSachDuLieuService.GetDsDuLieuCuaTatCaThietBi(dsThietBi);
-                    dgvHienThiDuLieu.DataSource = bindingSource;
-
-                    System.Threading.Thread.Sleep(5000);
-                }
+                dgvHienThiDuLieu.DataSource = bindingSource;
             }
             catch
             { }
