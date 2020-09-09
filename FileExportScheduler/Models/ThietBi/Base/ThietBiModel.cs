@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace FileExportScheduler.Models.ThietBi.Base
 {
-    public abstract class ThietBiGiamSatModel
+    public abstract class ThietBiModel
     {
         public string Name { get; set; }
         public string Protocol { get; set; }
-        public Dictionary<string, DiemDoGiamSat> dsDiemDoGiamSat = new Dictionary<string, DiemDoGiamSat>();
+        public Dictionary<string, DiemDoModel> dsDiemDoGiamSat = new Dictionary<string, DiemDoModel>();
 
     }
 }

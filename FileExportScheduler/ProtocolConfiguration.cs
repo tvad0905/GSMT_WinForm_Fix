@@ -25,7 +25,7 @@ namespace FileExportScheduler
     public partial class ProtocolConfiguration : UserControl
     {
         #region biến toàn cục
-        public Dictionary<string, ThietBiGiamSatModel> dsThietBiGiamSat = new Dictionary<string, ThietBiGiamSatModel>();
+        public Dictionary<string, ThietBiModel> dsThietBiGiamSat = new Dictionary<string, ThietBiModel>();
         TreeView TVMain;
         public FormDataList formDataList;
         public string tenDuLieuDuocChon;
@@ -222,20 +222,20 @@ namespace FileExportScheduler
                 {
                     return;
                 }
-                ThietBiGiamSatModel deviceObj = new ThietBiTCPIP
+                ThietBiModel deviceObj = new ThietBiTCPIP
                 {
                     Name = txtTenGiaoThuc.Text,
                     IP = txtIPAdress.Text,
                     Port = Convert.ToInt32(txtPort.Text),
                     Protocol = cbProtocol.SelectedItem.ToString(),
-                    dsDiemDoGiamSat = new Dictionary<string, DiemDoGiamSat>(),
+                    dsDiemDoGiamSat = new Dictionary<string, DiemDoModel>(),
                 };
 
                 dsThietBiGiamSat.Add(deviceObj.Name, deviceObj);
             }
             else if (cbProtocol.SelectedItem.ToString() == "Serial Port")
             {
-                ThietBiGiamSatModel deviceObj1 = new ThietBiCOM
+                ThietBiModel deviceObj1 = new ThietBiCOM
                 {
                     Name = txtTenGiaoThuc.Text,
                     Com = cbCOM.SelectedItem.ToString(),
@@ -244,7 +244,7 @@ namespace FileExportScheduler
                     Databit = int.Parse(cbDataBit.SelectedItem.ToString()),
                     stopBits = (StopBits)Enum.Parse(typeof(StopBits), cbStopBit.SelectedItem.ToString()),
                     Protocol = cbProtocol.SelectedItem.ToString(),
-                    dsDiemDoGiamSat = new Dictionary<string, DiemDoGiamSat>(),
+                    dsDiemDoGiamSat = new Dictionary<string, DiemDoModel>(),
                 };
                 dsThietBiGiamSat.Add(deviceObj1.Name, deviceObj1);
             }
@@ -426,7 +426,7 @@ namespace FileExportScheduler
                 }
                 else
                 {
-                    ThietBiGiamSatModel deviceObjIP = new ThietBiTCPIP
+                    ThietBiModel deviceObjIP = new ThietBiTCPIP
                     {
                         Name = txtTenGiaoThuc.Text,
                         IP = txtIPAdress.Text,
@@ -462,7 +462,7 @@ namespace FileExportScheduler
                 }
                 else
                 {
-                    ThietBiGiamSatModel deviceObjCOM = new ThietBiCOM
+                    ThietBiModel deviceObjCOM = new ThietBiCOM
                     {
                         Name = txtTenGiaoThuc.Text,
                         Com = cbCOM.SelectedItem.ToString(),

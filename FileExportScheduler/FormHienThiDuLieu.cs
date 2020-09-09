@@ -1,4 +1,5 @@
 ﻿using FileExportScheduler.Models;
+using FileExportScheduler.Models.DuLieu;
 using FileExportScheduler.Models.ThietBi.Base;
 using FileExportScheduler.Service.DuLieu;
 using FileExportScheduler.Service.Json;
@@ -19,23 +20,30 @@ namespace FileExportScheduler
 {
     public partial class FormHienThiDuLieu : Form
     {
-        public FormHienThiDuLieu()
+        Dictionary<string, ThietBiModel> dsThietBi;
+        public FormHienThiDuLieu(Dictionary<string, ThietBiModel> dsThietBi)
         {
             InitializeComponent();
+            this.dsThietBi = dsThietBi;
         }
 
 
         private void FormHienThiDuLieu_Load(object sender, EventArgs e)
         {
-
-            Dictionary<string, ThietBiGiamSatModel> dsThietBiGiamSat = ThietBiGiamSatService.getDsThietBi();
-
             dgvHienThiDuLieu.AutoGenerateColumns = false;
             try
             {
                 var bindingSource = new BindingSource();
-                bindingSource.DataSource = DanhSachDuLieuService.GetDsDuLieuCuaTatCaThietBi(dsThietBiGiamSat);
-                dgvHienThiDuLieu.DataSource = bindingSource;
+                bindingSource.DataSource = DanhSachDuLieuService.GetDsDuLieuCuaTatCaThietBi(dsThietBi);
+
+                for (int i = 0; i < 10; i++)
+                {
+                    bindingSource.DataSource = null;
+                    bindingSource.DataSource = bindingSource.DataSource = DanhSachDuLieuService.GetDsDuLieuCuaTatCaThietBi(dsThietBi);
+                    dgvHienThiDuLieu.DataSource = bindingSource;
+
+                    System.Threading.Thread.Sleep(5000);
+                }
             }
             catch
             { }

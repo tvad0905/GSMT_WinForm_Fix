@@ -69,7 +69,6 @@ namespace FileExportScheduler
 
                     
                     Application.Run(new FormMain());
-                    Application.Run(new FormHienThiDuLieu());
                 }
             }
             else

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FileExportScheduler.Models
 {
-    public class ThietBiTCPIP : ThietBiGiamSatModel
+    public class ThietBiTCPIP : ThietBiModel
     {
         public string IP { get; set; }
         public int Port { get; set; }

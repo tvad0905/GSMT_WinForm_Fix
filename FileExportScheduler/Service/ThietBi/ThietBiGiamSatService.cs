@@ -15,11 +15,11 @@ namespace FileExportScheduler.Service.ThietBi
 {
     public static class ThietBiGiamSatService
     {
-        public static KeyValuePair<string, ThietBiGiamSatModel> SetTrangThaiBad(KeyValuePair<string, ThietBiGiamSatModel> deviceUnit)
+        public static KeyValuePair<string, ThietBiModel> SetTrangThaiBad(KeyValuePair<string, ThietBiModel> deviceUnit)
         {
-            foreach (KeyValuePair<string, DiemDoGiamSat> diemDo in deviceUnit.Value.dsDiemDoGiamSat)
+            foreach (KeyValuePair<string, DiemDoModel> diemDo in deviceUnit.Value.dsDiemDoGiamSat)
             {
-                foreach (KeyValuePair<string, DuLieuGiamSatModel> dulieu in diemDo.Value.DsDulieu)
+                foreach (KeyValuePair<string, DuLieuModel> dulieu in diemDo.Value.DsDulieu)
                 {
                     dulieu.Value.TrangThaiTinHieu = Constant.TrangThaiKetNoi.Bad;
                     dulieu.Value.ThoiGianDocGiuLieu = DateTime.Now;
@@ -27,9 +27,9 @@ namespace FileExportScheduler.Service.ThietBi
             }
             return deviceUnit;
         }
-        public static Dictionary<string, ThietBiGiamSatModel> getDsThietBi()
+        public static Dictionary<string, ThietBiModel> getDsThietBi()
         {
-            Dictionary<string, ThietBiGiamSatModel> dsThietBiGiamSat = new Dictionary<string, ThietBiGiamSatModel>();
+            Dictionary<string, ThietBiModel> dsThietBiGiamSat = new Dictionary<string, ThietBiModel>();
             try
             {
 

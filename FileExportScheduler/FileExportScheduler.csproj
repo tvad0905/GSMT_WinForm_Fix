@@ -73,6 +73,7 @@
     <Compile Include="FormHienThiDuLieu.Designer.cs">
       <DependentUpon>FormHienThiDuLieu.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\DuLieu\ThongSoGiaTriModel.cs" />
     <Compile Include="Service\DuLieu\DanhSachDuLieuService.cs" />
     <Compile Include="Service\FileService\FileCSV.cs" />
     <Compile Include="Service\Json\PathJson.cs" />
@@ -114,10 +115,10 @@
     <Compile Include="License\SystemInfo.cs" />
     <Compile Include="License\TrialMaker.cs" />
     <Compile Include="Models\ThietBi\ThietBiCOM.cs" />
-    <Compile Include="Models\DiemDo\DiemDoGiamSat.cs" />
+    <Compile Include="Models\DiemDo\DiemDoModel.cs" />
     <Compile Include="Models\ThietBi\ThietBiTCPIP.cs" />
-    <Compile Include="Models\DuLieu\DuLieuGiamSat.cs" />
-    <Compile Include="Models\ThietBi\Base\ThietBiGiamSat.cs" />
+    <Compile Include="Models\DuLieu\DuLieuModel.cs" />
+    <Compile Include="Models\ThietBi\Base\ThietBiModel.cs" />
     <Compile Include="Models\CaiDatChung.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

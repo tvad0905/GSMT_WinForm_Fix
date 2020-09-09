@@ -56,7 +56,7 @@ namespace FileExportScheduler.Service.Json
         /// <param name="dsThietBiGiamSat">danh sách thiết bị</param>
         /// <param name="dsDiemDo">danh sách điểm đo</param>
         /// <returns>danh sách đường dẫn theo điểm đo</returns>
-        public static List<string> LayDsDuongDanTheoTenDiemDo(Dictionary<string, ThietBiGiamSatModel> dsThietBiGiamSat)
+        public static List<string> LayDsDuongDanTheoTenDiemDo(Dictionary<string, ThietBiModel> dsThietBiGiamSat)
         {
             List<string> dsDuongDanTheoTenThietBi = new List<string>();//
 
@@ -67,9 +67,9 @@ namespace FileExportScheduler.Service.Json
                 {
                     var obj = sr.ReadToEnd();
                     CaiDatChung export = JsonConvert.DeserializeObject<CaiDatChung>(obj.ToString());
-                    foreach (KeyValuePair<string, ThietBiGiamSatModel> thietbi in dsThietBiGiamSat)
+                    foreach (KeyValuePair<string, ThietBiModel> thietbi in dsThietBiGiamSat)
                     {
-                        foreach (KeyValuePair<string, DiemDoGiamSat> diemDo in thietbi.Value.dsDiemDoGiamSat)
+                        foreach (KeyValuePair<string, DiemDoModel> diemDo in thietbi.Value.dsDiemDoGiamSat)
                         {
                             string filePath = export.ExportFilePath.Substring(0, export.ExportFilePath.LastIndexOf("\\")) +
                                "\\" + $"log({diemDo.Value.TenDiemDo}){ DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_ss")}.csv";
@@ -89,9 +89,9 @@ namespace FileExportScheduler.Service.Json
         /// trả về danh sách thông số cho thiêt bị
         /// </summary>
         /// <returns></returns>
-        public static Dictionary<string, ThietBiGiamSatModel> LayDanhSachThongSoCuaTungThietBi()
+        public static Dictionary<string, ThietBiModel> LayDanhSachThongSoCuaTungThietBi()
         {
-            Dictionary<string, ThietBiGiamSatModel> dsThietBi = new Dictionary<string, ThietBiGiamSatModel>();
+            Dictionary<string, ThietBiModel> dsThietBi = new Dictionary<string, ThietBiModel>();
             try
             {
                 var pathData = GetPathJson.getPathConfig("DeviceAndData.json");

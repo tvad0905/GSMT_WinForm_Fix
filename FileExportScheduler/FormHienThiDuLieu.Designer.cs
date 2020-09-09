@@ -74,24 +74,24 @@
             // Diachi_P
             // 
             this.Diachi_P.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Diachi_P.DataPropertyName = "Diachi";
-            this.Diachi_P.HeaderText = "Địa chỉ";
+            this.Diachi_P.DataPropertyName = "ThietBi";
+            this.Diachi_P.HeaderText = "Thiết bị";
             this.Diachi_P.MinimumWidth = 50;
             this.Diachi_P.Name = "Diachi_P";
             // 
             // Scale
             // 
             this.Scale.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Scale.DataPropertyName = "Scale";
-            this.Scale.HeaderText = "Scale";
+            this.Scale.DataPropertyName = "GiaTri";
+            this.Scale.HeaderText = "Giá Trị";
             this.Scale.MinimumWidth = 6;
             this.Scale.Name = "Scale";
             // 
             // Donvido_P
             // 
             this.Donvido_P.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Donvido_P.DataPropertyName = "Donvido";
-            this.Donvido_P.HeaderText = "Đơn vị đo";
+            this.Donvido_P.DataPropertyName = "TrangThaiTinHieu";
+            this.Donvido_P.HeaderText = "Trạng Thái Tín Hiệu";
             this.Donvido_P.MinimumWidth = 50;
             this.Donvido_P.Name = "Donvido_P";
             // 

@@ -19,16 +19,16 @@ namespace FileExportScheduler.Service.FileService
         /// <param name="filePath">danh sách đường dẫn file csv</param>
         /// <param name="dsThietBi">danh sách thiết bị</param>
         /// <param name="dsDiemDo">danh sách điểm đo</param>
-        public static void WriteDataToFileCSV(List<string> filePath, Dictionary<string, ThietBiGiamSatModel> dsThietBi)
+        public static void XuatFileCSV(List<string> filePath, Dictionary<string, ThietBiModel> dsThietBi)
         {
             int i = 0;
-            foreach (KeyValuePair<string, ThietBiGiamSatModel> thietBi in dsThietBi)
+            foreach (KeyValuePair<string, ThietBiModel> thietBi in dsThietBi)
             {
 
-                foreach (KeyValuePair<string, DiemDoGiamSat> diemDo in thietBi.Value.dsDiemDoGiamSat)
+                foreach (KeyValuePair<string, DiemDoModel> diemDo in thietBi.Value.dsDiemDoGiamSat)
                 {
                     string csvData = "[Data]" + "\n" + "Tagname,TimeStamp,Value,DataQuality" + "\n";
-                    foreach (KeyValuePair<string, DuLieuGiamSatModel> duLieu in diemDo.Value.DsDulieu)
+                    foreach (KeyValuePair<string, DuLieuModel> duLieu in diemDo.Value.DsDulieu)
                     {
                         csvData +=
                                    duLieu.Value.DiemDo + "." + duLieu.Value.Ten + "," +

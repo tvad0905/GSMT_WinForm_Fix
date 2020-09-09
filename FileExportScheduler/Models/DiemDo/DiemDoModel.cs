@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using FileExportScheduler.Models.DuLieu;
 namespace FileExportScheduler.Models.DiemDo
 {
-    public class DiemDoGiamSat
+    public class DiemDoModel
     {
         string tenDiemDo;
-        public Dictionary<string, DuLieuGiamSatModel> DsDulieu = new Dictionary<string, DuLieuGiamSatModel>();
+        public Dictionary<string, DuLieuModel> DsDulieu = new Dictionary<string, DuLieuModel>();
 
-        public DiemDoGiamSat(string tenDiemDo, Dictionary<string, DuLieuGiamSatModel> DsDulieu)
+        public DiemDoModel(string tenDiemDo, Dictionary<string, DuLieuModel> DsDulieu)
         {
             this.tenDiemDo = tenDiemDo;
             this.DsDulieu = DsDulieu;

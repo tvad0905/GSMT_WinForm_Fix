@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FileExportScheduler.Models
 {
-    public class ThietBiCOM : ThietBiGiamSatModel
+    public class ThietBiCOM : ThietBiModel
     {
         public string Com { get; set; }
         public int Baud { get; set; }

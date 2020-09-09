@@ -33,7 +33,7 @@ namespace FileExportScheduler
     {
         #region Variables Declaration
         bool checkExit = false;
-        Dictionary<string, ThietBiGiamSatModel> dsThietBi = new Dictionary<string, ThietBiGiamSatModel>();//danh sách các thiêt bị
+        public Dictionary<string, ThietBiModel> dsThietBi = new Dictionary<string, ThietBiModel>();//danh sách các thiêt bị
         Dictionary<string, string> dcExportData = new Dictionary<string, string>();
         ModbusClient modbus = new ModbusClient();
         SerialPort serialPort = new SerialPort();
@@ -41,7 +41,12 @@ namespace FileExportScheduler
         public FormMain()
         {
             InitializeComponent();
+            FormHienThiDuLieu formHienThiDuLieu = new FormHienThiDuLieu(dsThietBi);
 
+            Thread t2 = new Thread(() => {
+                formHienThiDuLieu.Show();
+            });
+            t2.Start();
         }
         #region Button Events
         private void btnStart_Click(object sender, EventArgs e)
@@ -72,7 +77,7 @@ namespace FileExportScheduler
             dsThietBi = Service.Json.JsonReader.LayDanhSachThongSoCuaTungThietBi();
 
 
-            foreach (KeyValuePair<string, ThietBiGiamSatModel> deviceUnit in dsThietBi)
+            foreach (KeyValuePair<string, ThietBiModel> deviceUnit in dsThietBi)
             {
                 if (deviceUnit.Value.Protocol == "Serial Port")
                 {
@@ -204,7 +209,7 @@ namespace FileExportScheduler
         {
 
 
-            foreach (KeyValuePair<string, ThietBiGiamSatModel> deviceUnit in dsThietBi)
+            foreach (KeyValuePair<string, ThietBiModel> deviceUnit in dsThietBi)
             {
                 if (deviceUnit.Value.Protocol == "Modbus TCP/IP" || deviceUnit.Value.Protocol == "Siemens S7-1200")
                 {
@@ -214,7 +219,7 @@ namespace FileExportScheduler
                         this.Invoke(new MethodInvoker(async delegate { await Task.Run(() => IPConnect(/*ListfilePath, */deviceUnit)); }));
 
                     }
-                    catch{}
+                    catch { }
                 }
                 else if (deviceUnit.Value.Protocol == "Serial Port")
                 {
@@ -222,7 +227,7 @@ namespace FileExportScheduler
                     {
                         this.Invoke(new MethodInvoker(async delegate { await Task.Run(() => COMConnect(/*ListfilePath,*/ deviceUnit)); }));
                     }
-                    catch{}
+                    catch { }
                 }
             }
 
@@ -241,7 +246,7 @@ namespace FileExportScheduler
         }
 
         // tạo 1 thread cho connect
-        void IPConnect(/*List<string> filePath, */KeyValuePair<string, ThietBiGiamSatModel> deviceUnit)
+        void IPConnect(/*List<string> filePath, */KeyValuePair<string, ThietBiModel> deviceUnit)
         {
 
             try
@@ -264,7 +269,7 @@ namespace FileExportScheduler
             }
         }
 
-        void COMConnect(/*List<string> filePath, */KeyValuePair<string, ThietBiGiamSatModel> deviceUnit)
+        void COMConnect(/*List<string> filePath, */KeyValuePair<string, ThietBiModel> deviceUnit)
         {
             if (!serialPort.IsOpen)
             {
@@ -285,11 +290,11 @@ namespace FileExportScheduler
         }
 
         //lấy dữ liệu của các thiết bị 
-        private void GetDataDeviceIP(KeyValuePair<string, ThietBiGiamSatModel> deviceUnit)
+        private void GetDataDeviceIP(KeyValuePair<string, ThietBiModel> deviceUnit)
         {
-            foreach (KeyValuePair<string, DiemDoGiamSat> diemDo in deviceUnit.Value.dsDiemDoGiamSat)
+            foreach (KeyValuePair<string, DiemDoModel> diemDo in deviceUnit.Value.dsDiemDoGiamSat)
             {
-                foreach (KeyValuePair<string, DuLieuGiamSatModel> dulieu in diemDo.Value.DsDulieu)
+                foreach (KeyValuePair<string, DuLieuModel> dulieu in diemDo.Value.DsDulieu)
                 {
 
                     try//lấy dữ liệu thành công
@@ -315,11 +320,11 @@ namespace FileExportScheduler
             }
         }
 
-        private void getDataCOM(KeyValuePair<string, ThietBiGiamSatModel> deviceUnit)
+        private void getDataCOM(KeyValuePair<string, ThietBiModel> deviceUnit)
         {
-            foreach (KeyValuePair<string, DiemDoGiamSat> diemDo in deviceUnit.Value.dsDiemDoGiamSat)
+            foreach (KeyValuePair<string, DiemDoModel> diemDo in deviceUnit.Value.dsDiemDoGiamSat)
             {
-                foreach (KeyValuePair<string, DuLieuGiamSatModel> dulieu in diemDo.Value.DsDulieu)
+                foreach (KeyValuePair<string, DuLieuModel> dulieu in diemDo.Value.DsDulieu)
                 {
                     //lấy dữ liệu thành công
                     try
@@ -421,7 +426,7 @@ namespace FileExportScheduler
                 btnSetting.PerformClick();
             }
             #endregion
-            FileCSV.WriteDataToFileCSV(ListfilePath, dsThietBi);
+            FileCSV.XuatFileCSV(ListfilePath, dsThietBi);
 
         }
 

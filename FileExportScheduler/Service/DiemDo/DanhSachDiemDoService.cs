@@ -12,9 +12,9 @@ namespace FileExportScheduler.Service.DiemDo
 {
     public static class DanhSachDiemDoService
     {
-        public static Dictionary<string, DiemDoGiamSat> LayDsDiemDoTuDgv(DataGridView dgvDataProtocol)
+        public static Dictionary<string, DiemDoModel> LayDsDiemDoTuDgv(DataGridView dgvDataProtocol)
         {
-            Dictionary<string, DiemDoGiamSat> dsDiemDoGiamSat = new Dictionary<string, DiemDoGiamSat>();
+            Dictionary<string, DiemDoModel> dsDiemDoGiamSat = new Dictionary<string, DiemDoModel>();
             foreach (DataGridViewRow dr in dgvDataProtocol.Rows)
             {
                 if (dr.Index == dgvDataProtocol.Rows.Count - 1)
@@ -22,7 +22,7 @@ namespace FileExportScheduler.Service.DiemDo
                     break;
                 }
 
-                DuLieuGiamSatModel duLieu = new DuLieuGiamSatModel();
+                DuLieuModel duLieu = new DuLieuModel();
                 duLieu.Ten = dr.Cells[0].Value.ToString();
                 duLieu.DiemDo = dr.Cells[1].Value.ToString();
                 duLieu.DiaChi = dr.Cells[2].Value.ToString();
@@ -37,9 +37,9 @@ namespace FileExportScheduler.Service.DiemDo
                 {
                     dsDiemDoGiamSat.Add(
                         duLieu.DiemDo,
-                        new DiemDoGiamSat(
+                        new DiemDoModel(
                             duLieu.DiemDo,
-                            new Dictionary<string, DuLieuGiamSatModel>()
+                            new Dictionary<string, DuLieuModel>()
                             )
                     );
                     dsDiemDoGiamSat[duLieu.DiemDo].DsDulieu.Add(duLieu.Ten, duLieu);
