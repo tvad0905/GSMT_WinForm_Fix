@@ -24,52 +24,52 @@ namespace FileExportScheduler.KiemTraDauVao
                     break;
                 }
 
-                if (XetLoiDinhDangNhapLieu(dr.Cells[0].Value) != "" || XetLoiDinhDangNhapLieu(dr.Cells[1].Value) != "")
+                if (XetLoiDinhDangNhapLieu(dr.Cells["ten"].Value) != "" || XetLoiDinhDangNhapLieu(dr.Cells["diemDo"].Value) != "")
                 {
-                    dr.Cells[0].ErrorText = XetLoiDinhDangNhapLieu(dr.Cells[0].Value);
-                    dr.Cells[1].ErrorText = XetLoiDinhDangNhapLieu(dr.Cells[1].Value);
+                    dr.Cells["ten"].ErrorText = XetLoiDinhDangNhapLieu(dr.Cells["ten"].Value);
+                    dr.Cells["diemDo"].ErrorText = XetLoiDinhDangNhapLieu(dr.Cells["diemDo"].Value);
                     isPassed = false;
                 }
                 else
                 {
-                    dr.Cells[0].ErrorText = "";
-                    dr.Cells[1].ErrorText = "";
+                    dr.Cells["ten"].ErrorText = "";
+                    dr.Cells["diemDo"].ErrorText = "";
 
 
-                    if (dsKeyDiemDoVaChat.Contains(dr.Cells[0].Value.ToString() + dr.Cells[1].Value.ToString()))
+                    if (dsKeyDiemDoVaChat.Contains(dr.Cells["ten"].Value.ToString() + dr.Cells["diemDo"].Value.ToString()))
                     {
 
-                        dr.Cells[1].ErrorText = "Tên bị trùng";
-                        dr.Cells[0].ErrorText = "Tên bị trùng";
+                        dr.Cells["diemDo"].ErrorText = "Tên bị trùng";
+                        dr.Cells["ten"].ErrorText = "Tên bị trùng";
                         isPassed = false;
                     }
                 }
 
 
-                if (XetLoiDinhDangNhapLieu(dr.Cells[2].Value) != "")
+                if (XetLoiDinhDangNhapLieu(dr.Cells["diaChi"].Value) != "")
                 {
-                    dr.Cells[2].ErrorText = XetLoiDinhDangNhapLieu(dr.Cells[2].Value);
+                    dr.Cells["diaChi"].ErrorText = XetLoiDinhDangNhapLieu(dr.Cells["diaChi"].Value);
                     isPassed = false;
                 }
                 else
                 {
-                    dr.Cells[2].ErrorText = "";
+                    dr.Cells["diaChi"].ErrorText = "";
 
-                    if (dr.Cells[2].ColumnIndex == 2)
+                    if (dr.Cells["diaChi"].ColumnIndex == 2)
                     {
-                        if (!KiemTraDiaChi(dr.Cells[2].Value.ToString()))
+                        if (!KiemTraDiaChi(dr.Cells["diaChi"].Value.ToString()))
                         {
-                            dr.Cells[2].ErrorText = "Sai định dạng";
+                            dr.Cells["diaChi"].ErrorText = "Sai định dạng";
                             isPassed = false;
                         }
-                        else if (dsDiaChi.Contains(dr.Cells[2].Value.ToString()))
+                        else if (dsDiaChi.Contains(dr.Cells["diaChi"].Value.ToString()))
                         {
-                            dr.Cells[2].ErrorText = "Địa chỉ bị trùng";
+                            dr.Cells["diaChi"].ErrorText = "Địa chỉ bị trùng";
                             isPassed = false;
                         }
                         else
                         {
-                            dr.Cells[2].ErrorText = "";
+                            dr.Cells["diaChi"].ErrorText = "";
                         }
                     }
                 }
@@ -98,10 +98,10 @@ namespace FileExportScheduler.KiemTraDauVao
 
                 }
 
-                if (dr.Cells[0].Value != null && dr.Cells[1].Value != null && dr.Cells[2].Value != null)
+                if (dr.Cells["ten"].Value != null && dr.Cells["diemDo"].Value != null && dr.Cells["diaChi"].Value != null)
                 {
-                    dsDiaChi.Add(dr.Cells[2].Value.ToString());
-                    dsKeyDiemDoVaChat.Add(dr.Cells[0].Value.ToString() + dr.Cells[1].Value.ToString());
+                    dsDiaChi.Add(dr.Cells["diaChi"].Value.ToString());
+                    dsKeyDiemDoVaChat.Add(dr.Cells["ten"].Value.ToString() + dr.Cells["diemDo"].Value.ToString());
                 }
 
 
