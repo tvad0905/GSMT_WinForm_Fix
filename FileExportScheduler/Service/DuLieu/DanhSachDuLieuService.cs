@@ -45,7 +45,7 @@ namespace FileExportScheduler.Service.DuLieu
                         thongSoGiaTriTemp.Ten = duLieu.Value.Ten;
                         thongSoGiaTriTemp.GiaTri = Convert.ToInt32(duLieu.Value.GiaTri).ToString();
                         thongSoGiaTriTemp.TrangThaiTinHieu = duLieu.Value.TrangThaiTinHieu;
-
+                        thongSoGiaTriTemp.DiaChi = duLieu.Value.DiaChi;
                         dsThongSoGiaTri.Add(thongSoGiaTriTemp);
                     }
                 }

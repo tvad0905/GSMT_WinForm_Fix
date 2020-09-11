@@ -35,9 +35,10 @@ namespace FileExportScheduler
         bool checkExit = false;
         public Dictionary<string, ThietBiModel> dsThietBi = new Dictionary<string, ThietBiModel>();//danh sách các thiêt bị
         Dictionary<string, string> dcExportData = new Dictionary<string, string>();
-        ModbusClient modbus = new ModbusClient();
+        ModbusClient modbusTCP = new ModbusClient();
         SerialPort serialPort = new SerialPort();
-        FormHienThiDuLieu formHienThiDuLieu;
+        FormHienThiDuLieu formHienThiDuLieu = new FormHienThiDuLieu();
+
         #endregion
 
 
@@ -61,7 +62,7 @@ namespace FileExportScheduler
             //set thời gian đọc dữ liệu của thiết bị 
 
             //set chu kì đọc dữ liệu
-            tmrScheduler.Interval = 3000;
+            tmrScheduler.Interval = 1000;
 
             //set chu kỳ xóa file
             tmrChukyXoaFile.Interval = 30000;
@@ -73,7 +74,7 @@ namespace FileExportScheduler
             //quét danh sách thông số cho từng thiết bị từ json
             dsThietBi = Service.Json.JsonReader.LayDanhSachThongSoCuaTungThietBi();
 
-
+            modbusTCP.ConnectionTimeout = 2000;
             foreach (KeyValuePair<string, ThietBiModel> deviceUnit in dsThietBi)
             {
                 if (deviceUnit.Value.Protocol == "Serial Port")
@@ -85,9 +86,6 @@ namespace FileExportScheduler
                     serialPort.ReadTimeout = 200;
                     serialPort.Handshake = Handshake.None;
                     serialPort.ParityReplace = (byte)'\0';
-                    serialPort.ReadBufferSize = 128;
-                    serialPort.ErrorReceived += new SerialErrorReceivedEventHandler(sp_SerialErrorReceivedEventHandler);
-
                     try
                     {
                         if (!serialPort.IsOpen)
@@ -115,14 +113,21 @@ namespace FileExportScheduler
             btnStart.Enabled = true;
             btnDataList.Enabled = true;
             btnSetting.Enabled = true;
+
+            serialPort.Close();
+            
+            
             tmrScheduler.Stop();
             tmrChukyXoaFile.Stop();
             tmrReadData.Stop();
-            serialPort.Close();
-            modbus.Disconnect();
+
             //lblStatus.Text = "Hệ thống đã dừng !";
             notifyIcon.ShowBalloonTip(100, "Hệ thống", "Hệ thống đã dừng !", ToolTipIcon.Warning);
+            
+            Thread.Sleep(1200);
             lblTrangThaiThietBi.Text = "Hệ thống đã dừng";
+            modbusTCP.Disconnect();
+            
         }
 
         private void btnDataList_Click(object sender, EventArgs e)
@@ -199,8 +204,7 @@ namespace FileExportScheduler
                 }
             }
 
-            formHienThiDuLieu = new FormHienThiDuLieu(dsThietBi);
-            formHienThiDuLieu.Show();
+
         }
 
         /// <summary>
@@ -217,10 +221,11 @@ namespace FileExportScheduler
             {
                 if (deviceUnit.Value.Protocol == "Modbus TCP/IP" || deviceUnit.Value.Protocol == "Siemens S7-1200")
                 {
-                    modbus = new ModbusClient(((ThietBiTCPIP)deviceUnit.Value).IP, ((ThietBiTCPIP)deviceUnit.Value).Port);
+                    modbusTCP = new ModbusClient(((ThietBiTCPIP)deviceUnit.Value).IP, ((ThietBiTCPIP)deviceUnit.Value).Port);
                     try
                     {
-                        this.Invoke(new MethodInvoker(async delegate { await Task.Run(() => IPConnect(/*ListfilePath, */deviceUnit)); }));
+                        /*this.Invoke(new MethodInvoker(async delegate { }));*/
+                        await Task.Run(() => IPConnect(/*ListfilePath, */deviceUnit));
 
                     }
                     catch { }
@@ -229,7 +234,8 @@ namespace FileExportScheduler
                 {
                     try
                     {
-                        this.Invoke(new MethodInvoker(async delegate { await Task.Run(() => COMConnect(/*ListfilePath,*/ deviceUnit)); }));
+                        /*this.Invoke(new MethodInvoker(async delegate {}));*/
+                        await Task.Run(() => COMConnect(/*ListfilePath,*/ deviceUnit));
                     }
                     catch { }
                 }
@@ -255,8 +261,13 @@ namespace FileExportScheduler
 
             try
             {
-                modbus.Connect();
-                GetDataDeviceIP(deviceUnit);
+                if (!modbusTCP.Connected)
+                {
+                    
+                    modbusTCP.Connect();
+                    GetDataDeviceIP(deviceUnit);
+                }
+
             }
             catch (ConnectionException ex)
             {
@@ -268,9 +279,11 @@ namespace FileExportScheduler
                     return;
                 }
             }
-            catch
+            catch (Exception exx)
             {
+
             }
+
         }
 
         void COMConnect(/*List<string> filePath, */KeyValuePair<string, ThietBiModel> deviceUnit)
@@ -303,7 +316,7 @@ namespace FileExportScheduler
 
                     try//lấy dữ liệu thành công
                     {
-                        dulieu.Value.GiaTri = Convert.ToInt32(Data.Data.LayDuLieuTCPIP(modbus, dulieu.Value)).ToString();
+                        dulieu.Value.GiaTri = Convert.ToInt32(Data.Data.LayDuLieuTCPIP(modbusTCP, dulieu.Value)).ToString();
                         dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Good;
                     }
                     catch (ModbusException ex)
@@ -360,22 +373,12 @@ namespace FileExportScheduler
                 }
             }
         }
-
-        private void sp_SerialErrorReceivedEventHandler(object sender, SerialErrorReceivedEventArgs e)
-        {
-            if (e.EventType == SerialError.RXParity)
-            {
-                lblTrangThaiThietBi.Text += ", Error Parity";
-            }
-        }
-
         private void tmrScheduler_Tick(object sender, EventArgs e)
         {
             try
             {
                 tmrScheduler.Stop();
                 GetDeviceConnect();
-
                 formHienThiDuLieu.DsThietBi = dsThietBi;//hien thi du lieu doc duoc len view
             }
             catch
@@ -441,6 +444,12 @@ namespace FileExportScheduler
         {
             FormAbout fa = new FormAbout();
             fa.Show();
+        }
+
+        private void btnThongSoDuLieu_Click(object sender, EventArgs e)
+        {
+            formHienThiDuLieu = new FormHienThiDuLieu(dsThietBi);
+            formHienThiDuLieu.Show();
         }
     }
 }

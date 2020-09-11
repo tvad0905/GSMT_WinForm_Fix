@@ -47,6 +47,7 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblTrangThaiThietBi = new System.Windows.Forms.ToolStripStatusLabel();
+            this.btnThongSoDuLieu = new System.Windows.Forms.Button();
             this.contextMenuStrip.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -126,31 +127,31 @@
             this.openToolStripMenuItem,
             this.closeToolStripMenuItem});
             this.contextMenuStrip.Name = "contextMenuStrip1";
-            this.contextMenuStrip.Size = new System.Drawing.Size(181, 98);
+            this.contextMenuStrip.Size = new System.Drawing.Size(108, 76);
             // 
             // licenseToolStripMenuItem
             // 
             this.licenseToolStripMenuItem.Name = "licenseToolStripMenuItem";
-            this.licenseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.licenseToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.licenseToolStripMenuItem.Text = "About";
             this.licenseToolStripMenuItem.Click += new System.EventHandler(this.licenseToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(104, 6);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.openToolStripMenuItem.Text = "Mở";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click_1);
             // 
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.closeToolStripMenuItem.Text = "Đóng";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.btnExit_Click);
             // 
@@ -187,6 +188,16 @@
             this.lblTrangThaiThietBi.Size = new System.Drawing.Size(36, 17);
             this.lblTrangThaiThietBi.Text = "None";
             // 
+            // btnThongSoDuLieu
+            // 
+            this.btnThongSoDuLieu.Location = new System.Drawing.Point(0, 0);
+            this.btnThongSoDuLieu.Name = "btnThongSoDuLieu";
+            this.btnThongSoDuLieu.Size = new System.Drawing.Size(26, 23);
+            this.btnThongSoDuLieu.TabIndex = 2;
+            this.btnThongSoDuLieu.Text = "...";
+            this.btnThongSoDuLieu.UseVisualStyleBackColor = true;
+            this.btnThongSoDuLieu.Click += new System.EventHandler(this.btnThongSoDuLieu_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -195,6 +206,7 @@
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnSetting);
+            this.Controls.Add(this.btnThongSoDuLieu);
             this.Controls.Add(this.btnDataList);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnStart);
@@ -234,6 +246,7 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel lblTrangThaiThietBi;
+        private System.Windows.Forms.Button btnThongSoDuLieu;
     }
 }
 
