@@ -18,64 +18,65 @@ namespace FileExportScheduler
         [STAThread]
         static void Main()
         {
-            if (PriorProcess() != null)
-            {
+            Application.Run(new FormMain());
+            //if (PriorProcess() != null)
+            //{
 
-                MessageBox.Show("Ứng dụng đang chạy");
-                return;
-            }
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            //    MessageBox.Show("Ứng dụng đang chạy");
+            //    return;
+            //}
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
 
 
-            TrialMaker maker = new TrialMaker("FileExportScheduler", Application.StartupPath + @"\Register.reg", Application.StartupPath + @"\ESSetp.dbf", "", 0xA, 10, "246813579");
-            //TrialMaker maker = new TrialMaker("ESMRServer", Application.StartupPath + @"\Register.reg", Environment.GetFolderPath(Environment.SpecialFolder.System) + @"\ATSetp.dbf", "", 0x2d, 0, "246813579");
-            maker.TripleDESKey = new byte[] {
-                    100, 0x86, 0x41, 1, 20, 0x26, 0x47, 0x62, 0x43, 12, 0x4c, 0x58, 11, 9, 14, 0x4c,
-                    0x36, 0x15, 0x57, 0x7b, 0xe9, 6, 0xc7, 5
-                };
-            TrialMaker.RunTypes types = maker.ShowDialog();
-            int a = maker.DaysToEnd();
-            //types = TrialMaker.RunTypes.Licensed;
-            bool flag2 = false;
-            switch (types)
-            {
-                case TrialMaker.RunTypes.Trial:
-                    {
-                        if (a != 0)
-                            flag2 = true;
-                        break;
-                    }
-                case TrialMaker.RunTypes.Licensed:
-                    flag2 = true;
-                    break;
+            //TrialMaker maker = new TrialMaker("FileExportScheduler", Application.StartupPath + @"\Register.reg", Application.StartupPath + @"\ESSetp.dbf", "", 0xA, 10, "246813579");
+            ////TrialMaker maker = new TrialMaker("ESMRServer", Application.StartupPath + @"\Register.reg", Environment.GetFolderPath(Environment.SpecialFolder.System) + @"\ATSetp.dbf", "", 0x2d, 0, "246813579");
+            //maker.TripleDESKey = new byte[] {
+            //        100, 0x86, 0x41, 1, 20, 0x26, 0x47, 0x62, 0x43, 12, 0x4c, 0x58, 11, 9, 14, 0x4c,
+            //        0x36, 0x15, 0x57, 0x7b, 0xe9, 6, 0xc7, 5
+            //    };
+            //TrialMaker.RunTypes types = maker.ShowDialog();
+            //int a = maker.DaysToEnd();
+            ////types = TrialMaker.RunTypes.Licensed;
+            //bool flag2 = false;
+            //switch (types)
+            //{
+            //    case TrialMaker.RunTypes.Trial:
+            //        {
+            //            if (a != 0)
+            //                flag2 = true;
+            //            break;
+            //        }
+            //    case TrialMaker.RunTypes.Licensed:
+            //        flag2 = true;
+            //        break;
 
-                default:
-                    Application.Exit();
-                    return;
-            }
-            if (flag2)
-            {
-                AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
-                AppDomain.CurrentDomain.TypeResolve += new ResolveEventHandler(CurrentDomain_TypeResolve);
-                using (System.Threading.Mutex mutex = new System.Threading.Mutex(false, @"Global\" + AppGuid))
-                {
-                    if (!mutex.WaitOne(0, false))
-                    {
-                        MessageBox.Show("Chương trình đang chạy", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        return;
-                    }
-                    GC.Collect();
+            //    default:
+            //        Application.Exit();
+            //        return;
+            //}
+            //if (flag2)
+            //{
+            //    AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
+            //    AppDomain.CurrentDomain.TypeResolve += new ResolveEventHandler(CurrentDomain_TypeResolve);
+            //    using (System.Threading.Mutex mutex = new System.Threading.Mutex(false, @"Global\" + AppGuid))
+            //    {
+            //        if (!mutex.WaitOne(0, false))
+            //        {
+            //            MessageBox.Show("Chương trình đang chạy", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //            return;
+            //        }
+            //        GC.Collect();
 
-                    
-                    Application.Run(new FormMain());
-                }
-            }
-            else
-            {
-                MessageBox.Show("Chương trình hết hạn sử dụng", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Application.Exit();
-            }
+
+            //        Application.Run(new FormMain());
+            //    }
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Chương trình hết hạn sử dụng", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //    Application.Exit();
+            //}
         }
 
         public static Process PriorProcess()

@@ -22,7 +22,7 @@ namespace FileExportScheduler
     public partial class FormHienThiDuLieu : Form
     {
         Dictionary<string, ThietBiModel> dsThietBi;
-        DataTable dt;
+        static DataTable dt;
 
         BindingSource bindingSource = new BindingSource();
         public FormHienThiDuLieu()
@@ -43,29 +43,33 @@ namespace FileExportScheduler
 
         private void FormHienThiDuLieu_Load(object sender, EventArgs e)
         {
-            dt = ToDataTable(DanhSachDuLieuService.GetThongSoGiaTriCuaTatCaThietBi(dsThietBi));
-            dgvHienThiDuLieu.DataSource = ToDataTable(DanhSachDuLieuService.GetThongSoGiaTriCuaTatCaThietBi(dsThietBi));
+            dt = ToDataTable<ThongSoGiaTriModel>(DanhSachDuLieuService.GetThongSoGiaTriCuaTatCaThietBi(dsThietBi));
+            dgvHienThiDuLieu.DataSource = dt;
             dgvHienThiDuLieu.AutoGenerateColumns = false;
-            tmrHienThongSoSuLieu.Interval = 1000;
+            tmrHienThongSoSuLieu.Interval = 3000;
+            tmrHienThongSoSuLieu.Enabled = true;
             tmrHienThongSoSuLieu.Start();
 
         }
 
         private void tmrHienThongSoSuLieu_Tick(object sender, EventArgs e)
         {
-
             try
             {
-                dt = ToDataTable(DanhSachDuLieuService.GetThongSoGiaTriCuaTatCaThietBi(dsThietBi));
-                foreach (var dr in dt.AsEnumerable())
+                var tempTable = ToDataTable<ThongSoGiaTriModel>(DanhSachDuLieuService.GetThongSoGiaTriCuaTatCaThietBi(dsThietBi));
+                foreach (var dr in tempTable.AsEnumerable())
+                {
                     dt.LoadDataRow(dr.ItemArray, LoadOption.OverwriteChanges);
+                }
+                dt.LoadDataRow(tempTable.Rows[0].ItemArray,LoadOption.OverwriteChanges) ;
             }
             catch (Exception ex)
             {
+
             }
         }
 
-        private DataTable ToDataTable<ThongSoGiaTriModel>(List<ThongSoGiaTriModel> data)
+        private static DataTable ToDataTable<ThongSoGiaTriModel>(List<Models.DuLieu.ThongSoGiaTriModel> data)
         {
             DataTable table = new DataTable();
 
@@ -76,10 +80,16 @@ namespace FileExportScheduler
             table.Columns.Add("GiaTri", typeof(string));
             table.Columns.Add("TrangThaiTinHieu", typeof(string));
 
-            foreach (ThongSoGiaTriModel thongSoGiaTri in data)
+            foreach (Models.DuLieu.ThongSoGiaTriModel thongSoGiaTri in data)
             {
-               
-                table.Rows.Add(thongSoGiaTri);
+                DataRow dr = table.NewRow();
+                dr["Ten"] = thongSoGiaTri.Ten;
+                dr["DiemDo"] = thongSoGiaTri.DiemDo;
+                dr["ThietBi"] = thongSoGiaTri.ThietBi;
+                dr["DiaChi"] = thongSoGiaTri.DiaChi;
+                dr["GiaTri"] = thongSoGiaTri.GiaTri;
+                dr["TrangThaiTinHieu"] = thongSoGiaTri.TrangThaiTinHieu;
+                table.Rows.Add(dr);
             }
             return table;
         }
