@@ -43,7 +43,7 @@ namespace FileExportScheduler
 
         private void FormHienThiDuLieu_Load(object sender, EventArgs e)
         {
-            dt = ToDataTable<ThongSoGiaTriModel>(DanhSachDuLieuService.GetThongSoGiaTriCuaTatCaThietBi(dsThietBi));
+            dt = ConvertThongSoGiaTriToDataTable(DanhSachDuLieuService.GetThongSoGiaTriCuaTatCaThietBi(dsThietBi));
             dgvHienThiDuLieu.DataSource = dt;
             dgvHienThiDuLieu.AutoGenerateColumns = false;
             tmrHienThongSoSuLieu.Interval = 3000;
@@ -56,7 +56,7 @@ namespace FileExportScheduler
         {
             try
             {
-                var tempTable = ToDataTable<ThongSoGiaTriModel>(DanhSachDuLieuService.GetThongSoGiaTriCuaTatCaThietBi(dsThietBi));
+                var tempTable = ConvertThongSoGiaTriToDataTable(DanhSachDuLieuService.GetThongSoGiaTriCuaTatCaThietBi(dsThietBi));
                 foreach (var dr in tempTable.AsEnumerable())
                 {
                     dt.LoadDataRow(dr.ItemArray, LoadOption.OverwriteChanges);
@@ -69,16 +69,17 @@ namespace FileExportScheduler
             }
         }
 
-        private static DataTable ToDataTable<ThongSoGiaTriModel>(List<Models.DuLieu.ThongSoGiaTriModel> data)
+        private static DataTable ConvertThongSoGiaTriToDataTable(List<Models.DuLieu.ThongSoGiaTriModel> data)
         {
-            DataTable table = new DataTable();
+            var table = new DataTable();
 
             table.Columns.Add("Ten", typeof(string));
             table.Columns.Add("DiemDo", typeof(string));
             table.Columns.Add("ThietBi", typeof(string));
             table.Columns.Add("DiaChi", typeof(string));
-            table.Columns.Add("GiaTri", typeof(string));
+            table.Columns.Add("GiaTri", typeof(int));
             table.Columns.Add("TrangThaiTinHieu", typeof(string));
+            table.PrimaryKey = new[] { table.Columns["Ten"] };
 
             foreach (Models.DuLieu.ThongSoGiaTriModel thongSoGiaTri in data)
             {
