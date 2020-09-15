@@ -35,14 +35,14 @@
             this.btnDataList = new System.Windows.Forms.Button();
             this.btnSetting = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
-            this.tmrScheduler = new System.Windows.Forms.Timer(this.components);
+            this.tmrDocDuLieu = new System.Windows.Forms.Timer(this.components);
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.licenseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tmrReadData = new System.Windows.Forms.Timer(this.components);
+            this.tmrXuatFile = new System.Windows.Forms.Timer(this.components);
             this.tmrChukyXoaFile = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -103,10 +103,10 @@
             this.btnExit.UseVisualStyleBackColor = true;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
-            // tmrScheduler
+            // tmrDocDuLieu
             // 
-            this.tmrScheduler.Interval = 1000;
-            this.tmrScheduler.Tick += new System.EventHandler(this.tmrScheduler_Tick);
+            this.tmrDocDuLieu.Interval = 1000;
+            this.tmrDocDuLieu.Tick += new System.EventHandler(this.tmrDocDuLieu_Tick);
             // 
             // notifyIcon
             // 
@@ -155,10 +155,10 @@
             this.closeToolStripMenuItem.Text = "Đóng";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.btnExit_Click);
             // 
-            // tmrReadData
+            // tmrXuatFile
             // 
-            this.tmrReadData.Interval = 1000;
-            this.tmrReadData.Tick += new System.EventHandler(this.tmrReadData_Tick);
+            this.tmrXuatFile.Interval = 1000;
+            this.tmrXuatFile.Tick += new System.EventHandler(this.tmrXuatFile_Tick);
             // 
             // tmrChukyXoaFile
             // 
@@ -190,6 +190,7 @@
             // 
             // btnThongSoDuLieu
             // 
+            this.btnThongSoDuLieu.Enabled = false;
             this.btnThongSoDuLieu.Location = new System.Drawing.Point(0, 0);
             this.btnThongSoDuLieu.Name = "btnThongSoDuLieu";
             this.btnThongSoDuLieu.Size = new System.Drawing.Size(26, 23);
@@ -234,14 +235,14 @@
         private System.Windows.Forms.Button btnDataList;
         private System.Windows.Forms.Button btnSetting;
         private System.Windows.Forms.Button btnExit;
-        private System.Windows.Forms.Timer tmrScheduler;
+        private System.Windows.Forms.Timer tmrDocDuLieu;
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem licenseToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
-        private System.Windows.Forms.Timer tmrReadData;
+        private System.Windows.Forms.Timer tmrXuatFile;
         private System.Windows.Forms.Timer tmrChukyXoaFile;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;

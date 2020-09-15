@@ -104,7 +104,7 @@
             this.tabPage1.Controls.Add(this.label1);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(1009, 713);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Cấu hình";
@@ -130,9 +130,9 @@
             this.gbTCPIPProtocol.Controls.Add(this.txtIPAdress);
             this.gbTCPIPProtocol.Controls.Add(this.txtPort);
             this.gbTCPIPProtocol.Location = new System.Drawing.Point(22, 68);
-            this.gbTCPIPProtocol.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbTCPIPProtocol.Margin = new System.Windows.Forms.Padding(2);
             this.gbTCPIPProtocol.Name = "gbTCPIPProtocol";
-            this.gbTCPIPProtocol.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbTCPIPProtocol.Padding = new System.Windows.Forms.Padding(2);
             this.gbTCPIPProtocol.Size = new System.Drawing.Size(460, 73);
             this.gbTCPIPProtocol.TabIndex = 10;
             this.gbTCPIPProtocol.TabStop = false;
@@ -164,7 +164,7 @@
             this.txtIPAdress.AllowInternalTab = true;
             this.txtIPAdress.AutoHeight = true;
             this.txtIPAdress.BackColor = System.Drawing.SystemColors.Window;
-            this.txtIPAdress.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.txtIPAdress.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtIPAdress.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtIPAdress.Location = new System.Drawing.Point(89, 20);
             this.txtIPAdress.Name = "txtIPAdress";
@@ -177,7 +177,7 @@
             // txtPort
             // 
             this.txtPort.Location = new System.Drawing.Point(89, 43);
-            this.txtPort.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtPort.Margin = new System.Windows.Forms.Padding(2);
             this.txtPort.Name = "txtPort";
             this.txtPort.Size = new System.Drawing.Size(345, 20);
             this.txtPort.TabIndex = 2;
@@ -185,7 +185,7 @@
             // btnEditProtocol
             // 
             this.btnEditProtocol.Location = new System.Drawing.Point(381, 298);
-            this.btnEditProtocol.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnEditProtocol.Margin = new System.Windows.Forms.Padding(2);
             this.btnEditProtocol.Name = "btnEditProtocol";
             this.btnEditProtocol.Size = new System.Drawing.Size(75, 23);
             this.btnEditProtocol.TabIndex = 14;
@@ -196,7 +196,7 @@
             // btnSaveProtocol
             // 
             this.btnSaveProtocol.Location = new System.Drawing.Point(381, 298);
-            this.btnSaveProtocol.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnSaveProtocol.Margin = new System.Windows.Forms.Padding(2);
             this.btnSaveProtocol.Name = "btnSaveProtocol";
             this.btnSaveProtocol.Size = new System.Drawing.Size(75, 23);
             this.btnSaveProtocol.TabIndex = 1;
@@ -217,9 +217,9 @@
             this.gbSerialSettingProtocol.Controls.Add(this.cbDataBit);
             this.gbSerialSettingProtocol.Controls.Add(this.cbCOM);
             this.gbSerialSettingProtocol.Location = new System.Drawing.Point(22, 145);
-            this.gbSerialSettingProtocol.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbSerialSettingProtocol.Margin = new System.Windows.Forms.Padding(2);
             this.gbSerialSettingProtocol.Name = "gbSerialSettingProtocol";
-            this.gbSerialSettingProtocol.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbSerialSettingProtocol.Padding = new System.Windows.Forms.Padding(2);
             this.gbSerialSettingProtocol.Size = new System.Drawing.Size(460, 149);
             this.gbSerialSettingProtocol.TabIndex = 9;
             this.gbSerialSettingProtocol.TabStop = false;
@@ -291,7 +291,7 @@
             "230400",
             "256000"});
             this.cbBaud.Location = new System.Drawing.Point(89, 42);
-            this.cbBaud.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbBaud.Margin = new System.Windows.Forms.Padding(2);
             this.cbBaud.Name = "cbBaud";
             this.cbBaud.Size = new System.Drawing.Size(345, 21);
             this.cbBaud.TabIndex = 4;
@@ -304,7 +304,7 @@
             "1",
             "2"});
             this.cbStopBit.Location = new System.Drawing.Point(89, 117);
-            this.cbStopBit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbStopBit.Margin = new System.Windows.Forms.Padding(2);
             this.cbStopBit.Name = "cbStopBit";
             this.cbStopBit.Size = new System.Drawing.Size(345, 21);
             this.cbStopBit.TabIndex = 7;
@@ -318,7 +318,7 @@
             "Odd",
             "Even"});
             this.cbParity.Location = new System.Drawing.Point(89, 92);
-            this.cbParity.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbParity.Margin = new System.Windows.Forms.Padding(2);
             this.cbParity.Name = "cbParity";
             this.cbParity.Size = new System.Drawing.Size(345, 21);
             this.cbParity.TabIndex = 6;
@@ -331,7 +331,7 @@
             "7",
             "8"});
             this.cbDataBit.Location = new System.Drawing.Point(89, 67);
-            this.cbDataBit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbDataBit.Margin = new System.Windows.Forms.Padding(2);
             this.cbDataBit.Name = "cbDataBit";
             this.cbDataBit.Size = new System.Drawing.Size(345, 21);
             this.cbDataBit.TabIndex = 5;
@@ -341,7 +341,7 @@
             this.cbCOM.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbCOM.FormattingEnabled = true;
             this.cbCOM.Location = new System.Drawing.Point(89, 17);
-            this.cbCOM.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbCOM.Margin = new System.Windows.Forms.Padding(2);
             this.cbCOM.Name = "cbCOM";
             this.cbCOM.Size = new System.Drawing.Size(345, 21);
             this.cbCOM.TabIndex = 3;
@@ -349,7 +349,7 @@
             // txtTenGiaoThuc
             // 
             this.txtTenGiaoThuc.Location = new System.Drawing.Point(111, 20);
-            this.txtTenGiaoThuc.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtTenGiaoThuc.Margin = new System.Windows.Forms.Padding(2);
             this.txtTenGiaoThuc.Name = "txtTenGiaoThuc";
             this.txtTenGiaoThuc.Size = new System.Drawing.Size(345, 20);
             this.txtTenGiaoThuc.TabIndex = 0;
@@ -383,7 +383,7 @@
             this.tabPage2.Controls.Add(this.dgvDataProtocol);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(1009, 713);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Dữ liệu";
@@ -414,7 +414,7 @@
             // btnDelete
             // 
             this.btnDelete.Location = new System.Drawing.Point(89, 5);
-            this.btnDelete.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnDelete.Margin = new System.Windows.Forms.Padding(2);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(80, 23);
             this.btnDelete.TabIndex = 9;
@@ -425,7 +425,7 @@
             // btnAddData
             // 
             this.btnAddData.Location = new System.Drawing.Point(5, 5);
-            this.btnAddData.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnAddData.Margin = new System.Windows.Forms.Padding(2);
             this.btnAddData.Name = "btnAddData";
             this.btnAddData.Size = new System.Drawing.Size(80, 23);
             this.btnAddData.TabIndex = 7;
@@ -446,7 +446,7 @@
             this.Scale,
             this.donViDo});
             this.dgvDataProtocol.Location = new System.Drawing.Point(5, 32);
-            this.dgvDataProtocol.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dgvDataProtocol.Margin = new System.Windows.Forms.Padding(2);
             this.dgvDataProtocol.Name = "dgvDataProtocol";
             this.dgvDataProtocol.RowHeadersWidth = 51;
             this.dgvDataProtocol.RowTemplate.Height = 24;

@@ -13,23 +13,21 @@ namespace FileExportScheduler.Service.ThongBao
         {
             string dongLoi = "";
             var dsLoi = ThongBaoLoi.DsThongBaoLoi.Distinct().ToList();
+            if (ThongBaoLoi.TrangThaiHoatDong == EnumTrangThaiHoatDong.CoLoi)
+            {
 
-            if (dsLoi.Count == 1)
-            {
-                dongLoi += dsLoi[0];
-            }
-            else if (dsLoi.Count == 0)
-            {
-                dongLoi = ThongBaoLoi.HoatDongBinhThuong;
-            }
-            else
-            {
                 foreach (string loi in dsLoi)
                 {
                     dongLoi += loi + ", ";
                 }
                 dongLoi = dongLoi.Remove(dongLoi.Length - 2);
+
             }
+            else if(ThongBaoLoi.TrangThaiHoatDong==EnumTrangThaiHoatDong.KhongCoLoi)
+            {
+                dongLoi = ThongBaoLoi.HoatDongBinhThuong;
+            }
+
             return dongLoi;
         }
     }
