@@ -12,8 +12,15 @@ namespace FileExportScheduler.Service.ThongBao
         public static string DsLoi()
         {
             string dongLoi = "";
-            var dsLoi = ThongBaoLoi.DsThongBaoLoi.Distinct().ToList();
-            if (ThongBaoLoi.TrangThaiHoatDong == EnumTrangThaiHoatDong.CoLoi)
+            var dsLoi =new List<string>();
+
+            foreach(KeyValuePair<string,List<string>> loiCua1ThietBi in ThongBaoLoi.DanhSach)
+            {
+                dsLoi.AddRange( loiCua1ThietBi.Value);
+            }
+            dsLoi.Distinct().ToList();
+
+            if (dsLoi.Count>0)
             {
 
                 foreach (string loi in dsLoi)
@@ -23,7 +30,7 @@ namespace FileExportScheduler.Service.ThongBao
                 dongLoi = dongLoi.Remove(dongLoi.Length - 2);
 
             }
-            else if(ThongBaoLoi.TrangThaiHoatDong==EnumTrangThaiHoatDong.KhongCoLoi)
+            else if(dsLoi.Count==0)
             {
                 dongLoi = ThongBaoLoi.HoatDongBinhThuong;
             }

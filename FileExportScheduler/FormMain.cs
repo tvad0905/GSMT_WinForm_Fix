@@ -242,10 +242,7 @@ namespace FileExportScheduler
                     catch { }
                 }
             }
-            if (ThongBaoLoi.TrangThaiHoatDong == EnumTrangThaiHoatDong.ChoDuyet)
-            {
-                ThongBaoLoi.TrangThaiHoatDong = EnumTrangThaiHoatDong.KhongCoLoi;
-            }
+          
             //set thong bao loi
             lblTrangThaiThietBi.Text = ThongBaoService.DsLoi();
 
@@ -279,9 +276,11 @@ namespace FileExportScheduler
                 //Lỗi không có kết nối 
                 lock (objW)
                 {
-                    ThongBaoLoi.TrangThaiHoatDong = EnumTrangThaiHoatDong.CoLoi;
 
-                    ThongBaoLoi.DsThongBaoLoi.Add(ThongBaoLoi.KhongKetNoi);
+                    List<string> danhSachLoi = new List<string>();
+                    danhSachLoi.Add(ThongBaoLoi.KhongKetNoi);
+                    ThongBaoLoi.DanhSach[deviceUnit.Key]=danhSachLoi;
+
                     deviceUnit = ThietBiGiamSatService.SetTrangThaiBad(deviceUnit);// set trang thai bad cho dư lieu tung thiet bi
                     return;
                 }
@@ -316,6 +315,9 @@ namespace FileExportScheduler
         //lấy dữ liệu của các thiết bị 
         private void GetDataDeviceIP(KeyValuePair<string, ThietBiModel> deviceUnit)
         {
+            //Danh sách lỗi trong quá trình  đọc dữ liệu
+            List<string> danhSachLoi = new List<string>();
+
             foreach (KeyValuePair<string, DiemDoModel> diemDo in deviceUnit.Value.dsDiemDoGiamSat)
             {
                 foreach (KeyValuePair<string, DuLieuModel> dulieu in diemDo.Value.DsDulieu)
@@ -328,15 +330,18 @@ namespace FileExportScheduler
                     }
                     catch (ModbusException ex)
                     {
-                        ThongBaoLoi.TrangThaiHoatDong = EnumTrangThaiHoatDong.CoLoi;
-                        ThongBaoLoi.DsThongBaoLoi.Add(ThongBaoLoi.VuotQuaDuLieu);
+                        if (!danhSachLoi.Contains(ThongBaoLoi.VuotQuaDuLieu))
+                        {
+                            danhSachLoi.Add(ThongBaoLoi.VuotQuaDuLieu);
+                        }
                         dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
                     }
                     catch (Exception ex)//Lỗi lấy dữ liệu thất bại
                     {
-                        ThongBaoLoi.TrangThaiHoatDong = EnumTrangThaiHoatDong.CoLoi;
-
-                        ThongBaoLoi.DsThongBaoLoi.Add(ThongBaoLoi.KhongCoTinHieuTraVe);
+                        if (!danhSachLoi.Contains(ThongBaoLoi.KhongCoTinHieuTraVe))
+                        {
+                            danhSachLoi.Add(ThongBaoLoi.KhongCoTinHieuTraVe);
+                        }
                         dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
                     }
                     finally
@@ -345,10 +350,15 @@ namespace FileExportScheduler
                     }
                 }
             }
+            //Add danh sách lỗi vào biến danh sách lỗi static
+            ThongBaoLoi.DanhSach[deviceUnit.Key]= danhSachLoi;
         }
 
         private void getDataCOM(KeyValuePair<string, ThietBiModel> deviceUnit)
         {
+            //Danh sách lỗi trong quá trình  đọc dữ liệu
+            List<string> danhSachLoi = new List<string>();
+
             foreach (KeyValuePair<string, DiemDoModel> diemDo in deviceUnit.Value.dsDiemDoGiamSat)
             {
                 foreach (KeyValuePair<string, DuLieuModel> dulieu in diemDo.Value.DsDulieu)
@@ -363,20 +373,20 @@ namespace FileExportScheduler
                     //lấy dữ liệu thất bại
                     catch (TimeoutException ex)
                     {
-                        ThongBaoLoi.TrangThaiHoatDong = EnumTrangThaiHoatDong.CoLoi;
-
-
                         //lỗi không đọc được dữ liệu
-                        ThongBaoLoi.DsThongBaoLoi.Add(ThongBaoLoi.KhongKetNoi);
+                        if (!danhSachLoi.Contains(ThongBaoLoi.KhongKetNoi))
+                        {
+                            danhSachLoi.Add(ThongBaoLoi.KhongKetNoi);
+                        }
                         dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
                     }
                     catch (Modbus.SlaveException ex)
                     {
-                        ThongBaoLoi.TrangThaiHoatDong = EnumTrangThaiHoatDong.CoLoi;
-
-
                         //lỗi số bản ghi cần đọc vượt quá lượng bản ghi trả về
-                        ThongBaoLoi.DsThongBaoLoi.Add(ThongBaoLoi.VuotQuaDuLieu);
+                        if (!danhSachLoi.Contains(ThongBaoLoi.VuotQuaDuLieu))
+                        {
+                            danhSachLoi.Add(ThongBaoLoi.VuotQuaDuLieu);
+                        }
                         dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
                     }
                     catch
@@ -388,13 +398,13 @@ namespace FileExportScheduler
                     }
                 }
             }
+
+            ThongBaoLoi.DanhSach[deviceUnit.Key]=danhSachLoi;
         }
         private void tmrDocDuLieu_Tick(object sender, EventArgs e)
         {
             try
             {
-                ThongBaoLoi.TrangThaiHoatDong = EnumTrangThaiHoatDong.ChoDuyet;
-
                 tmrDocDuLieu.Stop();
                 GetDeviceConnect();
                 formHienThiDuLieu.DsThietBi = dsThietBi;//hien thi du lieu doc duoc len view

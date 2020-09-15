@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace FileExportScheduler.Service.FileService
 {
@@ -47,32 +48,39 @@ namespace FileExportScheduler.Service.FileService
             DirectoryInfo thuMucghiDuLieu = new DirectoryInfo(duongDanThuMucLuuDuLieu);
             for (int i = 0; i < 200000; i++)
             {
-                FileSystemInfo fileBiXoa = thuMucghiDuLieu.GetFileSystemInfos().OrderBy(fi => fi.CreationTime).FirstOrDefault();
-                if (fileBiXoa != null)
+                try
                 {
-                    DateTime thoiGianFileSinhRa = fileBiXoa.LastWriteTime;
-                    if (chuKyXoaFile != 0)
+                    FileSystemInfo fileBiXoa = thuMucghiDuLieu.GetFileSystemInfos().OrderBy(fi => fi.CreationTime).FirstOrDefault();
+                    if (fileBiXoa != null)
                     {
-                        TimeSpan ts = DateTime.Now.Subtract(thoiGianFileSinhRa);
-
-                        if (ts.Minutes >= chuKyXoaFile)
+                        DateTime thoiGianFileSinhRa = fileBiXoa.LastWriteTime;
+                        if (chuKyXoaFile != 0)
                         {
-                            fileBiXoa.Delete();
+                            TimeSpan ts = DateTime.Now.Subtract(thoiGianFileSinhRa);
+
+                            if (ts.Minutes >= chuKyXoaFile)
+                            {
+                                fileBiXoa.Delete();
+                            }
+                            else
+                            {
+                                break;
+                            }
                         }
                         else
                         {
                             break;
                         }
+
                     }
                     else
                     {
                         break;
                     }
-
                 }
-                else
+                catch
                 {
-                    break;
+                    MessageBox.Show("đường dẫn thư mục không tồn tại");
                 }
             }
         }

@@ -1,4 +1,5 @@
-﻿using FileExportScheduler.Models;
+﻿using FileExportScheduler.Constant;
+using FileExportScheduler.Models;
 using FileExportScheduler.Models.DiemDo;
 using FileExportScheduler.Models.ThietBi.Base;
 using FileExportScheduler.Service.Json;
@@ -86,9 +87,10 @@ namespace FileExportScheduler.Service.Json
             return dsDuongDanTheoTenThietBi;
         }
         /// <summary>
-        /// trả về danh sách thông số cho thiêt bị
+        /// -add danh sách static ThongBaoLoi Thiết bị với lỗi null
+        /// -trả về danh sách thông số cho thiêt bị
         /// </summary>
-        /// <returns></returns>
+        /// <returns>danh sách thông số cho thiêt bị</returns>
         public static Dictionary<string, ThietBiModel> LayDanhSachThongSoCuaTungThietBi()
         {
             Dictionary<string, ThietBiModel> dsThietBi = new Dictionary<string, ThietBiModel>();
@@ -103,6 +105,7 @@ namespace FileExportScheduler.Service.Json
                     if (deviceIPUnit.Value.Protocol == "Modbus TCP/IP" || deviceIPUnit.Value.Protocol == "Siemens S7-1200")
                     {
                         dsThietBi.Add(deviceIPUnit.Key, deviceIPUnit.Value);
+                        ThongBaoLoi.DanhSach.Add(deviceIPUnit.Key, new List<string>());
                     }
                 }
                 Dictionary<string, ThietBiCOM> deviceCom = jsonObj.ToObject<Dictionary<string, ThietBiCOM>>();
@@ -110,7 +113,9 @@ namespace FileExportScheduler.Service.Json
                 {
                     if (deviceComUnit.Value.Protocol == "Serial Port")
                     {
+                        
                         dsThietBi.Add(deviceComUnit.Key, deviceComUnit.Value);
+                        ThongBaoLoi.DanhSach.Add(deviceComUnit.Key, new List<string>());
                     }
                 }
             }

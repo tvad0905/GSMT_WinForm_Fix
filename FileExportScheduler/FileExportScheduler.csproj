@@ -65,7 +65,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constant\EnumTrangThaiHoatDong.cs" />
     <Compile Include="Constant\ThongBaoLoi.cs" />
     <Compile Include="Constant\TrangThaiKetNoi.cs" />
     <Compile Include="FormHienThiDuLieu.cs">
