@@ -72,7 +72,7 @@ namespace FileExportScheduler.Service.Json
                     {
                         foreach (KeyValuePair<string, DiemDoModel> diemDo in thietbi.Value.dsDiemDoGiamSat)
                         {
-                            string filePath = export.ExportFilePath.Substring(0, export.ExportFilePath.LastIndexOf("\\")) +
+                            string filePath = export.ExportFilePath +
                                "\\" + $"log({diemDo.Value.TenDiemDo}){ DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_ss")}.csv";
                             dsDuongDanTheoTenThietBi.Add(filePath);
                         }
@@ -130,7 +130,7 @@ namespace FileExportScheduler.Service.Json
             {
                 var obj = sr.ReadToEnd();
                 CaiDatChung export = JsonConvert.DeserializeObject<CaiDatChung>(obj.ToString());
-                return export.ExportFilePath.Substring(0, export.ExportFilePath.LastIndexOf("\\"));
+                return export.ExportFilePath;
             }
         }
     }

@@ -79,7 +79,6 @@ namespace FileExportScheduler
             //quét danh sách thông số cho từng thiết bị từ json
             dsThietBi = Service.Json.JsonReader.LayDanhSachThongSoCuaTungThietBi();
 
-            modbusTCP.ConnectionTimeout = 2000;
             foreach (KeyValuePair<string, ThietBiModel> deviceUnit in dsThietBi)
             {
                 if (deviceUnit.Value.Protocol == "Serial Port")
@@ -231,8 +230,8 @@ namespace FileExportScheduler
                     modbusTCP = new ModbusClient(((ThietBiTCPIP)deviceUnit.Value).IP, ((ThietBiTCPIP)deviceUnit.Value).Port);
                     try
                     {
-                        this.Invoke(new MethodInvoker(async delegate { await Task.Run(() => IPConnect(/*ListfilePath, */deviceUnit)); }));
-                        //await Task.Run(() => IPConnect(/*ListfilePath, */deviceUnit));
+                        //this.Invoke(new MethodInvoker(async delegate { await Task.Run(() => IPConnect(/*ListfilePath, */deviceUnit)); }));
+                        await Task.Run(() => IPConnect(/*ListfilePath, */deviceUnit));
 
                     }
                     catch { }
@@ -410,7 +409,7 @@ namespace FileExportScheduler
         {
             try
             {
-                tmrDocDuLieu.Stop();
+                //tmrDocDuLieu.Stop();
                 GetDeviceConnect();
                 formHienThiDuLieu.DsThietBi = dsThietBi;//hien thi du lieu doc duoc len view
             }
@@ -420,7 +419,7 @@ namespace FileExportScheduler
             }
             finally
             {
-                tmrDocDuLieu.Start();
+                //tmrDocDuLieu.Start();
             }
         }
 
