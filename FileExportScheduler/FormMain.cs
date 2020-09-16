@@ -7,6 +7,7 @@ using FileExportScheduler.Models.DuLieu;
 using FileExportScheduler.Models.ThietBi.Base;
 using FileExportScheduler.Service.FileService;
 using FileExportScheduler.Service.Json;
+using FileExportScheduler.Service.KiemTra;
 using FileExportScheduler.Service.ThietBi;
 using FileExportScheduler.Service.ThongBao;
 using Modbus.Device;
@@ -49,6 +50,12 @@ namespace FileExportScheduler
         #region Button Events
         private void btnStart_Click(object sender, EventArgs e)
         {
+            if (!Directory.Exists(Service.Json.JsonReader.DuongDanThuLog()))
+            {
+                MessageBox.Show("Đường dẫn thư mục không tồn tại");
+                return;
+            }
+
             WindowState = FormWindowState.Minimized;
             ShowInTaskbar = false;
             notifyIcon.ShowBalloonTip(100);
@@ -58,8 +65,6 @@ namespace FileExportScheduler
             btnStart.Enabled = false;
             btnDataList.Enabled = false;
             btnSetting.Enabled = false;
-
-            //set thời gian đọc dữ liệu của thiết bị 
 
             //set chu kì đọc dữ liệu
             tmrDocDuLieu.Interval = 1000;

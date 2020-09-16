@@ -78,6 +78,7 @@
     <Compile Include="Service\FileService\FileCSV.cs" />
     <Compile Include="Service\Json\PathJson.cs" />
     <Compile Include="Service\Json\JsonReader.cs" />
+    <Compile Include="Service\KiemTra\KiemTraDuongDan.cs" />
     <Compile Include="Service\ThietBi\ThietBiGiamSatService.cs" />
     <Compile Include="Service\ThongBao\ThongBaoService.cs" />
     <Compile Include="Service\DiemDo\DanhSachDiemDoService.cs" />

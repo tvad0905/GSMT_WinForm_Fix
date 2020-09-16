@@ -17,7 +17,8 @@ namespace FileExportScheduler.Service.FileService
         /// <summary>
         /// Sinh ra file csv trong Export Data folder
         /// </summary>
-        /// <param name="filePath">danh sách đường dẫn file csv</param>
+        /// <param name="filePath">danh sách 
+        /// file csv</param>
         /// <param name="dsThietBi">danh sách thiết bị</param>
         /// <param name="dsDiemDo">danh sách điểm đo</param>
         public static void XuatFileCSV(List<string> filePath, Dictionary<string, ThietBiModel> dsThietBi)
@@ -80,7 +81,7 @@ namespace FileExportScheduler.Service.FileService
                 }
                 catch
                 {
-                    MessageBox.Show("đường dẫn thư mục không tồn tại");
+                    //MessageBox.Show("đường dẫn thư mục không tồn tại");
                 }
             }
         }

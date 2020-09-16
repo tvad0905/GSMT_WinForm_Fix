@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Reflection;
 using FileExportScheduler.Service.Json;
+using FileExportScheduler.Service.KiemTra;
 
 namespace FileExportScheduler
 {
@@ -24,28 +25,21 @@ namespace FileExportScheduler
 
         private void btnBrowse_Click(object sender, EventArgs e)
         {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "CSV (*.csv)|*.csv";
-            //sfd.FileName = $"{DateTime.Now.ToString("yyyyMMddHHmmss")}.csv";
-            sfd.FileName = "DataLog.csv";
-            if (sfd.ShowDialog() == DialogResult.OK)
+            FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog();
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
             {
-                txtExportFilePath.Text = sfd.FileName;
-            }
-            else
-            {
-                txtExportFilePath.Text = "";
+                txtExportFilePath.Text = folderBrowserDialog1.SelectedPath;
             }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            CaiDatChung settingModel = new CaiDatChung();
+            CaiDatChung setting = new CaiDatChung();
 
-            settingModel.AutoRun = chkAutoRun.Checked;
-            settingModel.Interval = Int32.Parse(udInterval.Value.ToString());
-            settingModel.ExportFilePath = txtExportFilePath.Text;
-            settingModel.ChuKiXoaDuLieu = Int32.Parse(numChuKiXoaDuLieu.Value.ToString());
+            setting.AutoRun = chkAutoRun.Checked;
+            setting.Interval = Int32.Parse(udInterval.Value.ToString());
+            setting.ExportFilePath = txtExportFilePath.Text;
+            setting.ChuKiXoaDuLieu = Int32.Parse(numChuKiXoaDuLieu.Value.ToString());
 
             var path = GetPathJson.getPathConfig("Config.json");
 
@@ -54,15 +48,17 @@ namespace FileExportScheduler
                 errorProvider1.SetError(txtExportFilePath, "Không được để trống !");
                 return;
             }
-
-            using (StreamWriter sw = File.CreateText(path))
+            if (KiemTraDuongDan.TonTaiKhiLuu(txtExportFilePath.Text,setting))
             {
-                var loadData = JsonConvert.SerializeObject(settingModel);
-                sw.WriteLine(loadData);
+                MessageBox.Show("Đã lưu thành công!");
+                this.Close();
             }
-
-            MessageBox.Show("Đã lưu thành công!");
-            this.Close();
+            else
+            {
+                MessageBox.Show("Đường dẫn thư mục không tồn tại");
+                return;
+            }
+            
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -88,5 +84,7 @@ namespace FileExportScheduler
                 }
             }
         }
+
+        
     }
 }
