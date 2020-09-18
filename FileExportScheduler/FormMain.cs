@@ -39,6 +39,7 @@ namespace FileExportScheduler
         ModbusClient modbusTCP = new ModbusClient();
         SerialPort serialPort = new SerialPort();
         FormHienThiDuLieu formHienThiDuLieu = new FormHienThiDuLieu();
+        bool heThongDangChay = false;
 
         #endregion
 
@@ -50,6 +51,7 @@ namespace FileExportScheduler
         #region Button Events
         private void btnStart_Click(object sender, EventArgs e)
         {
+            heThongDangChay = true;
             if (!Directory.Exists(Service.Json.JsonReader.DuongDanThuLog()))
             {
                 MessageBox.Show("Đường dẫn thư mục không tồn tại");
@@ -87,7 +89,7 @@ namespace FileExportScheduler
                     serialPort.RtsEnable = true;
                     var port = (ThietBiCOM)deviceUnit.Value;
                     serialPort = new SerialPort(port.Com, port.Baud, port.parity, port.Databit, port.stopBits);
-                    serialPort.ReadTimeout = 200;
+                    serialPort.ReadTimeout = 50;
                     serialPort.Handshake = Handshake.None;
                     serialPort.ParityReplace = (byte)'\0';
                     try
@@ -113,6 +115,7 @@ namespace FileExportScheduler
 
         private void btnStop_Click(object sender, EventArgs e)
         {
+            heThongDangChay = false;
             btnStop.Enabled = false;
             btnStart.Enabled = true;
             btnDataList.Enabled = true;
@@ -129,10 +132,14 @@ namespace FileExportScheduler
             //lblStatus.Text = "Hệ thống đã dừng !";
             notifyIcon.ShowBalloonTip(100, "Hệ thống", "Hệ thống đã dừng !", ToolTipIcon.Warning);
 
-            Thread.Sleep(2000);
+            tmrDocDuLieu.Dispose();
+            tmrChukyXoaFile.Dispose();
+            tmrXuatFile.Dispose();
             lblTrangThaiThietBi.Text = "Hệ thống đã dừng";
-            modbusTCP.Disconnect();
+            Thread.Sleep(1000);
 
+            modbusTCP.Disconnect();
+            
         }
 
         private void btnDataList_Click(object sender, EventArgs e)
@@ -240,25 +247,30 @@ namespace FileExportScheduler
                 {
                     try
                     {
-                        this.Invoke(new MethodInvoker(async delegate { await Task.Run(() => COMConnect(/*ListfilePath,*/ deviceUnit)); }));
-                        //await Task.Run(() => COMConnect(/*ListfilePath,*/ deviceUnit));
+                        //this.Invoke(new MethodInvoker(async delegate { await Task.Run(() => COMConnect(/*ListfilePath,*/ deviceUnit)); }));
+                        await Task.Run(() => COMConnect(/*ListfilePath,*/ deviceUnit));
                     }
-                    catch { }
+                    catch
+                    {
+
+                    }
                 }
             }
-          
-            //set thong bao loi
-            lblTrangThaiThietBi.Text = ThongBaoService.DsLoi();
 
-            if (lblTrangThaiThietBi.Text == ThongBaoLoi.HoatDongBinhThuong)
+            if ( heThongDangChay)
             {
-                lblTrangThaiThietBi.ForeColor = Color.Green;
-            }
-            else
-            {
-                lblTrangThaiThietBi.ForeColor = Color.Red;
-            }
+                //set thong bao loi
+                lblTrangThaiThietBi.Text = ThongBaoService.DsLoi();
 
+                if (lblTrangThaiThietBi.Text == ThongBaoLoi.HoatDongBinhThuong)
+                {
+                    lblTrangThaiThietBi.ForeColor = Color.Green;
+                }
+                else
+                {
+                    lblTrangThaiThietBi.ForeColor = Color.Red;
+                }
+            }
         }
 
         // tạo 1 thread cho connect
@@ -283,7 +295,7 @@ namespace FileExportScheduler
 
                     List<string> danhSachLoi = new List<string>();
                     danhSachLoi.Add(ThongBaoLoi.KhongKetNoi);
-                    ThongBaoLoi.DanhSach[deviceUnit.Key]=danhSachLoi;
+                    ThongBaoLoi.DanhSach[deviceUnit.Key] = danhSachLoi;
 
                     deviceUnit = ThietBiGiamSatService.SetTrangThaiBad(deviceUnit);// set trang thai bad cho dư lieu tung thiet bi
                     return;
@@ -355,7 +367,7 @@ namespace FileExportScheduler
                 }
             }
             //Add danh sách lỗi vào biến danh sách lỗi static
-            ThongBaoLoi.DanhSach[deviceUnit.Key]= danhSachLoi;
+            ThongBaoLoi.DanhSach[deviceUnit.Key] = danhSachLoi;
         }
 
         private void getDataCOM(KeyValuePair<string, ThietBiModel> deviceUnit)
@@ -393,8 +405,9 @@ namespace FileExportScheduler
                         }
                         dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
                     }
-                    catch
+                    catch (Exception ex)
                     {
+
                     }
                     finally
                     {
@@ -402,8 +415,7 @@ namespace FileExportScheduler
                     }
                 }
             }
-
-            ThongBaoLoi.DanhSach[deviceUnit.Key]=danhSachLoi;
+            ThongBaoLoi.DanhSach[deviceUnit.Key] = danhSachLoi;
         }
         private void tmrDocDuLieu_Tick(object sender, EventArgs e)
         {
@@ -411,11 +423,11 @@ namespace FileExportScheduler
             {
                 //tmrDocDuLieu.Stop();
                 GetDeviceConnect();
-                formHienThiDuLieu.DsThietBi = dsThietBi;//hien thi du lieu doc duoc len view
+                formHienThiDuLieu.DsThietBi = dsThietBi; //hien thi du lieu doc duoc len view
             }
             catch
             {
-
+                
             }
             finally
             {

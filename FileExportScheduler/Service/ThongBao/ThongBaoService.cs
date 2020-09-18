@@ -9,6 +9,7 @@ namespace FileExportScheduler.Service.ThongBao
 {
     public static class ThongBaoService
     {
+       
         public static string DsLoi()
         {
             string dongLoi = "";

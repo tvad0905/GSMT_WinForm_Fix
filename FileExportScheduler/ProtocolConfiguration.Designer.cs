@@ -452,7 +452,6 @@
             this.dgvDataProtocol.RowTemplate.Height = 24;
             this.dgvDataProtocol.Size = new System.Drawing.Size(999, 676);
             this.dgvDataProtocol.TabIndex = 3;
-            this.dgvDataProtocol.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDataProtocol_CellContentClick);
             // 
             // ten
             // 
