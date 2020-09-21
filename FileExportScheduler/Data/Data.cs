@@ -1,5 +1,6 @@
 ﻿using EasyModbus;
 using EasyModbus.Exceptions;
+using FileExportScheduler.Constant;
 using FileExportScheduler.Models.DuLieu;
 using Modbus.Device;
 using System;
@@ -80,6 +81,7 @@ namespace FileExportScheduler.Data
             }
             catch
             {
+                duLieuTemp.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
                 throw;
             }
             return giaTriDuLieu;
