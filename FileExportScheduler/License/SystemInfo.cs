@@ -104,7 +104,10 @@
             {
                 try
                 {
-                    return obj2[MethodName].ToString();
+                    if(obj2[MethodName] != null)
+                    {
+                        return obj2[MethodName].ToString();
+                    }
                 }
                 catch (Exception)
                 {

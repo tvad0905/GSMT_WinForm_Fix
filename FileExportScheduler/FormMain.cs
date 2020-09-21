@@ -69,14 +69,13 @@ namespace FileExportScheduler
             btnSetting.Enabled = false;
 
             //set chu kì đọc dữ liệu
-            tmrDocDuLieu.Interval = 1000;
+            tmrDocDuLieu.Interval = 1500;
 
             //set chu kỳ xóa file
             tmrChukyXoaFile.Interval = 30000;
 
             //set chu kỳ ghi ra file
             tmrXuatFile.Interval = Service.Json.JsonReader.GetTimeInterval();
-            tmrXuatFile.Start();
 
             //quét danh sách thông số cho từng thiết bị từ json
             dsThietBi = Service.Json.JsonReader.LayDanhSachThongSoCuaTungThietBi();
@@ -89,7 +88,7 @@ namespace FileExportScheduler
                     serialPort.RtsEnable = true;
                     var port = (ThietBiCOM)deviceUnit.Value;
                     serialPort = new SerialPort(port.Com, port.Baud, port.parity, port.Databit, port.stopBits);
-                    serialPort.ReadTimeout = 50;
+                    serialPort.ReadTimeout = 200;
                     serialPort.Handshake = Handshake.None;
                     serialPort.ParityReplace = (byte)'\0';
                     try
@@ -101,15 +100,13 @@ namespace FileExportScheduler
                     catch
                     {
                         //Lỗi ko kết nối được
+
                     }
                 }
             }
-
-
             tmrDocDuLieu.Start();
-
-
             tmrChukyXoaFile.Start();
+            tmrXuatFile.Start();
             //lblStatus.Text = "Hệ thống đang chạy !";
         }
 
@@ -123,8 +120,6 @@ namespace FileExportScheduler
             btnThongSoDuLieu.Enabled = false;
 
             serialPort.Close();
-
-
             tmrDocDuLieu.Stop();
             tmrChukyXoaFile.Stop();
             tmrXuatFile.Stop();
@@ -132,9 +127,6 @@ namespace FileExportScheduler
             //lblStatus.Text = "Hệ thống đã dừng !";
             notifyIcon.ShowBalloonTip(100, "Hệ thống", "Hệ thống đã dừng !", ToolTipIcon.Warning);
 
-            tmrDocDuLieu.Dispose();
-            tmrChukyXoaFile.Dispose();
-            tmrXuatFile.Dispose();
             lblTrangThaiThietBi.Text = "Hệ thống đã dừng";
             Thread.Sleep(1000);
 
@@ -389,21 +381,23 @@ namespace FileExportScheduler
                     //lấy dữ liệu thất bại
                     catch (TimeoutException ex)
                     {
+                        dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
                         //lỗi không đọc được dữ liệu
                         if (!danhSachLoi.Contains(ThongBaoLoi.KhongKetNoi))
                         {
                             danhSachLoi.Add(ThongBaoLoi.KhongKetNoi);
                         }
-                        dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
+                        
                     }
                     catch (Modbus.SlaveException ex)
                     {
+                        dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
                         //lỗi số bản ghi cần đọc vượt quá lượng bản ghi trả về
                         if (!danhSachLoi.Contains(ThongBaoLoi.VuotQuaDuLieu))
                         {
                             danhSachLoi.Add(ThongBaoLoi.VuotQuaDuLieu);
                         }
-                        dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
+                        
                     }
                     catch (Exception ex)
                     {

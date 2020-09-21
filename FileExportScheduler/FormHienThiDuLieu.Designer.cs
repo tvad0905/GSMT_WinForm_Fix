@@ -60,12 +60,11 @@
             this.dgvHienThiDuLieu.Name = "dgvHienThiDuLieu";
             this.dgvHienThiDuLieu.RowHeadersWidth = 51;
             this.dgvHienThiDuLieu.RowTemplate.Height = 24;
-            this.dgvHienThiDuLieu.Size = new System.Drawing.Size(1097, 514);
+            this.dgvHienThiDuLieu.Size = new System.Drawing.Size(1067, 445);
             this.dgvHienThiDuLieu.TabIndex = 4;
             // 
             // ten
             // 
-            this.ten.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.ten.DataPropertyName = "ten";
             this.ten.HeaderText = "Tên";
             this.ten.MinimumWidth = 50;
@@ -73,11 +72,11 @@
             // 
             // ThietBi
             // 
-            this.ThietBi.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.ThietBi.DataPropertyName = "DiemDo";
             this.ThietBi.HeaderText = "Điểm đo";
             this.ThietBi.MinimumWidth = 6;
             this.ThietBi.Name = "ThietBi";
+            this.ThietBi.Width = 250;
             // 
             // Diachi_P
             // 
@@ -104,17 +103,17 @@
             // 
             // Donvido_P
             // 
-            this.Donvido_P.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Donvido_P.DataPropertyName = "TrangThaiTinHieu";
             this.Donvido_P.HeaderText = "Trạng Thái Tín Hiệu";
             this.Donvido_P.MinimumWidth = 50;
             this.Donvido_P.Name = "Donvido_P";
+            this.Donvido_P.Width = 130;
             // 
             // FormHienThiDuLieu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1097, 514);
+            this.ClientSize = new System.Drawing.Size(1067, 445);
             this.Controls.Add(this.dgvHienThiDuLieu);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FormHienThiDuLieu";

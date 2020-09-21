@@ -53,8 +53,6 @@ namespace FileExportScheduler.Data
             IModbusMaster master = ModbusSerialMaster.CreateRtu(serialPort);
             try
             {
-                var b = serialPort.Parity.ToString();
-                var a  = serialPort.ParityReplace.ToString();
                 byte slaveAddress = 1;
                 ushort numberOfPoint = 1;
 
@@ -79,7 +77,6 @@ namespace FileExportScheduler.Data
                     giaTriDuLieu = (Convert.ToInt32(readHoldingRegisters[0].ToString()) - ((Convert.ToInt32(readHoldingRegisters[0].ToString()) > 32767) ? 65536 : 0)).ToString();
                    
                 }
-
             }
             catch
             {
