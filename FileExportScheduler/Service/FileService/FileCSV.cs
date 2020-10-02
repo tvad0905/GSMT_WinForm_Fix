@@ -29,16 +29,22 @@ namespace FileExportScheduler.Service.FileService
 
                 foreach (KeyValuePair<string, DiemDoModel> diemDo in thietBi.Value.dsDiemDoGiamSat)
                 {
-                    string csvData = "[Data]" + "\n" + "Tagname,TimeStamp,Value,DataQuality" + "\n";
+                    StringBuilder csvData = new StringBuilder();
+                    csvData.Append("[Data]" + "\n" + "Tagname,TimeStamp,Value,DataQuality" + "\n");
                     foreach (KeyValuePair<string, DuLieuModel> duLieu in diemDo.Value.DsDulieu)
                     {
-                        csvData +=
-                                   duLieu.Value.DiemDo + "." + duLieu.Value.Ten + "," +
-                                   duLieu.Value.ThoiGianDocGiuLieu.ToString("mm:ss.fff") + "," +
-                                   Math.Round((Convert.ToInt32(duLieu.Value.GiaTri) / Convert.ToDouble(duLieu.Value.Scale)), 2) + "," +
-                                   duLieu.Value.TrangThaiTinHieu + "\n";
+                        csvData.Append(duLieu.Value.DiemDo);
+                        csvData.Append(".");
+                        csvData.Append(duLieu.Value.Ten);
+                        csvData.Append(",");
+                        csvData.Append(duLieu.Value.ThoiGianDocGiuLieu.ToString("mm:ss.fff"));
+                        csvData.Append(",");
+                        csvData.Append(Math.Round((Convert.ToInt32(duLieu.Value.GiaTri) / Convert.ToDouble(duLieu.Value.Scale)), 2));
+                        csvData.Append(",");
+                        csvData.Append(duLieu.Value.TrangThaiTinHieu);
+                        csvData.Append("\n");
                     }
-                    File.WriteAllText(filePath[i], csvData);
+                    File.WriteAllText(filePath[i], csvData.ToString());
                     i++;
                 }
             }

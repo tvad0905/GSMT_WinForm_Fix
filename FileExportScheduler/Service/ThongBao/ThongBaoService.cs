@@ -19,7 +19,7 @@ namespace FileExportScheduler.Service.ThongBao
             {
                 dsLoi.AddRange( loiCua1ThietBi.Value);
             }
-            dsLoi.Distinct().ToList();
+            dsLoi= dsLoi.Distinct().ToList();
 
             if (dsLoi.Count>0)
             {

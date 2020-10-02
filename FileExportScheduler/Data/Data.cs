@@ -17,6 +17,7 @@ namespace FileExportScheduler.Data
     {
         public static string LayDuLieuTCPIP(ModbusClient modbus, DuLieuModel duLieuTemp)
          {
+
             string giaTriDuLieu = "";
             try
             {
@@ -56,25 +57,26 @@ namespace FileExportScheduler.Data
             {
                 byte slaveAddress = 1;
                 ushort numberOfPoint = 1;
-
-                if (Convert.ToInt32(duLieuTemp.DiaChi) <= 9999)
+                int diaChiDuLieu = Convert.ToInt32(duLieuTemp.DiaChi);
+                 
+                if (diaChiDuLieu <= 9999)
                 {
                     bool[] readCoil = master.ReadCoils(slaveAddress, Convert.ToUInt16(duLieuTemp.DiaChi), numberOfPoint);
                     giaTriDuLieu = readCoil[0].ToString();
                 }
-                else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 19999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 10000)
+                else if (diaChiDuLieu <= 19999 && diaChiDuLieu >= 10000)
                 {
-                    bool[] discreteInput = master.ReadInputs(slaveAddress, Convert.ToUInt16(Convert.ToInt32(duLieuTemp.DiaChi) - 10000), numberOfPoint);
+                    bool[] discreteInput = master.ReadInputs(slaveAddress, Convert.ToUInt16(diaChiDuLieu - 10000), numberOfPoint);
                     giaTriDuLieu = discreteInput[0].ToString();
                 }
-                else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 39999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 30000)
+                else if (diaChiDuLieu <= 39999 && diaChiDuLieu >= 30000)
                 {
-                    ushort[] readRegister = master.ReadInputRegisters(slaveAddress, Convert.ToUInt16(Convert.ToInt32(duLieuTemp.DiaChi) - 30000), numberOfPoint);
+                    ushort[] readRegister = master.ReadInputRegisters(slaveAddress, Convert.ToUInt16(diaChiDuLieu - 30000), numberOfPoint);
                     giaTriDuLieu = (Convert.ToInt32(readRegister[0].ToString()) - ((Convert.ToInt32(readRegister[0].ToString()) > 32767) ? 65536 : 0)).ToString();
                 }
-                else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 49999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 40000)
+                else if (diaChiDuLieu <= 49999 && diaChiDuLieu >= 40000)
                 {
-                    ushort[] readHoldingRegisters = master.ReadHoldingRegisters(slaveAddress, Convert.ToUInt16(Convert.ToInt32(duLieuTemp.DiaChi) - 40000), numberOfPoint);
+                    ushort[] readHoldingRegisters = master.ReadHoldingRegisters(slaveAddress, Convert.ToUInt16(diaChiDuLieu - 40000), numberOfPoint);
                     giaTriDuLieu = (Convert.ToInt32(readHoldingRegisters[0].ToString()) - ((Convert.ToInt32(readHoldingRegisters[0].ToString()) > 32767) ? 65536 : 0)).ToString();
                    
                 }

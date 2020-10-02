@@ -46,7 +46,7 @@ namespace FileExportScheduler
             dt = ConvertThongSoGiaTriToDataTable(DanhSachDuLieuService.GetThongSoGiaTriCuaTatCaThietBi(dsThietBi));
             dgvHienThiDuLieu.DataSource = dt;
             dgvHienThiDuLieu.AutoGenerateColumns = false;
-            tmrHienThongSoSuLieu.Interval = 1000;
+            tmrHienThongSoSuLieu.Interval = 500;
             tmrHienThongSoSuLieu.Enabled = true;
             tmrHienThongSoSuLieu.Start();
 
@@ -78,9 +78,10 @@ namespace FileExportScheduler
                 table.Columns.Add("DiemDo", typeof(string));
                 table.Columns.Add("ThietBi", typeof(string));
                 table.Columns.Add("DiaChi", typeof(string));
-                table.Columns.Add("GiaTri", typeof(int));
+                table.Columns.Add("GiaTri", typeof(double));
                 table.Columns.Add("TrangThaiTinHieu", typeof(string));
-                table.PrimaryKey = new[] { table.Columns["Ten"] };
+                table.PrimaryKey = new[] { table.Columns["Ten"] ,table.Columns["DiemDo"]};
+                
 
                 foreach (Models.DuLieu.ThongSoGiaTriModel thongSoGiaTri in data)
                 {
@@ -89,7 +90,7 @@ namespace FileExportScheduler
                     dr["DiemDo"] = thongSoGiaTri.DiemDo;
                     dr["ThietBi"] = thongSoGiaTri.ThietBi;
                     dr["DiaChi"] = thongSoGiaTri.DiaChi;
-                    dr["GiaTri"] = thongSoGiaTri.GiaTri;
+                    dr["GiaTri"] = Math.Round((Convert.ToDouble(thongSoGiaTri.GiaTri) / Convert.ToDouble(thongSoGiaTri.Scale)), 2).ToString();
                     dr["TrangThaiTinHieu"] = thongSoGiaTri.TrangThaiTinHieu;
                     table.Rows.Add(dr);
                 }

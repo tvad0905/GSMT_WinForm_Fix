@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormHienThiDuLieu));
             this.tmrHienThongSoSuLieu = new System.Windows.Forms.Timer(this.components);
             this.dgvHienThiDuLieu = new System.Windows.Forms.DataGridView();
             this.ten = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -115,9 +116,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1067, 445);
             this.Controls.Add(this.dgvHienThiDuLieu);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FormHienThiDuLieu";
-            this.Text = "FormHienThiDuLieu";
+            this.Text = "Realtime Monitor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormHienThiDuLieu_FormClosing);
             this.Load += new System.EventHandler(this.FormHienThiDuLieu_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvHienThiDuLieu)).EndInit();

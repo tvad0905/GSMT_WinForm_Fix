@@ -195,6 +195,7 @@
     <Content Include="bin\Debug\Unme.Common.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Image\images.ico" />
     <Content Include="Image\logo.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

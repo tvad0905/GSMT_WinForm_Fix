@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.IO.Ports;
@@ -69,7 +70,7 @@ namespace FileExportScheduler
             btnSetting.Enabled = false;
 
             //set chu kì đọc dữ liệu
-            tmrDocDuLieu.Interval = 1500;
+            tmrDocDuLieu.Interval = 3000;
 
             //set chu kỳ xóa file
             tmrChukyXoaFile.Interval = 30000;
@@ -128,10 +129,11 @@ namespace FileExportScheduler
             notifyIcon.ShowBalloonTip(100, "Hệ thống", "Hệ thống đã dừng !", ToolTipIcon.Warning);
 
             lblTrangThaiThietBi.Text = "Hệ thống đã dừng";
+            lblTrangThaiThietBi.ForeColor = Color.Black;
             Thread.Sleep(1000);
 
             modbusTCP.Disconnect();
-            
+            serialPort.Dispose();
         }
 
         private void btnDataList_Click(object sender, EventArgs e)
@@ -158,7 +160,18 @@ namespace FileExportScheduler
                 case DialogResult.No:
                     break;
                 case DialogResult.Yes:
-                    formHienThiDuLieu.Close();
+                    FormCollection fc = Application.OpenForms;
+
+                    foreach (Form frm in fc)
+                    {
+
+                        if (frm.Name == "FormHienThiDuLieu")
+                        {
+                            formHienThiDuLieu.Close();
+                            break;
+                        }
+                    }
+                    //formHienThiDuLieu.Close();
                     Application.Exit();
                     break;
                 default:
@@ -221,6 +234,8 @@ namespace FileExportScheduler
         private async void GetDeviceConnect()
         {
 
+          
+
 
             foreach (KeyValuePair<string, ThietBiModel> deviceUnit in dsThietBi)
             {
@@ -235,7 +250,8 @@ namespace FileExportScheduler
                     }
                     catch { }
                 }
-                else if (deviceUnit.Value.Protocol == "Serial Port")
+                else
+                if (deviceUnit.Value.Protocol == "Serial Port")
                 {
                     try
                     {
@@ -248,8 +264,8 @@ namespace FileExportScheduler
                     }
                 }
             }
-
-            if ( heThongDangChay)
+           
+            if (heThongDangChay)
             {
                 //set thong bao loi
                 lblTrangThaiThietBi.Text = ThongBaoService.DsLoi();
@@ -333,8 +349,10 @@ namespace FileExportScheduler
 
                     try//lấy dữ liệu thành công
                     {
+                       
                         dulieu.Value.GiaTri = Convert.ToInt32(Data.Data.LayDuLieuTCPIP(modbusTCP, dulieu.Value)).ToString();
                         dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Good;
+
                     }
                     catch (ModbusException ex)
                     {
@@ -364,6 +382,7 @@ namespace FileExportScheduler
 
         private void getDataCOM(KeyValuePair<string, ThietBiModel> deviceUnit)
         {
+
             //Danh sách lỗi trong quá trình  đọc dữ liệu
             List<string> danhSachLoi = new List<string>();
 
@@ -387,7 +406,7 @@ namespace FileExportScheduler
                         {
                             danhSachLoi.Add(ThongBaoLoi.KhongKetNoi);
                         }
-                        
+
                     }
                     catch (Modbus.SlaveException ex)
                     {
@@ -397,7 +416,7 @@ namespace FileExportScheduler
                         {
                             danhSachLoi.Add(ThongBaoLoi.VuotQuaDuLieu);
                         }
-                        
+
                     }
                     catch (Exception ex)
                     {
@@ -409,6 +428,7 @@ namespace FileExportScheduler
                     }
                 }
             }
+
             ThongBaoLoi.DanhSach[deviceUnit.Key] = danhSachLoi;
         }
         private void tmrDocDuLieu_Tick(object sender, EventArgs e)
@@ -421,7 +441,7 @@ namespace FileExportScheduler
             }
             catch
             {
-                
+
             }
             finally
             {

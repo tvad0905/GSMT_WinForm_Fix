@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAbout));
             this.lblTenSanPham = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnOK = new System.Windows.Forms.Button();
@@ -117,6 +118,7 @@
             this.Controls.Add(this.lblBanQuyen);
             this.Controls.Add(this.lblPhienBan);
             this.Controls.Add(this.lblTenSanPham);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormAbout";
             this.Text = "Thông tin phần mềm";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

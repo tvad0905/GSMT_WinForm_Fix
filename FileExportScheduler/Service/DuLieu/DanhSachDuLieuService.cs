@@ -3,6 +3,7 @@ using FileExportScheduler.Models.DuLieu;
 using FileExportScheduler.Models.ThietBi.Base;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,25 +13,11 @@ namespace FileExportScheduler.Service.DuLieu
 {
     class DanhSachDuLieuService
     {
-       /* public static List<DuLieuModel> GetDsDuLieuCuaTatCaThietBi(Dictionary<string, ThietBiModel> dsThietBi)
-        {
-            List<DuLieuModel> dsDuLieuGiamSatCuaTatCaThietBi = new List<DuLieuModel>();
-            foreach (KeyValuePair<string, ThietBiModel> thietBi in dsThietBi)
-            {
-                foreach (KeyValuePair<string, DiemDoModel> diemDo in thietBi.Value.dsDiemDoGiamSat)
-                {
-                    foreach (KeyValuePair<string, DuLieuModel> dulieu in diemDo.Value.DsDulieu)
-                    {
-                        dsDuLieuGiamSatCuaTatCaThietBi.Add(dulieu.Value);
-                    }
-                }
-            }
-            return dsDuLieuGiamSatCuaTatCaThietBi;
-        }*/
         public static List<ThongSoGiaTriModel>GetThongSoGiaTriCuaTatCaThietBi(Dictionary<string, ThietBiModel> dsThietBi)
         {
             List<ThongSoGiaTriModel> dsThongSoGiaTri = new List<ThongSoGiaTriModel>();
            
+
             foreach (KeyValuePair<string, ThietBiModel> thietBi in dsThietBi)
             {
 
@@ -46,11 +33,13 @@ namespace FileExportScheduler.Service.DuLieu
                         thongSoGiaTriTemp.GiaTri = Convert.ToInt32(duLieu.Value.GiaTri).ToString();
                         thongSoGiaTriTemp.TrangThaiTinHieu = duLieu.Value.TrangThaiTinHieu;
                         thongSoGiaTriTemp.DiaChi = duLieu.Value.DiaChi;
+                        thongSoGiaTriTemp.Scale = duLieu.Value.Scale;
                         dsThongSoGiaTri.Add(thongSoGiaTriTemp);
                     }
                 }
             }
 
+            
             return dsThongSoGiaTri;
         }
     }
