@@ -70,7 +70,7 @@ namespace FileExportScheduler
             btnSetting.Enabled = false;
 
             //set chu kì đọc dữ liệu
-            tmrDocDuLieu.Interval = 3000;
+            tmrDocDuLieu.Interval = 4000;
 
             //set chu kỳ xóa file
             tmrChukyXoaFile.Interval = 30000;
@@ -89,7 +89,8 @@ namespace FileExportScheduler
                     serialPort.RtsEnable = true;
                     var port = (ThietBiCOM)deviceUnit.Value;
                     serialPort = new SerialPort(port.Com, port.Baud, port.parity, port.Databit, port.stopBits);
-                    serialPort.ReadTimeout = 200;
+                    serialPort.ReadTimeout = 100;
+                    serialPort.WriteTimeout = 100;
                     serialPort.Handshake = Handshake.None;
                     serialPort.ParityReplace = (byte)'\0';
                     try
@@ -171,7 +172,6 @@ namespace FileExportScheduler
                             break;
                         }
                     }
-                    //formHienThiDuLieu.Close();
                     Application.Exit();
                     break;
                 default:
@@ -234,9 +234,6 @@ namespace FileExportScheduler
         private async void GetDeviceConnect()
         {
 
-          
-
-
             foreach (KeyValuePair<string, ThietBiModel> deviceUnit in dsThietBi)
             {
                 if (deviceUnit.Value.Protocol == "Modbus TCP/IP" || deviceUnit.Value.Protocol == "Siemens S7-1200")
@@ -264,7 +261,7 @@ namespace FileExportScheduler
                     }
                 }
             }
-           
+
             if (heThongDangChay)
             {
                 //set thong bao loi
@@ -337,7 +334,7 @@ namespace FileExportScheduler
         }
 
         //lấy dữ liệu của các thiết bị 
-        private void GetDataDeviceIP(KeyValuePair<string, ThietBiModel> deviceUnit)
+        private async void GetDataDeviceIP(KeyValuePair<string, ThietBiModel> deviceUnit)
         {
             //Danh sách lỗi trong quá trình  đọc dữ liệu
             List<string> danhSachLoi = new List<string>();
@@ -347,40 +344,14 @@ namespace FileExportScheduler
                 foreach (KeyValuePair<string, DuLieuModel> dulieu in diemDo.Value.DsDulieu)
                 {
 
-                    try//lấy dữ liệu thành công
-                    {
-                       
-                        dulieu.Value.GiaTri = Convert.ToInt32(Data.Data.LayDuLieuTCPIP(modbusTCP, dulieu.Value)).ToString();
-                        dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Good;
-
-                    }
-                    catch (ModbusException ex)
-                    {
-                        if (!danhSachLoi.Contains(ThongBaoLoi.VuotQuaDuLieu))
-                        {
-                            danhSachLoi.Add(ThongBaoLoi.VuotQuaDuLieu);
-                        }
-                        dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
-                    }
-                    catch (Exception ex)//Lỗi lấy dữ liệu thất bại
-                    {
-                        if (!danhSachLoi.Contains(ThongBaoLoi.KhongCoTinHieuTraVe))
-                        {
-                            danhSachLoi.Add(ThongBaoLoi.KhongCoTinHieuTraVe);
-                        }
-                        dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
-                    }
-                    finally
-                    {
-                        dulieu.Value.ThoiGianDocGiuLieu = DateTime.Now;
-                    }
+                    await Task.Run(() => luuTruDuLieuTCP(dulieu.Value, danhSachLoi));
                 }
             }
             //Add danh sách lỗi vào biến danh sách lỗi static
             ThongBaoLoi.DanhSach[deviceUnit.Key] = danhSachLoi;
         }
 
-        private void getDataCOM(KeyValuePair<string, ThietBiModel> deviceUnit)
+        private async void getDataCOM(KeyValuePair<string, ThietBiModel> deviceUnit)
         {
 
             //Danh sách lỗi trong quá trình  đọc dữ liệu
@@ -391,45 +362,79 @@ namespace FileExportScheduler
                 foreach (KeyValuePair<string, DuLieuModel> dulieu in diemDo.Value.DsDulieu)
                 {
                     //lấy dữ liệu thành công
-                    try
-                    {
-                        dulieu.Value.GiaTri = Data.Data.LayDuLieuCOM(dulieu.Value, serialPort).ToString();
-                        dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Good;
-
-                    }
-                    //lấy dữ liệu thất bại
-                    catch (TimeoutException ex)
-                    {
-                        dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
-                        //lỗi không đọc được dữ liệu
-                        if (!danhSachLoi.Contains(ThongBaoLoi.KhongKetNoi))
-                        {
-                            danhSachLoi.Add(ThongBaoLoi.KhongKetNoi);
-                        }
-
-                    }
-                    catch (Modbus.SlaveException ex)
-                    {
-                        dulieu.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
-                        //lỗi số bản ghi cần đọc vượt quá lượng bản ghi trả về
-                        if (!danhSachLoi.Contains(ThongBaoLoi.VuotQuaDuLieu))
-                        {
-                            danhSachLoi.Add(ThongBaoLoi.VuotQuaDuLieu);
-                        }
-
-                    }
-                    catch (Exception ex)
-                    {
-
-                    }
-                    finally
-                    {
-                        dulieu.Value.ThoiGianDocGiuLieu = DateTime.Now;
-                    }
+                    await Task.Run(() => luuTruDuLieuCOM(dulieu.Value, danhSachLoi));
                 }
             }
 
             ThongBaoLoi.DanhSach[deviceUnit.Key] = danhSachLoi;
+        }
+        private void luuTruDuLieuTCP(DuLieuModel duLieu, List<string> danhSachLoi)
+        {
+            try//lấy dữ liệu thành công
+            {
+
+                duLieu.GiaTri = Convert.ToInt32(Data.Data.LayDuLieuTCPIP(modbusTCP, duLieu)).ToString();
+                duLieu.TrangThaiTinHieu = TrangThaiKetNoi.Good;
+
+            }
+            catch (ModbusException ex)
+            {
+                if (!danhSachLoi.Contains(ThongBaoLoi.VuotQuaDuLieu))
+                {
+                    danhSachLoi.Add(ThongBaoLoi.VuotQuaDuLieu);
+                }
+                duLieu.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
+            }
+            catch (Exception ex)//Lỗi lấy dữ liệu thất bại
+            {
+                if (!danhSachLoi.Contains(ThongBaoLoi.KhongCoTinHieuTraVe))
+                {
+                    danhSachLoi.Add(ThongBaoLoi.KhongCoTinHieuTraVe);
+                }
+                duLieu.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
+            }
+            finally
+            {
+                duLieu.ThoiGianDocGiuLieu = DateTime.Now;
+            }
+        }
+        private void luuTruDuLieuCOM(DuLieuModel duLieu, List<string> danhSachLoi)
+        {
+            try
+            {
+                duLieu.GiaTri = Data.Data.LayDuLieuCOM(duLieu, serialPort).ToString();
+                duLieu.TrangThaiTinHieu = TrangThaiKetNoi.Good;
+
+            }
+            //lấy dữ liệu thất bại
+            catch (TimeoutException ex)
+            {
+                duLieu.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
+                //lỗi không đọc được dữ liệu
+                if (!danhSachLoi.Contains(ThongBaoLoi.KhongKetNoi))
+                {
+                    danhSachLoi.Add(ThongBaoLoi.KhongKetNoi);
+                }
+
+            }
+            catch (Modbus.SlaveException ex)
+            {
+                duLieu.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
+                //lỗi số bản ghi cần đọc vượt quá lượng bản ghi trả về
+                if (!danhSachLoi.Contains(ThongBaoLoi.VuotQuaDuLieu))
+                {
+                    danhSachLoi.Add(ThongBaoLoi.VuotQuaDuLieu);
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                duLieu.ThoiGianDocGiuLieu = DateTime.Now;
+            }
         }
         private void tmrDocDuLieu_Tick(object sender, EventArgs e)
         {
@@ -448,6 +453,7 @@ namespace FileExportScheduler
                 //tmrDocDuLieu.Start();
             }
         }
+
 
         private void tmrChukyXoaFile_Tick(object sender, EventArgs e)
         {
@@ -508,6 +514,7 @@ namespace FileExportScheduler
         {
             formHienThiDuLieu = new FormHienThiDuLieu(dsThietBi);
             formHienThiDuLieu.Show();
+            btnDataList.Enabled = false;
         }
     }
 }

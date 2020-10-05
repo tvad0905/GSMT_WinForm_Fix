@@ -81,7 +81,7 @@ namespace FileExportScheduler.Data
                    
                 }
             }
-            catch
+            catch(Exception ex)
             {
                 duLieuTemp.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
                 throw;

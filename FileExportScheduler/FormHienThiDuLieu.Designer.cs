@@ -121,6 +121,7 @@
             this.Name = "FormHienThiDuLieu";
             this.Text = "Realtime Monitor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormHienThiDuLieu_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormHienThiDuLieu_FormClosed);
             this.Load += new System.EventHandler(this.FormHienThiDuLieu_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvHienThiDuLieu)).EndInit();
             this.ResumeLayout(false);

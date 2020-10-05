@@ -30,7 +30,15 @@ namespace FileExportScheduler.Service.DuLieu
                         thongSoGiaTriTemp.ThietBi = thietBi.Value.Name;
                         thongSoGiaTriTemp.DiemDo  = diemDo.Value.TenDiemDo;
                         thongSoGiaTriTemp.Ten = duLieu.Value.Ten;
-                        thongSoGiaTriTemp.GiaTri = Convert.ToInt32(duLieu.Value.GiaTri).ToString();
+                        if(int.TryParse(duLieu.Value.GiaTri,out _))
+                        {
+                            thongSoGiaTriTemp.GiaTri = Convert.ToInt32(duLieu.Value.GiaTri).ToString();
+                        }
+                        else
+                        {
+                            thongSoGiaTriTemp.GiaTri = duLieu.Value.GiaTri;
+                        }
+
                         thongSoGiaTriTemp.TrangThaiTinHieu = duLieu.Value.TrangThaiTinHieu;
                         thongSoGiaTriTemp.DiaChi = duLieu.Value.DiaChi;
                         thongSoGiaTriTemp.Scale = duLieu.Value.Scale;

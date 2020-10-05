@@ -232,7 +232,7 @@
 
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Button btnStop;
-        private System.Windows.Forms.Button btnDataList;
+        public System.Windows.Forms.Button btnDataList;
         private System.Windows.Forms.Button btnSetting;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Timer tmrDocDuLieu;

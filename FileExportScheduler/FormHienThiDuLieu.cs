@@ -78,7 +78,7 @@ namespace FileExportScheduler
                 table.Columns.Add("DiemDo", typeof(string));
                 table.Columns.Add("ThietBi", typeof(string));
                 table.Columns.Add("DiaChi", typeof(string));
-                table.Columns.Add("GiaTri", typeof(double));
+                table.Columns.Add("GiaTri", typeof(string));
                 table.Columns.Add("TrangThaiTinHieu", typeof(string));
                 table.PrimaryKey = new[] { table.Columns["Ten"] ,table.Columns["DiemDo"]};
                 
@@ -90,7 +90,16 @@ namespace FileExportScheduler
                     dr["DiemDo"] = thongSoGiaTri.DiemDo;
                     dr["ThietBi"] = thongSoGiaTri.ThietBi;
                     dr["DiaChi"] = thongSoGiaTri.DiaChi;
-                    dr["GiaTri"] = Math.Round((Convert.ToDouble(thongSoGiaTri.GiaTri) / Convert.ToDouble(thongSoGiaTri.Scale)), 2).ToString();
+                    if(int.TryParse(thongSoGiaTri.GiaTri,out _))
+                    {
+                        dr["GiaTri"] = Math.Round((Convert.ToDouble(thongSoGiaTri.GiaTri) / Convert.ToDouble(thongSoGiaTri.Scale)), 2).ToString();
+
+                    }
+                    else
+                    {
+                        dr["GiaTri"] = thongSoGiaTri.GiaTri.ToString();
+
+                    }
                     dr["TrangThaiTinHieu"] = thongSoGiaTri.TrangThaiTinHieu;
                     table.Rows.Add(dr);
                 }
@@ -105,6 +114,11 @@ namespace FileExportScheduler
         private void FormHienThiDuLieu_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.Dispose();
+        }
+
+        private void FormHienThiDuLieu_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            
         }
     }
 }
