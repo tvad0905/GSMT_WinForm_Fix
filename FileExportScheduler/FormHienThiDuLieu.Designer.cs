@@ -36,8 +36,8 @@
             this.ThietBi = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Diachi_P = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DiaChi = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Scale = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Donvido_P = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.GiaTri = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TrangThaiTinHieu = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHienThiDuLieu)).BeginInit();
             this.SuspendLayout();
             // 
@@ -53,8 +53,8 @@
             this.ThietBi,
             this.Diachi_P,
             this.DiaChi,
-            this.Scale,
-            this.Donvido_P});
+            this.GiaTri,
+            this.TrangThaiTinHieu});
             this.dgvHienThiDuLieu.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvHienThiDuLieu.Location = new System.Drawing.Point(0, 0);
             this.dgvHienThiDuLieu.Margin = new System.Windows.Forms.Padding(2);
@@ -94,21 +94,21 @@
             this.DiaChi.HeaderText = "Địa chỉ";
             this.DiaChi.Name = "DiaChi";
             // 
-            // Scale
+            // GiaTri
             // 
-            this.Scale.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Scale.DataPropertyName = "GiaTri";
-            this.Scale.HeaderText = "Giá Trị";
-            this.Scale.MinimumWidth = 6;
-            this.Scale.Name = "Scale";
+            this.GiaTri.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.GiaTri.DataPropertyName = "GiaTri";
+            this.GiaTri.HeaderText = "Giá Trị";
+            this.GiaTri.MinimumWidth = 6;
+            this.GiaTri.Name = "GiaTri";
             // 
-            // Donvido_P
+            // TrangThaiTinHieu
             // 
-            this.Donvido_P.DataPropertyName = "TrangThaiTinHieu";
-            this.Donvido_P.HeaderText = "Trạng Thái Tín Hiệu";
-            this.Donvido_P.MinimumWidth = 50;
-            this.Donvido_P.Name = "Donvido_P";
-            this.Donvido_P.Width = 130;
+            this.TrangThaiTinHieu.DataPropertyName = "TrangThaiTinHieu";
+            this.TrangThaiTinHieu.HeaderText = "Trạng Thái Tín Hiệu";
+            this.TrangThaiTinHieu.MinimumWidth = 50;
+            this.TrangThaiTinHieu.Name = "TrangThaiTinHieu";
+            this.TrangThaiTinHieu.Width = 130;
             // 
             // FormHienThiDuLieu
             // 
@@ -135,7 +135,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ThietBi;
         private System.Windows.Forms.DataGridViewTextBoxColumn Diachi_P;
         private System.Windows.Forms.DataGridViewTextBoxColumn DiaChi;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Scale;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Donvido_P;
+        private System.Windows.Forms.DataGridViewTextBoxColumn GiaTri;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TrangThaiTinHieu;
     }
 }

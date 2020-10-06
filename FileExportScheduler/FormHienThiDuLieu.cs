@@ -56,12 +56,20 @@ namespace FileExportScheduler
         {
             try
             {
-                var tempTable = ConvertThongSoGiaTriToDataTable(DanhSachDuLieuService.GetThongSoGiaTriCuaTatCaThietBi(dsThietBi));
-                foreach (var dr in tempTable.AsEnumerable())
+                var dsDuLieu = DanhSachDuLieuService.UpdateThongSoDuLieu(dsThietBi,dt.Rows.Count);
+                if (dgvHienThiDuLieu.Rows.Count > 0)
                 {
-                    dt.LoadDataRow(dr.ItemArray, LoadOption.OverwriteChanges);
+                    for (int i = 0; i < dsDuLieu.GetLength(0); i++)
+                    {
+                        dgvHienThiDuLieu.Rows[i].Cells["GiaTri"].Value = dsDuLieu[i,0];
+                        dgvHienThiDuLieu.Rows[i].Cells["TrangThaiTinHieu"].Value = dsDuLieu[i,1];
+                    }
                 }
-                dt.LoadDataRow(tempTable.Rows[0].ItemArray, LoadOption.OverwriteChanges);
+                else
+                {
+                }
+              
+
             }
             catch (Exception ex)
             {
@@ -72,43 +80,52 @@ namespace FileExportScheduler
         private static DataTable ConvertThongSoGiaTriToDataTable(List<Models.DuLieu.ThongSoGiaTriModel> data)
         {
             var table = new DataTable();
-            try
-            {
-                table.Columns.Add("Ten", typeof(string));
-                table.Columns.Add("DiemDo", typeof(string));
-                table.Columns.Add("ThietBi", typeof(string));
-                table.Columns.Add("DiaChi", typeof(string));
-                table.Columns.Add("GiaTri", typeof(string));
-                table.Columns.Add("TrangThaiTinHieu", typeof(string));
-                table.PrimaryKey = new[] { table.Columns["Ten"] ,table.Columns["DiemDo"]};
-                
+            table.Columns.Add("Ten", typeof(string));
+            table.Columns.Add("DiemDo", typeof(string));
+            table.Columns.Add("ThietBi", typeof(string));
+            table.Columns.Add("DiaChi", typeof(string));
+            table.Columns.Add("GiaTri", typeof(string));
+            table.Columns.Add("TrangThaiTinHieu", typeof(string));
+            table.PrimaryKey = new[] { table.Columns["Ten"], table.Columns["DiemDo"] };
 
-                foreach (Models.DuLieu.ThongSoGiaTriModel thongSoGiaTri in data)
+
+            foreach (Models.DuLieu.ThongSoGiaTriModel thongSoGiaTri in data)
+            {
+                try
                 {
                     DataRow dr = table.NewRow();
                     dr["Ten"] = thongSoGiaTri.Ten;
                     dr["DiemDo"] = thongSoGiaTri.DiemDo;
                     dr["ThietBi"] = thongSoGiaTri.ThietBi;
                     dr["DiaChi"] = thongSoGiaTri.DiaChi;
-                    if(int.TryParse(thongSoGiaTri.GiaTri,out _))
+                    if (int.TryParse(thongSoGiaTri.GiaTri, out _))
                     {
                         dr["GiaTri"] = Math.Round((Convert.ToDouble(thongSoGiaTri.GiaTri) / Convert.ToDouble(thongSoGiaTri.Scale)), 2).ToString();
 
                     }
                     else
                     {
-                        dr["GiaTri"] = thongSoGiaTri.GiaTri.ToString();
+                        if (thongSoGiaTri.GiaTri != null)
+                        {
+                            dr["GiaTri"] = thongSoGiaTri.GiaTri.ToString();
+                        }
+                        else
+                        {
+                            dr["GiaTri"] = "0";
+                        }
 
                     }
                     dr["TrangThaiTinHieu"] = thongSoGiaTri.TrangThaiTinHieu;
                     table.Rows.Add(dr);
                 }
+                catch (NullReferenceException)
+                {
+
+                }
 
             }
-            catch (Exception ex)
-            {
 
-            }
+
             return table;
         }
         private void FormHienThiDuLieu_FormClosing(object sender, FormClosingEventArgs e)
@@ -118,7 +135,7 @@ namespace FileExportScheduler
 
         private void FormHienThiDuLieu_FormClosed(object sender, FormClosedEventArgs e)
         {
-            
+
         }
     }
 }

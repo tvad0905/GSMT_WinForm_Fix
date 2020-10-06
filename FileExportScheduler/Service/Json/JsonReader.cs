@@ -89,6 +89,7 @@ namespace FileExportScheduler.Service.Json
         /// <summary>
         /// -add danh sách static ThongBaoLoi Thiết bị với lỗi null
         /// -trả về danh sách thông số cho thiêt bị
+        /// -tìm ra địa chỉ lớn nhất của từng kiểu giá trị trả về
         /// </summary>
         /// <returns>danh sách thông số cho thiêt bị</returns>
         public static Dictionary<string, ThietBiModel> LayDanhSachThongSoCuaTungThietBi()
@@ -106,6 +107,7 @@ namespace FileExportScheduler.Service.Json
                     {
                         dsThietBi.Add(deviceIPUnit.Key, deviceIPUnit.Value);
                         ThongBaoLoi.DanhSach.Add(deviceIPUnit.Key, new List<string>());
+
                     }
                 }
                 Dictionary<string, ThietBiCOM> deviceCom = jsonObj.ToObject<Dictionary<string, ThietBiCOM>>();

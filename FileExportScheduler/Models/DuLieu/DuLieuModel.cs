@@ -30,6 +30,6 @@ namespace FileExportScheduler.Models.DuLieu
         public string Scale { get; set; }
         public string DiemDo { get; set; }
         public DateTime ThoiGianDocGiuLieu { get; set; }
-        public string TrangThaiTinHieu { get; set; }
+       
     }
 }

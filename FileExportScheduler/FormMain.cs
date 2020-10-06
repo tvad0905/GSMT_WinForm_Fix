@@ -14,6 +14,7 @@ using Modbus.Device;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -306,7 +307,7 @@ namespace FileExportScheduler
                     return;
                 }
             }
-            catch (Exception exx)
+            catch (Exception ex)
             {
 
             }
@@ -336,24 +337,53 @@ namespace FileExportScheduler
         //lấy dữ liệu của các thiết bị 
         private async void GetDataDeviceIP(KeyValuePair<string, ThietBiModel> deviceUnit)
         {
+            ArrayList dsDuLieuNhanDuoc = new ArrayList();
             //Danh sách lỗi trong quá trình  đọc dữ liệu
             List<string> danhSachLoi = new List<string>();
+            try
+            {
+                dsDuLieuNhanDuoc = Data.Data.LayDuLieuTCPIP(modbusTCP, deviceUnit.Value.MaxAddressCoils, deviceUnit.Value.MaxAddressInputs, deviceUnit.Value.MaxAddressInputRegisters, deviceUnit.Value.MaxAddressHoldingRegisters);
+            }
+            catch (Exception ex)
+            {
 
+            }
             foreach (KeyValuePair<string, DiemDoModel> diemDo in deviceUnit.Value.dsDiemDoGiamSat)
             {
                 foreach (KeyValuePair<string, DuLieuModel> dulieu in diemDo.Value.DsDulieu)
                 {
 
-                    await Task.Run(() => luuTruDuLieuTCP(dulieu.Value, danhSachLoi));
+                    await Task.Run(() => luuTruDuLieuTCP(dulieu.Value, deviceUnit.Value, dsDuLieuNhanDuoc));
                 }
             }
             //Add danh sách lỗi vào biến danh sách lỗi static
             ThongBaoLoi.DanhSach[deviceUnit.Key] = danhSachLoi;
         }
 
-        private async void getDataCOM(KeyValuePair<string, ThietBiModel> deviceUnit)
+        private void getDataCOM(KeyValuePair<string, ThietBiModel> deviceUnit)
         {
+            ArrayList dsDuLieuNhanDuoc = new ArrayList();
+            //đọc dữ liệu
+            try
+            {
+                dsDuLieuNhanDuoc = Data.Data.LayDuLieuCOM(serialPort, deviceUnit.Value.MaxAddressCoils, deviceUnit.Value.MaxAddressInputs, deviceUnit.Value.MaxAddressInputRegisters, deviceUnit.Value.MaxAddressHoldingRegisters);
+            }
+            //lấy dữ liệu thất bại
+            catch (TimeoutException ex)
+            {
+                deviceUnit.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
+                //lỗi không đọc được dữ liệu
+            }
+            catch (Modbus.SlaveException ex)
+            {
+                deviceUnit.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
+                //lỗi số bản ghi cần đọc vượt quá lượng bản ghi trả về
+            }
+            catch (Exception ex)
+            {
 
+            }
+            #region Gán dữ liệu
             //Danh sách lỗi trong quá trình  đọc dữ liệu
             List<string> danhSachLoi = new List<string>();
 
@@ -362,70 +392,86 @@ namespace FileExportScheduler
                 foreach (KeyValuePair<string, DuLieuModel> dulieu in diemDo.Value.DsDulieu)
                 {
                     //lấy dữ liệu thành công
-                    await Task.Run(() => luuTruDuLieuCOM(dulieu.Value, danhSachLoi));
+                    luuTruDuLieuCOM(dulieu.Value, deviceUnit.Value, dsDuLieuNhanDuoc);
                 }
             }
-
+            #endregion
             ThongBaoLoi.DanhSach[deviceUnit.Key] = danhSachLoi;
+
         }
-        private void luuTruDuLieuTCP(DuLieuModel duLieu, List<string> danhSachLoi)
+        private void luuTruDuLieuTCP(DuLieuModel duLieu, ThietBiModel thietBi, ArrayList DsDuLieuNhanDuoc)
         {
-            try//lấy dữ liệu thành công
+            try
             {
-
-                duLieu.GiaTri = Convert.ToInt32(Data.Data.LayDuLieuTCPIP(modbusTCP, duLieu)).ToString();
-                duLieu.TrangThaiTinHieu = TrangThaiKetNoi.Good;
-
-            }
-            catch (ModbusException ex)
-            {
-                if (!danhSachLoi.Contains(ThongBaoLoi.VuotQuaDuLieu))
+                if (duLieu.DiaChi.StartsWith("0"))
                 {
-                    danhSachLoi.Add(ThongBaoLoi.VuotQuaDuLieu);
+                    var DsDuLieuCoils = DsDuLieuNhanDuoc[0] as bool[];
+                    int diaChiCoils = Convert.ToInt32(duLieu.DiaChi);
+
+                    duLieu.GiaTri = DsDuLieuCoils[diaChiCoils].ToString();
                 }
-                duLieu.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
+                else if (duLieu.DiaChi.StartsWith("1"))
+                {
+                    var DsDuLieuInputs = DsDuLieuNhanDuoc[0] as bool[];
+                    int diaChiInputs = Convert.ToInt32(duLieu.DiaChi) - 10000;
+
+                    duLieu.GiaTri = DsDuLieuInputs[diaChiInputs].ToString();
+                }
+                else if (duLieu.DiaChi.StartsWith("3"))
+                {
+                    var DsDuLieuInputRegisters = DsDuLieuNhanDuoc[0] as int[];
+                    int diaChiInputRegisters = Convert.ToInt32(duLieu.DiaChi) - 30000;
+
+                    duLieu.GiaTri = DsDuLieuInputRegisters[diaChiInputRegisters].ToString();
+                }
+                else if (duLieu.DiaChi.StartsWith("4"))
+                {
+                    var DsDuLieuHoldingRegisters = DsDuLieuNhanDuoc[0] as int[];
+                    int diaChiHoldingRegisters = Convert.ToInt32(duLieu.DiaChi) - 40000;
+
+                    duLieu.GiaTri = DsDuLieuHoldingRegisters[diaChiHoldingRegisters].ToString();
+                }
+                thietBi.TrangThaiTinHieu = TrangThaiKetNoi.Good;
             }
+            
             catch (Exception ex)//Lỗi lấy dữ liệu thất bại
             {
-                if (!danhSachLoi.Contains(ThongBaoLoi.KhongCoTinHieuTraVe))
-                {
-                    danhSachLoi.Add(ThongBaoLoi.KhongCoTinHieuTraVe);
-                }
-                duLieu.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
+                
             }
             finally
             {
                 duLieu.ThoiGianDocGiuLieu = DateTime.Now;
             }
         }
-        private void luuTruDuLieuCOM(DuLieuModel duLieu, List<string> danhSachLoi)
+        private void luuTruDuLieuCOM(DuLieuModel duLieu, ThietBiModel thietBi, ArrayList DsDuLieuNhanDuoc)
         {
             try
             {
-                duLieu.GiaTri = Data.Data.LayDuLieuCOM(duLieu, serialPort).ToString();
-                duLieu.TrangThaiTinHieu = TrangThaiKetNoi.Good;
-
-            }
-            //lấy dữ liệu thất bại
-            catch (TimeoutException ex)
-            {
-                duLieu.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
-                //lỗi không đọc được dữ liệu
-                if (!danhSachLoi.Contains(ThongBaoLoi.KhongKetNoi))
+                if (duLieu.DiaChi.StartsWith("0"))
                 {
-                    danhSachLoi.Add(ThongBaoLoi.KhongKetNoi);
+                    var DsDuLieuCoils = DsDuLieuNhanDuoc[0] as bool[];
+                    int diaChiCoils = Convert.ToInt32(duLieu.DiaChi);
+                    duLieu.GiaTri = DsDuLieuCoils[diaChiCoils].ToString();
                 }
-
-            }
-            catch (Modbus.SlaveException ex)
-            {
-                duLieu.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
-                //lỗi số bản ghi cần đọc vượt quá lượng bản ghi trả về
-                if (!danhSachLoi.Contains(ThongBaoLoi.VuotQuaDuLieu))
+                else if (duLieu.DiaChi.StartsWith("1"))
                 {
-                    danhSachLoi.Add(ThongBaoLoi.VuotQuaDuLieu);
+                    var DsDuLieuInputs = DsDuLieuNhanDuoc[0] as bool[];
+                    int diaChiInputs = Convert.ToInt32(duLieu.DiaChi) - 10000;
+                    duLieu.GiaTri = DsDuLieuInputs[diaChiInputs].ToString();
                 }
-
+                else if (duLieu.DiaChi.StartsWith("3"))
+                {
+                    var DsDuLieuInputRegisters = DsDuLieuNhanDuoc[0] as ushort[];
+                    int diaChiInputRegisters = Convert.ToInt32(duLieu.DiaChi) - 30000;
+                    duLieu.GiaTri = DsDuLieuInputRegisters[diaChiInputRegisters].ToString();
+                }
+                else if (duLieu.DiaChi.StartsWith("4"))
+                {
+                    var DsDuLieuHoldingRegisters = DsDuLieuNhanDuoc[0] as ushort[];
+                    int diaChiHoldingRegisters = Convert.ToInt32(duLieu.DiaChi) - 40000;
+                    duLieu.GiaTri = DsDuLieuHoldingRegisters[diaChiHoldingRegisters].ToString();
+                }
+                thietBi.TrangThaiTinHieu = TrangThaiKetNoi.Good;
             }
             catch (Exception ex)
             {

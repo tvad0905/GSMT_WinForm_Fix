@@ -21,10 +21,11 @@ namespace FileExportScheduler.Service.ThietBi
             {
                 foreach (KeyValuePair<string, DuLieuModel> dulieu in diemDo.Value.DsDulieu)
                 {
-                    dulieu.Value.TrangThaiTinHieu = Constant.TrangThaiKetNoi.Bad;
                     dulieu.Value.ThoiGianDocGiuLieu = DateTime.Now;
                 }
             }
+            deviceUnit.Value.TrangThaiTinHieu = Constant.TrangThaiKetNoi.Bad;
+
             return deviceUnit;
         }
         public static Dictionary<string, ThietBiModel> getDsThietBi()

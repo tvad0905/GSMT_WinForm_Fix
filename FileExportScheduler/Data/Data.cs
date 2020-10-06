@@ -4,6 +4,7 @@ using FileExportScheduler.Constant;
 using FileExportScheduler.Models.DuLieu;
 using Modbus.Device;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
@@ -15,78 +16,68 @@ namespace FileExportScheduler.Data
 {
     public static class Data
     {
-        public static string LayDuLieuTCPIP(ModbusClient modbus, DuLieuModel duLieuTemp)
-         {
-
-            string giaTriDuLieu = "";
+        public static ArrayList LayDuLieuTCPIP(ModbusClient modbus, ushort quantityCoils, ushort quantityInputs, ushort quantityInputRegisters, ushort quantityHoldingRegisters)
+        {
+            var listMangGiaTriDuLieu = new ArrayList();
             try
             {
-               
-                if (Convert.ToInt32(duLieuTemp.DiaChi) <= 9999)
-                {
-                    bool[] readCoil = modbus.ReadCoils(Convert.ToInt32(duLieuTemp.DiaChi), 1);
-                    giaTriDuLieu = readCoil[0].ToString();
-                }
-                else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 19999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 10000)
-                {
-                    bool[] discreteInput = modbus.ReadDiscreteInputs(Convert.ToInt32(duLieuTemp.DiaChi) - 10000, 1);
-                    giaTriDuLieu = discreteInput[0].ToString();
-                }
-                else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 39999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 30000)
-                {
-                    int[] readRegister = modbus.ReadInputRegisters(Convert.ToInt32(duLieuTemp.DiaChi) - 30000, 1);
-                    giaTriDuLieu = readRegister[0].ToString();
-                }
-                else if (Convert.ToInt32(duLieuTemp.DiaChi) <= 49999 && Convert.ToInt32(duLieuTemp.DiaChi) >= 40000)
-                {
-                    int[] readHoldingRegister = modbus.ReadHoldingRegisters(Convert.ToInt32(duLieuTemp.DiaChi) - 40000, 1);
-                    giaTriDuLieu = readHoldingRegister[0].ToString();
-                }
+
+                bool[] readCoil = modbus.ReadCoils(0, quantityCoils);
+                listMangGiaTriDuLieu.Add(readCoil);
+
+                bool[] discreteInput = modbus.ReadDiscreteInputs(0, quantityInputs);
+                listMangGiaTriDuLieu.Add(discreteInput);
+
+                int[] readRegister = modbus.ReadInputRegisters(0, quantityInputRegisters);
+                listMangGiaTriDuLieu.Add(readRegister);
+
+                int[] readHoldingRegister = modbus.ReadHoldingRegisters(0, quantityHoldingRegisters);
+                listMangGiaTriDuLieu.Add(readHoldingRegister);
+
             }
-            catch
+            catch(Exception ex)
             {
                 throw;
             }
-            return giaTriDuLieu;
+            return listMangGiaTriDuLieu;
         }
-        public static string LayDuLieuCOM(DuLieuModel duLieuTemp, SerialPort serialPort)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="duLieuTemp"></param>
+        /// <param name="serialPort"></param>
+        /// <param name="quantityCoils"></param>
+        /// <param name="quantityInputs"></param>
+        /// <param name="quantityInputRegisters"></param>
+        /// <param name="quantityHoldingRegisters"></param>
+        /// <returns></returns>
+        public static ArrayList LayDuLieuCOM(SerialPort serialPort, ushort quantityCoils, ushort quantityInputs, ushort quantityInputRegisters, ushort quantityHoldingRegisters)
         {
-            string giaTriDuLieu = ""; 
+            var listMangGiaTriDuLieu = new ArrayList();
             IModbusMaster master = ModbusSerialMaster.CreateRtu(serialPort);
             try
             {
                 byte slaveAddress = 1;
-                ushort numberOfPoint = 1;
-                int diaChiDuLieu = Convert.ToInt32(duLieuTemp.DiaChi);
-                 
-                if (diaChiDuLieu <= 9999)
-                {
-                    bool[] readCoil = master.ReadCoils(slaveAddress, Convert.ToUInt16(duLieuTemp.DiaChi), numberOfPoint);
-                    giaTriDuLieu = readCoil[0].ToString();
-                }
-                else if (diaChiDuLieu <= 19999 && diaChiDuLieu >= 10000)
-                {
-                    bool[] discreteInput = master.ReadInputs(slaveAddress, Convert.ToUInt16(diaChiDuLieu - 10000), numberOfPoint);
-                    giaTriDuLieu = discreteInput[0].ToString();
-                }
-                else if (diaChiDuLieu <= 39999 && diaChiDuLieu >= 30000)
-                {
-                    ushort[] readRegister = master.ReadInputRegisters(slaveAddress, Convert.ToUInt16(diaChiDuLieu - 30000), numberOfPoint);
-                    giaTriDuLieu = (Convert.ToInt32(readRegister[0].ToString()) - ((Convert.ToInt32(readRegister[0].ToString()) > 32767) ? 65536 : 0)).ToString();
-                }
-                else if (diaChiDuLieu <= 49999 && diaChiDuLieu >= 40000)
-                {
-                    ushort[] readHoldingRegisters = master.ReadHoldingRegisters(slaveAddress, Convert.ToUInt16(diaChiDuLieu - 40000), numberOfPoint);
-                    giaTriDuLieu = (Convert.ToInt32(readHoldingRegisters[0].ToString()) - ((Convert.ToInt32(readHoldingRegisters[0].ToString()) > 32767) ? 65536 : 0)).ToString();
-                   
-                }
+
+                bool[] readCoil = master.ReadCoils(slaveAddress, 0, quantityCoils);
+                listMangGiaTriDuLieu.Add(readCoil);
+
+                bool[] discreteInput = master.ReadInputs(slaveAddress, 0, quantityInputs);
+                listMangGiaTriDuLieu.Add(discreteInput);
+
+                ushort[] readRegister = master.ReadInputRegisters(slaveAddress, 0, quantityInputRegisters);
+                listMangGiaTriDuLieu.Add(readRegister);
+
+                ushort[] readHoldingRegisters = master.ReadHoldingRegisters(slaveAddress, 0, quantityHoldingRegisters);
+                listMangGiaTriDuLieu.Add(readHoldingRegisters);
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                duLieuTemp.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
+
                 throw;
             }
-            return giaTriDuLieu;
+            return listMangGiaTriDuLieu;
         }
     }
 }
