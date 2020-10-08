@@ -11,9 +11,12 @@ namespace FileExportScheduler.Models.ThietBi.Base
 {
     public abstract class ThietBiModel
     {
+
+     
         public string Name { get; set; }
         public string Protocol { get; set; }
         public string TrangThaiTinHieu { get; set; }
+
         public ushort MaxAddressCoils { get; set; }
         public ushort MaxAddressInputs { get; set; }
         public ushort MaxAddressInputRegisters { get; set; }

@@ -41,38 +41,10 @@ namespace FileExportScheduler.Service.DuLieu
 
                         thongSoGiaTriTemp.DiaChi = duLieu.Value.DiaChi;
                         thongSoGiaTriTemp.Scale = duLieu.Value.Scale;
+                        thongSoGiaTriTemp.TrangThaiTinHieu=thietBi.Value.TrangThaiTinHieu;
                         dsThongSoGiaTri.Add(thongSoGiaTriTemp);
 
-                        //set max address
-                        ushort timDiaChiMax = Convert.ToUInt16(duLieu.Value.DiaChi);
-                        if (duLieu.Value.DiaChi.StartsWith("0"))
-                        {
-                            if (timDiaChiMax > thietBi.Value.MaxAddressCoils)
-                            {
-                                thietBi.Value.MaxAddressCoils = timDiaChiMax;
-                            }
-                        }
-                        else if (duLieu.Value.DiaChi.StartsWith("1"))
-                        {
-                            if (timDiaChiMax - 10000 > thietBi.Value.MaxAddressInputs)
-                            {
-                                thietBi.Value.MaxAddressInputs = (ushort)(timDiaChiMax - 10000);
-                            }
-                        }
-                        else if (duLieu.Value.DiaChi.StartsWith("3"))
-                        {
-                            if (timDiaChiMax - 30000 > thietBi.Value.MaxAddressInputRegisters)
-                            {
-                                thietBi.Value.MaxAddressInputRegisters = (ushort)(timDiaChiMax - 30000);
-                            }
-                        }
-                        else if (duLieu.Value.DiaChi.StartsWith("4"))
-                        {
-                            if (timDiaChiMax - 40000 > thietBi.Value.MaxAddressHoldingRegisters)
-                            {
-                                thietBi.Value.MaxAddressHoldingRegisters = (ushort)(timDiaChiMax - 40000);
-                            }
-                        }
+                       
                     }
                 }
             }
@@ -82,6 +54,7 @@ namespace FileExportScheduler.Service.DuLieu
         }
         public static string[,] UpdateThongSoDuLieu(Dictionary<string, ThietBiModel> dsThietBi, int doDai)
         {
+
             string[,] dsThongSoGiaTri = new string[doDai, 2];
 
             int row = 0;

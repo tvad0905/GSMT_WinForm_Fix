@@ -12,5 +12,6 @@ namespace FileExportScheduler.Models.DuLieu
     {
         public String DiemDo { get; set; }
         public String ThietBi { get; set; }
+        public String TrangThaiTinHieu { get; set; }
     }
 }

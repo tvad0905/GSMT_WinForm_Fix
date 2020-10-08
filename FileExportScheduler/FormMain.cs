@@ -71,7 +71,7 @@ namespace FileExportScheduler
             btnSetting.Enabled = false;
 
             //set chu kì đọc dữ liệu
-            tmrDocDuLieu.Interval = 4000;
+            tmrDocDuLieu.Interval = 1000;
 
             //set chu kỳ xóa file
             tmrChukyXoaFile.Interval = 30000;
@@ -262,7 +262,6 @@ namespace FileExportScheduler
                     }
                 }
             }
-
             if (heThongDangChay)
             {
                 //set thong bao loi
@@ -353,7 +352,8 @@ namespace FileExportScheduler
                 foreach (KeyValuePair<string, DuLieuModel> dulieu in diemDo.Value.DsDulieu)
                 {
 
-                    await Task.Run(() => luuTruDuLieuTCP(dulieu.Value, deviceUnit.Value, dsDuLieuNhanDuoc));
+                   
+                    luuTruDuLieuTCP(dulieu.Value, deviceUnit.Value, dsDuLieuNhanDuoc);
                 }
             }
             //Add danh sách lỗi vào biến danh sách lỗi static
@@ -366,7 +366,9 @@ namespace FileExportScheduler
             //đọc dữ liệu
             try
             {
+               
                 dsDuLieuNhanDuoc = Data.Data.LayDuLieuCOM(serialPort, deviceUnit.Value.MaxAddressCoils, deviceUnit.Value.MaxAddressInputs, deviceUnit.Value.MaxAddressInputRegisters, deviceUnit.Value.MaxAddressHoldingRegisters);
+              
             }
             //lấy dữ liệu thất bại
             catch (TimeoutException ex)
@@ -489,6 +491,8 @@ namespace FileExportScheduler
                 //tmrDocDuLieu.Stop();
                 GetDeviceConnect();
                 formHienThiDuLieu.DsThietBi = dsThietBi; //hien thi du lieu doc duoc len view
+              
+                
             }
             catch
             {

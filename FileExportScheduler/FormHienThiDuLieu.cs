@@ -46,7 +46,7 @@ namespace FileExportScheduler
             dt = ConvertThongSoGiaTriToDataTable(DanhSachDuLieuService.GetThongSoGiaTriCuaTatCaThietBi(dsThietBi));
             dgvHienThiDuLieu.DataSource = dt;
             dgvHienThiDuLieu.AutoGenerateColumns = false;
-            tmrHienThongSoSuLieu.Interval = 500;
+            tmrHienThongSoSuLieu.Interval = 1000;
             tmrHienThongSoSuLieu.Enabled = true;
             tmrHienThongSoSuLieu.Start();
 
@@ -56,7 +56,8 @@ namespace FileExportScheduler
         {
             try
             {
-                var dsDuLieu = DanhSachDuLieuService.UpdateThongSoDuLieu(dsThietBi,dt.Rows.Count);
+                var dsDuLieu = DanhSachDuLieuService.UpdateThongSoDuLieu(dsThietBi, dt.Rows.Count);
+             
                 if (dgvHienThiDuLieu.Rows.Count > 0)
                 {
                     for (int i = 0; i < dsDuLieu.GetLength(0); i++)

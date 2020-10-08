@@ -21,21 +21,28 @@ namespace FileExportScheduler.Data
             var listMangGiaTriDuLieu = new ArrayList();
             try
             {
-
-                bool[] readCoil = modbus.ReadCoils(0, quantityCoils);
-                listMangGiaTriDuLieu.Add(readCoil);
-
-                bool[] discreteInput = modbus.ReadDiscreteInputs(0, quantityInputs);
-                listMangGiaTriDuLieu.Add(discreteInput);
-
-                int[] readRegister = modbus.ReadInputRegisters(0, quantityInputRegisters);
-                listMangGiaTriDuLieu.Add(readRegister);
-
-                int[] readHoldingRegister = modbus.ReadHoldingRegisters(0, quantityHoldingRegisters);
-                listMangGiaTriDuLieu.Add(readHoldingRegister);
-
+                if (quantityCoils != 0)
+                {
+                    bool[] readCoil = modbus.ReadCoils(0, (ushort)(quantityCoils + 1));
+                    listMangGiaTriDuLieu.Add(readCoil);
+                }
+                if (quantityInputs != 0)
+                {
+                    bool[] discreteInput = modbus.ReadDiscreteInputs(0, (ushort)(quantityInputs + 1));
+                    listMangGiaTriDuLieu.Add(discreteInput);
+                }
+                if (quantityInputRegisters != 0)
+                {
+                    int[] readRegister = modbus.ReadInputRegisters(0, (ushort)(quantityInputRegisters + 1));
+                    listMangGiaTriDuLieu.Add(readRegister);
+                }
+                if (quantityHoldingRegisters != 0)
+                {
+                    int[] readHoldingRegister = modbus.ReadHoldingRegisters(0, (ushort)(quantityHoldingRegisters + 1));
+                    listMangGiaTriDuLieu.Add(readHoldingRegister);
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw;
             }
@@ -59,18 +66,26 @@ namespace FileExportScheduler.Data
             {
                 byte slaveAddress = 1;
 
-                bool[] readCoil = master.ReadCoils(slaveAddress, 0, quantityCoils);
-                listMangGiaTriDuLieu.Add(readCoil);
-
-                bool[] discreteInput = master.ReadInputs(slaveAddress, 0, quantityInputs);
-                listMangGiaTriDuLieu.Add(discreteInput);
-
-                ushort[] readRegister = master.ReadInputRegisters(slaveAddress, 0, quantityInputRegisters);
-                listMangGiaTriDuLieu.Add(readRegister);
-
-                ushort[] readHoldingRegisters = master.ReadHoldingRegisters(slaveAddress, 0, quantityHoldingRegisters);
-                listMangGiaTriDuLieu.Add(readHoldingRegisters);
-
+                if (quantityCoils != 0)
+                {
+                    bool[] readCoil = master.ReadCoils(slaveAddress, 0, (ushort)(quantityCoils + 1));
+                    listMangGiaTriDuLieu.Add(readCoil);
+                }
+                if (quantityInputs != 0)
+                {
+                    bool[] discreteInput = master.ReadInputs(slaveAddress, 0, (ushort)(quantityInputs + 1));
+                    listMangGiaTriDuLieu.Add(discreteInput);
+                }
+                if (quantityInputRegisters != 0)
+                {
+                    ushort[] readRegister = master.ReadInputRegisters(slaveAddress, 0, (ushort)(quantityInputRegisters + 1));
+                    listMangGiaTriDuLieu.Add(readRegister);
+                }
+                if (quantityHoldingRegisters != 0)
+                {
+                    ushort[] readHoldingRegisters = master.ReadHoldingRegisters(slaveAddress, 0, (ushort)(quantityHoldingRegisters + 1));
+                    listMangGiaTriDuLieu.Add(readHoldingRegisters);
+                }
             }
             catch (Exception ex)
             {

@@ -76,6 +76,7 @@
     <Compile Include="Models\DuLieu\ThongSoGiaTriModel.cs" />
     <Compile Include="Service\DuLieu\DanhSachDuLieuService.cs" />
     <Compile Include="Service\FileService\FileCSV.cs" />
+    <Compile Include="Service\FinMaxAddress\MaxAddress.cs" />
     <Compile Include="Service\Json\PathJson.cs" />
     <Compile Include="Service\Json\JsonReader.cs" />
     <Compile Include="Service\KiemTra\KiemTraDuongDan.cs" />

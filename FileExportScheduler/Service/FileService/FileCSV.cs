@@ -41,7 +41,7 @@ namespace FileExportScheduler.Service.FileService
                         csvData.Append(",");
                         csvData.Append(Math.Round((Convert.ToInt32(duLieu.Value.GiaTri) / Convert.ToDouble(duLieu.Value.Scale)), 2));
                         csvData.Append(",");
-                        csvData.Append(duLieu.Value.TrangThaiTinHieu);
+                        csvData.Append(thietBi.Value.TrangThaiTinHieu);
                         csvData.Append("\n");
                     }
                     File.WriteAllText(filePath[i], csvData.ToString());

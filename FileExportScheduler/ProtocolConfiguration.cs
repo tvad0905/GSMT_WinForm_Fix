@@ -19,6 +19,7 @@ using FileExportScheduler.Models.DiemDo;
 using FileExportScheduler.Service.Json;
 using FileExportScheduler.Service.DiemDo;
 using FileExportScheduler.Service.ThietBi;
+using FileExportScheduler.Service.FinMaxAddress;
 
 namespace FileExportScheduler
 {
@@ -145,7 +146,13 @@ namespace FileExportScheduler
             var thietBiGiamSatDuocChon = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text];
             if (DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol))
             {
+                var maxAddress = MaxAddress.Get(thietBiGiamSatDuocChon);
                 thietBiGiamSatDuocChon.dsDiemDoGiamSat = DanhSachDiemDoService.LayDsDiemDoTuDgv(dgvDataProtocol);
+                thietBiGiamSatDuocChon.MaxAddressCoils = (ushort)maxAddress[0];
+                thietBiGiamSatDuocChon.MaxAddressInputs =(ushort)maxAddress[1];
+                thietBiGiamSatDuocChon.MaxAddressInputRegisters =(ushort)maxAddress[2];
+                thietBiGiamSatDuocChon.MaxAddressHoldingRegisters =(ushort)maxAddress[3];
+
                 GhiDsThietBiRaFileJson();
                 MessageBox.Show("Lưu dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
