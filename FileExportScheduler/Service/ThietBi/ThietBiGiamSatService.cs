@@ -28,7 +28,7 @@ namespace FileExportScheduler.Service.ThietBi
 
             return deviceUnit;
         }
-        public static Dictionary<string, ThietBiModel> getDsThietBi()
+        public static Dictionary<string, ThietBiModel> GetDsThietBi()
         {
             Dictionary<string, ThietBiModel> dsThietBiGiamSat = new Dictionary<string, ThietBiModel>();
             try

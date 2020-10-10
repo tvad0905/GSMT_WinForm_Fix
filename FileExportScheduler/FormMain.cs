@@ -11,6 +11,7 @@ using FileExportScheduler.Service.KiemTra;
 using FileExportScheduler.Service.ThietBi;
 using FileExportScheduler.Service.ThongBao;
 using Modbus.Device;
+using Modbus.Message;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -343,8 +344,23 @@ namespace FileExportScheduler
             {
                 dsDuLieuNhanDuoc = Data.Data.LayDuLieuTCPIP(modbusTCP, deviceUnit.Value.MaxAddressCoils, deviceUnit.Value.MaxAddressInputs, deviceUnit.Value.MaxAddressInputRegisters, deviceUnit.Value.MaxAddressHoldingRegisters);
             }
-            catch (Exception ex)
+            catch (ModbusException ex)
             {
+                if(ex.Message == "Function code not supported by master" && !danhSachLoi.Contains(ThongBaoLoi.DiaChiKhongTonTai))
+                {
+                    danhSachLoi.Add(ThongBaoLoi.DiaChiKhongTonTai);
+                }
+                
+                deviceUnit.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
+
+            }
+            catch (Exception ex)//Lỗi lấy dữ liệu thất bại
+            {
+                if (!danhSachLoi.Contains(ThongBaoLoi.KhongCoTinHieuTraVe))
+                {
+                    danhSachLoi.Add(ThongBaoLoi.KhongCoTinHieuTraVe);
+                }
+                deviceUnit.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
 
             }
             foreach (KeyValuePair<string, DiemDoModel> diemDo in deviceUnit.Value.dsDiemDoGiamSat)
@@ -362,6 +378,7 @@ namespace FileExportScheduler
 
         private void getDataCOM(KeyValuePair<string, ThietBiModel> deviceUnit)
         {
+            List<string> danhSachLoi = new List<string>();
             ArrayList dsDuLieuNhanDuoc = new ArrayList();
             //đọc dữ liệu
             try
@@ -373,11 +390,19 @@ namespace FileExportScheduler
             //lấy dữ liệu thất bại
             catch (TimeoutException ex)
             {
+                if (!danhSachLoi.Contains(ThongBaoLoi.KhongKetNoi))
+                {
+                    danhSachLoi.Add(ThongBaoLoi.KhongKetNoi);
+                }
                 deviceUnit.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
                 //lỗi không đọc được dữ liệu
             }
             catch (Modbus.SlaveException ex)
             {
+                if (!danhSachLoi.Contains(ThongBaoLoi.VuotQuaDuLieu))
+                {
+                    danhSachLoi.Add(ThongBaoLoi.VuotQuaDuLieu);
+                }
                 deviceUnit.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
                 //lỗi số bản ghi cần đọc vượt quá lượng bản ghi trả về
             }
@@ -387,7 +412,6 @@ namespace FileExportScheduler
             }
             #region Gán dữ liệu
             //Danh sách lỗi trong quá trình  đọc dữ liệu
-            List<string> danhSachLoi = new List<string>();
 
             foreach (KeyValuePair<string, DiemDoModel> diemDo in deviceUnit.Value.dsDiemDoGiamSat)
             {
@@ -490,9 +514,7 @@ namespace FileExportScheduler
             {
                 //tmrDocDuLieu.Stop();
                 GetDeviceConnect();
-                formHienThiDuLieu.DsThietBi = dsThietBi; //hien thi du lieu doc duoc len view
-              
-                
+                formHienThiDuLieu.DsThietBi = dsThietBi; //hien thi du lieu doc duoc len view                
             }
             catch
             {
@@ -518,7 +540,6 @@ namespace FileExportScheduler
             {
                 tmrXuatFile.Stop();
                 XuatRaFileCSV();
-
             }
             catch
             {
@@ -527,7 +548,6 @@ namespace FileExportScheduler
             {
                 tmrXuatFile.Start();
             }
-
         }
 
         private void XuatRaFileCSV()

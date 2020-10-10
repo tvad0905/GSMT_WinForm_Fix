@@ -15,52 +15,54 @@ namespace FileExportScheduler.Service.FinMaxAddress
         public static ArrayList Get(ThietBiModel ThietBi)
         {
             ArrayList listMaxAddress = new ArrayList();
-
-            
-
+            ushort quantityMaxCoils = 0;
+            ushort quantityMaxInputs = 0;
+            ushort quantityMaxInputRegister = 0;
+            ushort quantityMaxHoldingRegister = 0;
             foreach (KeyValuePair<string, DiemDoModel> diemDo in ThietBi.dsDiemDoGiamSat)
             {
 
                 foreach (KeyValuePair<string, DuLieuModel> duLieu in diemDo.Value.DsDulieu)
                 {
-                   
-                    ushort timDiaChiMax = Convert.ToUInt16(duLieu.Value.DiaChi);
+                    
+                    ushort timDiaChiMax = (ushort)(Convert.ToUInt16(duLieu.Value.DiaChi)+1) ;
                     if (duLieu.Value.DiaChi.StartsWith("0"))
                     {
-                        if (timDiaChiMax > ThietBi.MaxAddressCoils)
+                        if (timDiaChiMax > quantityMaxCoils)
                         {
-                            ThietBi.MaxAddressCoils = timDiaChiMax;
+                            quantityMaxCoils = timDiaChiMax;
                         }
+                        
                     }
                     else if (duLieu.Value.DiaChi.StartsWith("1"))
                     {
-                        if (timDiaChiMax - 10000 > ThietBi.MaxAddressInputs)
+                        if (timDiaChiMax - 10000 > quantityMaxInputs)
                         {
-                            ThietBi.MaxAddressInputs = (ushort)(timDiaChiMax - 10000);
+                            quantityMaxInputs = (ushort)(timDiaChiMax - 10000);
                         }
                     }
                     else if (duLieu.Value.DiaChi.StartsWith("3"))
                     {
-                        if (timDiaChiMax - 30000 > ThietBi.MaxAddressInputRegisters)
+                        if (timDiaChiMax - 30000 > quantityMaxInputRegister)
                         {
-                            ThietBi.MaxAddressInputRegisters = (ushort)(timDiaChiMax - 30000);
+                            quantityMaxInputRegister = (ushort)(timDiaChiMax - 30000);
                         }
                     }
                     else if (duLieu.Value.DiaChi.StartsWith("4"))
                     {
-                        if (timDiaChiMax - 40000 > ThietBi.MaxAddressHoldingRegisters)
+                        if (timDiaChiMax - 40000 > quantityMaxHoldingRegister)
                         {
-                            ThietBi.MaxAddressHoldingRegisters = (ushort)(timDiaChiMax - 40000);
+                            quantityMaxHoldingRegister = (ushort)(timDiaChiMax - 40000);
                         }
                     }
                 }
 
             }
 
-            listMaxAddress.Add(ThietBi.MaxAddressCoils);
-            listMaxAddress.Add(ThietBi.MaxAddressInputs);
-            listMaxAddress.Add(ThietBi.MaxAddressInputRegisters);
-            listMaxAddress.Add(ThietBi.MaxAddressHoldingRegisters);
+            listMaxAddress.Add(quantityMaxCoils);
+            listMaxAddress.Add(quantityMaxInputs);
+            listMaxAddress.Add(quantityMaxInputRegister);
+            listMaxAddress.Add(quantityMaxHoldingRegister);
 
             return listMaxAddress;
         }

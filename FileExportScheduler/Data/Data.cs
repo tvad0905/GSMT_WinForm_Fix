@@ -23,22 +23,22 @@ namespace FileExportScheduler.Data
             {
                 if (quantityCoils != 0)
                 {
-                    bool[] readCoil = modbus.ReadCoils(0, (ushort)(quantityCoils + 1));
+                    bool[] readCoil = modbus.ReadCoils(0, (ushort)(quantityCoils));
                     listMangGiaTriDuLieu.Add(readCoil);
                 }
                 if (quantityInputs != 0)
                 {
-                    bool[] discreteInput = modbus.ReadDiscreteInputs(0, (ushort)(quantityInputs + 1));
+                    bool[] discreteInput = modbus.ReadDiscreteInputs(0, (ushort)(quantityInputs));
                     listMangGiaTriDuLieu.Add(discreteInput);
                 }
                 if (quantityInputRegisters != 0)
                 {
-                    int[] readRegister = modbus.ReadInputRegisters(0, (ushort)(quantityInputRegisters + 1));
+                    int[] readRegister = modbus.ReadInputRegisters(0, (ushort)(quantityInputRegisters));
                     listMangGiaTriDuLieu.Add(readRegister);
                 }
                 if (quantityHoldingRegisters != 0)
                 {
-                    int[] readHoldingRegister = modbus.ReadHoldingRegisters(0, (ushort)(quantityHoldingRegisters + 1));
+                    int[] readHoldingRegister = modbus.ReadHoldingRegisters(0, (ushort)(quantityHoldingRegisters));
                     listMangGiaTriDuLieu.Add(readHoldingRegister);
                 }
             }

@@ -11,8 +11,6 @@ namespace FileExportScheduler.Models.ThietBi.Base
 {
     public abstract class ThietBiModel
     {
-
-     
         public string Name { get; set; }
         public string Protocol { get; set; }
         public string TrangThaiTinHieu { get; set; }

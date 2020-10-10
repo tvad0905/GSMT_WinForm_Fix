@@ -1,1 +1,6 @@
-{"AutoRun":false,"Interval":2,"ExportFilePath":"C:\\Users\\kaka\\Documents\\GitHub\\GSMT_WinForm_Fix\\FileExportScheduler\\Export Data","ChuKiXoaDuLieu":40}
+{
+  "AutoRun": false,
+  "Interval": 2,
+  "ExportFilePath": "C:\\Users\\kaka\\Documents\\GitHub\\GSMT_WinForm_Fix\\FileExportScheduler\\Export Data",
+  "ChuKiXoaDuLieu": 40
+}

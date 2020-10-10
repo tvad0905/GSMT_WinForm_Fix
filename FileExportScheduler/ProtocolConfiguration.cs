@@ -54,7 +54,7 @@ namespace FileExportScheduler
             try
             {
                 dsThietBiGiamSat.Clear();
-                dsThietBiGiamSat = ThietBiGiamSatService.getDsThietBi();
+                dsThietBiGiamSat = ThietBiGiamSatService.GetDsThietBi();
             }
             catch
             {
