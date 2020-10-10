@@ -143,24 +143,7 @@ namespace FileExportScheduler
         //thêm dữ liệu protocol
         private void btnAddData_Click(object sender, EventArgs e)
         {
-            var thietBiGiamSatDuocChon = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text];
-            if (DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol))
-            {
-                var maxAddress = MaxAddress.Get(thietBiGiamSatDuocChon);
-                thietBiGiamSatDuocChon.dsDiemDoGiamSat = DanhSachDiemDoService.LayDsDiemDoTuDgv(dgvDataProtocol);
-                thietBiGiamSatDuocChon.MaxAddressCoils = (ushort)maxAddress[0];
-                thietBiGiamSatDuocChon.MaxAddressInputs =(ushort)maxAddress[1];
-                thietBiGiamSatDuocChon.MaxAddressInputRegisters =(ushort)maxAddress[2];
-                thietBiGiamSatDuocChon.MaxAddressHoldingRegisters =(ushort)maxAddress[3];
-
-                GhiDsThietBiRaFileJson();
-                MessageBox.Show("Lưu dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else
-            {
-                MessageBox.Show("Lỗi lưu dữ liệu!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-
+            LuuDanhMucDuLieuVaoJson();
         }
 
         //Xóa dữ liệu protocol
@@ -188,7 +171,7 @@ namespace FileExportScheduler
                                 }
 
                             }
-                            catch { }
+                            catch {}
 
                         }
                         else
@@ -313,19 +296,28 @@ namespace FileExportScheduler
                 BindDataFromCSV(openFileDialog1.FileName);
             }
 
+            LuuDanhMucDuLieuVaoJson();
+        }
+        private void LuuDanhMucDuLieuVaoJson()
+        {
             var thietBiGiamSatDuocChon = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text];
             if (DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol))
             {
+                var maxAddress = MaxAddress.Get(thietBiGiamSatDuocChon);
                 thietBiGiamSatDuocChon.dsDiemDoGiamSat = DanhSachDiemDoService.LayDsDiemDoTuDgv(dgvDataProtocol);
-                GhiDsThietBiRaFileJson();
+                thietBiGiamSatDuocChon.MaxAddressCoils = (ushort)maxAddress[0];
+                thietBiGiamSatDuocChon.MaxAddressInputs = (ushort)maxAddress[1];
+                thietBiGiamSatDuocChon.MaxAddressInputRegisters = (ushort)maxAddress[2];
+                thietBiGiamSatDuocChon.MaxAddressHoldingRegisters = (ushort)maxAddress[3];
 
+                GhiDsThietBiRaFileJson();
+                MessageBox.Show("Lưu dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                MessageBox.Show("Dữ liệu sai định dạng", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Lỗi lưu dữ liệu!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-
         private void BindDataFromCSV(string filePath)
         {
             try
