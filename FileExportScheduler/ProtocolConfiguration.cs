@@ -487,7 +487,6 @@ namespace FileExportScheduler
                 }
                 else
                 {
-
                     ThietBiModel deviceObjCOM = new ThietBiCOM
                     {
                         Name = txtTenGiaoThuc.Text,
@@ -512,7 +511,6 @@ namespace FileExportScheduler
                     }
 
                 }
-
             }
             GhiDsThietBiRaFileJson();
             formDataList.selectedNodeDouble.Text = txtTenGiaoThuc.Text;

@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="Constant\ThongBaoLoi.cs" />
     <Compile Include="Constant\TrangThaiKetNoi.cs" />
+    <Compile Include="Data\DataTCPIP.cs" />
     <Compile Include="FormHienThiDuLieu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -83,7 +84,7 @@
     <Compile Include="Service\ThietBi\ThietBiGiamSatService.cs" />
     <Compile Include="Service\ThongBao\ThongBaoService.cs" />
     <Compile Include="Service\DiemDo\DanhSachDiemDoService.cs" />
-    <Compile Include="Data\Data.cs" />
+    <Compile Include="Data\DataCOM.cs" />
     <Compile Include="FormAbout.cs">
       <SubType>Form</SubType>
     </Compile>

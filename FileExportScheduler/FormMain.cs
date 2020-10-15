@@ -42,11 +42,8 @@ namespace FileExportScheduler
         ModbusClient modbusTCP = new ModbusClient();
         SerialPort serialPort = new SerialPort();
         FormHienThiDuLieu formHienThiDuLieu = new FormHienThiDuLieu();
-        bool heThongDangChay = false;
-
+        private bool heThongDangChay = false;
         #endregion
-
-
         public FormMain()
         {
             InitializeComponent();
@@ -321,7 +318,7 @@ namespace FileExportScheduler
                 try
                 {
                     serialPort.Open();
-                    getDataCOM(deviceUnit);
+                    GetDataCOM(deviceUnit);
                 }
                 catch
                 {
@@ -331,7 +328,7 @@ namespace FileExportScheduler
                     }
                 }
             }
-            getDataCOM(deviceUnit);
+            GetDataCOM(deviceUnit);
         }
 
         //lấy dữ liệu của các thiết bị 
@@ -342,15 +339,27 @@ namespace FileExportScheduler
             List<string> danhSachLoi = new List<string>();
             try
             {
-                dsDuLieuNhanDuoc = Data.Data.LayDuLieuTCPIP(modbusTCP, deviceUnit.Value.MaxAddressCoils, deviceUnit.Value.MaxAddressInputs, deviceUnit.Value.MaxAddressInputRegisters, deviceUnit.Value.MaxAddressHoldingRegisters);
+                List<Task> ListTasksDocDuLieu = new List<Task>();
+                ListTasksDocDuLieu.Add(Task.Run(() => Data.DataTCPIP.LayDuLieuTCPCoils(modbusTCP, deviceUnit.Value.MaxAddressCoils, deviceUnit.Value)));
+                ListTasksDocDuLieu.Add(Task.Run(() => Data.DataTCPIP.LayDuLieuTCPInputs(modbusTCP, deviceUnit.Value.MaxAddressInputs, deviceUnit.Value)));
+                ListTasksDocDuLieu.Add(Task.Run(() => Data.DataTCPIP.LayDuLieuTCPInputRegister(modbusTCP, deviceUnit.Value.MaxAddressInputRegisters, deviceUnit.Value)));
+                ListTasksDocDuLieu.Add(Task.Run(() => Data.DataTCPIP.LayDuLieuTCPHoldingRegister(modbusTCP, deviceUnit.Value.MaxAddressHoldingRegisters, deviceUnit.Value)));
+
+                await Task.WhenAll(ListTasksDocDuLieu);
+
+                
             }
             catch (ModbusException ex)
             {
-                if(ex.Message == "Function code not supported by master" && !danhSachLoi.Contains(ThongBaoLoi.DiaChiKhongTonTai))
+                if (ex.Message == "Function code not supported by master" && !danhSachLoi.Contains(ThongBaoLoi.DiaChiKhongTonTai))
                 {
                     danhSachLoi.Add(ThongBaoLoi.DiaChiKhongTonTai);
                 }
-                
+                else if (ex.Message == "Starting address invalid or starting address + quantity invalid" && !danhSachLoi.Contains(ThongBaoLoi.VuotQuaDuLieu))
+                {
+                    danhSachLoi.Add(ThongBaoLoi.DiaChiKhongTonTai);
+                }
+
                 deviceUnit.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
 
             }
@@ -363,53 +372,36 @@ namespace FileExportScheduler
                 deviceUnit.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
 
             }
+
             foreach (KeyValuePair<string, DiemDoModel> diemDo in deviceUnit.Value.dsDiemDoGiamSat)
             {
                 foreach (KeyValuePair<string, DuLieuModel> dulieu in diemDo.Value.DsDulieu)
                 {
-
-                   
-                    luuTruDuLieuTCP(dulieu.Value, deviceUnit.Value, dsDuLieuNhanDuoc);
+                    LuuTruDuLieuTCP(dulieu.Value, deviceUnit.Value, dsDuLieuNhanDuoc);
                 }
             }
             //Add danh sách lỗi vào biến danh sách lỗi static
             ThongBaoLoi.DanhSach[deviceUnit.Key] = danhSachLoi;
         }
 
-        private void getDataCOM(KeyValuePair<string, ThietBiModel> deviceUnit)
+        private void GetDataCOM(KeyValuePair<string, ThietBiModel> deviceUnit)
         {
             List<string> danhSachLoi = new List<string>();
             ArrayList dsDuLieuNhanDuoc = new ArrayList();
             //đọc dữ liệu
             try
             {
-               
-                dsDuLieuNhanDuoc = Data.Data.LayDuLieuCOM(serialPort, deviceUnit.Value.MaxAddressCoils, deviceUnit.Value.MaxAddressInputs, deviceUnit.Value.MaxAddressInputRegisters, deviceUnit.Value.MaxAddressHoldingRegisters);
-              
+                Data.DataCOM.LayDuLieuCOMCoils(serialPort, deviceUnit.Value.MaxAddressCoils, deviceUnit.Value);
+                Data.DataCOM.LayDuLieuCOMInputs(serialPort, deviceUnit.Value.MaxAddressInputs, deviceUnit.Value);
+                Data.DataCOM.LayDuLieuCOMInputRegisters(serialPort, deviceUnit.Value.MaxAddressInputRegisters, deviceUnit.Value);
+                Data.DataCOM.LayDuLieuCOMHoldingRegisters(serialPort, deviceUnit.Value.MaxAddressHoldingRegisters, deviceUnit.Value);
             }
-            //lấy dữ liệu thất bại
-            catch (TimeoutException ex)
-            {
-                if (!danhSachLoi.Contains(ThongBaoLoi.KhongKetNoi))
-                {
-                    danhSachLoi.Add(ThongBaoLoi.KhongKetNoi);
-                }
-                deviceUnit.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
-                //lỗi không đọc được dữ liệu
-            }
-            catch (Modbus.SlaveException ex)
-            {
-                if (!danhSachLoi.Contains(ThongBaoLoi.VuotQuaDuLieu))
-                {
-                    danhSachLoi.Add(ThongBaoLoi.VuotQuaDuLieu);
-                }
-                deviceUnit.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
-                //lỗi số bản ghi cần đọc vượt quá lượng bản ghi trả về
-            }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
+            //lấy dữ liệu thất bại
+
             #region Gán dữ liệu
             //Danh sách lỗi trong quá trình  đọc dữ liệu
 
@@ -418,14 +410,15 @@ namespace FileExportScheduler
                 foreach (KeyValuePair<string, DuLieuModel> dulieu in diemDo.Value.DsDulieu)
                 {
                     //lấy dữ liệu thành công
-                    luuTruDuLieuCOM(dulieu.Value, deviceUnit.Value, dsDuLieuNhanDuoc);
+                    LuuTruDuLieuCOM(dulieu.Value, deviceUnit.Value, dsDuLieuNhanDuoc);
                 }
             }
             #endregion
             ThongBaoLoi.DanhSach[deviceUnit.Key] = danhSachLoi;
 
         }
-        private void luuTruDuLieuTCP(DuLieuModel duLieu, ThietBiModel thietBi, ArrayList DsDuLieuNhanDuoc)
+
+        private void LuuTruDuLieuTCP(DuLieuModel duLieu, ThietBiModel thietBi, ArrayList DsDuLieuNhanDuoc)
         {
             try
             {
@@ -459,17 +452,17 @@ namespace FileExportScheduler
                 }
                 thietBi.TrangThaiTinHieu = TrangThaiKetNoi.Good;
             }
-            
+
             catch (Exception ex)//Lỗi lấy dữ liệu thất bại
             {
-                
             }
             finally
             {
                 duLieu.ThoiGianDocGiuLieu = DateTime.Now;
             }
         }
-        private void luuTruDuLieuCOM(DuLieuModel duLieu, ThietBiModel thietBi, ArrayList DsDuLieuNhanDuoc)
+
+        private void LuuTruDuLieuCOM(DuLieuModel duLieu, ThietBiModel thietBi, ArrayList DsDuLieuNhanDuoc)
         {
             try
             {
@@ -508,6 +501,7 @@ namespace FileExportScheduler
                 duLieu.ThoiGianDocGiuLieu = DateTime.Now;
             }
         }
+
         private void tmrDocDuLieu_Tick(object sender, EventArgs e)
         {
             try
@@ -525,7 +519,6 @@ namespace FileExportScheduler
                 //tmrDocDuLieu.Start();
             }
         }
-
 
         private void tmrChukyXoaFile_Tick(object sender, EventArgs e)
         {
