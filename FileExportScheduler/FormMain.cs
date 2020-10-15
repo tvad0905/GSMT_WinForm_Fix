@@ -346,7 +346,10 @@ namespace FileExportScheduler
                 ListTasksDocDuLieu.Add(Task.Run(() => Data.DataTCPIP.LayDuLieuTCPHoldingRegister(modbusTCP, deviceUnit.Value.MaxAddressHoldingRegisters, deviceUnit.Value)));
 
                 await Task.WhenAll(ListTasksDocDuLieu);
-
+                dsDuLieuNhanDuoc.Add(Data.DataTCPIP.LayDuLieuTCPCoils(modbusTCP, deviceUnit.Value.MaxAddressCoils, deviceUnit.Value));
+                dsDuLieuNhanDuoc.Add(Data.DataTCPIP.LayDuLieuTCPInputs(modbusTCP, deviceUnit.Value.MaxAddressInputs, deviceUnit.Value));
+                dsDuLieuNhanDuoc.Add(Data.DataTCPIP.LayDuLieuTCPInputRegister(modbusTCP, deviceUnit.Value.MaxAddressInputRegisters, deviceUnit.Value));
+                dsDuLieuNhanDuoc.Add(Data.DataTCPIP.LayDuLieuTCPHoldingRegister(modbusTCP, deviceUnit.Value.MaxAddressHoldingRegisters, deviceUnit.Value));
                 
             }
             catch (ModbusException ex)
@@ -431,21 +434,21 @@ namespace FileExportScheduler
                 }
                 else if (duLieu.DiaChi.StartsWith("1"))
                 {
-                    var DsDuLieuInputs = DsDuLieuNhanDuoc[0] as bool[];
+                    var DsDuLieuInputs = DsDuLieuNhanDuoc[1] as bool[];
                     int diaChiInputs = Convert.ToInt32(duLieu.DiaChi) - 10000;
 
                     duLieu.GiaTri = DsDuLieuInputs[diaChiInputs].ToString();
                 }
                 else if (duLieu.DiaChi.StartsWith("3"))
                 {
-                    var DsDuLieuInputRegisters = DsDuLieuNhanDuoc[0] as int[];
+                    var DsDuLieuInputRegisters = DsDuLieuNhanDuoc[2] as int[];
                     int diaChiInputRegisters = Convert.ToInt32(duLieu.DiaChi) - 30000;
 
                     duLieu.GiaTri = DsDuLieuInputRegisters[diaChiInputRegisters].ToString();
                 }
                 else if (duLieu.DiaChi.StartsWith("4"))
                 {
-                    var DsDuLieuHoldingRegisters = DsDuLieuNhanDuoc[0] as int[];
+                    var DsDuLieuHoldingRegisters = DsDuLieuNhanDuoc[3] as int[];
                     int diaChiHoldingRegisters = Convert.ToInt32(duLieu.DiaChi) - 40000;
 
                     duLieu.GiaTri = DsDuLieuHoldingRegisters[diaChiHoldingRegisters].ToString();
