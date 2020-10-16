@@ -339,41 +339,31 @@ namespace FileExportScheduler
             List<string> danhSachLoi = new List<string>();
             try
             {
-                List<Task> ListTasksDocDuLieu = new List<Task>();
-                ListTasksDocDuLieu.Add(Task.Run(() => Data.DataTCPIP.LayDuLieuTCPCoils(modbusTCP, deviceUnit.Value.MaxAddressCoils, deviceUnit.Value)));
-                ListTasksDocDuLieu.Add(Task.Run(() => Data.DataTCPIP.LayDuLieuTCPInputs(modbusTCP, deviceUnit.Value.MaxAddressInputs, deviceUnit.Value)));
-                ListTasksDocDuLieu.Add(Task.Run(() => Data.DataTCPIP.LayDuLieuTCPInputRegister(modbusTCP, deviceUnit.Value.MaxAddressInputRegisters, deviceUnit.Value)));
-                ListTasksDocDuLieu.Add(Task.Run(() => Data.DataTCPIP.LayDuLieuTCPHoldingRegister(modbusTCP, deviceUnit.Value.MaxAddressHoldingRegisters, deviceUnit.Value)));
-
-                await Task.WhenAll(ListTasksDocDuLieu);
                 dsDuLieuNhanDuoc.Add(Data.DataTCPIP.LayDuLieuTCPCoils(modbusTCP, deviceUnit.Value.MaxAddressCoils, deviceUnit.Value));
+            }
+            catch 
+            {
+            }
+            try
+            {
                 dsDuLieuNhanDuoc.Add(Data.DataTCPIP.LayDuLieuTCPInputs(modbusTCP, deviceUnit.Value.MaxAddressInputs, deviceUnit.Value));
+            }
+            catch
+            {
+            }
+            try
+            {
                 dsDuLieuNhanDuoc.Add(Data.DataTCPIP.LayDuLieuTCPInputRegister(modbusTCP, deviceUnit.Value.MaxAddressInputRegisters, deviceUnit.Value));
+            }
+            catch
+            {
+            }
+            try
+            {
                 dsDuLieuNhanDuoc.Add(Data.DataTCPIP.LayDuLieuTCPHoldingRegister(modbusTCP, deviceUnit.Value.MaxAddressHoldingRegisters, deviceUnit.Value));
-                
             }
-            catch (ModbusException ex)
+            catch
             {
-                if (ex.Message == "Function code not supported by master" && !danhSachLoi.Contains(ThongBaoLoi.DiaChiKhongTonTai))
-                {
-                    danhSachLoi.Add(ThongBaoLoi.DiaChiKhongTonTai);
-                }
-                else if (ex.Message == "Starting address invalid or starting address + quantity invalid" && !danhSachLoi.Contains(ThongBaoLoi.VuotQuaDuLieu))
-                {
-                    danhSachLoi.Add(ThongBaoLoi.DiaChiKhongTonTai);
-                }
-
-                deviceUnit.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
-
-            }
-            catch (Exception ex)//Lỗi lấy dữ liệu thất bại
-            {
-                if (!danhSachLoi.Contains(ThongBaoLoi.KhongCoTinHieuTraVe))
-                {
-                    danhSachLoi.Add(ThongBaoLoi.KhongCoTinHieuTraVe);
-                }
-                deviceUnit.Value.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
-
             }
 
             foreach (KeyValuePair<string, DiemDoModel> diemDo in deviceUnit.Value.dsDiemDoGiamSat)

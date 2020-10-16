@@ -129,7 +129,7 @@ namespace FileExportScheduler.Data
             {
                 try
                 {
-                    readHoldingRegister = modbus.ReadHoldingRegisters(0, (ushort)(quantityHoldingRegisters));
+                     readHoldingRegister = modbus.ReadHoldingRegisters(0, (ushort)(quantityHoldingRegisters));
                 }
                 catch (ModbusException ex)
                 {
