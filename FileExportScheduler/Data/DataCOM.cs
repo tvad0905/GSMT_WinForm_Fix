@@ -39,21 +39,13 @@ namespace FileExportScheduler.Data
             }
             catch (TimeoutException ex)
             {
-                if (!ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.KhongKetNoi))
-                {
-                    ThongBaoLoi.DanhSach[thietBiModel.Name].Add(ThongBaoLoi.KhongKetNoi);
-                }
-                thietBiModel.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
-                //lỗi không đọc được dữ liệu
+                ExceptionTimeOut(ex, thietBiModel);
+                throw;
             }
             catch (Modbus.SlaveException ex)
             {
-                if (!ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.VuotQuaDuLieu))
-                {
-                    ThongBaoLoi.DanhSach[thietBiModel.Name].Add(ThongBaoLoi.VuotQuaDuLieu);
-                }
-                thietBiModel.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
-                //lỗi số bản ghi cần đọc vượt quá lượng bản ghi trả về
+                ExceptionErrorSlave(ex, thietBiModel);
+                throw;
             }
             catch (Exception ex)
             {
@@ -72,21 +64,13 @@ namespace FileExportScheduler.Data
             }
             catch (TimeoutException ex)
             {
-                if (!ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.KhongKetNoi))
-                {
-                    ThongBaoLoi.DanhSach[thietBiModel.Name].Add(ThongBaoLoi.KhongKetNoi);
-                }
-                thietBiModel.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
-                //lỗi không đọc được dữ liệu
+                ExceptionTimeOut(ex, thietBiModel);
+                throw;
             }
             catch (Modbus.SlaveException ex)
             {
-                if (!ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.VuotQuaDuLieu))
-                {
-                    ThongBaoLoi.DanhSach[thietBiModel.Name].Add(ThongBaoLoi.VuotQuaDuLieu);
-                }
-                thietBiModel.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
-                //lỗi số bản ghi cần đọc vượt quá lượng bản ghi trả về
+                ExceptionErrorSlave(ex, thietBiModel);
+                throw;
             }
             catch (Exception ex)
             {
@@ -105,21 +89,14 @@ namespace FileExportScheduler.Data
             }
             catch (TimeoutException ex)
             {
-                if (!ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.KhongKetNoi))
-                {
-                    ThongBaoLoi.DanhSach[thietBiModel.Name].Add(ThongBaoLoi.KhongKetNoi);
-                }
-                thietBiModel.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
+                ExceptionTimeOut(ex, thietBiModel);
+                throw;
                 //lỗi không đọc được dữ liệu
             }
             catch (Modbus.SlaveException ex)
             {
-                if (!ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.VuotQuaDuLieu))
-                {
-                    ThongBaoLoi.DanhSach[thietBiModel.Name].Add(ThongBaoLoi.VuotQuaDuLieu);
-                }
-                thietBiModel.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
-                //lỗi số bản ghi cần đọc vượt quá lượng bản ghi trả về
+                ExceptionErrorSlave(ex, thietBiModel);
+                throw;
             }
             catch (Exception ex)
             {
@@ -140,29 +117,39 @@ namespace FileExportScheduler.Data
             }
             catch (TimeoutException ex)
             {
-                if (!ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.KhongKetNoi))
-                {
-                    ThongBaoLoi.DanhSach[thietBiModel.Name].Add(ThongBaoLoi.KhongKetNoi);
-                }
-                thietBiModel.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
+                ExceptionTimeOut(ex, thietBiModel);
+                throw;
                 //lỗi không đọc được dữ liệu
             }
             catch (Modbus.SlaveException ex)
             {
-                if (!ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.VuotQuaDuLieu))
-                {
-                    ThongBaoLoi.DanhSach[thietBiModel.Name].Add(ThongBaoLoi.VuotQuaDuLieu);
-                }
-                thietBiModel.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
+                ExceptionErrorSlave(ex, thietBiModel);
+                throw;
                 //lỗi số bản ghi cần đọc vượt quá lượng bản ghi trả về
             }
             catch (Exception ex)
             {
-
                 throw;
             }
             return readHoldingRegisters;
         }
 
+
+        private static void ExceptionTimeOut(Exception exceptionMessage, ThietBiModel thietBiModel) {
+            if (!ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.KhongKetNoi))
+            {
+                ThongBaoLoi.DanhSach[thietBiModel.Name].Add(ThongBaoLoi.KhongKetNoi);
+            }
+            thietBiModel.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
+        }
+
+        private static void ExceptionErrorSlave(Exception exceptionMessage, ThietBiModel thietBiModel)
+        {
+            if (!ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.VuotQuaDuLieu))
+            {
+                ThongBaoLoi.DanhSach[thietBiModel.Name].Add(ThongBaoLoi.VuotQuaDuLieu);
+            }
+            thietBiModel.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
+        }
     }
 }

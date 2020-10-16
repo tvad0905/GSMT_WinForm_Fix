@@ -65,6 +65,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constant\LanDoc.cs" />
     <Compile Include="Constant\ThongBaoLoi.cs" />
     <Compile Include="Constant\TrangThaiKetNoi.cs" />
     <Compile Include="Data\DataTCPIP.cs" />

@@ -25,6 +25,7 @@ using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -52,6 +53,7 @@ namespace FileExportScheduler
         private void btnStart_Click(object sender, EventArgs e)
         {
             heThongDangChay = true;
+            LanDoc.isLanDau = true;
             if (!Directory.Exists(Service.Json.JsonReader.DuongDanThuLog()))
             {
                 MessageBox.Show("Đường dẫn thư mục không tồn tại");
@@ -318,7 +320,7 @@ namespace FileExportScheduler
                 try
                 {
                     serialPort.Open();
-                    GetDataCOM(deviceUnit);
+                    GetDataDeviceCOM(deviceUnit);
                 }
                 catch
                 {
@@ -328,11 +330,11 @@ namespace FileExportScheduler
                     }
                 }
             }
-            GetDataCOM(deviceUnit);
+            GetDataDeviceCOM(deviceUnit);
         }
 
         //lấy dữ liệu của các thiết bị 
-        private async void GetDataDeviceIP(KeyValuePair<string, ThietBiModel> deviceUnit)
+        private  void GetDataDeviceIP(KeyValuePair<string, ThietBiModel> deviceUnit)
         {
             ArrayList dsDuLieuNhanDuoc = new ArrayList();
             //Danh sách lỗi trong quá trình  đọc dữ liệu
@@ -341,8 +343,9 @@ namespace FileExportScheduler
             {
                 dsDuLieuNhanDuoc.Add(Data.DataTCPIP.LayDuLieuTCPCoils(modbusTCP, deviceUnit.Value.MaxAddressCoils, deviceUnit.Value));
             }
-            catch 
+            catch
             {
+                StopSystem();
             }
             try
             {
@@ -350,6 +353,7 @@ namespace FileExportScheduler
             }
             catch
             {
+                StopSystem();
             }
             try
             {
@@ -357,6 +361,7 @@ namespace FileExportScheduler
             }
             catch
             {
+                StopSystem();
             }
             try
             {
@@ -364,6 +369,7 @@ namespace FileExportScheduler
             }
             catch
             {
+                StopSystem();
             }
 
             foreach (KeyValuePair<string, DiemDoModel> diemDo in deviceUnit.Value.dsDiemDoGiamSat)
@@ -377,7 +383,7 @@ namespace FileExportScheduler
             ThongBaoLoi.DanhSach[deviceUnit.Key] = danhSachLoi;
         }
 
-        private void GetDataCOM(KeyValuePair<string, ThietBiModel> deviceUnit)
+        private void GetDataDeviceCOM(KeyValuePair<string, ThietBiModel> deviceUnit)
         {
             List<string> danhSachLoi = new List<string>();
             ArrayList dsDuLieuNhanDuoc = new ArrayList();
@@ -385,8 +391,29 @@ namespace FileExportScheduler
             try
             {
                 Data.DataCOM.LayDuLieuCOMCoils(serialPort, deviceUnit.Value.MaxAddressCoils, deviceUnit.Value);
+            }
+            catch (Exception)
+            {
+
+            }
+            try
+            {
                 Data.DataCOM.LayDuLieuCOMInputs(serialPort, deviceUnit.Value.MaxAddressInputs, deviceUnit.Value);
+            }
+            catch (Exception)
+            {
+
+            }
+            try
+            {
                 Data.DataCOM.LayDuLieuCOMInputRegisters(serialPort, deviceUnit.Value.MaxAddressInputRegisters, deviceUnit.Value);
+            }
+            catch (Exception)
+            {
+
+            }
+            try
+            {
                 Data.DataCOM.LayDuLieuCOMHoldingRegisters(serialPort, deviceUnit.Value.MaxAddressHoldingRegisters, deviceUnit.Value);
             }
             catch (Exception)
@@ -501,7 +528,8 @@ namespace FileExportScheduler
             {
                 //tmrDocDuLieu.Stop();
                 GetDeviceConnect();
-                formHienThiDuLieu.DsThietBi = dsThietBi; //hien thi du lieu doc duoc len view                
+                formHienThiDuLieu.DsThietBi = dsThietBi; //hien thi du lieu doc duoc len view 
+                LanDoc.isLanDau = false;
             }
             catch
             {
@@ -571,6 +599,18 @@ namespace FileExportScheduler
             formHienThiDuLieu = new FormHienThiDuLieu(dsThietBi);
             formHienThiDuLieu.Show();
             btnDataList.Enabled = false;
+        }
+
+        private void StopSystem()
+        {
+            if (btnStop.InvokeRequired)
+            {
+                btnStop.Invoke(new MethodInvoker(delegate {
+                    WindowState = FormWindowState.Normal;
+                    ShowInTaskbar = true;
+                    btnStop.PerformClick();
+                }));
+            }
         }
     }
 }

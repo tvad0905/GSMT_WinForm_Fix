@@ -25,26 +25,14 @@ namespace FileExportScheduler.Data
                 }
                 catch (ModbusException ex)
                 {
-                    if (ex.Message == "Function code not supported by master" && !ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.DiaChiKhongTonTai))
-                    {
-                        ThongBaoLoi.DanhSach[thietBiModel.Name].Add(ThongBaoLoi.DiaChiKhongTonTai);
-                    }
-                    else if (ex.Message == "Starting address invalid or starting address + quantity invalid" && !ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.VuotQuaDuLieu))
-                    {
-                        ThongBaoLoi.DanhSach[thietBiModel.Name].Add(ThongBaoLoi.DiaChiKhongTonTai);
-                    }
-
-                    thietBiModel.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
-
+                    ExceptionFunctionCode(ex, thietBiModel);
+                    throw;
+                   
                 }
                 catch (Exception ex)//Lỗi lấy dữ liệu thất bại
                 {
-                    if (!ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.KhongCoTinHieuTraVe))
-                    {
-                        ThongBaoLoi.DanhSach[thietBiModel.Name].Add(ThongBaoLoi.KhongCoTinHieuTraVe);
-                    }
-                    thietBiModel.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
-
+                    ExceptionErrorConnection(ex, thietBiModel);
+                    throw;
                 }
             }
             return readCoil;
@@ -61,26 +49,14 @@ namespace FileExportScheduler.Data
                 }
                 catch (ModbusException ex)
                 {
-                    if (ex.Message == "Function code not supported by master" && !ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.DiaChiKhongTonTai))
-                    {
-                        ThongBaoLoi.DanhSach[thietBiModel.Name].Add(ThongBaoLoi.DiaChiKhongTonTai);
-                    }
-                    else if (ex.Message == "Starting address invalid or starting address + quantity invalid" && !ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.VuotQuaDuLieu))
-                    {
-                        ThongBaoLoi.DanhSach[thietBiModel.Name].Add(ThongBaoLoi.DiaChiKhongTonTai);
-                    }
-
-                    thietBiModel.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
-
+                    ExceptionFunctionCode(ex, thietBiModel);
+                    throw;
+                    
                 }
                 catch (Exception ex)//Lỗi lấy dữ liệu thất bại
                 {
-                    if (!ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.KhongCoTinHieuTraVe))
-                    {
-                        ThongBaoLoi.DanhSach[thietBiModel.Name].Add(ThongBaoLoi.KhongCoTinHieuTraVe);
-                    }
-                    thietBiModel.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
-
+                    ExceptionErrorConnection(ex, thietBiModel);
+                    throw;
                 }
             }
             return readDiscreteInputs;
@@ -97,26 +73,13 @@ namespace FileExportScheduler.Data
                 }
                 catch (ModbusException ex)
                 {
-                    if (ex.Message == "Function code not supported by master" && !ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.DiaChiKhongTonTai))
-                    {
-                        ThongBaoLoi.DanhSach[thietBiModel.Name].Add(ThongBaoLoi.DiaChiKhongTonTai);
-                    }
-                    else if (ex.Message == "Starting address invalid or starting address + quantity invalid" && !ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.VuotQuaDuLieu))
-                    {
-                        ThongBaoLoi.DanhSach[thietBiModel.Name].Add(ThongBaoLoi.DiaChiKhongTonTai);
-                    }
-
-                    thietBiModel.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
-
+                    ExceptionFunctionCode(ex, thietBiModel);
+                    throw;
                 }
                 catch (Exception ex)//Lỗi lấy dữ liệu thất bại
                 {
-                    if (!ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.KhongCoTinHieuTraVe))
-                    {
-                        ThongBaoLoi.DanhSach[thietBiModel.Name].Add(ThongBaoLoi.KhongCoTinHieuTraVe);
-                    }
-                    thietBiModel.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
-
+                    ExceptionErrorConnection(ex, thietBiModel);
+                    throw;
                 }
             }
             return readInputRegisters;
@@ -133,30 +96,40 @@ namespace FileExportScheduler.Data
                 }
                 catch (ModbusException ex)
                 {
-                    if (ex.Message == "Function code not supported by master" && !ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.DiaChiKhongTonTai))
-                    {
-                        ThongBaoLoi.DanhSach[thietBiModel.Name].Add(ThongBaoLoi.DiaChiKhongTonTai);
-                    }
-                    else if (ex.Message == "Starting address invalid or starting address + quantity invalid" && !ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.VuotQuaDuLieu))
-                    {
-                        ThongBaoLoi.DanhSach[thietBiModel.Name].Add(ThongBaoLoi.DiaChiKhongTonTai);
-                    }
-
-                    thietBiModel.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
+                    ExceptionFunctionCode(ex, thietBiModel);
+                    throw;
 
                 }
                 catch (Exception ex)//Lỗi lấy dữ liệu thất bại
                 {
-                    if (!ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.KhongCoTinHieuTraVe))
-                    {
-                        ThongBaoLoi.DanhSach[thietBiModel.Name].Add(ThongBaoLoi.KhongCoTinHieuTraVe);
-                    }
-                    thietBiModel.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
-
+                    ExceptionErrorConnection(ex, thietBiModel);
+                    throw;
                 }
             }
             return readHoldingRegister;
         }
 
+        private static void ExceptionFunctionCode(Exception exceptionMessage,ThietBiModel thietBiModel)
+        {
+            if (exceptionMessage.Message == "Function code not supported by master" && !ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.DiaChiKhongTonTai))
+            {
+                ThongBaoLoi.DanhSach[thietBiModel.Name].Add(ThongBaoLoi.DiaChiKhongTonTai);
+            }
+            else if (exceptionMessage.Message == "Starting address invalid or starting address + quantity invalid" && !ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.VuotQuaDuLieu))
+            {
+                ThongBaoLoi.DanhSach[thietBiModel.Name].Add(ThongBaoLoi.DiaChiKhongTonTai);
+            }
+
+            thietBiModel.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
+        }
+
+        private static void ExceptionErrorConnection(Exception exceptionMessage, ThietBiModel thietBiModel)
+        {
+            if (!ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.KhongCoTinHieuTraVe))
+            {
+                ThongBaoLoi.DanhSach[thietBiModel.Name].Add(ThongBaoLoi.KhongCoTinHieuTraVe);
+            }
+            thietBiModel.TrangThaiTinHieu = TrangThaiKetNoi.Bad;
+        }
     }
 }
