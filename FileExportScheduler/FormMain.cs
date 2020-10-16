@@ -334,7 +334,7 @@ namespace FileExportScheduler
         }
 
         //lấy dữ liệu của các thiết bị 
-        private  void GetDataDeviceIP(KeyValuePair<string, ThietBiModel> deviceUnit)
+        private void GetDataDeviceIP(KeyValuePair<string, ThietBiModel> deviceUnit)
         {
             ArrayList dsDuLieuNhanDuoc = new ArrayList();
             //Danh sách lỗi trong quá trình  đọc dữ liệu
@@ -394,7 +394,7 @@ namespace FileExportScheduler
             }
             catch (Exception)
             {
-
+                StopSystem();
             }
             try
             {
@@ -402,6 +402,7 @@ namespace FileExportScheduler
             }
             catch (Exception)
             {
+                StopSystem();
 
             }
             try
@@ -410,6 +411,7 @@ namespace FileExportScheduler
             }
             catch (Exception)
             {
+                StopSystem();
 
             }
             try
@@ -418,9 +420,10 @@ namespace FileExportScheduler
             }
             catch (Exception)
             {
+                StopSystem();
 
             }
-            //lấy dữ liệu thất bại
+            
 
             #region Gán dữ liệu
             //Danh sách lỗi trong quá trình  đọc dữ liệu
@@ -603,13 +606,17 @@ namespace FileExportScheduler
 
         private void StopSystem()
         {
-            if (btnStop.InvokeRequired)
+            if (LanDoc.isLanDau == true)
             {
-                btnStop.Invoke(new MethodInvoker(delegate {
-                    WindowState = FormWindowState.Normal;
-                    ShowInTaskbar = true;
-                    btnStop.PerformClick();
-                }));
+                if (btnStop.InvokeRequired)
+                {
+                    btnStop.Invoke(new MethodInvoker(delegate
+                    {
+                        WindowState = FormWindowState.Normal;
+                        ShowInTaskbar = true;
+                        btnStop.PerformClick();
+                    }));
+                }
             }
         }
     }
