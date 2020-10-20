@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSetting));
             this.chkAutoRun = new System.Windows.Forms.CheckBox();
             this.txtExportFilePath = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -37,11 +38,11 @@
             this.btnClose = new System.Windows.Forms.Button();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.label1 = new System.Windows.Forms.Label();
-            this.udInterval = new System.Windows.Forms.NumericUpDown();
+            this.numChukyLuuDuLieu = new System.Windows.Forms.NumericUpDown();
             this.numChuKiXoaDuLieu = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.udInterval)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numChukyLuuDuLieu)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numChuKiXoaDuLieu)).BeginInit();
             this.SuspendLayout();
             // 
@@ -115,24 +116,24 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Chu kỳ lưu dữ liệu (phút)";
             // 
-            // udInterval
+            // numChukyLuuDuLieu
             // 
-            this.udInterval.Location = new System.Drawing.Point(21, 24);
-            this.udInterval.Maximum = new decimal(new int[] {
+            this.numChukyLuuDuLieu.Location = new System.Drawing.Point(21, 24);
+            this.numChukyLuuDuLieu.Maximum = new decimal(new int[] {
             1440,
             0,
             0,
             0});
-            this.udInterval.Minimum = new decimal(new int[] {
+            this.numChukyLuuDuLieu.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.udInterval.Name = "udInterval";
-            this.udInterval.Size = new System.Drawing.Size(328, 20);
-            this.udInterval.TabIndex = 0;
-            this.udInterval.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.udInterval.Value = new decimal(new int[] {
+            this.numChukyLuuDuLieu.Name = "numChukyLuuDuLieu";
+            this.numChukyLuuDuLieu.Size = new System.Drawing.Size(328, 20);
+            this.numChukyLuuDuLieu.TabIndex = 0;
+            this.numChukyLuuDuLieu.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.numChukyLuuDuLieu.Value = new decimal(new int[] {
             5,
             0,
             0,
@@ -179,17 +180,20 @@
             this.Controls.Add(this.btnBrowse);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtExportFilePath);
-            this.Controls.Add(this.udInterval);
+            this.Controls.Add(this.numChukyLuuDuLieu);
             this.Controls.Add(this.chkAutoRun);
             this.Controls.Add(this.label1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FormSetting";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Cấu hình hệ thống";
             this.Load += new System.EventHandler(this.FormSetting_Load);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.udInterval)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numChukyLuuDuLieu)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numChuKiXoaDuLieu)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -206,7 +210,7 @@
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.NumericUpDown numChuKiXoaDuLieu;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.NumericUpDown udInterval;
+        private System.Windows.Forms.NumericUpDown numChukyLuuDuLieu;
         private System.Windows.Forms.Label label1;
     }
 }

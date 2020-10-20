@@ -37,7 +37,7 @@ namespace FileExportScheduler
             CaiDatChung setting = new CaiDatChung();
 
             setting.AutoRun = chkAutoRun.Checked;
-            setting.Interval = Int32.Parse(udInterval.Value.ToString());
+            setting.Interval = Int32.Parse(numChukyLuuDuLieu.Value.ToString());
             setting.ExportFilePath = txtExportFilePath.Text;
             setting.ChuKiXoaDuLieu = Int32.Parse(numChuKiXoaDuLieu.Value.ToString());
 
@@ -77,7 +77,7 @@ namespace FileExportScheduler
                 {
                     var obj = sr.ReadToEnd();
                     CaiDatChung export = JsonConvert.DeserializeObject<CaiDatChung>(obj.ToString());
-                    udInterval.Value = export.Interval;
+                    numChukyLuuDuLieu.Value = export.Interval;
                     txtExportFilePath.Text = export.ExportFilePath;
                     chkAutoRun.Checked = export.AutoRun;
                     numChuKiXoaDuLieu.Value = export.ChuKiXoaDuLieu;

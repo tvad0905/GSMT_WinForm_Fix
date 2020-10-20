@@ -62,7 +62,7 @@ namespace FileExportScheduler
 
             WindowState = FormWindowState.Minimized;
             ShowInTaskbar = false;
-            notifyIcon.ShowBalloonTip(100);
+            notifyIcon.ShowBalloonTip(100,"Hệ thống","Ứng dụng đang chạy",ToolTipIcon.None);
             notifyIcon.Visible = true;
             btnThongSoDuLieu.Enabled = true;
             btnStop.Enabled = true;
@@ -155,7 +155,7 @@ namespace FileExportScheduler
         {
             checkExit = true;
 
-            DialogResult result = MessageBox.Show("Thoát hệ thống  ?", "caption", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            DialogResult result = MessageBox.Show("Thoát hệ thống ?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             switch (result)
             {
@@ -188,6 +188,7 @@ namespace FileExportScheduler
             {
                 e.Cancel = true;
                 this.WindowState = FormWindowState.Minimized;
+                notifyIcon.BalloonTipText = "Phần mềm đã ẩn";
                 notifyIcon.ShowBalloonTip(1000);
                 notifyIcon.Visible = true;
                 ShowInTaskbar = false;
@@ -207,7 +208,7 @@ namespace FileExportScheduler
             ShowInTaskbar = true;
         }
 
-        private void FormMain_Load_1(object sender, EventArgs e)
+        private void FormMain_Load(object sender, EventArgs e)
         {
             var path = GetPathJson.getPathConfig("Config.json");
             if (File.Exists(path))
@@ -232,7 +233,7 @@ namespace FileExportScheduler
         /// 
         object objW = new object();
         object objW2 = new object();
-        private async void GetDeviceConnect()
+        private async Task GetDeviceConnect()
         {
 
             foreach (KeyValuePair<string, ThietBiModel> deviceUnit in dsThietBi)
@@ -301,8 +302,8 @@ namespace FileExportScheduler
                     List<string> danhSachLoi = new List<string>();
                     danhSachLoi.Add(ThongBaoLoi.KhongKetNoi);
                     ThongBaoLoi.DanhSach[deviceUnit.Key] = danhSachLoi;
-
                     deviceUnit = ThietBiGiamSatService.SetTrangThaiBad(deviceUnit);// set trang thai bad cho dư lieu tung thiet bi
+                    StopSystem();
                     return;
                 }
             }
@@ -390,15 +391,7 @@ namespace FileExportScheduler
             //đọc dữ liệu
             try
             {
-                Data.DataCOM.LayDuLieuCOMCoils(serialPort, deviceUnit.Value.MaxAddressCoils, deviceUnit.Value);
-            }
-            catch (Exception)
-            {
-                StopSystem();
-            }
-            try
-            {
-                Data.DataCOM.LayDuLieuCOMInputs(serialPort, deviceUnit.Value.MaxAddressInputs, deviceUnit.Value);
+                dsDuLieuNhanDuoc.Add(Data.DataCOM.LayDuLieuCOMCoils(serialPort, deviceUnit.Value.MaxAddressCoils, deviceUnit.Value));
             }
             catch (Exception)
             {
@@ -407,27 +400,38 @@ namespace FileExportScheduler
             }
             try
             {
-                Data.DataCOM.LayDuLieuCOMInputRegisters(serialPort, deviceUnit.Value.MaxAddressInputRegisters, deviceUnit.Value);
+                dsDuLieuNhanDuoc.Add(Data.DataCOM.LayDuLieuCOMInputs(serialPort, deviceUnit.Value.MaxAddressInputs, deviceUnit.Value));
             }
             catch (Exception)
             {
+
                 StopSystem();
 
             }
             try
             {
-                Data.DataCOM.LayDuLieuCOMHoldingRegisters(serialPort, deviceUnit.Value.MaxAddressHoldingRegisters, deviceUnit.Value);
+                dsDuLieuNhanDuoc.Add(Data.DataCOM.LayDuLieuCOMInputRegisters(serialPort, deviceUnit.Value.MaxAddressInputRegisters, deviceUnit.Value));
             }
             catch (Exception)
             {
+
                 StopSystem();
 
             }
-            
+            try
+            {
+                dsDuLieuNhanDuoc.Add(Data.DataCOM.LayDuLieuCOMHoldingRegisters(serialPort, deviceUnit.Value.MaxAddressHoldingRegisters, deviceUnit.Value));
+            }
+            catch (Exception)
+            {
+
+                StopSystem();
+
+            }
+
 
             #region Gán dữ liệu
             //Danh sách lỗi trong quá trình  đọc dữ liệu
-
             foreach (KeyValuePair<string, DiemDoModel> diemDo in deviceUnit.Value.dsDiemDoGiamSat)
             {
                 foreach (KeyValuePair<string, DuLieuModel> dulieu in diemDo.Value.DsDulieu)
@@ -447,31 +451,39 @@ namespace FileExportScheduler
             {
                 if (duLieu.DiaChi.StartsWith("0"))
                 {
-                    var DsDuLieuCoils = DsDuLieuNhanDuoc[0] as bool[];
-                    int diaChiCoils = Convert.ToInt32(duLieu.DiaChi);
-
-                    duLieu.GiaTri = DsDuLieuCoils[diaChiCoils].ToString();
+                    bool[] DsDuLieuCoils = DsDuLieuNhanDuoc[0] as bool[];
+                    if (DsDuLieuCoils != null)
+                    {
+                        int diaChiCoils = Convert.ToInt32(duLieu.DiaChi);
+                        duLieu.GiaTri = DsDuLieuCoils[diaChiCoils].ToString();
+                    }
                 }
                 else if (duLieu.DiaChi.StartsWith("1"))
                 {
-                    var DsDuLieuInputs = DsDuLieuNhanDuoc[1] as bool[];
-                    int diaChiInputs = Convert.ToInt32(duLieu.DiaChi) - 10000;
-
-                    duLieu.GiaTri = DsDuLieuInputs[diaChiInputs].ToString();
+                    bool[] DsDuLieuInputs = DsDuLieuNhanDuoc[1] as bool[];
+                    if (DsDuLieuInputs != null)
+                    {
+                        int diaChiInputs = Convert.ToInt32(duLieu.DiaChi) - 10000;
+                        duLieu.GiaTri = DsDuLieuInputs[diaChiInputs].ToString();
+                    }
                 }
                 else if (duLieu.DiaChi.StartsWith("3"))
                 {
-                    var DsDuLieuInputRegisters = DsDuLieuNhanDuoc[2] as int[];
-                    int diaChiInputRegisters = Convert.ToInt32(duLieu.DiaChi) - 30000;
-
-                    duLieu.GiaTri = DsDuLieuInputRegisters[diaChiInputRegisters].ToString();
+                    int[] DsDuLieuInputRegisters = DsDuLieuNhanDuoc[2] as int[];
+                    if (DsDuLieuInputRegisters != null)
+                    {
+                        int diaChiInputRegisters = Convert.ToInt32(duLieu.DiaChi) - 30000;
+                        duLieu.GiaTri = DsDuLieuInputRegisters[diaChiInputRegisters].ToString();
+                    }
                 }
                 else if (duLieu.DiaChi.StartsWith("4"))
                 {
-                    var DsDuLieuHoldingRegisters = DsDuLieuNhanDuoc[3] as int[];
-                    int diaChiHoldingRegisters = Convert.ToInt32(duLieu.DiaChi) - 40000;
-
-                    duLieu.GiaTri = DsDuLieuHoldingRegisters[diaChiHoldingRegisters].ToString();
+                    int[] DsDuLieuHoldingRegisters = DsDuLieuNhanDuoc[3] as int[];
+                    if (DsDuLieuHoldingRegisters != null)
+                    {
+                        int diaChiHoldingRegisters = Convert.ToInt32(duLieu.DiaChi) - 40000;
+                        duLieu.GiaTri = DsDuLieuHoldingRegisters[diaChiHoldingRegisters].ToString();
+                    }
                 }
                 thietBi.TrangThaiTinHieu = TrangThaiKetNoi.Good;
             }
@@ -491,31 +503,44 @@ namespace FileExportScheduler
             {
                 if (duLieu.DiaChi.StartsWith("0"))
                 {
-                    var DsDuLieuCoils = DsDuLieuNhanDuoc[0] as bool[];
-                    int diaChiCoils = Convert.ToInt32(duLieu.DiaChi);
-                    duLieu.GiaTri = DsDuLieuCoils[diaChiCoils].ToString();
+                    bool[] DsDuLieuCoils = DsDuLieuNhanDuoc[0] as bool[];
+                    if (DsDuLieuCoils != null)
+                    {
+                        int diaChiCoils = Convert.ToInt32(duLieu.DiaChi);
+                        duLieu.GiaTri = DsDuLieuCoils[diaChiCoils].ToString();
+                    }
+
                 }
                 else if (duLieu.DiaChi.StartsWith("1"))
                 {
-                    var DsDuLieuInputs = DsDuLieuNhanDuoc[0] as bool[];
-                    int diaChiInputs = Convert.ToInt32(duLieu.DiaChi) - 10000;
-                    duLieu.GiaTri = DsDuLieuInputs[diaChiInputs].ToString();
+                    bool[] DsDuLieuInputs = DsDuLieuNhanDuoc[1] as bool[];
+                    if (DsDuLieuInputs != null)
+                    {
+                        int diaChiInputs = Convert.ToInt32(duLieu.DiaChi) - 10000;
+                        duLieu.GiaTri = DsDuLieuInputs[diaChiInputs].ToString();
+                    }
                 }
                 else if (duLieu.DiaChi.StartsWith("3"))
                 {
-                    var DsDuLieuInputRegisters = DsDuLieuNhanDuoc[0] as ushort[];
-                    int diaChiInputRegisters = Convert.ToInt32(duLieu.DiaChi) - 30000;
-                    duLieu.GiaTri = DsDuLieuInputRegisters[diaChiInputRegisters].ToString();
+                    ushort[] DsDuLieuInputRegisters = DsDuLieuNhanDuoc[2] as ushort[];
+                    if(DsDuLieuInputRegisters != null)
+                    {
+                        int diaChiInputRegisters = Convert.ToInt32(duLieu.DiaChi) - 30000;
+                        duLieu.GiaTri = DsDuLieuInputRegisters[diaChiInputRegisters].ToString();
+                    }
                 }
                 else if (duLieu.DiaChi.StartsWith("4"))
                 {
-                    var DsDuLieuHoldingRegisters = DsDuLieuNhanDuoc[0] as ushort[];
-                    int diaChiHoldingRegisters = Convert.ToInt32(duLieu.DiaChi) - 40000;
-                    duLieu.GiaTri = DsDuLieuHoldingRegisters[diaChiHoldingRegisters].ToString();
+                    ushort[] DsDuLieuHoldingRegisters = DsDuLieuNhanDuoc[3] as ushort[];
+                    if(DsDuLieuHoldingRegisters != null)
+                    {
+                        int diaChiHoldingRegisters = Convert.ToInt32(duLieu.DiaChi) - 40000;
+                        duLieu.GiaTri = DsDuLieuHoldingRegisters[diaChiHoldingRegisters].ToString();
+                    }
                 }
                 thietBi.TrangThaiTinHieu = TrangThaiKetNoi.Good;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -525,12 +550,12 @@ namespace FileExportScheduler
             }
         }
 
-        private void tmrDocDuLieu_Tick(object sender, EventArgs e)
+        private async void tmrDocDuLieu_Tick(object sender, EventArgs e)
         {
             try
             {
                 //tmrDocDuLieu.Stop();
-                GetDeviceConnect();
+                await GetDeviceConnect();
                 formHienThiDuLieu.DsThietBi = dsThietBi; //hien thi du lieu doc duoc len view 
                 LanDoc.isLanDau = false;
             }
@@ -606,18 +631,24 @@ namespace FileExportScheduler
 
         private void StopSystem()
         {
-            if (LanDoc.isLanDau == true)
+            if (heThongDangChay)
             {
-                if (btnStop.InvokeRequired)
+                if (LanDoc.isLanDau == true)
                 {
-                    btnStop.Invoke(new MethodInvoker(delegate
+                    if (btnStop.InvokeRequired)
                     {
-                        WindowState = FormWindowState.Normal;
-                        ShowInTaskbar = true;
-                        btnStop.PerformClick();
-                    }));
+                        btnStop.Invoke(new MethodInvoker(delegate
+                        {
+                            WindowState = FormWindowState.Normal;
+                            ShowInTaskbar = true;
+                            btnStop.PerformClick();
+
+                        }));
+                    }
+                    MessageBox.Show("Vui lòng kiểm tra lại địa chị nhập vào!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
+
         }
     }
 }

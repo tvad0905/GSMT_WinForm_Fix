@@ -191,7 +191,7 @@
             this.btnEditProtocol.TabIndex = 14;
             this.btnEditProtocol.Text = "Lưu";
             this.btnEditProtocol.UseVisualStyleBackColor = true;
-            this.btnEditProtocol.Click += new System.EventHandler(this.btnEditProtocol_Click_1);
+            this.btnEditProtocol.Click += new System.EventHandler(this.btnEditProtocol_Click);
             // 
             // btnSaveProtocol
             // 
@@ -202,7 +202,7 @@
             this.btnSaveProtocol.TabIndex = 1;
             this.btnSaveProtocol.Text = "Lưu";
             this.btnSaveProtocol.UseVisualStyleBackColor = true;
-            this.btnSaveProtocol.Click += new System.EventHandler(this.btnSaveProtocol_Click_1);
+            this.btnSaveProtocol.Click += new System.EventHandler(this.btnSaveProtocol_Click);
             // 
             // gbSerialSettingProtocol
             // 
@@ -420,7 +420,7 @@
             this.btnDelete.TabIndex = 9;
             this.btnDelete.Text = "Xóa";
             this.btnDelete.UseVisualStyleBackColor = true;
-            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click_1);
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnAddData
             // 

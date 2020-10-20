@@ -54,9 +54,9 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(65, 32);
+            this.btnStart.Location = new System.Drawing.Point(12, 32);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(154, 46);
+            this.btnStart.Size = new System.Drawing.Size(225, 46);
             this.btnStart.TabIndex = 0;
             this.btnStart.Text = "Chạy";
             this.btnStart.UseVisualStyleBackColor = true;
@@ -65,9 +65,9 @@
             // btnStop
             // 
             this.btnStop.Enabled = false;
-            this.btnStop.Location = new System.Drawing.Point(225, 32);
+            this.btnStop.Location = new System.Drawing.Point(244, 32);
             this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(154, 46);
+            this.btnStop.Size = new System.Drawing.Size(225, 46);
             this.btnStop.TabIndex = 1;
             this.btnStop.Text = "Dừng";
             this.btnStop.UseVisualStyleBackColor = true;
@@ -75,29 +75,29 @@
             // 
             // btnDataList
             // 
-            this.btnDataList.Location = new System.Drawing.Point(65, 84);
+            this.btnDataList.Location = new System.Drawing.Point(12, 84);
             this.btnDataList.Name = "btnDataList";
-            this.btnDataList.Size = new System.Drawing.Size(100, 23);
+            this.btnDataList.Size = new System.Drawing.Size(110, 23);
             this.btnDataList.TabIndex = 2;
-            this.btnDataList.Text = "Quản lý dữ liệu";
+            this.btnDataList.Text = "Cấu hình giao thức";
             this.btnDataList.UseVisualStyleBackColor = true;
             this.btnDataList.Click += new System.EventHandler(this.btnDataList_Click);
             // 
             // btnSetting
             // 
-            this.btnSetting.Location = new System.Drawing.Point(171, 84);
+            this.btnSetting.Location = new System.Drawing.Point(128, 84);
             this.btnSetting.Name = "btnSetting";
-            this.btnSetting.Size = new System.Drawing.Size(100, 23);
+            this.btnSetting.Size = new System.Drawing.Size(110, 23);
             this.btnSetting.TabIndex = 3;
-            this.btnSetting.Text = "Cấu hình";
+            this.btnSetting.Text = "Cấu hình lưu file";
             this.btnSetting.UseVisualStyleBackColor = true;
             this.btnSetting.Click += new System.EventHandler(this.btnSetting_Click);
             // 
             // btnExit
             // 
-            this.btnExit.Location = new System.Drawing.Point(279, 84);
+            this.btnExit.Location = new System.Drawing.Point(360, 84);
             this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(100, 23);
+            this.btnExit.Size = new System.Drawing.Size(110, 23);
             this.btnExit.TabIndex = 4;
             this.btnExit.Text = "Thoát";
             this.btnExit.UseVisualStyleBackColor = true;
@@ -110,7 +110,7 @@
             // 
             // notifyIcon
             // 
-            this.notifyIcon.BalloonTipText = "Chương trình đang chạy";
+            this.notifyIcon.BalloonTipText = "Phần mềm đang chạy";
             this.notifyIcon.BalloonTipTitle = "Hệ thống";
             this.notifyIcon.ContextMenuStrip = this.contextMenuStrip;
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
@@ -171,7 +171,7 @@
             this.lblTrangThaiThietBi});
             this.statusStrip1.Location = new System.Drawing.Point(0, 133);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(444, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(481, 22);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 7;
             this.statusStrip1.Text = "statusStrip1";
@@ -191,11 +191,11 @@
             // btnThongSoDuLieu
             // 
             this.btnThongSoDuLieu.Enabled = false;
-            this.btnThongSoDuLieu.Location = new System.Drawing.Point(0, 0);
+            this.btnThongSoDuLieu.Location = new System.Drawing.Point(244, 84);
             this.btnThongSoDuLieu.Name = "btnThongSoDuLieu";
-            this.btnThongSoDuLieu.Size = new System.Drawing.Size(26, 23);
+            this.btnThongSoDuLieu.Size = new System.Drawing.Size(110, 23);
             this.btnThongSoDuLieu.TabIndex = 2;
-            this.btnThongSoDuLieu.Text = "...";
+            this.btnThongSoDuLieu.Text = "Monitor";
             this.btnThongSoDuLieu.UseVisualStyleBackColor = true;
             this.btnThongSoDuLieu.Click += new System.EventHandler(this.btnThongSoDuLieu_Click);
             // 
@@ -203,7 +203,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(444, 155);
+            this.ClientSize = new System.Drawing.Size(481, 155);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnSetting);
@@ -214,12 +214,11 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ES PROTOCOL CONVERTER";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
-            this.Load += new System.EventHandler(this.FormMain_Load_1);
+            this.Load += new System.EventHandler(this.FormMain_Load);
             this.contextMenuStrip.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
