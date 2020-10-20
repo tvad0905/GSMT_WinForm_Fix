@@ -17,12 +17,32 @@ namespace FileExportScheduler.Data
         private static readonly int DonViQuantityMoiLanDoc = 100;
         public static bool[] LayDuLieuTCPCoils(ModbusClient modbus, ushort quantityCoils, ThietBiModel thietBiModel)
         {
-            bool[] readCoil = new bool[quantityCoils];
+            List<bool> readCoil = new List<bool>();
+
             if (quantityCoils != 0)
             {
                 try
                 {
-                    readCoil = modbus.ReadCoils(0, (ushort)(quantityCoils));
+                    int soNguyenSauChia = quantityCoils / DonViQuantityMoiLanDoc;
+                    for (int i = 0; i <= soNguyenSauChia; i++)
+                    {
+
+                        if (i != soNguyenSauChia)
+                        {
+                            int startAddress = i * DonViQuantityMoiLanDoc;
+                            int quantity = DonViQuantityMoiLanDoc;
+                            var temp = modbus.ReadCoils(startAddress, (ushort)(quantity));
+                            readCoil.AddRange(temp.ToList());
+                        }
+                        else if (i == soNguyenSauChia)
+                        {
+                            int startAddress = i * DonViQuantityMoiLanDoc;
+                            int quantity = quantityCoils % DonViQuantityMoiLanDoc;
+                            var temp = modbus.ReadCoils(startAddress, (ushort)(quantity));
+                            readCoil.AddRange(temp.ToList());
+                        }
+
+                    }
                 }
                 catch (ModbusException ex)
                 {
@@ -36,17 +56,37 @@ namespace FileExportScheduler.Data
                     throw;
                 }
             }
-            return readCoil;
+            return readCoil.ToArray();
         }
 
         public static bool[] LayDuLieuTCPInputs(ModbusClient modbus, ushort quantityInputs, ThietBiModel thietBiModel)
         {
-            bool[] readDiscreteInputs = new bool[quantityInputs];
+            List<bool> readDiscreteInputs = new List<bool>();
+
             if (quantityInputs != 0)
             {
                 try
                 {
-                    readDiscreteInputs = modbus.ReadDiscreteInputs(0, (ushort)(quantityInputs));
+                    int soNguyenSauChia = quantityInputs / DonViQuantityMoiLanDoc;
+                    for (int i = 0; i <= soNguyenSauChia; i++)
+                    {
+
+                        if (i != soNguyenSauChia)
+                        {
+                            int startAddress = i * DonViQuantityMoiLanDoc;
+                            int quantity = DonViQuantityMoiLanDoc;
+                            var temp = modbus.ReadDiscreteInputs(startAddress, (ushort)(quantity));
+                            readDiscreteInputs.AddRange(temp.ToList());
+                        }
+                        else if (i == soNguyenSauChia)
+                        {
+                            int startAddress = i * DonViQuantityMoiLanDoc;
+                            int quantity = quantityInputs % DonViQuantityMoiLanDoc;
+                            var temp = modbus.ReadDiscreteInputs(startAddress, (ushort)(quantity));
+                            readDiscreteInputs.AddRange(temp.ToList());
+                        }
+
+                    }
                 }
                 catch (ModbusException ex)
                 {
@@ -60,17 +100,37 @@ namespace FileExportScheduler.Data
                     throw;
                 }
             }
-            return readDiscreteInputs;
+            return readDiscreteInputs.ToArray();
         }
 
         public static int[] LayDuLieuTCPInputRegister(ModbusClient modbus, ushort quantityInputRegisters, ThietBiModel thietBiModel)
         {
-            int[] readInputRegisters = new int[quantityInputRegisters];
+            List<int> readInputRegisters = new List<int>();
+
             if (quantityInputRegisters != 0)
             {
                 try
                 {
-                    readInputRegisters = modbus.ReadInputRegisters(0, (ushort)(quantityInputRegisters));
+                    int soNguyenSauChia = quantityInputRegisters / DonViQuantityMoiLanDoc;
+                    for (int i = 0; i <= soNguyenSauChia; i++)
+                    {
+
+                        if (i != soNguyenSauChia)
+                        {
+                            int startAddress = i * DonViQuantityMoiLanDoc;
+                            int quantity = DonViQuantityMoiLanDoc;
+                            var temp = modbus.ReadInputRegisters(startAddress, (ushort)(quantity));
+                            readInputRegisters.AddRange(temp.ToList());
+                        }
+                        else if (i == soNguyenSauChia)
+                        {
+                            int startAddress = i * DonViQuantityMoiLanDoc;
+                            int quantity = quantityInputRegisters % DonViQuantityMoiLanDoc;
+                            var temp = modbus.ReadInputRegisters(startAddress, (ushort)(quantity));
+                            readInputRegisters.AddRange(temp.ToList());
+                        }
+
+                    }
                 }
                 catch (ModbusException ex)
                 {
@@ -83,7 +143,7 @@ namespace FileExportScheduler.Data
                     throw;
                 }
             }
-            return readInputRegisters;
+            return readInputRegisters.ToArray();
         }
 
         public static int[] LayDuLieuTCPHoldingRegister(ModbusClient modbus, ushort quantityHoldingRegisters, ThietBiModel thietBiModel)

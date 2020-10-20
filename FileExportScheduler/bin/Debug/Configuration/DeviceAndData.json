@@ -1,1 +1,58 @@
-{"PLC2":{"dsDiemDoGiamSat":{"DiemDo1":{"DsDulieu":{"2":{"donViDo":"mj","Ten":"2","DiaChi":"40000","DonViDo":"mj","GiaTri":null,"Scale":"1","DiemDo":"DiemDo1","ThoiGianDocGiuLieu":"\/Date(-62135596800000)\/"}},"TenDiemDo":"DiemDo1"},"DiemDo2":{"DsDulieu":{"3":{"donViDo":"ml","Ten":"3","DiaChi":"40130","DonViDo":"ml","GiaTri":null,"Scale":"1","DiemDo":"DiemDo2","ThoiGianDocGiuLieu":"\/Date(-62135596800000)\/"}},"TenDiemDo":"DiemDo2"}},"IP":"127.0.0.1","Port":502,"Name":"PLC2","Protocol":"Modbus TCP/IP","TrangThaiTinHieu":null,"MaxAddressCoils":0,"MaxAddressInputs":0,"MaxAddressInputRegisters":0,"MaxAddressHoldingRegisters":131}}
+{
+  "PLC2": {
+    "dsDiemDoGiamSat": {
+      "DiemDo1": {
+        "DsDulieu": {
+          "2": {
+            "donViDo": "mj",
+            "Ten": "2",
+            "DiaChi": "40000",
+            "DonViDo": "mj",
+            "GiaTri": null,
+            "Scale": "1",
+            "DiemDo": "DiemDo1",
+            "ThoiGianDocGiuLieu": "\/Date(-62135596800000)\/"
+          },
+          "4": {
+            "donViDo": "ml",
+            "Ten": "4",
+            "DiaChi": "40149",
+            "DonViDo": "ml",
+            "GiaTri": null,
+            "Scale": "1",
+            "DiemDo": "DiemDo1",
+            "ThoiGianDocGiuLieu": "\/Date(-62135596800000)\/"
+          }
+        },
+        "TenDiemDo": "DiemDo1"
+      },
+      "DiemDo2": {
+        "DsDulieu": {
+          "3": {
+            "donViDo": "ml",
+            "Ten": "3",
+            "DiaChi": "40130",
+            "DonViDo": "ml",
+            "GiaTri": null,
+            "Scale": "1",
+            "DiemDo": "DiemDo2",
+            "ThoiGianDocGiuLieu": "\/Date(-62135596800000)\/"
+          }
+        },
+        "TenDiemDo": "DiemDo2"
+      }
+    },
+    "Com": "COM2",
+    "Baud": 9600,
+    "parity": 2,
+    "Databit": 8,
+    "stopBits": 1,
+    "Name": "PLC2",
+    "Protocol": "Serial Port",
+    "TrangThaiTinHieu": null,
+    "MaxAddressCoils": 0,
+    "MaxAddressInputs": 0,
+    "MaxAddressInputRegisters": 0,
+    "MaxAddressHoldingRegisters": 150
+  }
+}
