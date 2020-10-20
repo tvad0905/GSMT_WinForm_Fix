@@ -14,6 +14,7 @@ namespace FileExportScheduler.Data
 {
     public static class DataTCPIP
     {
+        private static readonly int DonViQuantityMoiLanDoc = 100;
         public static bool[] LayDuLieuTCPCoils(ModbusClient modbus, ushort quantityCoils, ThietBiModel thietBiModel)
         {
             bool[] readCoil = new bool[quantityCoils];
@@ -27,7 +28,7 @@ namespace FileExportScheduler.Data
                 {
                     ExceptionFunctionCode(ex, thietBiModel);
                     throw;
-                   
+
                 }
                 catch (Exception ex)//Lỗi lấy dữ liệu thất bại
                 {
@@ -51,7 +52,7 @@ namespace FileExportScheduler.Data
                 {
                     ExceptionFunctionCode(ex, thietBiModel);
                     throw;
-                    
+
                 }
                 catch (Exception ex)//Lỗi lấy dữ liệu thất bại
                 {
@@ -87,12 +88,32 @@ namespace FileExportScheduler.Data
 
         public static int[] LayDuLieuTCPHoldingRegister(ModbusClient modbus, ushort quantityHoldingRegisters, ThietBiModel thietBiModel)
         {
-            int[] readHoldingRegister = new int[quantityHoldingRegisters];
+            List<int> readHoldingRegister=new List<int>();
+
             if (quantityHoldingRegisters != 0)
             {
                 try
                 {
-                     readHoldingRegister = modbus.ReadHoldingRegisters(0, (ushort)(quantityHoldingRegisters));
+                    int soNguyenSauChia = quantityHoldingRegisters / DonViQuantityMoiLanDoc;
+                    for (int i = 0; i <= soNguyenSauChia; i++)
+                    {
+                        
+                        if (i != soNguyenSauChia)
+                        {
+                            int startAddress = i * DonViQuantityMoiLanDoc;
+                            int quantity = DonViQuantityMoiLanDoc;
+                            var temp= modbus.ReadHoldingRegisters(startAddress, (ushort)(quantity));
+                            readHoldingRegister.AddRange(temp.ToList());
+                        }
+                        else if (i == soNguyenSauChia)
+                        {
+                            int startAddress = i * DonViQuantityMoiLanDoc;
+                            int quantity = quantityHoldingRegisters % DonViQuantityMoiLanDoc;
+                            var temp = modbus.ReadHoldingRegisters(startAddress, (ushort)(quantity));
+                            readHoldingRegister.AddRange(temp.ToList());
+                        }
+
+                    }
                 }
                 catch (ModbusException ex)
                 {
@@ -106,10 +127,10 @@ namespace FileExportScheduler.Data
                     throw;
                 }
             }
-            return readHoldingRegister;
+            return readHoldingRegister.ToArray();
         }
 
-        private static void ExceptionFunctionCode(Exception exceptionMessage,ThietBiModel thietBiModel)
+        private static void ExceptionFunctionCode(Exception exceptionMessage, ThietBiModel thietBiModel)
         {
             if (exceptionMessage.Message == "Function code not supported by master" && !ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.DiaChiKhongTonTai))
             {

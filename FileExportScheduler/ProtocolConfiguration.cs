@@ -312,8 +312,8 @@ namespace FileExportScheduler
             var thietBiGiamSatDuocChon = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text];
             if (DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol))
             {
-                var maxAddress = MaxAddress.Get(thietBiGiamSatDuocChon);
                 thietBiGiamSatDuocChon.dsDiemDoGiamSat = DanhSachDiemDoService.LayDsDiemDoTuDgv(dgvDataProtocol);
+                var maxAddress = MaxAddress.Get(thietBiGiamSatDuocChon);
                 thietBiGiamSatDuocChon.MaxAddressCoils = (ushort)maxAddress[0];
                 thietBiGiamSatDuocChon.MaxAddressInputs = (ushort)maxAddress[1];
                 thietBiGiamSatDuocChon.MaxAddressInputRegisters = (ushort)maxAddress[2];
@@ -429,11 +429,7 @@ namespace FileExportScheduler
         private void btnEditProtocol_Click(object sender, EventArgs e)
         {
             DocDsThietBiTuFileJson();
-            if (cbCOM.SelectedItem == null)
-            {
-                MessageBox.Show("Không có cổng COM được chọn");
-                return;
-            }
+            
             if (cbProtocol.SelectedItem.ToString() == "Modbus TCP/IP")
             {
                 if (!CheckValidateCauHinhThietBi())//kiểm tra validation
@@ -466,6 +462,11 @@ namespace FileExportScheduler
             }
             else if (cbProtocol.SelectedItem.ToString() == "Serial Port")
             {
+                if (cbCOM.SelectedItem == null)
+                {
+                    MessageBox.Show("Không có cổng COM được chọn");
+                    return;
+                }
                 ThietBiCOM comTemp = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text] as ThietBiCOM;
                 if (comTemp != null)
                 {
