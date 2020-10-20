@@ -111,7 +111,7 @@ namespace FileExportScheduler
 
             if (txtPort.Text.Trim() == "")
             {
-                errorPort.SetError(txtPort, "Chưa nhập cổng đỉa chị");
+                errorPort.SetError(txtPort, "Chưa nhập cổng địa chỉ");
                 error = false;
             }
             else if (!PortRegex.Success)
@@ -144,10 +144,11 @@ namespace FileExportScheduler
         private void btnAddData_Click(object sender, EventArgs e)
         {
             LuuDanhMucDuLieuVaoJson();
+            MessageBox.Show("Lưu dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         //Xóa dữ liệu protocol
-        private void btnDelete_Click_1(object sender, EventArgs e)
+        private void btnDelete_Click(object sender, EventArgs e)
         {
             DialogResult dl = MessageBox.Show("Bạn có muốn xóa ?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             try
@@ -171,8 +172,7 @@ namespace FileExportScheduler
                                 }
 
                             }
-                            catch {}
-
+                            catch { }
                         }
                         else
                         {
@@ -185,24 +185,20 @@ namespace FileExportScheduler
 
                         dgvDataProtocol.Rows.Remove(row);
                     }
-                    GhiDsThietBiRaFileJson();
+                    LuuDanhMucDuLieuVaoJson();
+                    MessageBox.Show("Xóa dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
-            catch
+            catch (Exception)
             {
+                MessageBox.Show("Xóa dữ liệu không thành công!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
         //lưu cấu hình protocol
-        private void btnSaveProtocol_Click_1(object sender, EventArgs e)
+        private void btnSaveProtocol_Click(object sender, EventArgs e)
         {
             DocDsThietBiTuFileJson();
-
-            if (cbCOM.SelectedItem==null)
-            {
-                MessageBox.Show("Không có cổng COM được chọn");
-                return;
-            }
 
             TreeNode nodeTemp = TVMain.SelectedNode;
             if (nodeTemp.Parent != null)
@@ -232,6 +228,11 @@ namespace FileExportScheduler
             else if (cbProtocol.SelectedItem.ToString() == "Serial Port")
             {
 
+                if (cbCOM.SelectedItem == null)
+                {
+                    MessageBox.Show("Không có cổng COM được chọn");
+                    return;
+                }
 
                 ThietBiModel deviceObj1 = new ThietBiCOM
                 {
@@ -290,13 +291,21 @@ namespace FileExportScheduler
 
         private void btnImport_Click(object sender, EventArgs e)
         {
-            var openFile = openFileDialog1.ShowDialog();
-            if (openFile == DialogResult.OK)
+            try
             {
-                BindDataFromCSV(openFileDialog1.FileName);
+                var openFile = openFileDialog1.ShowDialog();
+                if (openFile == DialogResult.OK)
+                {
+                    BindDataFromCSV(openFileDialog1.FileName);
+                }
+                LuuDanhMucDuLieuVaoJson();
+                MessageBox.Show("Nhập và lưu dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Nhập dữ liệu không thành công!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
-            LuuDanhMucDuLieuVaoJson();
         }
         private void LuuDanhMucDuLieuVaoJson()
         {
@@ -309,13 +318,11 @@ namespace FileExportScheduler
                 thietBiGiamSatDuocChon.MaxAddressInputs = (ushort)maxAddress[1];
                 thietBiGiamSatDuocChon.MaxAddressInputRegisters = (ushort)maxAddress[2];
                 thietBiGiamSatDuocChon.MaxAddressHoldingRegisters = (ushort)maxAddress[3];
-
                 GhiDsThietBiRaFileJson();
-                MessageBox.Show("Lưu dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                MessageBox.Show("Lỗi lưu dữ liệu!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Lỗi dữ liệu nhập vào!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
         private void BindDataFromCSV(string filePath)
@@ -340,7 +347,6 @@ namespace FileExportScheduler
                         dt.Rows.Add(t[0], t[1], t[2], t[3], t[4]);
                     }
                 }
-
                 dgvDataProtocol.DataSource = dt;
                 if (DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol))
                 {
@@ -351,9 +357,8 @@ namespace FileExportScheduler
                 {
                     MessageBox.Show("Dữ liệu sai định dạng", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
-
             }
-            catch (IOException ex)
+            catch (IOException)
             {
                 MessageBox.Show("File đang mở, vui lòng đóng file và thử lại!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
@@ -421,7 +426,7 @@ namespace FileExportScheduler
         }
 
         //sửa cấu hình protocol
-        private void btnEditProtocol_Click_1(object sender, EventArgs e)
+        private void btnEditProtocol_Click(object sender, EventArgs e)
         {
             DocDsThietBiTuFileJson();
             if (cbCOM.SelectedItem == null)
@@ -464,8 +469,6 @@ namespace FileExportScheduler
                 ThietBiCOM comTemp = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text] as ThietBiCOM;
                 if (comTemp != null)
                 {
-
-
                     comTemp.Name = txtTenGiaoThuc.Text;
                     comTemp.Com = cbCOM.SelectedItem.ToString();
                     comTemp.Baud = int.Parse(cbBaud.SelectedItem.ToString());
@@ -482,8 +485,6 @@ namespace FileExportScheduler
                         dsThietBiGiamSat.Remove(formDataList.selectedNodeDouble.Text);
                         dsThietBiGiamSat.Add(comTemp.Name, comTemp);
                     }
-
-
                 }
                 else
                 {
@@ -509,7 +510,6 @@ namespace FileExportScheduler
                         dsThietBiGiamSat.Remove(formDataList.selectedNodeDouble.Text);
                         dsThietBiGiamSat.Add(deviceObjCOM.Name, deviceObjCOM);
                     }
-
                 }
             }
             GhiDsThietBiRaFileJson();
@@ -538,8 +538,10 @@ namespace FileExportScheduler
                 bindingSource.DataSource = dsDuLieuDiemDoHienThi;
                 dgvDataProtocol.DataSource = bindingSource;
             }
-            catch
-            { }
+            catch(Exception)
+            {
+
+            }
         }
         #endregion
 
@@ -556,7 +558,6 @@ namespace FileExportScheduler
                 }
                 catch (Exception)
                 {
-
                     return false;
                 }
             }

@@ -17,7 +17,7 @@ namespace FileExportScheduler.Data
 {
     public static class DataCOM
     {
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -28,28 +28,31 @@ namespace FileExportScheduler.Data
         /// <param name="quantityInputRegisters"></param>
         /// <param name="quantityHoldingRegisters"></param>
         /// <returns></returns>
-        public static bool[] LayDuLieuCOMCoils(SerialPort serialPort, ushort quantityCoils,ThietBiModel thietBiModel )
+        public static bool[] LayDuLieuCOMCoils(SerialPort serialPort, ushort quantityCoils, ThietBiModel thietBiModel)
         {
             IModbusMaster master = ModbusSerialMaster.CreateRtu(serialPort);
             bool[] readCoil = new bool[quantityCoils];
-            try
+            if (quantityCoils != 0)
             {
-                byte slaveAddress = 1;
-                readCoil = master.ReadCoils(slaveAddress, 0, (ushort)(quantityCoils));
-            }
-            catch (TimeoutException ex)
-            {
-                ExceptionTimeOut(ex, thietBiModel);
-                throw;
-            }
-            catch (Modbus.SlaveException ex)
-            {
-                ExceptionErrorSlave(ex, thietBiModel);
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw;
+                try
+                {
+                    byte slaveAddress = 1;
+                    readCoil = master.ReadCoils(slaveAddress, 0, (ushort)(quantityCoils));
+                }
+                catch (TimeoutException ex)
+                {
+                    ExceptionTimeOut(ex, thietBiModel);
+                    throw;
+                }
+                catch (Modbus.SlaveException ex)
+                {
+                    ExceptionErrorSlave(ex, thietBiModel);
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
             }
             return readCoil;
         }
@@ -57,24 +60,27 @@ namespace FileExportScheduler.Data
         {
             IModbusMaster master = ModbusSerialMaster.CreateRtu(serialPort);
             bool[] discreteInput = new bool[quantityInputs];
-            try
+            if (quantityInputs != 0)
             {
-                byte slaveAddress = 1;
-                discreteInput = master.ReadInputs(slaveAddress, 0, (ushort)(quantityInputs));
-            }
-            catch (TimeoutException ex)
-            {
-                ExceptionTimeOut(ex, thietBiModel);
-                throw;
-            }
-            catch (Modbus.SlaveException ex)
-            {
-                ExceptionErrorSlave(ex, thietBiModel);
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw;
+                try
+                {
+                    byte slaveAddress = 1;
+                    discreteInput = master.ReadInputs(slaveAddress, 0, (ushort)(quantityInputs));
+                }
+                catch (TimeoutException ex)
+                {
+                    ExceptionTimeOut(ex, thietBiModel);
+                    throw;
+                }
+                catch (Modbus.SlaveException ex)
+                {
+                    ExceptionErrorSlave(ex, thietBiModel);
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
             }
             return discreteInput;
         }
@@ -82,60 +88,69 @@ namespace FileExportScheduler.Data
         {
             IModbusMaster master = ModbusSerialMaster.CreateRtu(serialPort);
             ushort[] readRegister = new ushort[quantityInputRegisters];
-            try
+            if (quantityInputRegisters != 0)
             {
-                byte slaveAddress = 1;
-                readRegister = master.ReadInputRegisters(slaveAddress, 0, (ushort)(quantityInputRegisters));
-            }
-            catch (TimeoutException ex)
-            {
-                ExceptionTimeOut(ex, thietBiModel);
-                throw;
-                //lỗi không đọc được dữ liệu
-            }
-            catch (Modbus.SlaveException ex)
-            {
-                ExceptionErrorSlave(ex, thietBiModel);
-                throw;
-            }
-            catch (Exception ex)
-            {
+                try
+                {
+                    byte slaveAddress = 1;
+                    readRegister = master.ReadInputRegisters(slaveAddress, 0, (ushort)(quantityInputRegisters));
+                }
+                catch (TimeoutException ex)
+                {
+                    ExceptionTimeOut(ex, thietBiModel);
+                    throw;
+                    //lỗi không đọc được dữ liệu
+                }
+                catch (Modbus.SlaveException ex)
+                {
+                    ExceptionErrorSlave(ex, thietBiModel);
+                    throw;
+                }
+                catch (Exception ex)
+                {
 
-                throw;
+                    throw;
+                }
             }
+
             return readRegister;
         }
         public static ushort[] LayDuLieuCOMHoldingRegisters(SerialPort serialPort, ushort quantityHoldingRegisters, ThietBiModel thietBiModel)
         {
             IModbusMaster master = ModbusSerialMaster.CreateRtu(serialPort);
             ushort[] readHoldingRegisters = new ushort[quantityHoldingRegisters];
-            try
+            if (quantityHoldingRegisters != 0)
             {
-                byte slaveAddress = 1;
-                readHoldingRegisters = master.ReadHoldingRegisters(slaveAddress, 0, (ushort)(quantityHoldingRegisters ));
+                try
+                {
+                    byte slaveAddress = 1;
+                    readHoldingRegisters = master.ReadHoldingRegisters(slaveAddress, 0, (ushort)(quantityHoldingRegisters));
 
+                }
+                catch (TimeoutException ex)
+                {
+                    ExceptionTimeOut(ex, thietBiModel);
+                    throw;
+                    //lỗi không đọc được dữ liệu
+                }
+                catch (Modbus.SlaveException ex)
+                {
+                    ExceptionErrorSlave(ex, thietBiModel);
+                    throw;
+                    //lỗi số bản ghi cần đọc vượt quá lượng bản ghi trả về
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
             }
-            catch (TimeoutException ex)
-            {
-                ExceptionTimeOut(ex, thietBiModel);
-                throw;
-                //lỗi không đọc được dữ liệu
-            }
-            catch (Modbus.SlaveException ex)
-            {
-                ExceptionErrorSlave(ex, thietBiModel);
-                throw;
-                //lỗi số bản ghi cần đọc vượt quá lượng bản ghi trả về
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+
             return readHoldingRegisters;
         }
 
 
-        private static void ExceptionTimeOut(Exception exceptionMessage, ThietBiModel thietBiModel) {
+        private static void ExceptionTimeOut(Exception exceptionMessage, ThietBiModel thietBiModel)
+        {
             if (!ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.KhongKetNoi))
             {
                 ThongBaoLoi.DanhSach[thietBiModel.Name].Add(ThongBaoLoi.KhongKetNoi);

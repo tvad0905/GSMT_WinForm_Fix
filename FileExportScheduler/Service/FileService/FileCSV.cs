@@ -65,7 +65,7 @@ namespace FileExportScheduler.Service.FileService
                         {
                             TimeSpan ts = DateTime.Now.Subtract(thoiGianFileSinhRa);
 
-                            if (ts.Minutes >= chuKyXoaFile)
+                            if (ts.Days >= chuKyXoaFile)
                             {
                                 fileBiXoa.Delete();
                             }
