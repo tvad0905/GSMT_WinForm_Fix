@@ -645,7 +645,7 @@ namespace FileExportScheduler
 
                         }));
                     }
-                    MessageBox.Show("Vui lòng kiểm tra lại địa chị nhập vào!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Vui lòng kiểm tra lại địa chị nhập vào hoặc kiểm tra lại kết nối!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
 

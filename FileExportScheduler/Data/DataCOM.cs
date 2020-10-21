@@ -45,15 +45,19 @@ namespace FileExportScheduler.Data
                         {
                             int startAddress = i * DonViQuantityMoiLanDoc;
                             int quantity = DonViQuantityMoiLanDoc;
-                            var temp = master.ReadCoils(slaveAddress, 0, (ushort)(quantityCoils));
+                            var temp = master.ReadInputs(slaveAddress, (ushort)startAddress, (ushort)(quantity));
                             readCoil.AddRange(temp.ToList());
                         }
                         else if (i == soNguyenSauChia)
                         {
                             int startAddress = i * DonViQuantityMoiLanDoc;
                             int quantity = quantityCoils % DonViQuantityMoiLanDoc;
-                            var temp = master.ReadCoils(slaveAddress, 0, (ushort)(quantityCoils));
-                            readCoil.AddRange(temp.ToList());
+                            if(quantity != 0)
+                            {
+                                var temp = master.ReadInputs(slaveAddress, (ushort)startAddress, (ushort)(quantity));
+                                readCoil.AddRange(temp.ToList());
+                            }
+                            
                         }
 
                     }
@@ -78,13 +82,36 @@ namespace FileExportScheduler.Data
         public static bool[] LayDuLieuCOMInputs(SerialPort serialPort, ushort quantityInputs, ThietBiModel thietBiModel)
         {
             IModbusMaster master = ModbusSerialMaster.CreateRtu(serialPort);
-            bool[] discreteInput = new bool[quantityInputs];
+            List<bool> discreteInput = new List<bool>();
             if (quantityInputs != 0)
             {
                 try
                 {
                     byte slaveAddress = 1;
-                    discreteInput = master.ReadInputs(slaveAddress, 0, (ushort)(quantityInputs));
+                    int soNguyenSauChia = quantityInputs / DonViQuantityMoiLanDoc;
+                    for (int i = 0; i <= soNguyenSauChia; i++)
+                    {
+
+                        if (i != soNguyenSauChia)
+                        {
+                            int startAddress = i * DonViQuantityMoiLanDoc;
+                            int quantity = DonViQuantityMoiLanDoc;
+                            var temp = master.ReadInputs(slaveAddress, (ushort)startAddress, (ushort)(quantity));
+                            discreteInput.AddRange(temp.ToList());
+                        }
+                        else if (i == soNguyenSauChia)
+                        {
+                            int startAddress = i * DonViQuantityMoiLanDoc;
+                            int quantity = quantityInputs % DonViQuantityMoiLanDoc;
+                            if(quantity != 0)
+                            {
+                                var temp = master.ReadInputs(slaveAddress, (ushort)startAddress, (ushort)(quantity));
+                                discreteInput.AddRange(temp.ToList());
+                            }
+                            
+                        }
+
+                    }
                 }
                 catch (TimeoutException ex)
                 {
@@ -101,18 +128,39 @@ namespace FileExportScheduler.Data
                     throw;
                 }
             }
-            return discreteInput;
+            return discreteInput.ToArray();
         }
         public static ushort[] LayDuLieuCOMInputRegisters(SerialPort serialPort, ushort quantityInputRegisters, ThietBiModel thietBiModel)
         {
             IModbusMaster master = ModbusSerialMaster.CreateRtu(serialPort);
-            ushort[] readRegister = new ushort[quantityInputRegisters];
+            List<ushort> readRegister = new List<ushort>();
             if (quantityInputRegisters != 0)
             {
                 try
                 {
                     byte slaveAddress = 1;
-                    readRegister = master.ReadInputRegisters(slaveAddress, 0, (ushort)(quantityInputRegisters));
+                    int soNguyenSauChia = quantityInputRegisters / DonViQuantityMoiLanDoc;
+                    for (int i = 0; i <= soNguyenSauChia; i++)
+                    {
+
+                        if (i != soNguyenSauChia)
+                        {
+                            int startAddress = i * DonViQuantityMoiLanDoc;
+                            int quantity = DonViQuantityMoiLanDoc;
+                            var temp = master.ReadInputRegisters(slaveAddress, (ushort)startAddress, (ushort)(quantity));
+                            readRegister.AddRange(temp.ToList());
+                        }
+                        else if (i == soNguyenSauChia)
+                        {
+                            int startAddress = i * DonViQuantityMoiLanDoc;
+                            int quantity = quantityInputRegisters % DonViQuantityMoiLanDoc;
+                            if(quantity != 0)
+                            {
+                                var temp = master.ReadInputRegisters(slaveAddress, (ushort)startAddress, (ushort)(quantity));
+                                readRegister.AddRange(temp.ToList());
+                            }
+                        }
+                    }
                 }
                 catch (TimeoutException ex)
                 {
@@ -132,7 +180,7 @@ namespace FileExportScheduler.Data
                 }
             }
 
-            return readRegister;
+            return readRegister.ToArray();
         }
         public static ushort[] LayDuLieuCOMHoldingRegisters(SerialPort serialPort, ushort quantityHoldingRegisters, ThietBiModel thietBiModel)
         {
@@ -158,10 +206,12 @@ namespace FileExportScheduler.Data
                         {
                             int startAddress = i * DonViQuantityMoiLanDoc;
                             int quantity = quantityHoldingRegisters % DonViQuantityMoiLanDoc;
-                            var temp = master.ReadHoldingRegisters(slaveAddress, (ushort)startAddress, (ushort)(quantity));
-                            readHoldingRegisters.AddRange(temp.ToList());
+                            if (quantity != 0)
+                            {
+                                var temp = master.ReadHoldingRegisters(slaveAddress, (ushort)startAddress, (ushort)(quantity));
+                                readHoldingRegisters.AddRange(temp.ToList());
+                            }
                         }
-
                     }
                 }
                 catch (TimeoutException ex)

@@ -38,8 +38,11 @@ namespace FileExportScheduler.Data
                         {
                             int startAddress = i * DonViQuantityMoiLanDoc;
                             int quantity = quantityCoils % DonViQuantityMoiLanDoc;
-                            var temp = modbus.ReadCoils(startAddress, (ushort)(quantity));
-                            readCoil.AddRange(temp.ToList());
+                            if(quantity != 0)
+                            {
+                                var temp = modbus.ReadCoils(startAddress, (ushort)(quantity));
+                                readCoil.AddRange(temp.ToList());
+                            }
                         }
 
                     }
@@ -82,8 +85,12 @@ namespace FileExportScheduler.Data
                         {
                             int startAddress = i * DonViQuantityMoiLanDoc;
                             int quantity = quantityInputs % DonViQuantityMoiLanDoc;
-                            var temp = modbus.ReadDiscreteInputs(startAddress, (ushort)(quantity));
-                            readDiscreteInputs.AddRange(temp.ToList());
+                            if(quantity != 0)
+                            {
+                                var temp = modbus.ReadDiscreteInputs(startAddress, (ushort)(quantity));
+                                readDiscreteInputs.AddRange(temp.ToList());
+                            }
+                            
                         }
 
                     }
@@ -126,8 +133,12 @@ namespace FileExportScheduler.Data
                         {
                             int startAddress = i * DonViQuantityMoiLanDoc;
                             int quantity = quantityInputRegisters % DonViQuantityMoiLanDoc;
-                            var temp = modbus.ReadInputRegisters(startAddress, (ushort)(quantity));
-                            readInputRegisters.AddRange(temp.ToList());
+                            if(quantity != 0)
+                            {
+                                var temp = modbus.ReadInputRegisters(startAddress, (ushort)(quantity));
+                                readInputRegisters.AddRange(temp.ToList());
+                            }
+                            
                         }
 
                     }
@@ -169,8 +180,12 @@ namespace FileExportScheduler.Data
                         {
                             int startAddress = i * DonViQuantityMoiLanDoc;
                             int quantity = quantityHoldingRegisters % DonViQuantityMoiLanDoc;
-                            var temp = modbus.ReadHoldingRegisters(startAddress, (ushort)(quantity));
-                            readHoldingRegister.AddRange(temp.ToList());
+                            if(quantity != 0)
+                            {
+                                var temp = modbus.ReadHoldingRegisters(startAddress, (ushort)(quantity));
+                                readHoldingRegister.AddRange(temp.ToList());
+                            }
+                            
                         }
 
                     }

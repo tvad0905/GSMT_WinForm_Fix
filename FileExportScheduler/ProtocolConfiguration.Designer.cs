@@ -184,7 +184,7 @@
             // 
             // btnEditProtocol
             // 
-            this.btnEditProtocol.Location = new System.Drawing.Point(381, 325);
+            this.btnEditProtocol.Location = new System.Drawing.Point(381, 298);
             this.btnEditProtocol.Margin = new System.Windows.Forms.Padding(2);
             this.btnEditProtocol.Name = "btnEditProtocol";
             this.btnEditProtocol.Size = new System.Drawing.Size(75, 23);
