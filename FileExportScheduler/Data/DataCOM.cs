@@ -45,7 +45,7 @@ namespace FileExportScheduler.Data
                         {
                             int startAddress = i * DonViQuantityMoiLanDoc;
                             int quantity = DonViQuantityMoiLanDoc;
-                            var temp = master.ReadInputs(slaveAddress, (ushort)startAddress, (ushort)(quantity));
+                            var temp = master.ReadCoils(slaveAddress, (ushort)startAddress, (ushort)(quantity));
                             readCoil.AddRange(temp.ToList());
                         }
                         else if (i == soNguyenSauChia)
@@ -54,7 +54,7 @@ namespace FileExportScheduler.Data
                             int quantity = quantityCoils % DonViQuantityMoiLanDoc;
                             if(quantity != 0)
                             {
-                                var temp = master.ReadInputs(slaveAddress, (ushort)startAddress, (ushort)(quantity));
+                                var temp = master.ReadCoils(slaveAddress, (ushort)startAddress, (ushort)(quantity));
                                 readCoil.AddRange(temp.ToList());
                             }
                             

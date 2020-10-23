@@ -114,7 +114,6 @@ namespace FileExportScheduler
                         {
                             dr["GiaTri"] = "0";
                         }
-
                     }
                     dr["TrangThaiTinHieu"] = thongSoGiaTri.TrangThaiTinHieu;
                     table.Rows.Add(dr);

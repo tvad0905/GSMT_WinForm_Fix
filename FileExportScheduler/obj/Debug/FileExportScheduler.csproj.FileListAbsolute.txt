@@ -116,3 +116,4 @@ C:\Users\kieum\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileE
 C:\Users\kieum\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CopyComplete
 C:\Users\kieum\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.exe
 C:\Users\kieum\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.pdb
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csprojAssemblyReference.cache
