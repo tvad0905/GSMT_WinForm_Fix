@@ -280,7 +280,7 @@ namespace FileExportScheduler
         }
 
         // tạo 1 thread cho connect
-        void IPConnect(/*List<string> filePath, */KeyValuePair<string, ThietBiModel> deviceUnit)
+        void IPConnect(KeyValuePair<string, ThietBiModel> deviceUnit)
         {
 
             try
@@ -314,7 +314,7 @@ namespace FileExportScheduler
 
         }
 
-        void COMConnect(/*List<string> filePath, */KeyValuePair<string, ThietBiModel> deviceUnit)
+        void COMConnect(KeyValuePair<string, ThietBiModel> deviceUnit)
         {
             if (!serialPort.IsOpen)
             {
@@ -487,9 +487,9 @@ namespace FileExportScheduler
                 }
                 thietBi.TrangThaiTinHieu = TrangThaiKetNoi.Good;
             }
-
             catch (Exception ex)//Lỗi lấy dữ liệu thất bại
             {
+
             }
             finally
             {
