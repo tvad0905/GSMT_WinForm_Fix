@@ -141,9 +141,9 @@ namespace FileExportScheduler
                         ThietBiCOM comTemp = deviceDic[protocolConfiguration.txtTenGiaoThuc.Text] as ThietBiCOM;
                         protocolConfiguration.cbCOM.Text = comTemp.Com;
                         protocolConfiguration.cbBaud.Text = comTemp.Baud.ToString();
-                        protocolConfiguration.cbParity.Text = comTemp.parity.ToString();
+                        protocolConfiguration.cbParity.Text = comTemp.Parity.ToString();
                         protocolConfiguration.cbDataBit.Text = comTemp.Databit.ToString();
-                        protocolConfiguration.cbStopBit.Text = comTemp.stopBits.ToString();
+                        protocolConfiguration.cbStopBit.Text = comTemp.StopBits.ToString();
                         protocolConfiguration.cbProtocol.Text = comTemp.Protocol.ToString();
                     }
                     else

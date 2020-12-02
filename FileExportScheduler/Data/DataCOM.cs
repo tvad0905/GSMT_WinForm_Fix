@@ -17,7 +17,7 @@ namespace FileExportScheduler.Data
 {
     public static class DataCOM
     {
-        private static readonly int DonViQuantityMoiLanDoc = 100;
+        private static readonly int DonViQuantityMoiLanDoc = 125;
         /// <summary>
         /// 
         /// </summary>

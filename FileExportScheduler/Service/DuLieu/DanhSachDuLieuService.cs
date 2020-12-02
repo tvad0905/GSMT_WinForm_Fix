@@ -43,8 +43,6 @@ namespace FileExportScheduler.Service.DuLieu
                         thongSoGiaTriTemp.Scale = duLieu.Value.Scale;
                         thongSoGiaTriTemp.TrangThaiTinHieu=thietBi.Value.TrangThaiTinHieu;
                         dsThongSoGiaTri.Add(thongSoGiaTriTemp);
-
-                       
                     }
                 }
             }
@@ -60,7 +58,7 @@ namespace FileExportScheduler.Service.DuLieu
             int row = 0;
             foreach (KeyValuePair<string, ThietBiModel> thietBi in dsThietBi)
             {
-
+                 
                 foreach (KeyValuePair<string, DiemDoModel> diemDo in thietBi.Value.dsDiemDoGiamSat)
                 {
 
@@ -84,5 +82,7 @@ namespace FileExportScheduler.Service.DuLieu
             }
             return dsThongSoGiaTri;
         }
+
+        
     }
 }

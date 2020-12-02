@@ -50,7 +50,7 @@ namespace FileExportScheduler
             }
             if (KiemTraDuongDan.TonTaiKhiLuu(txtExportFilePath.Text,setting))
             {
-                MessageBox.Show("Đã lưu thành công!");
+                MessageBox.Show("Đã lưu thành công!", "Thông báo", MessageBoxButtons.OK,MessageBoxIcon.Information);
                 this.Close();
             }
             else

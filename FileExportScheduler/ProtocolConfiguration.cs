@@ -239,9 +239,9 @@ namespace FileExportScheduler
                     Name = txtTenGiaoThuc.Text,
                     Com = cbCOM.SelectedItem.ToString(),
                     Baud = int.Parse(cbBaud.SelectedItem.ToString()),
-                    parity = (Parity)Enum.Parse(typeof(Parity), cbParity.SelectedItem.ToString()),
+                    Parity = (Parity)Enum.Parse(typeof(Parity), cbParity.SelectedItem.ToString()),
                     Databit = int.Parse(cbDataBit.SelectedItem.ToString()),
-                    stopBits = (StopBits)Enum.Parse(typeof(StopBits), cbStopBit.SelectedItem.ToString()),
+                    StopBits = (StopBits)Enum.Parse(typeof(StopBits), cbStopBit.SelectedItem.ToString()),
                     Protocol = cbProtocol.SelectedItem.ToString(),
                     dsDiemDoGiamSat = new Dictionary<string, DiemDoModel>(),
                 };
@@ -299,7 +299,7 @@ namespace FileExportScheduler
                     BindDataFromCSV(openFileDialog1.FileName);
                 }
                 LuuDanhMucDuLieuVaoJson();
-                MessageBox.Show("Nhập và lưu dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //MessageBox.Show("Nhập và lưu dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception)
             {
@@ -473,9 +473,9 @@ namespace FileExportScheduler
                     comTemp.Name = txtTenGiaoThuc.Text;
                     comTemp.Com = cbCOM.SelectedItem.ToString();
                     comTemp.Baud = int.Parse(cbBaud.SelectedItem.ToString());
-                    comTemp.parity = (Parity)Enum.Parse(typeof(Parity), cbParity.SelectedItem.ToString());
+                    comTemp.Parity = (Parity)Enum.Parse(typeof(Parity), cbParity.SelectedItem.ToString());
                     comTemp.Databit = int.Parse(cbDataBit.SelectedItem.ToString());
-                    comTemp.stopBits = (StopBits)Enum.Parse(typeof(StopBits), cbStopBit.SelectedItem.ToString());
+                    comTemp.StopBits = (StopBits)Enum.Parse(typeof(StopBits), cbStopBit.SelectedItem.ToString());
                     if (!KiemTraCongCOM(cbCOM.SelectedItem.ToString()))
                     {
                         MessageBox.Show("Không thể chọn cổng này!");
@@ -494,9 +494,9 @@ namespace FileExportScheduler
                         Name = txtTenGiaoThuc.Text,
                         Com = cbCOM.SelectedItem.ToString(),
                         Baud = int.Parse(cbBaud.SelectedItem.ToString()),
-                        parity = (Parity)Enum.Parse(typeof(Parity), cbParity.SelectedItem.ToString()),
+                        Parity = (Parity)Enum.Parse(typeof(Parity), cbParity.SelectedItem.ToString()),
                         Databit = int.Parse(cbDataBit.SelectedItem.ToString()),
-                        stopBits = (StopBits)Enum.Parse(typeof(StopBits), cbStopBit.SelectedItem.ToString()),
+                        StopBits = (StopBits)Enum.Parse(typeof(StopBits), cbStopBit.SelectedItem.ToString()),
                         Protocol = cbProtocol.SelectedItem.ToString(),
                         dsDiemDoGiamSat = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text].dsDiemDoGiamSat
 

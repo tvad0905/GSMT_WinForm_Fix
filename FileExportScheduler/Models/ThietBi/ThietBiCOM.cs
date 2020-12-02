@@ -12,8 +12,8 @@ namespace FileExportScheduler.Models
     {
         public string Com { get; set; }
         public int Baud { get; set; }
-        public Parity parity { get; set; }
+        public Parity Parity { get; set; }
         public int Databit { get; set; }
-        public StopBits stopBits { get; set; }
+        public StopBits StopBits { get; set; }
     }
 }

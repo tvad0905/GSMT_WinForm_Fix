@@ -43,6 +43,7 @@ namespace FileExportScheduler
 
         private void FormHienThiDuLieu_Load(object sender, EventArgs e)
         {
+            //dgvHienThiDuLieu.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dt = ConvertThongSoGiaTriToDataTable(DanhSachDuLieuService.GetThongSoGiaTriCuaTatCaThietBi(dsThietBi));
             dgvHienThiDuLieu.DataSource = dt;
             dgvHienThiDuLieu.AutoGenerateColumns = false;
@@ -68,16 +69,13 @@ namespace FileExportScheduler
                 }
                 else
                 {
-                }
-              
-
+                }  
             }
             catch (Exception ex)
             {
 
             }
         }
-
         private static DataTable ConvertThongSoGiaTriToDataTable(List<Models.DuLieu.ThongSoGiaTriModel> data)
         {
             var table = new DataTable();

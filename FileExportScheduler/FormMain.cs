@@ -62,7 +62,7 @@ namespace FileExportScheduler
 
             WindowState = FormWindowState.Minimized;
             ShowInTaskbar = false;
-            notifyIcon.ShowBalloonTip(100,"Hệ thống","Ứng dụng đang chạy",ToolTipIcon.None);
+            notifyIcon.ShowBalloonTip(100, "Hệ thống", "Ứng dụng đang chạy", ToolTipIcon.None);
             notifyIcon.Visible = true;
             btnThongSoDuLieu.Enabled = true;
             btnStop.Enabled = true;
@@ -89,11 +89,11 @@ namespace FileExportScheduler
                     serialPort.DtrEnable = true;
                     serialPort.RtsEnable = true;
                     var port = (ThietBiCOM)deviceUnit.Value;
-                    serialPort = new SerialPort(port.Com, port.Baud, port.parity, port.Databit, port.stopBits);
+                    serialPort = new SerialPort(port.Com, port.Baud, port.Parity, port.Databit, port.StopBits);
                     serialPort.ReadTimeout = 100;
-                    serialPort.WriteTimeout = 100;
-                    serialPort.Handshake = Handshake.None;
-                    serialPort.ParityReplace = (byte)'\0';
+                    //serialPort.WriteTimeout = 100;
+                    //serialPort.Handshake = Handshake.None;
+                    //serialPort.ParityReplace = (byte)'\0';
                     try
                     {
                         if (!serialPort.IsOpen)
@@ -244,10 +244,13 @@ namespace FileExportScheduler
                     try
                     {
                         //this.Invoke(new MethodInvoker(async delegate { await Task.Run(() => IPConnect(/*ListfilePath, */deviceUnit)); }));
-                        await Task.Run(() => IPConnect(/*ListfilePath, */deviceUnit));
+                        await Task.Run(() => IPConnect(deviceUnit));
 
                     }
-                    catch { }
+                    catch
+                    {
+
+                    }
                 }
                 else
                 if (deviceUnit.Value.Protocol == "Serial Port")
@@ -255,7 +258,7 @@ namespace FileExportScheduler
                     try
                     {
                         //this.Invoke(new MethodInvoker(async delegate { await Task.Run(() => COMConnect(/*ListfilePath,*/ deviceUnit)); }));
-                        await Task.Run(() => COMConnect(/*ListfilePath,*/ deviceUnit));
+                        await Task.Run(() => COMConnect(deviceUnit));
                     }
                     catch
                     {
@@ -316,22 +319,17 @@ namespace FileExportScheduler
 
         void COMConnect(KeyValuePair<string, ThietBiModel> deviceUnit)
         {
-            if (!serialPort.IsOpen)
+            try
             {
-                try
+                GetDataDeviceCOM(deviceUnit);
+            }
+            catch
+            {
+                lock (objW2)
                 {
-                    serialPort.Open();
-                    GetDataDeviceCOM(deviceUnit);
-                }
-                catch
-                {
-                    lock (objW2)
-                    {
-                        return;
-                    }
+                    return;
                 }
             }
-            GetDataDeviceCOM(deviceUnit);
         }
 
         //lấy dữ liệu của các thiết bị 
@@ -424,7 +422,7 @@ namespace FileExportScheduler
             }
             catch (Exception)
             {
-
+                danhSachLoi.Add(ThongBaoLoi.KhongKetNoi);
                 StopSystem();
 
             }
@@ -523,7 +521,7 @@ namespace FileExportScheduler
                 else if (duLieu.DiaChi.StartsWith("3"))
                 {
                     ushort[] DsDuLieuInputRegisters = DsDuLieuNhanDuoc[2] as ushort[];
-                    if(DsDuLieuInputRegisters != null)
+                    if (DsDuLieuInputRegisters != null)
                     {
                         int diaChiInputRegisters = Convert.ToInt32(duLieu.DiaChi) - 30000;
                         duLieu.GiaTri = DsDuLieuInputRegisters[diaChiInputRegisters].ToString();
@@ -532,7 +530,7 @@ namespace FileExportScheduler
                 else if (duLieu.DiaChi.StartsWith("4"))
                 {
                     ushort[] DsDuLieuHoldingRegisters = DsDuLieuNhanDuoc[3] as ushort[];
-                    if(DsDuLieuHoldingRegisters != null)
+                    if (DsDuLieuHoldingRegisters != null)
                     {
                         int diaChiHoldingRegisters = Convert.ToInt32(duLieu.DiaChi) - 40000;
                         duLieu.GiaTri = DsDuLieuHoldingRegisters[diaChiHoldingRegisters].ToString();
@@ -555,9 +553,19 @@ namespace FileExportScheduler
             try
             {
                 //tmrDocDuLieu.Stop();
-                await GetDeviceConnect();
-                formHienThiDuLieu.DsThietBi = dsThietBi; //hien thi du lieu doc duoc len view 
-                LanDoc.isLanDau = false;
+                if (LanDoc.isLanDau)
+                {
+                    await GetDeviceConnect();
+                    formHienThiDuLieu.DsThietBi = dsThietBi; //hien thi du lieu doc duoc len view 
+                    LanDoc.isLanDau = false;
+                }
+                else
+                {
+                    GetDeviceConnect();
+                    formHienThiDuLieu.DsThietBi = dsThietBi; //hien thi du lieu doc duoc len view 
+                    LanDoc.isLanDau = false;
+                }
+
             }
             catch
             {
@@ -594,8 +602,6 @@ namespace FileExportScheduler
 
         private void XuatRaFileCSV()
         {
-            #region lấy danh sách đường dẫn file csv
-
             List<string> ListfilePath = new List<string>();
             try
             {
@@ -611,9 +617,7 @@ namespace FileExportScheduler
                 btnStop.PerformClick();
                 btnSetting.PerformClick();
             }
-            #endregion
             FileCSV.XuatFileCSV(ListfilePath, dsThietBi);
-
         }
 
         private void licenseToolStripMenuItem_Click(object sender, EventArgs e)
