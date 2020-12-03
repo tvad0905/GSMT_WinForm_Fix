@@ -141,14 +141,16 @@ namespace FileExportScheduler
         private void btnDataList_Click(object sender, EventArgs e)
         {
             FormDataList f = new FormDataList();
-            f.ShowDialog();
+            f.StartPosition = FormStartPosition.CenterScreen;
+            f.Show();
 
         }
 
         private void btnSetting_Click(object sender, EventArgs e)
         {
             FormSetting f = new FormSetting();
-            f.ShowDialog();
+            f.StartPosition = FormStartPosition.CenterScreen;
+            f.Show();
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -306,7 +308,7 @@ namespace FileExportScheduler
                     danhSachLoi.Add(ThongBaoLoi.KhongKetNoi);
                     ThongBaoLoi.DanhSach[deviceUnit.Key] = danhSachLoi;
                     deviceUnit = ThietBiGiamSatService.SetTrangThaiBad(deviceUnit);// set trang thai bad cho dư lieu tung thiet bi
-                    StopSystem();
+                    StopSystem("Vui lòng kiểm tra lại kết nối!");
                     return;
                 }
             }
@@ -344,7 +346,7 @@ namespace FileExportScheduler
             }
             catch
             {
-                StopSystem();
+                StopSystem("Vui lòng kiểm tra lại địa chỉ nhập vào");
             }
             try
             {
@@ -352,7 +354,7 @@ namespace FileExportScheduler
             }
             catch
             {
-                StopSystem();
+                StopSystem("Vui lòng kiểm tra lại địa chỉ nhập vào");
             }
             try
             {
@@ -360,7 +362,7 @@ namespace FileExportScheduler
             }
             catch
             {
-                StopSystem();
+                StopSystem("Vui lòng kiểm tra lại địa chỉ nhập vào");
             }
             try
             {
@@ -368,7 +370,7 @@ namespace FileExportScheduler
             }
             catch
             {
-                StopSystem();
+                StopSystem("Vui lòng kiểm tra lại địa chỉ nhập vào");
             }
 
             foreach (KeyValuePair<string, DiemDoModel> diemDo in deviceUnit.Value.dsDiemDoGiamSat)
@@ -393,7 +395,7 @@ namespace FileExportScheduler
             }
             catch (Exception)
             {
-                StopSystem();
+                StopSystem("Vui lòng kiểm tra lại địa chỉ nhập vào");
 
             }
             try
@@ -403,7 +405,7 @@ namespace FileExportScheduler
             catch (Exception)
             {
 
-                StopSystem();
+                StopSystem("Vui lòng kiểm tra lại địa chỉ nhập vào");
 
             }
             try
@@ -413,7 +415,7 @@ namespace FileExportScheduler
             catch (Exception)
             {
 
-                StopSystem();
+                StopSystem("Vui lòng kiểm tra lại địa chỉ nhập vào");
 
             }
             try
@@ -423,7 +425,7 @@ namespace FileExportScheduler
             catch (Exception)
             {
                 danhSachLoi.Add(ThongBaoLoi.KhongKetNoi);
-                StopSystem();
+                StopSystem("Vui lòng kiểm tra lại địa chỉ nhập vào");
 
             }
 
@@ -629,11 +631,12 @@ namespace FileExportScheduler
         private void btnThongSoDuLieu_Click(object sender, EventArgs e)
         {
             formHienThiDuLieu = new FormHienThiDuLieu(dsThietBi);
+            formHienThiDuLieu.StartPosition = FormStartPosition.CenterScreen;
             formHienThiDuLieu.Show();
             btnDataList.Enabled = false;
         }
 
-        private void StopSystem()
+        private void StopSystem(String loaiLoi)
         {
             if (heThongDangChay)
             {
@@ -649,7 +652,7 @@ namespace FileExportScheduler
 
                         }));
                     }
-                    MessageBox.Show("Vui lòng kiểm tra lại địa chị nhập vào hoặc kiểm tra lại kết nối!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(loaiLoi, "Cảnh báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                 }
             }
 

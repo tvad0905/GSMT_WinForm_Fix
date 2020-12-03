@@ -99,14 +99,15 @@ namespace FileExportScheduler
                     dr["DiaChi"] = thongSoGiaTri.DiaChi;
                     if (int.TryParse(thongSoGiaTri.GiaTri, out _))
                     {
-                        dr["GiaTri"] = Math.Round((Convert.ToDouble(thongSoGiaTri.GiaTri) / Convert.ToDouble(thongSoGiaTri.Scale)), 2).ToString();
+                        dr["GiaTri"] = Math.Round(Convert.ToDouble(thongSoGiaTri.GiaTri) / Convert.ToDouble(thongSoGiaTri.Scale)).ToString();
 
                     }
                     else
                     {
                         if (thongSoGiaTri.GiaTri != null)
                         {
-                            dr["GiaTri"] = thongSoGiaTri.GiaTri.ToString();
+                            dr["GiaTri"] = Math.Round((Convert.ToDouble(thongSoGiaTri.GiaTri) / Convert.ToDouble(thongSoGiaTri.Scale)), 2).ToString();
+
                         }
                         else
                         {
@@ -129,11 +130,6 @@ namespace FileExportScheduler
         private void FormHienThiDuLieu_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.Dispose();
-        }
-
-        private void FormHienThiDuLieu_FormClosed(object sender, FormClosedEventArgs e)
-        {
-
         }
     }
 }

@@ -41,7 +41,7 @@ namespace FileExportScheduler.Service.DuLieu
 
                         thongSoGiaTriTemp.DiaChi = duLieu.Value.DiaChi;
                         thongSoGiaTriTemp.Scale = duLieu.Value.Scale;
-                        thongSoGiaTriTemp.TrangThaiTinHieu=thietBi.Value.TrangThaiTinHieu;
+                        thongSoGiaTriTemp.TrangThaiTinHieu = thietBi.Value.TrangThaiTinHieu;
                         dsThongSoGiaTri.Add(thongSoGiaTriTemp);
                     }
                 }
@@ -58,7 +58,7 @@ namespace FileExportScheduler.Service.DuLieu
             int row = 0;
             foreach (KeyValuePair<string, ThietBiModel> thietBi in dsThietBi)
             {
-                 
+
                 foreach (KeyValuePair<string, DiemDoModel> diemDo in thietBi.Value.dsDiemDoGiamSat)
                 {
 
@@ -67,12 +67,11 @@ namespace FileExportScheduler.Service.DuLieu
 
                         if (int.TryParse(duLieu.Value.GiaTri, out _))
                         {
-                            dsThongSoGiaTri[row, 0] = Convert.ToInt32(duLieu.Value.GiaTri).ToString();
-
+                            dsThongSoGiaTri[row, 0] = Math.Round(Convert.ToDouble(duLieu.Value.GiaTri) / Convert.ToDouble(duLieu.Value.Scale)).ToString();
                         }
                         else
                         {
-                            dsThongSoGiaTri[row, 0] = duLieu.Value.GiaTri;
+                            dsThongSoGiaTri[row, 0] = Math.Round(Convert.ToDouble(duLieu.Value.GiaTri) / Convert.ToDouble(duLieu.Value.Scale)).ToString();
                         }
 
                         dsThongSoGiaTri[row, 1] = thietBi.Value.TrangThaiTinHieu;
@@ -83,6 +82,6 @@ namespace FileExportScheduler.Service.DuLieu
             return dsThongSoGiaTri;
         }
 
-        
+
     }
 }
