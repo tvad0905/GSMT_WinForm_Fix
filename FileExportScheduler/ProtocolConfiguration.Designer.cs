@@ -29,6 +29,11 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.cbProtocol = new System.Windows.Forms.ComboBox();
@@ -59,16 +64,16 @@
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnAddData = new System.Windows.Forms.Button();
             this.dgvDataProtocol = new System.Windows.Forms.DataGridView();
-            this.ten = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.diemDo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.diaChi = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Scale = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.donViDo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.errorPort = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorIP = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorTenGiaoThuc = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorGiaoThuc = new System.Windows.Forms.ErrorProvider(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.ten = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.diemDo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.diaChi = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Scale = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.donViDo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.gbTCPIPProtocol.SuspendLayout();
@@ -452,46 +457,7 @@
             this.dgvDataProtocol.RowTemplate.Height = 24;
             this.dgvDataProtocol.Size = new System.Drawing.Size(999, 676);
             this.dgvDataProtocol.TabIndex = 3;
-            // 
-            // ten
-            // 
-            this.ten.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ten.DataPropertyName = "ten";
-            this.ten.HeaderText = "Tên";
-            this.ten.MinimumWidth = 50;
-            this.ten.Name = "ten";
-            // 
-            // diemDo
-            // 
-            this.diemDo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.diemDo.DataPropertyName = "DiemDo";
-            this.diemDo.HeaderText = "Điểm đo";
-            this.diemDo.MinimumWidth = 6;
-            this.diemDo.Name = "diemDo";
-            // 
-            // diaChi
-            // 
-            this.diaChi.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.diaChi.DataPropertyName = "Diachi";
-            this.diaChi.HeaderText = "Địa chỉ";
-            this.diaChi.MinimumWidth = 50;
-            this.diaChi.Name = "diaChi";
-            // 
-            // Scale
-            // 
-            this.Scale.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Scale.DataPropertyName = "Scale";
-            this.Scale.HeaderText = "Scale";
-            this.Scale.MinimumWidth = 6;
-            this.Scale.Name = "Scale";
-            // 
-            // donViDo
-            // 
-            this.donViDo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.donViDo.DataPropertyName = "Donvido";
-            this.donViDo.HeaderText = "Đơn vị đo";
-            this.donViDo.MinimumWidth = 50;
-            this.donViDo.Name = "donViDo";
+            this.dgvDataProtocol.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvDataProtocol_KeyDown);
             // 
             // errorPort
             // 
@@ -509,9 +475,55 @@
             // 
             this.errorGiaoThuc.ContainerControl = this;
             // 
-            // openFileDialog1
+            // ten
             // 
-            this.openFileDialog1.FileName = "openFileDialog1";
+            this.ten.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ten.DataPropertyName = "ten";
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.ten.DefaultCellStyle = dataGridViewCellStyle6;
+            this.ten.HeaderText = "Tên";
+            this.ten.MinimumWidth = 50;
+            this.ten.Name = "ten";
+            // 
+            // diemDo
+            // 
+            this.diemDo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.diemDo.DataPropertyName = "DiemDo";
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.diemDo.DefaultCellStyle = dataGridViewCellStyle7;
+            this.diemDo.HeaderText = "Điểm đo";
+            this.diemDo.MinimumWidth = 6;
+            this.diemDo.Name = "diemDo";
+            // 
+            // diaChi
+            // 
+            this.diaChi.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.diaChi.DataPropertyName = "Diachi";
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.diaChi.DefaultCellStyle = dataGridViewCellStyle8;
+            this.diaChi.HeaderText = "Địa chỉ";
+            this.diaChi.MinimumWidth = 50;
+            this.diaChi.Name = "diaChi";
+            // 
+            // Scale
+            // 
+            this.Scale.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Scale.DataPropertyName = "Scale";
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.Scale.DefaultCellStyle = dataGridViewCellStyle9;
+            this.Scale.HeaderText = "Scale";
+            this.Scale.MinimumWidth = 6;
+            this.Scale.Name = "Scale";
+            // 
+            // donViDo
+            // 
+            this.donViDo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.donViDo.DataPropertyName = "Donvido";
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.donViDo.DefaultCellStyle = dataGridViewCellStyle10;
+            this.donViDo.HeaderText = "Đơn vị đo";
+            this.donViDo.MinimumWidth = 50;
+            this.donViDo.Name = "donViDo";
             // 
             // ProtocolConfiguration
             // 

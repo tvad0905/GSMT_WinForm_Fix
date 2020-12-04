@@ -56,7 +56,7 @@ namespace FileExportScheduler
             LanDoc.isLanDau = true;
             if (!Directory.Exists(Service.Json.JsonReader.DuongDanThuLog()))
             {
-                MessageBox.Show("Đường dẫn thư mục không tồn tại");
+                MessageBox.Show("Đường dẫn thư mục không tồn tại", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -142,7 +142,7 @@ namespace FileExportScheduler
         {
             FormDataList f = new FormDataList();
             f.StartPosition = FormStartPosition.CenterScreen;
-            f.Show();
+            f.ShowDialog();
 
         }
 
@@ -150,14 +150,14 @@ namespace FileExportScheduler
         {
             FormSetting f = new FormSetting();
             f.StartPosition = FormStartPosition.CenterScreen;
-            f.Show();
+            f.ShowDialog();
         }
 
         private void btnExit_Click(object sender, EventArgs e)
         {
             checkExit = true;
 
-            DialogResult result = MessageBox.Show("Thoát hệ thống ?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            DialogResult result = MessageBox.Show("Thoát hệ thống ?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             switch (result)
             {
@@ -522,7 +522,7 @@ namespace FileExportScheduler
                 }
                 else if (duLieu.DiaChi.StartsWith("3"))
                 {
-                    ushort[] DsDuLieuInputRegisters = DsDuLieuNhanDuoc[2] as ushort[];
+                    int[] DsDuLieuInputRegisters = DsDuLieuNhanDuoc[2] as int[];
                     if (DsDuLieuInputRegisters != null)
                     {
                         int diaChiInputRegisters = Convert.ToInt32(duLieu.DiaChi) - 30000;
@@ -531,7 +531,7 @@ namespace FileExportScheduler
                 }
                 else if (duLieu.DiaChi.StartsWith("4"))
                 {
-                    ushort[] DsDuLieuHoldingRegisters = DsDuLieuNhanDuoc[3] as ushort[];
+                    int[] DsDuLieuHoldingRegisters = DsDuLieuNhanDuoc[3] as int[];
                     if (DsDuLieuHoldingRegisters != null)
                     {
                         int diaChiHoldingRegisters = Convert.ToInt32(duLieu.DiaChi) - 40000;
@@ -563,7 +563,7 @@ namespace FileExportScheduler
                 }
                 else
                 {
-                    GetDeviceConnect();
+                    await GetDeviceConnect();
                     formHienThiDuLieu.DsThietBi = dsThietBi; //hien thi du lieu doc duoc len view 
                     LanDoc.isLanDau = false;
                 }
@@ -613,7 +613,7 @@ namespace FileExportScheduler
             {
                 tmrDocDuLieu.Stop();
                 tmrChukyXoaFile.Stop();
-                MessageBox.Show("Chọn đường dẫn đến thư mục");
+                MessageBox.Show("Chọn đường dẫn đến thư mục!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 WindowState = FormWindowState.Normal;
                 ShowInTaskbar = true;
                 btnStop.PerformClick();
@@ -632,7 +632,7 @@ namespace FileExportScheduler
         {
             formHienThiDuLieu = new FormHienThiDuLieu(dsThietBi);
             formHienThiDuLieu.StartPosition = FormStartPosition.CenterScreen;
-            formHienThiDuLieu.Show();
+            formHienThiDuLieu.ShowDialog();
             btnDataList.Enabled = false;
         }
 
@@ -652,7 +652,7 @@ namespace FileExportScheduler
 
                         }));
                     }
-                    MessageBox.Show(loaiLoi, "Cảnh báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                    MessageBox.Show(loaiLoi, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
