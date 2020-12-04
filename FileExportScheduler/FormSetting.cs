@@ -55,7 +55,7 @@ namespace FileExportScheduler
             }
             else
             {
-                MessageBox.Show("Đường dẫn thư mục không tồn tại");
+                MessageBox.Show("Đường dẫn thư mục không tồn tại!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             

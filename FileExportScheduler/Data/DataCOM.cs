@@ -130,7 +130,7 @@ namespace FileExportScheduler.Data
             }
             return discreteInput.ToArray();
         }
-        public static ushort[] LayDuLieuCOMInputRegisters(SerialPort serialPort, ushort quantityInputRegisters, ThietBiModel thietBiModel)
+        public static int[] LayDuLieuCOMInputRegisters(SerialPort serialPort, ushort quantityInputRegisters, ThietBiModel thietBiModel)
         {
             IModbusMaster master = ModbusSerialMaster.CreateRtu(serialPort);
             List<ushort> readRegister = new List<ushort>();
@@ -180,12 +180,12 @@ namespace FileExportScheduler.Data
                 }
             }
 
-            return readRegister.ToArray();
+            return ConvertArrayUshortToIntArray(readRegister);
         }
-        public static ushort[] LayDuLieuCOMHoldingRegisters(SerialPort serialPort, ushort quantityHoldingRegisters, ThietBiModel thietBiModel)
+        public static int[] LayDuLieuCOMHoldingRegisters(SerialPort serialPort, ushort quantityHoldingRegisters, ThietBiModel thietBiModel)
         {
             IModbusMaster master = ModbusSerialMaster.CreateRtu(serialPort);
-            List<ushort> readHoldingRegisters = new List<ushort>();
+            List<ushort> readHoldingRegistersUshortTpye = new List<ushort>();
             if (quantityHoldingRegisters != 0)
             {
                 try
@@ -200,7 +200,8 @@ namespace FileExportScheduler.Data
                             int startAddress = i * DonViQuantityMoiLanDoc;
                             int quantity = DonViQuantityMoiLanDoc;
                             var temp = master.ReadHoldingRegisters(slaveAddress, (ushort)startAddress, (ushort)(quantity));
-                            readHoldingRegisters.AddRange(temp.ToList());
+
+                            readHoldingRegistersUshortTpye.AddRange(temp.ToList());
                         }
                         else if (i == soNguyenSauChia)
                         {
@@ -209,7 +210,7 @@ namespace FileExportScheduler.Data
                             if (quantity != 0)
                             {
                                 var temp = master.ReadHoldingRegisters(slaveAddress, (ushort)startAddress, (ushort)(quantity));
-                                readHoldingRegisters.AddRange(temp.ToList());
+                                readHoldingRegistersUshortTpye.AddRange(temp.ToList());
                             }
                         }
                     }
@@ -231,11 +232,19 @@ namespace FileExportScheduler.Data
                     throw;
                 }
             }
-
-            return readHoldingRegisters.ToArray();
+            return ConvertArrayUshortToIntArray(readHoldingRegistersUshortTpye);
         }
 
-
+        private static int[] ConvertArrayUshortToIntArray(List<ushort> UshortList )
+        {
+            List<int> readHoldingRegistersIntTpye = new List<int>();
+            foreach (var ushortValue in UshortList)
+            {
+               int intValue = ushortValue - ((ushortValue > 32767) ? 65536 : 0);
+                readHoldingRegistersIntTpye.Add(intValue);
+            }
+            return readHoldingRegistersIntTpye.ToArray();
+        }
         private static void ExceptionTimeOut(Exception exceptionMessage, ThietBiModel thietBiModel)
         {
             if (!ThongBaoLoi.DanhSach[thietBiModel.Name].Contains(ThongBaoLoi.KhongKetNoi))

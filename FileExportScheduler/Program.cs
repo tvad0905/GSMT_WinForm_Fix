@@ -22,7 +22,7 @@ namespace FileExportScheduler
             if (PriorProcess() != null)
             {
 
-                MessageBox.Show("Ứng dụng đang chạy");
+                MessageBox.Show("Ứng dụng đang chạy", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             Application.EnableVisualStyles();
