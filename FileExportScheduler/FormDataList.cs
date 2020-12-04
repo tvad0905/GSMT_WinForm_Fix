@@ -27,6 +27,7 @@ namespace FileExportScheduler
         Dictionary<string, ThietBiModel> deviceDic = new Dictionary<string, ThietBiModel>();
         public TreeNode selectedNode = new TreeNode();
         public TreeNode selectedNodeDouble = new TreeNode();
+        private ProtocolConfiguration formProtocolConfiguration;
         #endregion
         public FormDataList()
         {
@@ -111,7 +112,7 @@ namespace FileExportScheduler
         {
             LoadTreeView();
             ProtocolConfiguration protocolConfiguration = new ProtocolConfiguration(this);
-
+            formProtocolConfiguration = protocolConfiguration;
             var ports = SerialPort.GetPortNames();
             protocolConfiguration.cbCOM.DataSource = ports;
         }
@@ -134,6 +135,7 @@ namespace FileExportScheduler
                     protocolConfiguration.btnEditProtocol.Visible = true;
                     protocolConfiguration.btnSaveProtocol.Visible = false;
 
+                    formProtocolConfiguration = protocolConfiguration;//lưu vào biến toàn cục
                     //
                     ThietBiTCPIP deviceTemp = deviceDic[protocolConfiguration.txtTenGiaoThuc.Text] as ThietBiTCPIP;
                     if (deviceTemp == null)
@@ -214,12 +216,14 @@ namespace FileExportScheduler
             splitContainer.Panel2.Controls.Add(protocolConfiguration);
             protocolConfiguration.cbCOM.DataSource = ports;
             protocolConfiguration.dgvDataProtocol.DataSource = null;
+
+            formProtocolConfiguration = protocolConfiguration; 
         }
         #endregion
 
         private void FormDataList_FormClosing(object sender, FormClosingEventArgs e)
         {
-
+            formProtocolConfiguration.DongForm();
         }
     }
 }

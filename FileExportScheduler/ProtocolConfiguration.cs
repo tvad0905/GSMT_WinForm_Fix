@@ -128,11 +128,6 @@ namespace FileExportScheduler
         #endregion
 
         #region Sự kiện nút
-        //button đóng tab
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-            this.Parent.Controls.Remove(this);
-        }
 
         private void txtIPAdress_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -175,7 +170,8 @@ namespace FileExportScheduler
                                 {
                                     dsThietBiGiamSat[txtTenGiaoThuc.Text].//lấy ra thiết bị
                                            dsDiemDoGiamSat.Remove(diemDo.TenDiemDo);
-                                }                            }
+                                }
+                            }
                             catch
                             {
                             }
@@ -210,81 +206,7 @@ namespace FileExportScheduler
         //lưu cấu hình protocol
         private void btnSaveProtocol_Click(object sender, EventArgs e)
         {
-            DocDsThietBiTuFileJson();
-
-            TreeNode nodeTemp = TVMain.SelectedNode;
-            if (nodeTemp.Parent != null)
-            {
-                if (nodeTemp.Parent.Parent == null)
-                {
-                    nodeTemp = nodeTemp.Parent;
-                }
-            }
-            if (cbProtocol.SelectedItem.ToString() == "Modbus TCP/IP")
-            {
-                if (CheckValidateCauHinhThietBi() == false)
-                {
-                    return;
-                }
-                ThietBiModel deviceObj = new ThietBiTCPIP
-                {
-                    Name = txtTenGiaoThuc.Text,
-                    IP = txtIPAdress.Text,
-                    Port = Convert.ToInt32(txtPort.Text),
-                    Protocol = cbProtocol.SelectedItem.ToString(),
-                    dsDiemDoGiamSat = new Dictionary<string, DiemDoModel>(),
-                };
-
-                dsThietBiGiamSat.Add(deviceObj.Name, deviceObj);
-            }
-            else if (cbProtocol.SelectedItem.ToString() == "Serial Port")
-            {
-
-                if (cbCOM.SelectedItem == null)
-                {
-                    MessageBox.Show("Không có cổng COM được chọn!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                ThietBiModel deviceObj1 = new ThietBiCOM
-                {
-                    Name = txtTenGiaoThuc.Text,
-                    Com = cbCOM.SelectedItem.ToString(),
-                    Baud = int.Parse(cbBaud.SelectedItem.ToString()),
-                    Parity = (Parity)Enum.Parse(typeof(Parity), cbParity.SelectedItem.ToString()),
-                    Databit = int.Parse(cbDataBit.SelectedItem.ToString()),
-                    StopBits = (StopBits)Enum.Parse(typeof(StopBits), cbStopBit.SelectedItem.ToString()),
-                    Protocol = cbProtocol.SelectedItem.ToString(),
-                    dsDiemDoGiamSat = new Dictionary<string, DiemDoModel>(),
-                };
-                if (!KiemTraCongCOM(cbCOM.SelectedItem.ToString()))
-                {
-                    MessageBox.Show("Không thể chọn cổng này!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                else
-                {
-                    dsThietBiGiamSat.Add(deviceObj1.Name, deviceObj1);
-                }
-
-            }
-
-            GhiDsThietBiRaFileJson();
-            TreeNode node = new TreeNode(txtTenGiaoThuc.Text);
-            if (TVMain.SelectedNode.Parent == null)
-            {
-                TVMain.SelectedNode.Nodes.Add(node);
-                formDataList.selectedNodeDouble = node;
-            }
-            else if (TVMain.SelectedNode.Parent.Parent == null)
-            {
-                TVMain.SelectedNode.Parent.Nodes.Add(node);
-                formDataList.selectedNodeDouble = node;
-            }
-
-            node.ContextMenuStrip = formDataList.tx2;
-
-            MessageBox.Show("Lưu thành công !", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            ThemMoiDuocClick();
         }
 
         private void cbProtocol_SelectedIndexChanged(object sender, EventArgs e)
@@ -306,10 +228,9 @@ namespace FileExportScheduler
             try
             {
                 DialogResult dialogResult = MessageBox.Show("Nhập dữ liệu sẽ làm mất dữ liệu cũ trên màn hình, bạn có muốn tiếp tục?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if(dialogResult == DialogResult.Yes)
+                if (dialogResult == DialogResult.Yes)
                 {
                     var openFile = openFileDialog1.ShowDialog();
-                    openFileDialog1.FileName = "";
                     if (openFile == DialogResult.OK)
                     {
                         BindDataFromCSV(openFileDialog1.FileName);
@@ -336,10 +257,7 @@ namespace FileExportScheduler
                 thietBiGiamSatDuocChon.MaxAddressHoldingRegisters = (ushort)maxAddress[3];
                 GhiDsThietBiRaFileJson();
             }
-            catch (Exception ex)
-            {
-
-            }
+            catch (Exception ex) { }
 
         }
         private void BindDataFromCSV(string filePath)
@@ -450,6 +368,160 @@ namespace FileExportScheduler
         //sửa cấu hình protocol
         private void btnEditProtocol_Click(object sender, EventArgs e)
         {
+            EditDuocClick();
+        }
+        #endregion
+
+        #region sự kiện datagridview
+        //Load dữ liệu từ json lên datagridview
+        public void LoadDuLieuLenDgv()
+        {
+            dgvDataProtocol.AutoGenerateColumns = false;
+            try
+            {
+                var thietBiGiamSatDuocChon = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text];
+                var dsDuLieuDiemDoHienThi = thietBiGiamSatDuocChon.dsDiemDoGiamSat.ElementAt(0).Value.DsDulieu.Select(x => x.Value).ToList();//lấy danh sách dữ liệu của điểm đo đầu tiên
+                for (int i = 1; i < thietBiGiamSatDuocChon.dsDiemDoGiamSat.Count; i++)
+                {
+                    var dsDuLieuDiemDoThuI = thietBiGiamSatDuocChon.dsDiemDoGiamSat.ElementAt(i).Value.DsDulieu.Select(x => x.Value).ToList();
+                    dsDuLieuDiemDoHienThi.AddRange(dsDuLieuDiemDoThuI);
+                }
+                var bindingSource = new BindingSource();
+                bindingSource.DataSource = dsDuLieuDiemDoHienThi;
+                dgvDataProtocol.DataSource = bindingSource;
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+        private void dgvDataProtocol_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                e.Handled = true;
+                btnDelete.PerformClick();
+            }
+        }
+        #endregion
+
+        #region Sự kiện với form
+        public void DongForm()
+        {
+            DialogResult dr = MessageBox.Show("Bạn muốn lưu những thay đổi trước khi đóng form không ?", "Chú ý", MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+
+            if (dr == DialogResult.Yes)
+            {
+                if (btnSaveProtocol.Visible == true)
+                {
+                    ThemMoiDuocClick();
+                }
+                else if (btnEditProtocol.Visible == true)
+                {
+                    EditDuocClick();
+                }
+            }
+        }
+        #endregion
+        public bool KiemTraCongCOM(String COM)
+        {
+            using (SerialPort serialPort = new SerialPort(COM))
+            {
+                try
+                {
+                    serialPort.Open();
+                    serialPort.Close();
+                    return true;
+
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+        }
+
+        #region hàm sử lý nút lưu
+        private void ThemMoiDuocClick()
+        {
+            DocDsThietBiTuFileJson();
+
+            TreeNode nodeTemp = TVMain.SelectedNode;
+            if (nodeTemp.Parent != null)
+            {
+                if (nodeTemp.Parent.Parent == null)
+                {
+                    nodeTemp = nodeTemp.Parent;
+                }
+            }
+            if (cbProtocol.SelectedItem.ToString() == "Modbus TCP/IP")
+            {
+                if (CheckValidateCauHinhThietBi() == false)
+                {
+                    return;
+                }
+                ThietBiModel deviceObj = new ThietBiTCPIP
+                {
+                    Name = txtTenGiaoThuc.Text,
+                    IP = txtIPAdress.Text,
+                    Port = Convert.ToInt32(txtPort.Text),
+                    Protocol = cbProtocol.SelectedItem.ToString(),
+                    dsDiemDoGiamSat = new Dictionary<string, DiemDoModel>(),
+                };
+
+                dsThietBiGiamSat.Add(deviceObj.Name, deviceObj);
+            }
+            else if (cbProtocol.SelectedItem.ToString() == "Serial Port")
+            {
+
+                if (cbCOM.SelectedItem == null)
+                {
+                    MessageBox.Show("Không có cổng COM được chọn!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                ThietBiModel deviceObj1 = new ThietBiCOM
+                {
+                    Name = txtTenGiaoThuc.Text,
+                    Com = cbCOM.SelectedItem.ToString(),
+                    Baud = int.Parse(cbBaud.SelectedItem.ToString()),
+                    Parity = (Parity)Enum.Parse(typeof(Parity), cbParity.SelectedItem.ToString()),
+                    Databit = int.Parse(cbDataBit.SelectedItem.ToString()),
+                    StopBits = (StopBits)Enum.Parse(typeof(StopBits), cbStopBit.SelectedItem.ToString()),
+                    Protocol = cbProtocol.SelectedItem.ToString(),
+                    dsDiemDoGiamSat = new Dictionary<string, DiemDoModel>(),
+                };
+                if (!KiemTraCongCOM(cbCOM.SelectedItem.ToString()))
+                {
+                    MessageBox.Show("Không thể chọn cổng này!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                else
+                {
+                    dsThietBiGiamSat.Add(deviceObj1.Name, deviceObj1);
+                }
+
+            }
+
+            GhiDsThietBiRaFileJson();
+            TreeNode node = new TreeNode(txtTenGiaoThuc.Text);
+            if (TVMain.SelectedNode.Parent == null)
+            {
+                TVMain.SelectedNode.Nodes.Add(node);
+                formDataList.selectedNodeDouble = node;
+            }
+            else if (TVMain.SelectedNode.Parent.Parent == null)
+            {
+                TVMain.SelectedNode.Parent.Nodes.Add(node);
+                formDataList.selectedNodeDouble = node;
+            }
+            node.ContextMenuStrip = formDataList.tx2;
+            LuuDanhMucDuLieuVaoJson();
+            MessageBox.Show("Lưu thành công !", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void EditDuocClick()
+        {
             DocDsThietBiTuFileJson();
             if (cbProtocol.SelectedItem.ToString() == "Modbus TCP/IP")
             {
@@ -536,62 +608,11 @@ namespace FileExportScheduler
             }
             GhiDsThietBiRaFileJson();
             formDataList.selectedNodeDouble.Text = txtTenGiaoThuc.Text;
-
+            LuuDanhMucDuLieuVaoJson();
             MessageBox.Show("Lưu thành công !", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
         }
         #endregion
 
-        #region sự kiện datagridview
-        //Load dữ liệu từ json lên datagridview
-        public void LoadDuLieuLenDgv()
-        {
-            dgvDataProtocol.AutoGenerateColumns = false;
-            try
-            {
-                var thietBiGiamSatDuocChon = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text];
-                var dsDuLieuDiemDoHienThi = thietBiGiamSatDuocChon.dsDiemDoGiamSat.ElementAt(0).Value.DsDulieu.Select(x => x.Value).ToList();//lấy danh sách dữ liệu của điểm đo đầu tiên
-                for (int i = 1; i < thietBiGiamSatDuocChon.dsDiemDoGiamSat.Count; i++)
-                {
-                    var dsDuLieuDiemDoThuI = thietBiGiamSatDuocChon.dsDiemDoGiamSat.ElementAt(i).Value.DsDulieu.Select(x => x.Value).ToList();
-                    dsDuLieuDiemDoHienThi.AddRange(dsDuLieuDiemDoThuI);
-                }
-                var bindingSource = new BindingSource();
-                bindingSource.DataSource = dsDuLieuDiemDoHienThi;
-                dgvDataProtocol.DataSource = bindingSource;
-            }
-            catch (Exception)
-            {
 
-            }
-        }
-        #endregion
-
-        public bool KiemTraCongCOM(String COM)
-        {
-            using (SerialPort serialPort = new SerialPort(COM))
-            {
-                try
-                {
-                    serialPort.Open();
-                    serialPort.Close();
-                    return true;
-
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-            }
-        }
-
-        private void dgvDataProtocol_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Delete)
-            {
-                e.Handled = true;
-                btnDelete.PerformClick();
-            }
-        }
     }
 }
