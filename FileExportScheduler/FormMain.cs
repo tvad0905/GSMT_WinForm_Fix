@@ -422,7 +422,11 @@ namespace FileExportScheduler
             {
                 dsDuLieuNhanDuoc.Add(Data.DataCOM.LayDuLieuCOMHoldingRegisters(serialPort, deviceUnit.Value.MaxAddressHoldingRegisters, deviceUnit.Value));
             }
-            catch (Exception)
+            catch (TimeoutException ex )
+            {
+                StopSystem("Vui lòng kiểm tra kết nối");
+            }
+            catch (Exception ex)
             {
                 danhSachLoi.Add(ThongBaoLoi.KhongKetNoi);
                 StopSystem("Vui lòng kiểm tra lại địa chỉ nhập vào");
