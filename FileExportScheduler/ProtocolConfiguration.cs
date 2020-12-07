@@ -32,7 +32,7 @@ namespace FileExportScheduler
         public string tenDuLieuDuocChon;
         public bool isValidatePassed { get; set; }
         public bool isDataGridViewHaveAnyChanged;
-        public bool isFormHaveAnyChanged;
+        public bool isFormHaveAnyChanged { get; set; }
         #endregion
         public ProtocolConfiguration(FormDataList formDataList)
         {
