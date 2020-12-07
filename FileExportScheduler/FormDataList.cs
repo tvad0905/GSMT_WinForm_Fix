@@ -158,6 +158,7 @@ namespace FileExportScheduler
                     splitContainer.Panel2.Controls.Add(protocolConfiguration);
                     formProtocolConfiguration = protocolConfiguration;//lưu vào biến toàn cục
                     isInFormEdit = true;
+                    formProtocolConfiguration.isFormHaveAnyChanged = false;
                 }
             }
         }
