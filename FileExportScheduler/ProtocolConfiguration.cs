@@ -30,7 +30,7 @@ namespace FileExportScheduler
         TreeView TVMain;
         public FormDataList formDataList;
         public string tenDuLieuDuocChon;
-        private bool isSaved = false;
+        private bool isSaved = true;
         public bool isValidatePassed { get; set; }
         public bool isDataGridViewHaveAnyChanged;
         public bool isFormHaveAnyChanged { get; set; }
@@ -235,7 +235,6 @@ namespace FileExportScheduler
                     if (openFile == DialogResult.OK)
                     {
                         BindDataFromCSV(openFileDialog1.FileName);
-                        MessageBox.Show("Nhập dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
             }
@@ -310,15 +309,17 @@ namespace FileExportScheduler
             }
             else
             {
-                DialogResult dialog = MessageBox.Show("Chưa lưu dữ liệu trên bảng nhập vào. Tiếp tục xuất dữ liệu?", "Cảnh báo", MessageBoxButtons.YesNo);
+                DialogResult dialog = MessageBox.Show("Chưa lưu dữ liệu trên bảng nhập vào. Lưu trước khi xuất dữ liệu?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if(dialog == DialogResult.Yes)
                 {
                     nhapData();
                     ExportDataToCSV();
+                    isSaved = true;
                 }
                 else
                 {
                     LoadDuLieuLenDgv();
+                    isSaved = true;
                     ExportDataToCSV();
                 }
             }
@@ -654,6 +655,7 @@ namespace FileExportScheduler
             if (e.RowIndex > -1)
             {
                 isDataGridViewHaveAnyChanged = true;
+                isSaved = false;
             }
         }
         private void txtTenGiaoThuc_TextChanged(object sender, EventArgs e)
