@@ -118,6 +118,7 @@ namespace FileExportScheduler
             protocolConfiguration.cbCOM.DataSource = ports;
 
             formProtocolConfiguration = protocolConfiguration;
+            formProtocolConfiguration.isFormHaveAnyChanged = false;
         }
 
         private void tvMain_DoubleClick(object sender, EventArgs e)

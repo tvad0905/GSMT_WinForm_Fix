@@ -48,6 +48,9 @@ namespace FileExportScheduler
             cbDataBit.SelectedIndex = cbDataBit.Items.IndexOf("8");
             cbParity.SelectedIndex = cbParity.Items.IndexOf("Even");
             cbStopBit.SelectedIndex = cbStopBit.Items.IndexOf("1");
+
+            isFormHaveAnyChanged = false;
+
         }
         #region Thao tác với json
         //Xuất từ file .json ra 1 list
