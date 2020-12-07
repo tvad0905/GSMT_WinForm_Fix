@@ -28,6 +28,8 @@ namespace FileExportScheduler
         public TreeNode selectedNode = new TreeNode();
         public TreeNode selectedNodeDouble = new TreeNode();
         private ProtocolConfiguration formProtocolConfiguration;
+        private bool isInFormEdit;
+
         #endregion
         public FormDataList()
         {
@@ -94,8 +96,8 @@ namespace FileExportScheduler
 
             foreach (KeyValuePair<string, ThietBiModel> device in deviceDic)
             {
-                    TreeNode node = new TreeNode(device.Value.Name);
-                    tvMain.Nodes["Protocols"].Nodes.Add(node);
+                TreeNode node = new TreeNode(device.Value.Name);
+                tvMain.Nodes["Protocols"].Nodes.Add(node);
             }
             foreach (TreeNode node in tvMain.Nodes)
             {
@@ -112,9 +114,10 @@ namespace FileExportScheduler
         {
             LoadTreeView();
             ProtocolConfiguration protocolConfiguration = new ProtocolConfiguration(this);
-            formProtocolConfiguration = protocolConfiguration;
             var ports = SerialPort.GetPortNames();
             protocolConfiguration.cbCOM.DataSource = ports;
+
+            formProtocolConfiguration = protocolConfiguration;
         }
 
         private void tvMain_DoubleClick(object sender, EventArgs e)
@@ -134,9 +137,6 @@ namespace FileExportScheduler
                     protocolConfiguration.cbCOM.DataSource = ports;
                     protocolConfiguration.btnEditProtocol.Visible = true;
                     protocolConfiguration.btnSaveProtocol.Visible = false;
-
-                    formProtocolConfiguration = protocolConfiguration;//lưu vào biến toàn cục
-                    //
                     ThietBiTCPIP deviceTemp = deviceDic[protocolConfiguration.txtTenGiaoThuc.Text] as ThietBiTCPIP;
                     if (deviceTemp == null)
                     {
@@ -156,6 +156,8 @@ namespace FileExportScheduler
 
                     }
                     splitContainer.Panel2.Controls.Add(protocolConfiguration);
+                    formProtocolConfiguration = protocolConfiguration;//lưu vào biến toàn cục
+                    isInFormEdit = true;
                 }
             }
         }
@@ -217,13 +219,30 @@ namespace FileExportScheduler
             protocolConfiguration.cbCOM.DataSource = ports;
             protocolConfiguration.dgvDataProtocol.DataSource = null;
 
-            formProtocolConfiguration = protocolConfiguration; 
+            formProtocolConfiguration = protocolConfiguration;
+            isInFormEdit = false;
         }
         #endregion
 
         private void FormDataList_FormClosing(object sender, FormClosingEventArgs e)
         {
-            formProtocolConfiguration.DongForm();
+            if (formProtocolConfiguration.IsFormHaveAnyChanged())
+            {
+                DialogResult dr = MessageBox.Show("Bạn muốn lưu những thay đổi trước khi đóng form không ?", "Chú ý", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+
+                if (dr == DialogResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
+                else if (dr == DialogResult.Yes)
+                {
+                    formProtocolConfiguration.DongForm(isInFormEdit);
+                    if (!formProtocolConfiguration.isValidatePassed)
+                    {
+                        e.Cancel = true;
+                    }
+                }
+            }
         }
     }
 }

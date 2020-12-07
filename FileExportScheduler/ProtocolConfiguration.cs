@@ -30,7 +30,9 @@ namespace FileExportScheduler
         TreeView TVMain;
         public FormDataList formDataList;
         public string tenDuLieuDuocChon;
-
+        public bool isValidatePassed { get; set; }
+        public bool isDataGridViewHaveAnyChanged;
+        public bool isFormHaveAnyChanged;
         #endregion
         public ProtocolConfiguration(FormDataList formDataList)
         {
@@ -137,9 +139,15 @@ namespace FileExportScheduler
         //Thêm dữ liệu protocol
         private void btnAddData_Click(object sender, EventArgs e)
         {
+            nhapData();
+        }
+        private void nhapData()
+        {
+            isValidatePassed = DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol);
             if (DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol))
             {
                 LuuDanhMucDuLieuVaoJson();
+                isDataGridViewHaveAnyChanged = false;
                 MessageBox.Show("Lưu dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
@@ -147,7 +155,6 @@ namespace FileExportScheduler
                 MessageBox.Show("Lưu dữ liệu không thành công!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-
         //Xóa dữ liệu protocol
         private void btnDelete_Click(object sender, EventArgs e)
         {
@@ -186,6 +193,8 @@ namespace FileExportScheduler
                         }
                         dgvDataProtocol.Rows.Remove(row);
                     }
+
+                    isValidatePassed = DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol);
                     if (DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol))
                     {
                         LuuDanhMucDuLieuVaoJson();
@@ -209,19 +218,7 @@ namespace FileExportScheduler
             ThemMoiDuocClick();
         }
 
-        private void cbProtocol_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cbProtocol.SelectedIndex == 0)
-            {
-                gbSerialSettingProtocol.Enabled = false;
-                gbTCPIPProtocol.Enabled = true;
-            }
-            else
-            {
-                gbSerialSettingProtocol.Enabled = true;
-                gbTCPIPProtocol.Enabled = false;
-            }
-        }
+
 
         private void btnImport_Click(object sender, EventArgs e)
         {
@@ -283,6 +280,7 @@ namespace FileExportScheduler
                     }
                 }
                 dgvDataProtocol.DataSource = dt;
+                isValidatePassed = DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol);
                 if (DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol))
                 {
 
@@ -403,25 +401,33 @@ namespace FileExportScheduler
                 btnDelete.PerformClick();
             }
         }
+
         #endregion
 
         #region Sự kiện với form
-        public void DongForm()
+        public void DongForm(bool isInFormEdit)
         {
-            DialogResult dr = MessageBox.Show("Bạn muốn lưu những thay đổi trước khi đóng form không ?", "Chú ý", MessageBoxButtons.YesNo,MessageBoxIcon.Question);
-
-            if (dr == DialogResult.Yes)
+            if (isInFormEdit == false)
             {
-                if (btnSaveProtocol.Visible == true)
-                {
-                    ThemMoiDuocClick();
-                }
-                else if (btnEditProtocol.Visible == true)
-                {
-                    EditDuocClick();
-                }
+                ThemMoiDuocClick();
+            }
+            else if (isInFormEdit == true)
+            {
+                EditDuocClick();
             }
         }
+        public bool IsFormHaveAnyChanged()
+        {
+            this.dgvDataProtocol.EndEdit();
+
+            if (isDataGridViewHaveAnyChanged)
+            {
+                isFormHaveAnyChanged = true;
+            }
+            
+            return isFormHaveAnyChanged;
+        }
+  
         #endregion
         public bool KiemTraCongCOM(String COM)
         {
@@ -456,6 +462,7 @@ namespace FileExportScheduler
             }
             if (cbProtocol.SelectedItem.ToString() == "Modbus TCP/IP")
             {
+                isValidatePassed = CheckValidateCauHinhThietBi();
                 if (CheckValidateCauHinhThietBi() == false)
                 {
                     return;
@@ -516,16 +523,16 @@ namespace FileExportScheduler
                 formDataList.selectedNodeDouble = node;
             }
             node.ContextMenuStrip = formDataList.tx2;
-            LuuDanhMucDuLieuVaoJson();
-            MessageBox.Show("Lưu thành công !", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            nhapData();
+            isFormHaveAnyChanged = false;
         }
-
         private void EditDuocClick()
         {
             DocDsThietBiTuFileJson();
             if (cbProtocol.SelectedItem.ToString() == "Modbus TCP/IP")
             {
-                if (!CheckValidateCauHinhThietBi())//kiểm tra validation
+                isValidatePassed = CheckValidateCauHinhThietBi();
+                if (CheckValidateCauHinhThietBi() == false)
                 {
                     return;
                 }
@@ -608,8 +615,66 @@ namespace FileExportScheduler
             }
             GhiDsThietBiRaFileJson();
             formDataList.selectedNodeDouble.Text = txtTenGiaoThuc.Text;
-            LuuDanhMucDuLieuVaoJson();
-            MessageBox.Show("Lưu thành công !", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            nhapData();
+            isFormHaveAnyChanged = false;
+        }
+        #endregion
+
+
+        #region event controller value change
+        private void dgvDataProtocol_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex > -1)
+            {
+                isDataGridViewHaveAnyChanged = true;
+            }
+        }
+        private void txtTenGiaoThuc_TextChanged(object sender, EventArgs e)
+        {
+            isFormHaveAnyChanged = true;
+        }
+        private void cbProtocol_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            isFormHaveAnyChanged = true;
+
+            if (cbProtocol.SelectedIndex == 0)
+            {
+                gbSerialSettingProtocol.Enabled = false;
+                gbTCPIPProtocol.Enabled = true;
+            }
+            else
+            {
+                gbSerialSettingProtocol.Enabled = true;
+                gbTCPIPProtocol.Enabled = false;
+            }
+        }
+        private void txtIPAdress_TextChanged(object sender, EventArgs e)
+        {
+            isFormHaveAnyChanged = true;
+        }
+        private void txtPort_TextChanged(object sender, EventArgs e)
+        {
+            isFormHaveAnyChanged = true;
+        }
+        private void cbCOM_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            isFormHaveAnyChanged = true;
+        }
+        private void cbBaud_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            isFormHaveAnyChanged = true;
+        }
+        private void cbDataBit_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            isFormHaveAnyChanged = true;
+        }
+        private void cbParity_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            isFormHaveAnyChanged = true;
+        }
+        private void cbStopBit_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            isFormHaveAnyChanged = true;
         }
         #endregion
 

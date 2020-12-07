@@ -12,6 +12,7 @@ namespace FileExportScheduler.KiemTraDauVao
     {
         public static bool KiemTraDuLieuNhapVao(DataGridView dgvDsDuLieu)
         {
+            dgvDsDuLieu.EndEdit();
             List<string> dsKeyDiemDoVaChat = new List<string>();
             List<string> dsDiaChi = new List<string>();
             dsKeyDiemDoVaChat.Clear();
