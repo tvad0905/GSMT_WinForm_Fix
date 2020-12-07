@@ -30,6 +30,7 @@ namespace FileExportScheduler
         TreeView TVMain;
         public FormDataList formDataList;
         public string tenDuLieuDuocChon;
+        private bool isSaved = false;
         public bool isValidatePassed { get; set; }
         public bool isDataGridViewHaveAnyChanged;
         public bool isFormHaveAnyChanged;
@@ -147,12 +148,15 @@ namespace FileExportScheduler
             if (DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol))
             {
                 LuuDanhMucDuLieuVaoJson();
+                isSaved = true;
                 isDataGridViewHaveAnyChanged = false;
                 MessageBox.Show("Lưu dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
                 MessageBox.Show("Lưu dữ liệu không thành công!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                isDataGridViewHaveAnyChanged = true;
+
             }
         }
         //Xóa dữ liệu protocol
@@ -300,6 +304,37 @@ namespace FileExportScheduler
         //Lưu dữ liệu từ datagridview vào list
         private void btnExport_Click(object sender, EventArgs e)
         {
+            if (isSaved)
+            {
+                ExportDataToCSV();
+            }
+            else
+            {
+                DialogResult dialog = MessageBox.Show("Chưa lưu dữ liệu trên bảng nhập vào. Tiếp tục xuất dữ liệu?", "Cảnh báo", MessageBoxButtons.YesNo);
+                if(dialog == DialogResult.Yes)
+                {
+                    nhapData();
+                    ExportDataToCSV();
+                }
+                else
+                {
+                    LoadDuLieuLenDgv();
+                    ExportDataToCSV();
+                }
+            }
+            
+        }
+
+        //sửa cấu hình protocol
+        private void btnEditProtocol_Click(object sender, EventArgs e)
+        {
+            EditDuocClick();
+        }
+        #endregion
+
+        #region sự kiện datagridview
+        private void ExportDataToCSV()
+        {
             if (dgvDataProtocol.Rows.Count > 0)
             {
                 if (DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol))
@@ -363,14 +398,6 @@ namespace FileExportScheduler
             }
         }
 
-        //sửa cấu hình protocol
-        private void btnEditProtocol_Click(object sender, EventArgs e)
-        {
-            EditDuocClick();
-        }
-        #endregion
-
-        #region sự kiện datagridview
         //Load dữ liệu từ json lên datagridview
         public void LoadDuLieuLenDgv()
         {
