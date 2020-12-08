@@ -80,7 +80,7 @@ namespace FileExportScheduler.KiemTraDauVao
 
                     if (dr.Cells[3].ColumnIndex == 3)
                     {
-                        var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+                        var regex = new Regex(@"^[1-9]*(?:\.[1-9]*)?$");
                         if (!regex.IsMatch(dr.Cells[3].Value.ToString()))
                         {
                             dr.Cells[3].ErrorText = "Scale sai định dạng";

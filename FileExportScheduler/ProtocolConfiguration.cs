@@ -192,57 +192,62 @@ namespace FileExportScheduler
         //Xóa dữ liệu protocol
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            DialogResult dl = MessageBox.Show("Bạn có muốn xóa ?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            try
+            if(dgvDataProtocol.SelectedRows.Count > 0)
             {
-                if (dl == DialogResult.Yes)
+                try
                 {
-                    foreach (DataGridViewRow row in dgvDataProtocol.SelectedRows)//đọc danh sách các dòng dữ liệu được chọn
+                    DialogResult dl = MessageBox.Show("Bạn có muốn xóa ?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (dl == DialogResult.Yes)
                     {
-                        var b = row.Cells[0].Value;
-                        if (row.Cells[0].Value != null && row.Cells[1].Value != null)
+                        foreach (DataGridViewRow row in dgvDataProtocol.SelectedRows)//đọc danh sách các dòng dữ liệu được chọn
                         {
-                            try
+                            var b = row.Cells[0].Value;
+                            if (row.Cells[0].Value != null && row.Cells[1].Value != null)
                             {
-                                var diemDo = dsThietBiGiamSat[txtTenGiaoThuc.Text].//lấy ra thiết bị
-                                                                 dsDiemDoGiamSat[row.Cells[1].Value.ToString()];//lấy ra điểm đo
-                                diemDo.DsDulieu.Remove(row.Cells[0].Value.ToString());//xóa 1 dữ liệu trong danh sách dữ liệu
-                                if (diemDo.DsDulieu.Count() == 0)// xóa điểm đo khi dữ liệu của điểm đo trống
+                                try
                                 {
-                                    dsThietBiGiamSat[txtTenGiaoThuc.Text].//lấy ra thiết bị
-                                           dsDiemDoGiamSat.Remove(diemDo.TenDiemDo);
+                                    var diemDo = dsThietBiGiamSat[txtTenGiaoThuc.Text].//lấy ra thiết bị
+                                                                     dsDiemDoGiamSat[row.Cells[1].Value.ToString()];//lấy ra điểm đo
+                                    diemDo.DsDulieu.Remove(row.Cells[0].Value.ToString());//xóa 1 dữ liệu trong danh sách dữ liệu
+                                    if (diemDo.DsDulieu.Count() == 0)// xóa điểm đo khi dữ liệu của điểm đo trống
+                                    {
+                                        dsThietBiGiamSat[txtTenGiaoThuc.Text].//lấy ra thiết bị
+                                               dsDiemDoGiamSat.Remove(diemDo.TenDiemDo);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show("Lỗi: " + ex.Message, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 }
                             }
-                            catch
+                            else
                             {
+                                if (row.IsNewRow == false)
+                                {
+                                    dgvDataProtocol.Rows.Remove(row);
+                                }
+                                continue;
                             }
+                            dgvDataProtocol.Rows.Remove(row);
+                        }
+                        isValidatePassed = DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol);
+                        if (DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol))
+                        {
+                            LuuDanhMucDuLieuVaoJson();
+                            MessageBox.Show("Xóa dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                         else
                         {
-                            if (row.IsNewRow == false)
-                            {
-                                dgvDataProtocol.Rows.Remove(row);
-                            }
-                            continue;
+                            MessageBox.Show("Dữ liệu nhập vào lỗi vui lòng kiểm tra lại!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
-                        dgvDataProtocol.Rows.Remove(row);
-                    }
-                    isValidatePassed = DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol);
-                    if (DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol))
-                    {
-                        LuuDanhMucDuLieuVaoJson();
-                        MessageBox.Show("Xóa dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Dữ liệu nhập vào lỗi vui lòng kiểm tra lại!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
+                catch (Exception)
+                {
+                    MessageBox.Show("Xóa dữ liệu không thành công!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
-            catch (Exception)
-            {
-                MessageBox.Show("Xóa dữ liệu không thành công!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
+            
         }
 
         //lưu cấu hình protocol
@@ -262,6 +267,7 @@ namespace FileExportScheduler
                     if (openFile == DialogResult.OK)
                     {
                         BindDataFromCSV(openFileDialog1.FileName);
+                        isFormHaveAnyChanged = true;
                     }
                 }
             }
@@ -465,13 +471,28 @@ namespace FileExportScheduler
         #region Sự kiện với form
         public void DongForm(bool isInFormEdit)
         {
+
             if (isInFormEdit == false)
             {
-                ThemMoiDuocClick();
+                if (tabControl1.SelectedTab.Text.Contains(Name = "Dữ liệu"))
+                {
+                    SaveData();
+                }
+                else
+                {
+                    ThemMoiDuocClick();
+                }
             }
             else if (isInFormEdit == true)
             {
-                EditDuocClick();
+                if (tabControl1.SelectedTab.Text.Contains(Name = "Dữ liệu"))
+                {
+                    SaveData();
+                }
+                else
+                {
+                    EditDuocClick();
+                }
             }
         }
         public bool IsFormHaveAnyChanged()
@@ -524,6 +545,7 @@ namespace FileExportScheduler
                 isValidatePassed = CheckValidateCauHinhIP();
                 if (CheckValidateCauHinhIP() == false)
                 {
+                    MessageBox.Show("Kiểm tra lại nhập vào!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 else
@@ -545,6 +567,7 @@ namespace FileExportScheduler
                 isValidatePassed = CheckValidateCauHinhCOM();
                 if (CheckValidateCauHinhCOM() == false)
                 {
+                    MessageBox.Show("Kiểm tra lại nhập vào!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 else
@@ -590,6 +613,7 @@ namespace FileExportScheduler
                 TVMain.SelectedNode.Parent.Nodes.Add(node);
                 formDataList.selectedNodeDouble = node;
             }
+            MessageBox.Show("Lưu cấu hình thiết bị thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             node.ContextMenuStrip = formDataList.tx2;
             //SaveData();
             isFormHaveAnyChanged = false;
@@ -604,6 +628,7 @@ namespace FileExportScheduler
                 isValidatePassed = CheckValidateCauHinhIP();
                 if (CheckValidateCauHinhIP() == false)
                 {
+                    MessageBox.Show("Kiểm tra lại nhập vào!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 else
@@ -636,6 +661,7 @@ namespace FileExportScheduler
                 isValidatePassed = CheckValidateCauHinhCOM();
                 if (CheckValidateCauHinhCOM() == false)
                 {
+                    MessageBox.Show("Kiểm tra lại nhập vào!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 else
@@ -695,6 +721,7 @@ namespace FileExportScheduler
             GhiDsThietBiRaFileJson();
             formDataList.selectedNodeDouble.Text = txtTenGiaoThuc.Text;
             //SaveData();
+            MessageBox.Show("Lưu cấu hình thiết bị thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             isFormHaveAnyChanged = false;
         }
         #endregion
