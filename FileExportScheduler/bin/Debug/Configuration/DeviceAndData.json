@@ -1,1 +1,1 @@
-{"PLC11":{"dsDiemDoGiamSat":{},"IP":"127.0.0.1","Port":502,"Name":"PLC11","Protocol":"Modbus TCP/IP","TrangThaiTinHieu":null,"MaxAddressCoils":0,"MaxAddressInputs":0,"MaxAddressInputRegisters":0,"MaxAddressHoldingRegisters":0}}
+{"PLc1":{"dsDiemDoGiamSat":{},"Com":"COM3","Baud":9600,"Parity":2,"Databit":8,"StopBits":1,"Name":"PLc1","Protocol":"Serial Port","TrangThaiTinHieu":null,"MaxAddressCoils":0,"MaxAddressInputs":0,"MaxAddressInputRegisters":0,"MaxAddressHoldingRegisters":0}}
