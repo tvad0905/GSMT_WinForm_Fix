@@ -52,6 +52,7 @@ namespace FileExportScheduler
             isFormHaveAnyChanged = false;
 
         }
+
         #region Thao tác với json
         //Xuất từ file .json ra 1 list
         private void DocDsThietBiTuFileJson()
@@ -85,7 +86,6 @@ namespace FileExportScheduler
                 errorGiaoThuc.SetError(cbProtocol, "Chưa chọn giao thức");
                 error = false;
             }
-
             Match PortRegex = Regex.Match(txtPort.Text, @"^()([1-9]|[1-5]?[0-9]{2,4}|6[1-4][0-9]{3}|65[1-4][0-9]{2}|655[1-2][0-9]|6553[1-5])$");
             if (txtTenGiaoThuc.Text.Trim() == "")
             {
@@ -95,7 +95,6 @@ namespace FileExportScheduler
             else
             {
                 errorTenGiaoThuc.SetError(txtTenGiaoThuc, "");
-
             }
 
             if (dsThietBiGiamSat.ContainsKey(txtTenGiaoThuc.Text) && txtTenGiaoThuc.Text != formDataList.selectedNodeDouble.Text)
@@ -143,9 +142,10 @@ namespace FileExportScheduler
         //Thêm dữ liệu protocol
         private void btnAddData_Click(object sender, EventArgs e)
         {
-            nhapData();
+            SaveData();
         }
-        private void nhapData()
+
+        private void SaveData()
         {
             isValidatePassed = DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol);
             if (DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol))
@@ -159,9 +159,9 @@ namespace FileExportScheduler
             {
                 MessageBox.Show("Lưu dữ liệu không thành công!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 isDataGridViewHaveAnyChanged = true;
-
             }
         }
+
         //Xóa dữ liệu protocol
         private void btnDelete_Click(object sender, EventArgs e)
         {
@@ -200,7 +200,6 @@ namespace FileExportScheduler
                         }
                         dgvDataProtocol.Rows.Remove(row);
                     }
-
                     isValidatePassed = DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol);
                     if (DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol))
                     {
@@ -225,13 +224,11 @@ namespace FileExportScheduler
             ThemMoiDuocClick();
         }
 
-
-
         private void btnImport_Click(object sender, EventArgs e)
         {
             try
             {
-                DialogResult dialogResult = MessageBox.Show("Nhập dữ liệu sẽ làm mất dữ liệu cũ trên màn hình, bạn có muốn tiếp tục?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult dialogResult = MessageBox.Show("Nhập dữ liệu sẽ làm mất dữ liệu cũ trên màn hình. Tiếp tục nhập file?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dialogResult == DialogResult.Yes)
                 {
                     var openFile = openFileDialog1.ShowDialog();
@@ -245,8 +242,8 @@ namespace FileExportScheduler
             {
                 MessageBox.Show("Nhập dữ liệu không thành công!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-
         }
+
         private void LuuDanhMucDuLieuVaoJson()
         {
             try
@@ -260,9 +257,12 @@ namespace FileExportScheduler
                 thietBiGiamSatDuocChon.MaxAddressHoldingRegisters = (ushort)maxAddress[3];
                 GhiDsThietBiRaFileJson();
             }
-            catch (Exception ex) { }
-
+            catch (Exception ex) 
+            {
+                MessageBox.Show("Lỗi: " + ex.Message, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
+
         private void BindDataFromCSV(string filePath)
         {
             try
@@ -315,7 +315,7 @@ namespace FileExportScheduler
                 DialogResult dialog = MessageBox.Show("Chưa lưu dữ liệu trên bảng nhập vào. Lưu trước khi xuất dữ liệu?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if(dialog == DialogResult.Yes)
                 {
-                    nhapData();
+                    SaveData();
                     ExportDataToCSV();
                     isSaved = true;
                 }
@@ -424,6 +424,7 @@ namespace FileExportScheduler
 
             }
         }
+
         private void dgvDataProtocol_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Delete)
@@ -432,7 +433,6 @@ namespace FileExportScheduler
                 btnDelete.PerformClick();
             }
         }
-
         #endregion
 
         #region Sự kiện với form
@@ -460,6 +460,7 @@ namespace FileExportScheduler
         }
   
         #endregion
+
         public bool KiemTraCongCOM(String COM)
         {
             using (SerialPort serialPort = new SerialPort(COM))
@@ -498,47 +499,58 @@ namespace FileExportScheduler
                 {
                     return;
                 }
-                ThietBiModel deviceObj = new ThietBiTCPIP
+                else
                 {
-                    Name = txtTenGiaoThuc.Text,
-                    IP = txtIPAdress.Text,
-                    Port = Convert.ToInt32(txtPort.Text),
-                    Protocol = cbProtocol.SelectedItem.ToString(),
-                    dsDiemDoGiamSat = new Dictionary<string, DiemDoModel>(),
-                };
+                    ThietBiModel deviceObj = new ThietBiTCPIP
+                    {
+                        Name = txtTenGiaoThuc.Text,
+                        IP = txtIPAdress.Text,
+                        Port = Convert.ToInt32(txtPort.Text),
+                        Protocol = cbProtocol.SelectedItem.ToString(),
+                        dsDiemDoGiamSat = new Dictionary<string, DiemDoModel>(),
+                    };
 
-                dsThietBiGiamSat.Add(deviceObj.Name, deviceObj);
+                    dsThietBiGiamSat.Add(deviceObj.Name, deviceObj);
+                }             
             }
             else if (cbProtocol.SelectedItem.ToString() == "Serial Port")
             {
-
-                if (cbCOM.SelectedItem == null)
+                errorIP.SetError(txtIPAdress, null);
+                errorPort.SetError(txtPort, null);
+                isValidatePassed = CheckValidateCauHinhThietBi();
+                if (CheckValidateCauHinhThietBi() == false)
                 {
-                    MessageBox.Show("Không có cổng COM được chọn!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                ThietBiModel deviceObj1 = new ThietBiCOM
-                {
-                    Name = txtTenGiaoThuc.Text,
-                    Com = cbCOM.SelectedItem.ToString(),
-                    Baud = int.Parse(cbBaud.SelectedItem.ToString()),
-                    Parity = (Parity)Enum.Parse(typeof(Parity), cbParity.SelectedItem.ToString()),
-                    Databit = int.Parse(cbDataBit.SelectedItem.ToString()),
-                    StopBits = (StopBits)Enum.Parse(typeof(StopBits), cbStopBit.SelectedItem.ToString()),
-                    Protocol = cbProtocol.SelectedItem.ToString(),
-                    dsDiemDoGiamSat = new Dictionary<string, DiemDoModel>(),
-                };
-                if (!KiemTraCongCOM(cbCOM.SelectedItem.ToString()))
-                {
-                    MessageBox.Show("Không thể chọn cổng này!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 else
                 {
-                    dsThietBiGiamSat.Add(deviceObj1.Name, deviceObj1);
-                }
+                    if (cbCOM.SelectedItem == null)
+                    {
+                        MessageBox.Show("Không có cổng COM được chọn!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
 
+                    ThietBiModel deviceObj1 = new ThietBiCOM
+                    {
+                        Name = txtTenGiaoThuc.Text,
+                        Com = cbCOM.SelectedItem.ToString(),
+                        Baud = int.Parse(cbBaud.SelectedItem.ToString()),
+                        Parity = (Parity)Enum.Parse(typeof(Parity), cbParity.SelectedItem.ToString()),
+                        Databit = int.Parse(cbDataBit.SelectedItem.ToString()),
+                        StopBits = (StopBits)Enum.Parse(typeof(StopBits), cbStopBit.SelectedItem.ToString()),
+                        Protocol = cbProtocol.SelectedItem.ToString(),
+                        dsDiemDoGiamSat = new Dictionary<string, DiemDoModel>(),
+                    };
+                    if (!KiemTraCongCOM(cbCOM.SelectedItem.ToString()))
+                    {
+                        MessageBox.Show("Không thể chọn cổng này!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    else
+                    {
+                        dsThietBiGiamSat.Add(deviceObj1.Name, deviceObj1);
+                    }
+                }
             }
 
             GhiDsThietBiRaFileJson();
@@ -554,9 +566,10 @@ namespace FileExportScheduler
                 formDataList.selectedNodeDouble = node;
             }
             node.ContextMenuStrip = formDataList.tx2;
-            nhapData();
+            //SaveData();
             isFormHaveAnyChanged = false;
         }
+
         private void EditDuocClick()
         {
             DocDsThietBiTuFileJson();
@@ -646,7 +659,7 @@ namespace FileExportScheduler
             }
             GhiDsThietBiRaFileJson();
             formDataList.selectedNodeDouble.Text = txtTenGiaoThuc.Text;
-            nhapData();
+            SaveData();
             isFormHaveAnyChanged = false;
         }
         #endregion
@@ -661,10 +674,12 @@ namespace FileExportScheduler
                 isSaved = false;
             }
         }
+
         private void txtTenGiaoThuc_TextChanged(object sender, EventArgs e)
         {
             isFormHaveAnyChanged = true;
         }
+
         private void cbProtocol_SelectedIndexChanged(object sender, EventArgs e)
         {
             isFormHaveAnyChanged = true;
@@ -680,36 +695,41 @@ namespace FileExportScheduler
                 gbTCPIPProtocol.Enabled = false;
             }
         }
+
         private void txtIPAdress_TextChanged(object sender, EventArgs e)
         {
             isFormHaveAnyChanged = true;
         }
+
         private void txtPort_TextChanged(object sender, EventArgs e)
         {
             isFormHaveAnyChanged = true;
         }
+
         private void cbCOM_SelectedIndexChanged(object sender, EventArgs e)
         {
             isFormHaveAnyChanged = true;
         }
+
         private void cbBaud_SelectedIndexChanged(object sender, EventArgs e)
         {
             isFormHaveAnyChanged = true;
         }
+
         private void cbDataBit_SelectedIndexChanged(object sender, EventArgs e)
         {
             isFormHaveAnyChanged = true;
         }
+
         private void cbParity_SelectedIndexChanged(object sender, EventArgs e)
         {
             isFormHaveAnyChanged = true;
         }
+
         private void cbStopBit_SelectedIndexChanged(object sender, EventArgs e)
         {
             isFormHaveAnyChanged = true;
         }
         #endregion
-
-
     }
 }

@@ -24,7 +24,6 @@ namespace FileExportScheduler.KiemTraDauVao
                 {
                     break;
                 }
-
                 if (XetLoiDinhDangNhapLieu(dr.Cells["ten"].Value) != "" || XetLoiDinhDangNhapLieu(dr.Cells["diemDo"].Value) != "")
                 {
                     dr.Cells["ten"].ErrorText = XetLoiDinhDangNhapLieu(dr.Cells["ten"].Value);
@@ -35,8 +34,6 @@ namespace FileExportScheduler.KiemTraDauVao
                 {
                     dr.Cells["ten"].ErrorText = "";
                     dr.Cells["diemDo"].ErrorText = "";
-
-
                     if (dsKeyDiemDoVaChat.Contains(dr.Cells["ten"].Value.ToString() + dr.Cells["diemDo"].Value.ToString()))
                     {
 
@@ -45,8 +42,6 @@ namespace FileExportScheduler.KiemTraDauVao
                         isPassed = false;
                     }
                 }
-
-
                 if (XetLoiDinhDangNhapLieu(dr.Cells["diaChi"].Value) != "")
                 {
                     dr.Cells["diaChi"].ErrorText = XetLoiDinhDangNhapLieu(dr.Cells["diaChi"].Value);
@@ -74,8 +69,6 @@ namespace FileExportScheduler.KiemTraDauVao
                         }
                     }
                 }
-
-
                 if (XetLoiDinhDangNhapLieu(dr.Cells[3].Value) != "")
                 {
                     dr.Cells[3].ErrorText = XetLoiDinhDangNhapLieu(dr.Cells[3].Value);
@@ -93,23 +86,16 @@ namespace FileExportScheduler.KiemTraDauVao
                             dr.Cells[3].ErrorText = "Scale sai định dạng";
                             isPassed = false;
                         }
-
-
                     }
-
                 }
-
                 if (dr.Cells["ten"].Value != null && dr.Cells["diemDo"].Value != null && dr.Cells["diaChi"].Value != null)
                 {
                     dsDiaChi.Add(dr.Cells["diaChi"].Value.ToString());
                     dsKeyDiemDoVaChat.Add(dr.Cells["ten"].Value.ToString() + dr.Cells["diemDo"].Value.ToString());
                 }
-
-
             }
             if (dsKeyDiemDoVaChat.Count == 0 && dsDiaChi.Count == 0)
             {
-
                 isPassed = false;
             }
             return isPassed;

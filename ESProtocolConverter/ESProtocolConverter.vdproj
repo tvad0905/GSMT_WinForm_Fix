@@ -100,6 +100,12 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_F65492D9B65B487442EAF7B5F4AB513E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_698D9602361E476AA2829D0BBC2A52FB"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -143,12 +149,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_9FB6254E9933BC2597E6F51FC19CF320"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_F65492D9B65B487442EAF7B5F4AB513E"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -208,6 +208,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
     }
@@ -614,11 +622,11 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:ESProtocolConverter"
         "ProductCode" = "8:{58341B5A-5210-4B0F-9183-49AF1E7B88F1}"
-        "PackageCode" = "8:{F9F313E5-4545-4856-AB8E-419867F16ACD}"
+        "PackageCode" = "8:{F5D17158-4427-4835-A51E-789919AAFA7D}"
         "UpgradeCode" = "8:{3BCEF7A7-E085-406D-BBAA-442116F7739C}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:1.0.0"
