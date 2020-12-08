@@ -77,16 +77,43 @@ namespace FileExportScheduler
 
         #region Kiểm tra nhập vào
         //check nhập vào bên cấu hình protocol
-        public bool CheckValidateCauHinhThietBi()
+        public bool CheckValidateCauHinhCOM()
         {
-
+            errorIP.SetError(txtIPAdress, "");
+            errorPort.SetError(txtPort, "");
             bool error = true;
             if (cbProtocol.SelectedIndex == -1)
             {
                 errorGiaoThuc.SetError(cbProtocol, "Chưa chọn giao thức");
                 error = false;
             }
+            if (txtTenGiaoThuc.Text.Trim() == "")
+            {
+                errorTenGiaoThuc.SetError(txtTenGiaoThuc, "Chưa nhập tên thiết bị");
+                error = false;
+            }
+            else
+            {
+                errorTenGiaoThuc.SetError(txtTenGiaoThuc, "");
+            }
+
+            if (dsThietBiGiamSat.ContainsKey(txtTenGiaoThuc.Text) && txtTenGiaoThuc.Text != formDataList.selectedNodeDouble.Text)
+            {
+                errorTenGiaoThuc.SetError(txtTenGiaoThuc, "Tên thiết bị trùng lặp");
+                error = false;
+            }
+            return error;
+        }
+        public bool CheckValidateCauHinhIP()
+        {
             Match PortRegex = Regex.Match(txtPort.Text, @"^()([1-9]|[1-5]?[0-9]{2,4}|6[1-4][0-9]{3}|65[1-4][0-9]{2}|655[1-2][0-9]|6553[1-5])$");
+            bool error = true;
+
+            if (cbProtocol.SelectedIndex == -1)
+            {
+                errorGiaoThuc.SetError(cbProtocol, "Chưa chọn giao thức");
+                error = false;
+            }
             if (txtTenGiaoThuc.Text.Trim() == "")
             {
                 errorTenGiaoThuc.SetError(txtTenGiaoThuc, "Chưa nhập tên thiết bị");
@@ -257,7 +284,7 @@ namespace FileExportScheduler
                 thietBiGiamSatDuocChon.MaxAddressHoldingRegisters = (ushort)maxAddress[3];
                 GhiDsThietBiRaFileJson();
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 MessageBox.Show("Lỗi: " + ex.Message, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
@@ -313,7 +340,7 @@ namespace FileExportScheduler
             else
             {
                 DialogResult dialog = MessageBox.Show("Chưa lưu dữ liệu trên bảng nhập vào. Lưu trước khi xuất dữ liệu?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if(dialog == DialogResult.Yes)
+                if (dialog == DialogResult.Yes)
                 {
                     SaveData();
                     ExportDataToCSV();
@@ -326,7 +353,7 @@ namespace FileExportScheduler
                     ExportDataToCSV();
                 }
             }
-            
+
         }
 
         //sửa cấu hình protocol
@@ -455,10 +482,10 @@ namespace FileExportScheduler
             {
                 isFormHaveAnyChanged = true;
             }
-            
+
             return isFormHaveAnyChanged;
         }
-  
+
         #endregion
 
         public bool KiemTraCongCOM(String COM)
@@ -494,8 +521,8 @@ namespace FileExportScheduler
             }
             if (cbProtocol.SelectedItem.ToString() == "Modbus TCP/IP")
             {
-                isValidatePassed = CheckValidateCauHinhThietBi();
-                if (CheckValidateCauHinhThietBi() == false)
+                isValidatePassed = CheckValidateCauHinhIP();
+                if (CheckValidateCauHinhIP() == false)
                 {
                     return;
                 }
@@ -511,14 +538,12 @@ namespace FileExportScheduler
                     };
 
                     dsThietBiGiamSat.Add(deviceObj.Name, deviceObj);
-                }             
+                }
             }
             else if (cbProtocol.SelectedItem.ToString() == "Serial Port")
             {
-                errorIP.SetError(txtIPAdress, null);
-                errorPort.SetError(txtPort, null);
-                isValidatePassed = CheckValidateCauHinhThietBi();
-                if (CheckValidateCauHinhThietBi() == false)
+                isValidatePassed = CheckValidateCauHinhCOM();
+                if (CheckValidateCauHinhCOM() == false)
                 {
                     return;
                 }
@@ -572,94 +597,104 @@ namespace FileExportScheduler
 
         private void EditDuocClick()
         {
+            ThietBiTCPIP thietBi = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text] as ThietBiTCPIP;
             DocDsThietBiTuFileJson();
             if (cbProtocol.SelectedItem.ToString() == "Modbus TCP/IP")
             {
-                isValidatePassed = CheckValidateCauHinhThietBi();
-                if (CheckValidateCauHinhThietBi() == false)
+                isValidatePassed = CheckValidateCauHinhIP();
+                if (CheckValidateCauHinhIP() == false)
                 {
                     return;
                 }
-
-                ThietBiTCPIP thietBi = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text] as ThietBiTCPIP;
-                if (thietBi != null)
-                {
-                    thietBi.Name = txtTenGiaoThuc.Text;
-                    thietBi.IP = txtIPAdress.Text;
-                    thietBi.Port = Convert.ToInt32(txtPort.Text);
-                    dsThietBiGiamSat.Remove(formDataList.selectedNodeDouble.Text);
-                    dsThietBiGiamSat.Add(thietBi.Name, thietBi);
-                }
                 else
                 {
-                    ThietBiModel deviceObjIP = new ThietBiTCPIP
+                    if (thietBi != null)
                     {
-                        Name = txtTenGiaoThuc.Text,
-                        IP = txtIPAdress.Text,
-                        Port = Convert.ToInt32(txtPort.Text),
-                        Protocol = cbProtocol.SelectedItem.ToString(),
-                        dsDiemDoGiamSat = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text].dsDiemDoGiamSat
-                    };
-                    dsThietBiGiamSat.Remove(formDataList.selectedNodeDouble.Text);
-                    dsThietBiGiamSat.Add(deviceObjIP.Name, deviceObjIP);
+                        thietBi.Name = txtTenGiaoThuc.Text;
+                        thietBi.IP = txtIPAdress.Text;
+                        thietBi.Port = Convert.ToInt32(txtPort.Text);
+                        dsThietBiGiamSat.Remove(formDataList.selectedNodeDouble.Text);
+                        dsThietBiGiamSat.Add(thietBi.Name, thietBi);
+                    }
+                    else
+                    {
+                        ThietBiModel deviceObjIP = new ThietBiTCPIP
+                        {
+                            Name = txtTenGiaoThuc.Text,
+                            IP = txtIPAdress.Text,
+                            Port = Convert.ToInt32(txtPort.Text),
+                            Protocol = cbProtocol.SelectedItem.ToString(),
+                            dsDiemDoGiamSat = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text].dsDiemDoGiamSat
+                        };
+                        dsThietBiGiamSat.Remove(formDataList.selectedNodeDouble.Text);
+                        dsThietBiGiamSat.Add(deviceObjIP.Name, deviceObjIP);
+                    }
                 }
             }
             else if (cbProtocol.SelectedItem.ToString() == "Serial Port")
             {
-                if (cbCOM.SelectedItem == null)
+                isValidatePassed = CheckValidateCauHinhCOM();
+                if (CheckValidateCauHinhCOM() == false)
                 {
-                    MessageBox.Show("Không có cổng COM được chọn!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
-                }
-                ThietBiCOM comTemp = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text] as ThietBiCOM;
-                if (comTemp != null)
-                {
-                    comTemp.Name = txtTenGiaoThuc.Text;
-                    comTemp.Com = cbCOM.SelectedItem.ToString();
-                    comTemp.Baud = int.Parse(cbBaud.SelectedItem.ToString());
-                    comTemp.Parity = (Parity)Enum.Parse(typeof(Parity), cbParity.SelectedItem.ToString());
-                    comTemp.Databit = int.Parse(cbDataBit.SelectedItem.ToString());
-                    comTemp.StopBits = (StopBits)Enum.Parse(typeof(StopBits), cbStopBit.SelectedItem.ToString());
-                    if (!KiemTraCongCOM(cbCOM.SelectedItem.ToString()))
-                    {
-                        MessageBox.Show("Không thể chọn cổng này!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-                    else
-                    {
-                        dsThietBiGiamSat.Remove(formDataList.selectedNodeDouble.Text);
-                        dsThietBiGiamSat.Add(comTemp.Name, comTemp);
-                    }
                 }
                 else
                 {
-                    ThietBiModel deviceObjCOM = new ThietBiCOM
+                    ThietBiCOM comTemp = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text] as ThietBiCOM;
+                    if (comTemp != null)
                     {
-                        Name = txtTenGiaoThuc.Text,
-                        Com = cbCOM.SelectedItem.ToString(),
-                        Baud = int.Parse(cbBaud.SelectedItem.ToString()),
-                        Parity = (Parity)Enum.Parse(typeof(Parity), cbParity.SelectedItem.ToString()),
-                        Databit = int.Parse(cbDataBit.SelectedItem.ToString()),
-                        StopBits = (StopBits)Enum.Parse(typeof(StopBits), cbStopBit.SelectedItem.ToString()),
-                        Protocol = cbProtocol.SelectedItem.ToString(),
-                        dsDiemDoGiamSat = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text].dsDiemDoGiamSat
-
-                    };
-                    if (!KiemTraCongCOM(cbCOM.SelectedItem.ToString()))
-                    {
-                        MessageBox.Show("Không thể chọn cổng này!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
+                        comTemp.Name = txtTenGiaoThuc.Text;
+                        comTemp.Com = cbCOM.SelectedItem.ToString();
+                        comTemp.Baud = int.Parse(cbBaud.SelectedItem.ToString());
+                        comTemp.Parity = (Parity)Enum.Parse(typeof(Parity), cbParity.SelectedItem.ToString());
+                        comTemp.Databit = int.Parse(cbDataBit.SelectedItem.ToString());
+                        comTemp.StopBits = (StopBits)Enum.Parse(typeof(StopBits), cbStopBit.SelectedItem.ToString());
+                        if (cbCOM.SelectedItem == null)
+                        {
+                            MessageBox.Show("Không có cổng COM được chọn!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                        else if (!KiemTraCongCOM(cbCOM.SelectedItem.ToString()))
+                        {
+                            MessageBox.Show("Không thể chọn cổng này!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                        else
+                        {
+                            dsThietBiGiamSat.Remove(formDataList.selectedNodeDouble.Text);
+                            dsThietBiGiamSat.Add(comTemp.Name, comTemp);
+                        }
                     }
                     else
                     {
-                        dsThietBiGiamSat.Remove(formDataList.selectedNodeDouble.Text);
-                        dsThietBiGiamSat.Add(deviceObjCOM.Name, deviceObjCOM);
+                        ThietBiModel deviceObjCOM = new ThietBiCOM
+                        {
+                            Name = txtTenGiaoThuc.Text,
+                            Com = cbCOM.SelectedItem.ToString(),
+                            Baud = int.Parse(cbBaud.SelectedItem.ToString()),
+                            Parity = (Parity)Enum.Parse(typeof(Parity), cbParity.SelectedItem.ToString()),
+                            Databit = int.Parse(cbDataBit.SelectedItem.ToString()),
+                            StopBits = (StopBits)Enum.Parse(typeof(StopBits), cbStopBit.SelectedItem.ToString()),
+                            Protocol = cbProtocol.SelectedItem.ToString(),
+                            dsDiemDoGiamSat = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text].dsDiemDoGiamSat
+
+                        };
+                        if (!KiemTraCongCOM(cbCOM.SelectedItem.ToString()))
+                        {
+                            MessageBox.Show("Không thể chọn cổng này!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                        else
+                        {
+                            dsThietBiGiamSat.Remove(formDataList.selectedNodeDouble.Text);
+                            dsThietBiGiamSat.Add(deviceObjCOM.Name, deviceObjCOM);
+                        }
                     }
                 }
             }
             GhiDsThietBiRaFileJson();
             formDataList.selectedNodeDouble.Text = txtTenGiaoThuc.Text;
-            SaveData();
+            //SaveData();
             isFormHaveAnyChanged = false;
         }
         #endregion
