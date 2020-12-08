@@ -181,6 +181,7 @@ namespace FileExportScheduler
                 isSaved = true;
                 isDataGridViewHaveAnyChanged = false;
                 MessageBox.Show("Lưu dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                isFormHaveAnyChanged = false;
             }
             else
             {
@@ -720,6 +721,7 @@ namespace FileExportScheduler
             }
             GhiDsThietBiRaFileJson();
             formDataList.selectedNodeDouble.Text = txtTenGiaoThuc.Text;
+            LuuDanhMucDuLieuVaoJson();
             //SaveData();
             MessageBox.Show("Lưu cấu hình thiết bị thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             isFormHaveAnyChanged = false;
