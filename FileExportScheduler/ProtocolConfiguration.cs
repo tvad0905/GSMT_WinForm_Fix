@@ -32,8 +32,8 @@ namespace FileExportScheduler
         public string tenDuLieuDuocChon;
         private bool isSaved = true;
         public bool isValidatePassed { get; set; }
-        public bool isDataGridViewHaveAnyChanged;
-        public bool isFormHaveAnyChanged { get; set; }
+        public bool isTabConfigHaveAnyChanged { get; set; }
+        public bool isTabDataHaveAnyChanged { get; set; }
         #endregion
         public ProtocolConfiguration(FormDataList formDataList)
         {
@@ -49,7 +49,7 @@ namespace FileExportScheduler
             cbParity.SelectedIndex = cbParity.Items.IndexOf("Even");
             cbStopBit.SelectedIndex = cbStopBit.Items.IndexOf("1");
 
-            isFormHaveAnyChanged = false;
+            isTabConfigHaveAnyChanged = false;
 
         }
 
@@ -77,7 +77,7 @@ namespace FileExportScheduler
         #endregion
 
         #region Kiểm tra nhập vào
-       
+
         public bool CheckValidateCauHinhCOM()
         {
             errorIP.SetError(txtIPAdress, "");
@@ -181,21 +181,20 @@ namespace FileExportScheduler
             {
                 LuuDanhMucDuLieuVaoJson();
                 isSaved = true;
-                isDataGridViewHaveAnyChanged = false;
+                isTabDataHaveAnyChanged = false;
                 MessageBox.Show("Lưu dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                isFormHaveAnyChanged = false;
             }
             else
             {
                 MessageBox.Show("Lưu dữ liệu không thành công!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                isDataGridViewHaveAnyChanged = true;
+                isTabDataHaveAnyChanged = true;
             }
         }
 
         //Xóa dữ liệu protocol
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if(dgvDataProtocol.SelectedRows.Count > 0)
+            if (dgvDataProtocol.SelectedRows.Count > 0)
             {
                 try
                 {
@@ -250,7 +249,7 @@ namespace FileExportScheduler
                     MessageBox.Show("Xóa dữ liệu không thành công!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
-            
+
         }
 
         //lưu cấu hình protocol
@@ -270,7 +269,7 @@ namespace FileExportScheduler
                     if (openFile == DialogResult.OK)
                     {
                         BindDataFromCSV(openFileDialog1.FileName);
-                        isFormHaveAnyChanged = true;
+                        isTabDataHaveAnyChanged = true;
                     }
                 }
             }
@@ -477,37 +476,45 @@ namespace FileExportScheduler
 
             if (isInFormEdit == false)
             {
-                if (tabControl1.SelectedTab.Text.Contains(Name = "Dữ liệu"))
+                if (isTabDataHaveAnyChanged == true && isTabConfigHaveAnyChanged == true)
                 {
                     SaveData();
+                    ThemMoiDuocClick();
+                }
+                else if (isTabConfigHaveAnyChanged == true)
+                {
+                    ThemMoiDuocClick();
                 }
                 else
                 {
-                    ThemMoiDuocClick();
+                    SaveData();
                 }
             }
             else if (isInFormEdit == true)
             {
-                if (tabControl1.SelectedTab.Text.Contains(Name = "Dữ liệu"))
+                if (isTabDataHaveAnyChanged == true && isTabConfigHaveAnyChanged == true)
                 {
                     SaveData();
+                    EditDuocClick();
+                }
+                else if (isTabConfigHaveAnyChanged == true)
+                {
+                    EditDuocClick();
                 }
                 else
                 {
-                    EditDuocClick();
+                    SaveData();
                 }
             }
         }
         public bool IsFormHaveAnyChanged()
         {
             this.dgvDataProtocol.EndEdit();
-
-            if (isDataGridViewHaveAnyChanged)
+            if(isTabDataHaveAnyChanged == true || isTabConfigHaveAnyChanged == true)
             {
-                isFormHaveAnyChanged = true;
+                return true;
             }
-
-            return isFormHaveAnyChanged;
+            return false;
         }
 
         #endregion
@@ -548,7 +555,7 @@ namespace FileExportScheduler
                 isValidatePassed = CheckValidateCauHinhIP();
                 if (CheckValidateCauHinhIP() == false)
                 {
-                    MessageBox.Show("Kiểm tra lại nhập vào!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Kiểm tra dữ liệu nhập vào!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 else
@@ -619,7 +626,7 @@ namespace FileExportScheduler
             MessageBox.Show("Lưu cấu hình thiết bị thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             node.ContextMenuStrip = formDataList.tx2;
             //SaveData();
-            isFormHaveAnyChanged = false;
+            isTabConfigHaveAnyChanged = false;
         }
 
         private void EditDuocClick()
@@ -723,32 +730,30 @@ namespace FileExportScheduler
             }
             GhiDsThietBiRaFileJson();
             formDataList.selectedNodeDouble.Text = txtTenGiaoThuc.Text;
-            LuuDanhMucDuLieuVaoJson();
             //SaveData();
             MessageBox.Show("Lưu cấu hình thiết bị thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            isFormHaveAnyChanged = false;
+            isTabConfigHaveAnyChanged = false;
         }
         #endregion
-
 
         #region event controller value change
         private void dgvDataProtocol_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex > -1)
             {
-                isDataGridViewHaveAnyChanged = true;
+                isTabDataHaveAnyChanged = true;
                 isSaved = false;
             }
         }
 
         private void txtTenGiaoThuc_TextChanged(object sender, EventArgs e)
         {
-            isFormHaveAnyChanged = true;
+            isTabConfigHaveAnyChanged = true;
         }
 
         private void cbProtocol_SelectedIndexChanged(object sender, EventArgs e)
         {
-            isFormHaveAnyChanged = true;
+            isTabConfigHaveAnyChanged = true;
 
             if (cbProtocol.SelectedIndex == 0)
             {
@@ -764,37 +769,37 @@ namespace FileExportScheduler
 
         private void txtIPAdress_TextChanged(object sender, EventArgs e)
         {
-            isFormHaveAnyChanged = true;
+            isTabConfigHaveAnyChanged = true;
         }
 
         private void txtPort_TextChanged(object sender, EventArgs e)
         {
-            isFormHaveAnyChanged = true;
+            isTabConfigHaveAnyChanged = true;
         }
 
         private void cbCOM_SelectedIndexChanged(object sender, EventArgs e)
         {
-            isFormHaveAnyChanged = true;
+            isTabConfigHaveAnyChanged = true;
         }
 
         private void cbBaud_SelectedIndexChanged(object sender, EventArgs e)
         {
-            isFormHaveAnyChanged = true;
+            isTabConfigHaveAnyChanged = true;
         }
 
         private void cbDataBit_SelectedIndexChanged(object sender, EventArgs e)
         {
-            isFormHaveAnyChanged = true;
+            isTabConfigHaveAnyChanged = true;
         }
 
         private void cbParity_SelectedIndexChanged(object sender, EventArgs e)
         {
-            isFormHaveAnyChanged = true;
+            isTabConfigHaveAnyChanged = true;
         }
 
         private void cbStopBit_SelectedIndexChanged(object sender, EventArgs e)
         {
-            isFormHaveAnyChanged = true;
+            isTabConfigHaveAnyChanged = true;
         }
         #endregion
     }

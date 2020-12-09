@@ -118,7 +118,8 @@ namespace FileExportScheduler
             protocolConfiguration.cbCOM.DataSource = ports;
 
             formProtocolConfiguration = protocolConfiguration;
-            formProtocolConfiguration.isFormHaveAnyChanged = false;
+            formProtocolConfiguration.isTabConfigHaveAnyChanged = false;
+            formProtocolConfiguration.isTabDataHaveAnyChanged = false;
         }
 
         private void tvMain_DoubleClick(object sender, EventArgs e)
@@ -159,7 +160,8 @@ namespace FileExportScheduler
                     splitContainer.Panel2.Controls.Add(protocolConfiguration);
                     formProtocolConfiguration = protocolConfiguration;//lưu vào biến toàn cục
                     isInFormEdit = true;
-                    formProtocolConfiguration.isFormHaveAnyChanged = false;
+                    formProtocolConfiguration.isTabConfigHaveAnyChanged = false;
+                    formProtocolConfiguration.isTabDataHaveAnyChanged = false;
                 }
             }
         }
