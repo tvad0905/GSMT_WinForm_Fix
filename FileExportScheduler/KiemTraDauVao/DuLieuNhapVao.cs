@@ -156,7 +156,7 @@ namespace FileExportScheduler.KiemTraDauVao
                 {
                     if (IsNullOrBlankValue(cellUnit))
                     {
-                        cellCanCheck.ErrorText = "Địa chỉ không để trống";
+                        cellUnit.ErrorText = "Địa chỉ không để trống";
                         return false;
                     }
 
