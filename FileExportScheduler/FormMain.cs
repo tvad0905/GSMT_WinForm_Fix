@@ -340,65 +340,33 @@ namespace FileExportScheduler
             ArrayList dsDuLieuNhanDuoc = new ArrayList();
             //Danh sách lỗi trong quá trình  đọc dữ liệu
             List<string> danhSachLoi = new List<string>();
-            //Read Coils
             try
             {
-                if(deviceUnit.Value.MaxAddressCoils > 0)
-                {
-                    dsDuLieuNhanDuoc.Add(Data.DataTCPIP.LayDuLieuTCPCoils(modbusTCP, deviceUnit.Value.MaxAddressCoils, deviceUnit.Value));
-                }
-                else
-                {
-                    StopSystem("Vui lòng kiểm tra lại địa chỉ nhập vào");
-                }
+                dsDuLieuNhanDuoc.Add(Data.DataTCPIP.LayDuLieuTCPCoils(modbusTCP, deviceUnit.Value.MaxAddressCoils, deviceUnit.Value));
             }
             catch
             {
                 StopSystem("Vui lòng kiểm tra lại địa chỉ nhập vào");
             }
-            //Read Inputs
             try
             {
-                if (deviceUnit.Value.MaxAddressCoils > 0)
-                {
-                    dsDuLieuNhanDuoc.Add(Data.DataTCPIP.LayDuLieuTCPInputs(modbusTCP, deviceUnit.Value.MaxAddressInputs, deviceUnit.Value));
-                }
-                else
-                {
-                    StopSystem("Vui lòng kiểm tra lại địa chỉ nhập vào");
-                }
+                dsDuLieuNhanDuoc.Add(Data.DataTCPIP.LayDuLieuTCPInputs(modbusTCP, deviceUnit.Value.MaxAddressInputs, deviceUnit.Value));
             }
             catch
             {
                 StopSystem("Vui lòng kiểm tra lại địa chỉ nhập vào");
             }
-            //Read Input Register
             try
             {
-                if (deviceUnit.Value.MaxAddressCoils > 0)
-                {
-                    dsDuLieuNhanDuoc.Add(Data.DataTCPIP.LayDuLieuTCPInputRegister(modbusTCP, deviceUnit.Value.MaxAddressInputRegisters, deviceUnit.Value));
-                }
-                else
-                {
-                    StopSystem("Vui lòng kiểm tra lại địa chỉ nhập vào");
-                }
+                dsDuLieuNhanDuoc.Add(Data.DataTCPIP.LayDuLieuTCPInputRegister(modbusTCP, deviceUnit.Value.MaxAddressInputRegisters, deviceUnit.Value));
             }
             catch
             {
                 StopSystem("Vui lòng kiểm tra lại địa chỉ nhập vào");
             }
-            //Read Holding Register
             try
             {
-                if (deviceUnit.Value.MaxAddressCoils > 0)
-                {
-                    dsDuLieuNhanDuoc.Add(Data.DataTCPIP.LayDuLieuTCPHoldingRegister(modbusTCP, deviceUnit.Value.MaxAddressHoldingRegisters, deviceUnit.Value));
-                }
-                else
-                {
-                    StopSystem("Vui lòng kiểm tra lại địa chỉ nhập vào");
-                }
+                dsDuLieuNhanDuoc.Add(Data.DataTCPIP.LayDuLieuTCPHoldingRegister(modbusTCP, deviceUnit.Value.MaxAddressHoldingRegisters, deviceUnit.Value));
             }
             catch
             {
@@ -420,94 +388,49 @@ namespace FileExportScheduler
         {
             List<string> danhSachLoi = new List<string>();
             ArrayList dsDuLieuNhanDuoc = new ArrayList();
-            //Read Coils
+            //đọc dữ liệu
             try
             {
-                if(deviceUnit.Value.MaxAddressCoils > 0)
-                {
-                    dsDuLieuNhanDuoc.Add(Data.DataCOM.LayDuLieuCOMCoils(serialPort, deviceUnit.Value.MaxAddressCoils, deviceUnit.Value));
-                }
-                else
-                {
-                    StopSystem("Vui lòng kiểm tra lại địa chỉ nhập vào");
-                }
+                dsDuLieuNhanDuoc.Add(Data.DataCOM.LayDuLieuCOMCoils(serialPort, deviceUnit.Value.MaxAddressCoils, deviceUnit.Value));
             }
-            catch (TimeoutException ex)
+            catch (Exception)
             {
-                danhSachLoi.Add(ThongBaoLoi.KhongKetNoi);
-                StopSystem("Vui lòng kiểm tra kết nối");
-            }
-            catch (Exception ex)
-            {
-                danhSachLoi.Add(ThongBaoLoi.KhongCoTinHieuTraVe);
                 StopSystem("Vui lòng kiểm tra lại địa chỉ nhập vào");
+
             }
-            //Read Inputs
             try
             {
-                if (deviceUnit.Value.MaxAddressInputs > 0)
-                {
-                    dsDuLieuNhanDuoc.Add(Data.DataCOM.LayDuLieuCOMInputs(serialPort, deviceUnit.Value.MaxAddressInputs, deviceUnit.Value));
-                }
-                else
-                {
-                    StopSystem("Vui lòng kiểm tra lại địa chỉ nhập vào");
-                }
+                dsDuLieuNhanDuoc.Add(Data.DataCOM.LayDuLieuCOMInputs(serialPort, deviceUnit.Value.MaxAddressInputs, deviceUnit.Value));
             }
-            catch (TimeoutException ex)
+            catch (Exception)
             {
-                danhSachLoi.Add(ThongBaoLoi.KhongKetNoi);
-                StopSystem("Vui lòng kiểm tra kết nối");
-            }
-            catch (Exception ex)
-            {
-                danhSachLoi.Add(ThongBaoLoi.KhongCoTinHieuTraVe);
+
                 StopSystem("Vui lòng kiểm tra lại địa chỉ nhập vào");
+
             }
-            //Read Input Registers
             try
             {
-                if (deviceUnit.Value.MaxAddressInputRegisters > 0)
-                {
-                    dsDuLieuNhanDuoc.Add(Data.DataCOM.LayDuLieuCOMInputRegisters(serialPort, deviceUnit.Value.MaxAddressInputRegisters, deviceUnit.Value));
-                }
-                else
-                {
-                    StopSystem("Vui lòng kiểm tra lại địa chỉ nhập vào");
-                }
-                
+                dsDuLieuNhanDuoc.Add(Data.DataCOM.LayDuLieuCOMInputRegisters(serialPort, deviceUnit.Value.MaxAddressInputRegisters, deviceUnit.Value));
             }
-            catch (TimeoutException ex)
+            catch (Exception)
             {
-                danhSachLoi.Add(ThongBaoLoi.KhongKetNoi);
-                StopSystem("Vui lòng kiểm tra kết nối");
-            }
-            catch (Exception ex)
-            {
-                danhSachLoi.Add(ThongBaoLoi.KhongCoTinHieuTraVe);
+
                 StopSystem("Vui lòng kiểm tra lại địa chỉ nhập vào");
+
             }
-            //Read Holding Registers
             try
             {
-                if (deviceUnit.Value.MaxAddressHoldingRegisters > 0)
-                {
-                    dsDuLieuNhanDuoc.Add(Data.DataCOM.LayDuLieuCOMHoldingRegisters(serialPort, deviceUnit.Value.MaxAddressHoldingRegisters, deviceUnit.Value));
-                }
-                else
-                {
-                    StopSystem("Vui lòng kiểm tra lại địa chỉ nhập vào");
-                }
+                dsDuLieuNhanDuoc.Add(Data.DataCOM.LayDuLieuCOMHoldingRegisters(serialPort, deviceUnit.Value.MaxAddressHoldingRegisters, deviceUnit.Value));
             }
             catch (TimeoutException ex )
             {
-                danhSachLoi.Add(ThongBaoLoi.KhongKetNoi);
                 StopSystem("Vui lòng kiểm tra kết nối");
             }
             catch (Exception ex)
             {
-                danhSachLoi.Add(ThongBaoLoi.KhongCoTinHieuTraVe);
+                danhSachLoi.Add(ThongBaoLoi.KhongKetNoi);
                 StopSystem("Vui lòng kiểm tra lại địa chỉ nhập vào");
+
             }
 
 
