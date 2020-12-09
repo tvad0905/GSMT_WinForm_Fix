@@ -811,13 +811,24 @@ namespace FileExportScheduler
             switch (e.ColumnIndex)
             {
                 case 0:
-                    DuLieuNhapVao.KiemTraTungCellCotTen(dgvDataProtocol, cellCanCheck);
+                    if( DuLieuNhapVao.KiemTraTungCellCotTen(dgvDataProtocol, cellCanCheck))
+                    {
+                        checkLaiTrungTenSauKhiSua();
+                    }    
                     break;
                 case 1:
-                    DuLieuNhapVao.KiemTraTungCellCotDiemDo(dgvDataProtocol, cellCanCheck);
+                    if(DuLieuNhapVao.KiemTraTungCellCotDiemDo(dgvDataProtocol, cellCanCheck))
+                    {
+                        checkLaiTrungDiemDoSauKhiSua();
+                    }
                     break;
                 case 2:
-                    DuLieuNhapVao.KiemTraTungCellCotDiaChi(dgvDataProtocol, cellCanCheck);
+                    //kiểm tra trùng lặp kết hợp kiểm tra định dạng
+                    if (DuLieuNhapVao.KiemTraTungCellCotDiaChi(dgvDataProtocol, cellCanCheck))
+                    {
+                        //nếu sau khi trung lặp được sửa check lại 1 lần nữa để xóa hết error message trung lặp
+                        checkLaiTrungDiaChiSauKhiSua();
+                    }
                     break;
                 case 3:
                     DuLieuNhapVao.KiemTraTungCellCotScale(dgvDataProtocol, cellCanCheck);
@@ -827,5 +838,45 @@ namespace FileExportScheduler
                     break;
             }
         }
+        private void checkLaiTrungDiaChiSauKhiSua()
+        {
+            foreach (DataGridViewRow rowUnit in dgvDataProtocol.Rows)
+            {
+                //break when in last row because last row is null row
+                if (rowUnit.Index == dgvDataProtocol.Rows.Count - 1)
+                {
+                    break;
+                }
+                DataGridViewCell cellDiaChiUnit = rowUnit.Cells["diaChi"];
+                DuLieuNhapVao.KiemTraTungCellCotDiaChi(dgvDataProtocol, cellDiaChiUnit);
+            }
+        }
+        private void checkLaiTrungTenSauKhiSua()
+        {
+            foreach (DataGridViewRow rowUnit in dgvDataProtocol.Rows)
+            {
+                //break when in last row because last row is null row
+                if (rowUnit.Index == dgvDataProtocol.Rows.Count - 1)
+                {
+                    break;
+                }
+                DataGridViewCell cellTenUnit = rowUnit.Cells["ten"];
+                DuLieuNhapVao.KiemTraTungCellCotTen(dgvDataProtocol, cellTenUnit);
+            }
+        }
+        private void checkLaiTrungDiemDoSauKhiSua()
+        {
+            foreach (DataGridViewRow rowUnit in dgvDataProtocol.Rows)
+            {
+                //break when in last row because last row is null row
+                if (rowUnit.Index == dgvDataProtocol.Rows.Count - 1)
+                {
+                    break;
+                }
+                DataGridViewCell cellDiemDoUnit = rowUnit.Cells["diemDo"];
+                DuLieuNhapVao.KiemTraTungCellCotTen(dgvDataProtocol, cellDiemDoUnit);
+            }
+        }
     }
+    
 }
