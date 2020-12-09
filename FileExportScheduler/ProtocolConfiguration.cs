@@ -313,7 +313,7 @@ namespace FileExportScheduler
             else
             {
                 DialogResult dialog = MessageBox.Show("Chưa lưu dữ liệu trên bảng nhập vào. Lưu trước khi xuất dữ liệu?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if(dialog == DialogResult.Yes)
+                if (dialog == DialogResult.Yes)
                 {
                     nhapData();
                     ExportDataToCSV();
@@ -326,7 +326,7 @@ namespace FileExportScheduler
                     ExportDataToCSV();
                 }
             }
-            
+
         }
 
         //sửa cấu hình protocol
@@ -455,10 +455,10 @@ namespace FileExportScheduler
             {
                 isFormHaveAnyChanged = true;
             }
-            
+
             return isFormHaveAnyChanged;
         }
-  
+
         #endregion
         public bool KiemTraCongCOM(String COM)
         {
