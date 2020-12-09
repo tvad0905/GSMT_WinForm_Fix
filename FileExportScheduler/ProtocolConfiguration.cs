@@ -810,30 +810,33 @@ namespace FileExportScheduler
 
             switch (e.ColumnIndex)
             {
-                case 0:
+                case 0://tên
                     if( DuLieuNhapVao.KiemTraTungCellCotTen(dgvDataProtocol, cellCanCheck))
                     {
                         checkLaiTrungTenSauKhiSua();
+                        checkLaiTrungDiemDoSauKhiSua();//
                     }    
                     break;
-                case 1:
+                case 1://điểm đo
                     if(DuLieuNhapVao.KiemTraTungCellCotDiemDo(dgvDataProtocol, cellCanCheck))
                     {
                         checkLaiTrungDiemDoSauKhiSua();
+                        checkLaiTrungTenSauKhiSua();//
                     }
                     break;
-                case 2:
+                case 2://địa chỉ
                     //kiểm tra trùng lặp kết hợp kiểm tra định dạng
                     if (DuLieuNhapVao.KiemTraTungCellCotDiaChi(dgvDataProtocol, cellCanCheck))
                     {
                         //nếu sau khi trung lặp được sửa check lại 1 lần nữa để xóa hết error message trung lặp
                         checkLaiTrungDiaChiSauKhiSua();
+
                     }
                     break;
-                case 3:
+                case 3://sacle
                     DuLieuNhapVao.KiemTraTungCellCotScale(dgvDataProtocol, cellCanCheck);
                     break;
-                case 4:
+                case 4://don vi đo
                     DuLieuNhapVao.KiemTraTungCellCotDonViDo(dgvDataProtocol, cellCanCheck);
                     break;
             }
