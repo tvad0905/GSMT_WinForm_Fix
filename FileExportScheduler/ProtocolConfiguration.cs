@@ -708,8 +708,31 @@ namespace FileExportScheduler
         {
             isFormHaveAnyChanged = true;
         }
+
         #endregion
 
+        private void dgvDataProtocol_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            DataGridViewCell cellCanCheck = dgvDataProtocol[e.ColumnIndex, e.RowIndex];
 
+            switch (e.ColumnIndex)
+            {
+                case 0:
+                    DuLieuNhapVao.KiemTraTungCellCotTen(dgvDataProtocol, cellCanCheck);
+                    break;
+                case 1:
+                    DuLieuNhapVao.KiemTraTungCellCotDiemDo(dgvDataProtocol, cellCanCheck);
+                    break;
+                case 2:
+                    DuLieuNhapVao.KiemTraTungCellCotDiaChi(dgvDataProtocol, cellCanCheck);
+                    break;
+                case 3:
+                    DuLieuNhapVao.KiemTraTungCellCotScale(dgvDataProtocol, cellCanCheck);
+                    break;
+                case 4:
+                    DuLieuNhapVao.KiemTraTungCellCotDonViDo(dgvDataProtocol, cellCanCheck);
+                    break;
+            }
+        }
     }
 }
