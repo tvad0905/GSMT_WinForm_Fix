@@ -99,14 +99,14 @@ namespace FileExportScheduler
                     dr["DiaChi"] = thongSoGiaTri.DiaChi;
                     if (int.TryParse(thongSoGiaTri.GiaTri, out _))
                     {
-                        dr["GiaTri"] = Math.Round(Convert.ToDouble(thongSoGiaTri.GiaTri) / Convert.ToDouble(thongSoGiaTri.Scale)).ToString();
+                        dr["GiaTri"] = (Convert.ToDouble(thongSoGiaTri.GiaTri) / Convert.ToDouble(thongSoGiaTri.Scale)).ToString();
 
                     }
                     else
                     {
                         if (thongSoGiaTri.GiaTri != null)
                         {
-                            dr["GiaTri"] = Math.Round((Convert.ToDouble(thongSoGiaTri.GiaTri) / Convert.ToDouble(thongSoGiaTri.Scale)), 2).ToString();
+                            dr["GiaTri"] = (Convert.ToDouble(thongSoGiaTri.GiaTri) / Convert.ToDouble(thongSoGiaTri.Scale)).ToString();
 
                         }
                         else

@@ -67,11 +67,11 @@ namespace FileExportScheduler.Service.DuLieu
 
                         if (int.TryParse(duLieu.Value.GiaTri, out _))
                         {
-                            dsThongSoGiaTri[row, 0] = Math.Round(Convert.ToDouble(duLieu.Value.GiaTri) / Convert.ToDouble(duLieu.Value.Scale)).ToString();
+                            dsThongSoGiaTri[row, 0] = (Convert.ToDouble(duLieu.Value.GiaTri) / Convert.ToDouble(duLieu.Value.Scale)).ToString();
                         }
                         else
                         {
-                            dsThongSoGiaTri[row, 0] = Math.Round(Convert.ToDouble(duLieu.Value.GiaTri) / Convert.ToDouble(duLieu.Value.Scale)).ToString();
+                            dsThongSoGiaTri[row, 0] = (Convert.ToDouble(duLieu.Value.GiaTri) / Convert.ToDouble(duLieu.Value.Scale)).ToString();
                         }
 
                         dsThongSoGiaTri[row, 1] = thietBi.Value.TrangThaiTinHieu;
