@@ -113,13 +113,12 @@ namespace FileExportScheduler
         private void FormDataList_Load(object sender, EventArgs e)
         {
             LoadTreeView();
-            ProtocolConfiguration protocolConfiguration = new ProtocolConfiguration(this);
-            var ports = SerialPort.GetPortNames();
-            protocolConfiguration.cbCOM.DataSource = ports;
+            /*ProtocolConfiguration protocolConfiguration = new ProtocolConfiguration(this);
+            protocolConfiguration.cbCOM.DataSource = SerialPort.GetPortNames();
 
             formProtocolConfiguration = protocolConfiguration;
             formProtocolConfiguration.isTabConfigHaveAnyChanged = false;
-            formProtocolConfiguration.isTabDataHaveAnyChanged = false;
+            formProtocolConfiguration.isTabDataHaveAnyChanged = false;*/
         }
 
         private void tvMain_DoubleClick(object sender, EventArgs e)
@@ -230,7 +229,11 @@ namespace FileExportScheduler
 
         private void FormDataList_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (formProtocolConfiguration.IsFormHaveAnyChanged())
+            if (formProtocolConfiguration == null)
+            {
+                e.Cancel = false;
+            }
+            else if (formProtocolConfiguration.IsFormHaveAnyChanged())
             {
                 DialogResult dr = MessageBox.Show("Bạn muốn lưu những thay đổi trước khi đóng form không ?", "Chú ý", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 

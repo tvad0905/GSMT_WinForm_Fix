@@ -79,14 +79,12 @@ namespace FileExportScheduler.KiemTraDauVao
                 cell.ErrorText = "Scale không để trống";
                 return false;
             }
-
             //Kiem tra dinh dang
             if (!DinhDangScale(cell.Value.ToString()))
             {
                 cell.ErrorText = "Scale sai định dạng";
                 return false;
             }
-
             RemoveErrorText(cell);
             return true;
         }
@@ -129,7 +127,7 @@ namespace FileExportScheduler.KiemTraDauVao
             //Kiem tra null
             if (IsNullOrBlankValue(cellCanCheck))
             {
-                cellCanCheck.ErrorText = "Địa chỉ không để trống";
+                cellCanCheck.ErrorText = "Địa chỉ không được để trống";
                 return false;
             }
 
@@ -361,6 +359,7 @@ namespace FileExportScheduler.KiemTraDauVao
         }
         private static bool DinhDangScale(string scale)
         {
+            var regex = new Regex(@"^(?:[1-9]\d*(?:\.\d+)?|0\.0*[1-9]\d*)$");
             Double scaleNumber;
             try
             {
@@ -370,6 +369,9 @@ namespace FileExportScheduler.KiemTraDauVao
                 return false;
             }
             if (scaleNumber <= 0)
+            {
+                return false;
+            }else if (!regex.IsMatch(scale))
             {
                 return false;
             }
