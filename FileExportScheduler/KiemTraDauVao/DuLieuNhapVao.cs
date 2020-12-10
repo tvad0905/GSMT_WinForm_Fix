@@ -79,14 +79,12 @@ namespace FileExportScheduler.KiemTraDauVao
                 cell.ErrorText = "Scale không để trống";
                 return false;
             }
-
             //Kiem tra dinh dang
             if (!DinhDangScale(cell.Value.ToString()))
             {
                 cell.ErrorText = "Scale sai định dạng";
                 return false;
             }
-
             RemoveErrorText(cell);
             return true;
         }
