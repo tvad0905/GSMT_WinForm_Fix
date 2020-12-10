@@ -729,10 +729,13 @@ namespace FileExportScheduler
 
                         }));
                     }
-                    MessageBox.Show(loaiLoi, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    this.Invoke(new Action(delegate ()
+                    {
+                        MessageBox.Show(loaiLoi, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }));
                 }
             }
-
         }
     }
 }
