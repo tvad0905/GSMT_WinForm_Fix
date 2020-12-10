@@ -129,7 +129,7 @@ namespace FileExportScheduler.KiemTraDauVao
             //Kiem tra null
             if (IsNullOrBlankValue(cellCanCheck))
             {
-                cellCanCheck.ErrorText = "Địa chỉ không để trống";
+                cellCanCheck.ErrorText = "Địa chỉ không được để trống";
                 return false;
             }
 
