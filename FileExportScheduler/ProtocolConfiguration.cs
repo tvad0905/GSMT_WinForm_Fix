@@ -348,7 +348,7 @@ namespace FileExportScheduler
             }
             else if (isTabDataHaveAnyChanged == true && isSaved == false)
             {
-                DialogResult dialog = MessageBox.Show("Chưa lưu dữ liệu trên bảng nhập vào. Lưu trước khi xuất dữ liệu?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult dialog = MessageBox.Show("Dữ liệu trên màn hình chưa được lưu.Bạn có muốn lưu lại trước khi xuất file ?", "Lưu ý", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dialog == DialogResult.Yes)
                 {
                     SaveData();
@@ -830,22 +830,76 @@ namespace FileExportScheduler
 
             switch (e.ColumnIndex)
             {
-                case 0:
-                    DuLieuNhapVao.KiemTraTungCellCotTen(dgvDataProtocol, cellCanCheck);
+                case 0://tên
+                    if( DuLieuNhapVao.KiemTraTungCellCotTen(dgvDataProtocol, cellCanCheck))
+                    {
+                        checkLaiTrungTenSauKhiSua();
+                        checkLaiTrungDiemDoSauKhiSua();//
+                    }    
                     break;
-                case 1:
-                    DuLieuNhapVao.KiemTraTungCellCotDiemDo(dgvDataProtocol, cellCanCheck);
+                case 1://điểm đo
+                    if(DuLieuNhapVao.KiemTraTungCellCotDiemDo(dgvDataProtocol, cellCanCheck))
+                    {
+                        checkLaiTrungDiemDoSauKhiSua();
+                        checkLaiTrungTenSauKhiSua();//
+                    }
                     break;
-                case 2:
-                    DuLieuNhapVao.KiemTraTungCellCotDiaChi(dgvDataProtocol, cellCanCheck);
+                case 2://địa chỉ
+                    //kiểm tra trùng lặp kết hợp kiểm tra định dạng
+                    if (DuLieuNhapVao.KiemTraTungCellCotDiaChi(dgvDataProtocol, cellCanCheck))
+                    {
+                        //nếu sau khi trung lặp được sửa check lại 1 lần nữa để xóa hết error message trung lặp
+                        checkLaiTrungDiaChiSauKhiSua();
+
+                    }
                     break;
-                case 3:
+                case 3://sacle
                     DuLieuNhapVao.KiemTraTungCellCotScale(dgvDataProtocol, cellCanCheck);
                     break;
-                case 4:
+                case 4://don vi đo
                     DuLieuNhapVao.KiemTraTungCellCotDonViDo(dgvDataProtocol, cellCanCheck);
                     break;
             }
         }
+        private void checkLaiTrungDiaChiSauKhiSua()
+        {
+            foreach (DataGridViewRow rowUnit in dgvDataProtocol.Rows)
+            {
+                //break when in last row because last row is null row
+                if (rowUnit.Index == dgvDataProtocol.Rows.Count - 1)
+                {
+                    break;
+                }
+                DataGridViewCell cellDiaChiUnit = rowUnit.Cells["diaChi"];
+                DuLieuNhapVao.KiemTraTungCellCotDiaChi(dgvDataProtocol, cellDiaChiUnit);
+            }
+        }
+        private void checkLaiTrungTenSauKhiSua()
+        {
+            foreach (DataGridViewRow rowUnit in dgvDataProtocol.Rows)
+            {
+                //break when in last row because last row is null row
+                if (rowUnit.Index == dgvDataProtocol.Rows.Count - 1)
+                {
+                    break;
+                }
+                DataGridViewCell cellTenUnit = rowUnit.Cells["ten"];
+                DuLieuNhapVao.KiemTraTungCellCotTen(dgvDataProtocol, cellTenUnit);
+            }
+        }
+        private void checkLaiTrungDiemDoSauKhiSua()
+        {
+            foreach (DataGridViewRow rowUnit in dgvDataProtocol.Rows)
+            {
+                //break when in last row because last row is null row
+                if (rowUnit.Index == dgvDataProtocol.Rows.Count - 1)
+                {
+                    break;
+                }
+                DataGridViewCell cellDiemDoUnit = rowUnit.Cells["diemDo"];
+                DuLieuNhapVao.KiemTraTungCellCotTen(dgvDataProtocol, cellDiemDoUnit);
+            }
+        }
     }
+    
 }
