@@ -243,6 +243,8 @@ namespace FileExportScheduler
                         {
                             LuuDanhMucDuLieuVaoJson();
                             MessageBox.Show("Xóa dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            isSaved = true;
+                            isTabDataHaveAnyChanged = false;
                         }
                         else
                         {
