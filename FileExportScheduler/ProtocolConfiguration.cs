@@ -31,6 +31,7 @@ namespace FileExportScheduler
         public FormDataList formDataList;
         public string tenDuLieuDuocChon;
         private bool isSaved = true;
+        public bool isClicked { get; set; }
         public bool isValidatePassed { get; set; }
         public bool isTabConfigHaveAnyChanged { get; set; }
         public bool isTabDataHaveAnyChanged { get; set; }
@@ -48,7 +49,7 @@ namespace FileExportScheduler
             cbDataBit.SelectedIndex = cbDataBit.Items.IndexOf("8");
             cbParity.SelectedIndex = cbParity.Items.IndexOf("Even");
             cbStopBit.SelectedIndex = cbStopBit.Items.IndexOf("1");
-
+            isClicked = false;
             isTabConfigHaveAnyChanged = false;
 
         }
@@ -171,6 +172,7 @@ namespace FileExportScheduler
         //Thêm dữ liệu protocol
         private void btnAddData_Click(object sender, EventArgs e)
         {
+            isClicked = true;
             SaveData();
         }
 
@@ -182,7 +184,11 @@ namespace FileExportScheduler
                 LuuDanhMucDuLieuVaoJson();
                 isSaved = true;
                 isTabDataHaveAnyChanged = false;
-                MessageBox.Show("Lưu dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if(isClicked == true)
+                {
+                    MessageBox.Show("Lưu dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    isClicked = false;
+                }
             }
             else
             {
@@ -255,6 +261,7 @@ namespace FileExportScheduler
         //lưu cấu hình protocol
         private void btnSaveProtocol_Click(object sender, EventArgs e)
         {
+            isClicked = true;
             ThemMoiDuocClick();
         }
 
@@ -373,7 +380,9 @@ namespace FileExportScheduler
         //sửa cấu hình protocol
         private void btnEditProtocol_Click(object sender, EventArgs e)
         {
+            isClicked = true;
             EditDuocClick();
+            
         }
         #endregion
 
@@ -643,7 +652,11 @@ namespace FileExportScheduler
                 TVMain.SelectedNode.Parent.Nodes.Add(node);
                 formDataList.selectedNodeDouble = node;
             }
-            MessageBox.Show("Lưu cấu hình thiết bị thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if(isClicked == true)
+            {
+                MessageBox.Show("Lưu cấu hình thiết bị thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                isClicked = false;
+            }
             node.ContextMenuStrip = formDataList.tx2;
             //SaveData();
             isTabConfigHaveAnyChanged = false;
@@ -691,7 +704,7 @@ namespace FileExportScheduler
                 isValidatePassed = CheckValidateCauHinhCOM();
                 if (CheckValidateCauHinhCOM() == false)
                 {
-                    MessageBox.Show("Kiểm tra lại nhập vào!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Kiểm tra lại dữ liệu nhập vào!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 else
@@ -751,7 +764,10 @@ namespace FileExportScheduler
             GhiDsThietBiRaFileJson();
             formDataList.selectedNodeDouble.Text = txtTenGiaoThuc.Text;
             //SaveData();
-            MessageBox.Show("Lưu cấu hình thiết bị thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (isClicked == true)
+            {
+                MessageBox.Show("Lưu cấu hình thiết bị thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
             isTabConfigHaveAnyChanged = false;
         }
         #endregion
