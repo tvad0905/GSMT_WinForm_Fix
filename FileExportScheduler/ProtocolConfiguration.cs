@@ -341,23 +341,23 @@ namespace FileExportScheduler
         //Lưu dữ liệu từ datagridview vào list
         private void btnExport_Click(object sender, EventArgs e)
         {
-            if (isSaved)
+            if (!isTabDataHaveAnyChanged)
             {
                 ExportDataToCSV();
             }
             else
             {
-                DialogResult dialog = MessageBox.Show("Chưa lưu dữ liệu trên bảng nhập vào. Lưu trước khi xuất dữ liệu?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult dialog = MessageBox.Show("Dữ liệu trên màn hình chưa được lưu.Bạn có muốn lưu lại trước khi xuất file ?", "Lưu ý", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dialog == DialogResult.Yes)
                 {
                     SaveData();
                     ExportDataToCSV();
-                    isSaved = true;
+                    isTabDataHaveAnyChanged = false;
                 }
                 else
                 {
                     LoadDuLieuLenDgv();
-                    isSaved = true;
+                    isTabDataHaveAnyChanged = true;
                     ExportDataToCSV();
                 }
             }
