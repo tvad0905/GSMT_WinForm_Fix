@@ -361,6 +361,7 @@ namespace FileExportScheduler.KiemTraDauVao
         }
         private static bool DinhDangScale(string scale)
         {
+            var regex = new Regex(@"^(?:[1-9]\d*(?:\.\d+)?|0\.0*[1-9]\d*)$");
             Double scaleNumber;
             try
             {
@@ -370,6 +371,9 @@ namespace FileExportScheduler.KiemTraDauVao
                 return false;
             }
             if (scaleNumber <= 0)
+            {
+                return false;
+            }else if (!regex.IsMatch(scale))
             {
                 return false;
             }
