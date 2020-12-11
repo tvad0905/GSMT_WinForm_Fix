@@ -209,24 +209,22 @@ namespace FileExportScheduler
                     {
                         foreach (DataGridViewRow row in dgvDataProtocol.SelectedRows)//đọc danh sách các dòng dữ liệu được chọn
                         {
-                            var b = row.Cells[0].Value;
                             if (row.Cells[0].Value != null && row.Cells[1].Value != null)
                             {
                                 try
                                 {
-                                    var diemDo = dsThietBiGiamSat[txtTenGiaoThuc.Text].//lấy ra thiết bị
-                                                                     dsDiemDoGiamSat[row.Cells[1].Value.ToString()];//lấy ra điểm đo
-                                    diemDo.DsDulieu.Remove(row.Cells[0].Value.ToString());//xóa 1 dữ liệu trong danh sách dữ liệu
-                                    if (diemDo.DsDulieu.Count() == 0)// xóa điểm đo khi dữ liệu của điểm đo trống
+                                    var diemDo = dsThietBiGiamSat[txtTenGiaoThuc.Text].dsDiemDoGiamSat[row.Cells[1].Value.ToString()];
+                                    if (diemDo.DsDulieu.Count() == 0)
                                     {
-                                        dsThietBiGiamSat[txtTenGiaoThuc.Text].//lấy ra thiết bị
-                                               dsDiemDoGiamSat.Remove(diemDo.TenDiemDo);
+                                        dsThietBiGiamSat[txtTenGiaoThuc.Text].dsDiemDoGiamSat.Remove(diemDo.TenDiemDo);
                                     }
                                 }
                                 catch (Exception ex)
                                 {
                                     //MessageBox.Show("Lỗi: " + ex.Message, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 }
+                                dgvDataProtocol.Rows.Remove(row);
+
                             }
                             else
                             {
@@ -236,9 +234,9 @@ namespace FileExportScheduler
                                 }
                                 continue;
                             }
-                            dgvDataProtocol.Rows.Remove(row);
+                            //dgvDataProtocol.Rows.Remove(row);
                         }
-                        isValidatePassed = DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol);
+                        /*isValidatePassed = DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol);
                         if (DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol))
                         {
                             LuuDanhMucDuLieuVaoJson();
@@ -249,12 +247,24 @@ namespace FileExportScheduler
                         else
                         {
                             MessageBox.Show("Dữ liệu nhập vào lỗi vui lòng kiểm tra lại!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        }
+                            isSaved = false;
+                            isTabDataHaveAnyChanged = true;
+                        }*/
+                        isTabDataHaveAnyChanged = true;
+                        isSaved = false;
                     }
+                    else
+                    {
+                        isTabDataHaveAnyChanged = false;
+                        isSaved = true;
+                    }
+                    
                 }
                 catch (Exception)
                 {
                     MessageBox.Show("Xóa dữ liệu không thành công!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    isSaved = true;
+                    isTabDataHaveAnyChanged = false;
                 }
             }
 
