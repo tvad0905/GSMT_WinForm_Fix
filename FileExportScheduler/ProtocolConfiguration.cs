@@ -367,7 +367,7 @@ namespace FileExportScheduler
             }
             else if (isTabDataHaveAnyChanged == true && isSaved == false)
             {
-                DialogResult dialog = MessageBox.Show("Dữ liệu trên màn hình chưa được lưu.Bạn có muốn lưu lại trước khi xuất file ?", "Lưu ý", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult dialog = MessageBox.Show("Dữ liệu trên màn hình chưa được lưu. Bạn có muốn lưu lại trước khi xuất file?", "Lưu ý", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dialog == DialogResult.Yes)
                 {
                     SaveData();
@@ -775,11 +775,12 @@ namespace FileExportScheduler
             }
             GhiDsThietBiRaFileJson();
             formDataList.selectedNodeDouble.Text = txtTenGiaoThuc.Text;
-            //SaveData();
             if (isClicked == true)
             {
                 MessageBox.Show("Lưu cấu hình thiết bị thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                isClicked = false;
             }
+            SaveData();
             isTabConfigHaveAnyChanged = false;
         }
         #endregion
