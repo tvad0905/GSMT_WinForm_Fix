@@ -929,6 +929,47 @@ namespace FileExportScheduler
                 DuLieuNhapVao.KiemTraTungCellCotTen(dgvDataProtocol, cellDiemDoUnit);
             }
         }
+        private void dgvDataProtocol_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            
+            //nhap du lieu cot dia chi
+            if (dgvDataProtocol.CurrentCell.ColumnIndex == 2)
+            {
+                TextBox tb = e.Control as TextBox;
+                if (tb != null)
+                {
+                    tb.KeyPress += new KeyPressEventHandler(DiaChi_KeyPress);
+                }
+            }
+            //nhap du lieu cot scale
+            if (dgvDataProtocol.CurrentCell.ColumnIndex == 3)
+            {
+                TextBox tb = e.Control as TextBox;
+                if (tb != null)
+                {
+                    tb.KeyPress += new KeyPressEventHandler(Scale_KeyPress);
+                }
+            }
+
+        }
+        private void DiaChi_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = false;
+
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+        private void Scale_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = false;
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && !(e.KeyChar == '.'))
+            {
+                e.Handled = true;
+            }
+        }
+
     }
     
 }

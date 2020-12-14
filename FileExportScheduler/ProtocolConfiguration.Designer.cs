@@ -469,6 +469,7 @@
             this.dgvDataProtocol.TabIndex = 3;
             this.dgvDataProtocol.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDataProtocol_CellEndEdit);
             this.dgvDataProtocol.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDataProtocol_CellValueChanged);
+            this.dgvDataProtocol.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvDataProtocol_EditingControlShowing);
             this.dgvDataProtocol.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvDataProtocol_KeyDown);
             // 
             // errorPort
