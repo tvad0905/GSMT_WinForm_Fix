@@ -53,6 +53,8 @@
             // 
             // dgvHienThiDuLieu
             // 
+            this.dgvHienThiDuLieu.AllowUserToResizeColumns = false;
+            this.dgvHienThiDuLieu.AllowUserToResizeRows = false;
             this.dgvHienThiDuLieu.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvHienThiDuLieu.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ten,
@@ -63,7 +65,7 @@
             this.TrangThaiTinHieu});
             this.dgvHienThiDuLieu.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvHienThiDuLieu.Location = new System.Drawing.Point(0, 0);
-            this.dgvHienThiDuLieu.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dgvHienThiDuLieu.Margin = new System.Windows.Forms.Padding(2);
             this.dgvHienThiDuLieu.Name = "dgvHienThiDuLieu";
             this.dgvHienThiDuLieu.ReadOnly = true;
             this.dgvHienThiDuLieu.RowHeadersWidth = 51;
@@ -144,7 +146,7 @@
             this.ClientSize = new System.Drawing.Size(1067, 445);
             this.Controls.Add(this.dgvHienThiDuLieu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FormHienThiDuLieu";
             this.Text = "Realtime Monitor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormHienThiDuLieu_FormClosing);
