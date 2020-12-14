@@ -807,11 +807,14 @@ namespace FileExportScheduler
             {
                 gbSerialSettingProtocol.Enabled = false;
                 gbTCPIPProtocol.Enabled = true;
+                
             }
             else
             {
                 gbSerialSettingProtocol.Enabled = true;
                 gbTCPIPProtocol.Enabled = false;
+                txtIPAdress.Clear();
+                txtPort.Text = "";
             }
         }
 
