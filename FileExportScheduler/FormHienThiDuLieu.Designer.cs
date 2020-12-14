@@ -53,6 +53,7 @@
             // 
             // dgvHienThiDuLieu
             // 
+            this.dgvHienThiDuLieu.AllowUserToDeleteRows = false;
             this.dgvHienThiDuLieu.AllowUserToResizeColumns = false;
             this.dgvHienThiDuLieu.AllowUserToResizeRows = false;
             this.dgvHienThiDuLieu.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
