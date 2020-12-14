@@ -62,13 +62,14 @@
             this.GiaTri,
             this.TrangThaiTinHieu});
             this.dgvHienThiDuLieu.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvHienThiDuLieu.Enabled = false;
             this.dgvHienThiDuLieu.Location = new System.Drawing.Point(0, 0);
-            this.dgvHienThiDuLieu.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dgvHienThiDuLieu.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dgvHienThiDuLieu.Name = "dgvHienThiDuLieu";
             this.dgvHienThiDuLieu.ReadOnly = true;
             this.dgvHienThiDuLieu.RowHeadersWidth = 51;
             this.dgvHienThiDuLieu.RowTemplate.Height = 24;
-            this.dgvHienThiDuLieu.Size = new System.Drawing.Size(1067, 445);
+            this.dgvHienThiDuLieu.Size = new System.Drawing.Size(1423, 548);
             this.dgvHienThiDuLieu.TabIndex = 4;
             // 
             // ten
@@ -139,12 +140,12 @@
             // 
             // FormHienThiDuLieu
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1067, 445);
+            this.ClientSize = new System.Drawing.Size(1423, 548);
             this.Controls.Add(this.dgvHienThiDuLieu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "FormHienThiDuLieu";
             this.Text = "Realtime Monitor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormHienThiDuLieu_FormClosing);
