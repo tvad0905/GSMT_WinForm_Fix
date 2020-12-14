@@ -43,7 +43,6 @@ namespace FileExportScheduler
 
         private void FormHienThiDuLieu_Load(object sender, EventArgs e)
         {
-            //dgvHienThiDuLieu.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dt = ConvertThongSoGiaTriToDataTable(DanhSachDuLieuService.GetThongSoGiaTriCuaTatCaThietBi(dsThietBi));
             dgvHienThiDuLieu.DataSource = dt;
             dgvHienThiDuLieu.AutoGenerateColumns = false;

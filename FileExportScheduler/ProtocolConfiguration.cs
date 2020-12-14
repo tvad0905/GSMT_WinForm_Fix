@@ -178,13 +178,13 @@ namespace FileExportScheduler
 
         private void SaveData()
         {
-            isValidatePassed = DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol);
-            if (DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol))
+            isValidatePassed = DuLieuNhapVao.KiemTraNullDuLieuNhapVao(dgvDataProtocol);
+            if (DuLieuNhapVao.KiemTraNullDuLieuNhapVao(dgvDataProtocol))
             {
                 LuuDanhMucDuLieuVaoJson();
                 isSaved = true;
                 isTabDataHaveAnyChanged = false;
-                if(isClicked == true)
+                if (isClicked == true)
                 {
                     MessageBox.Show("Lưu dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     isClicked = false;
@@ -238,8 +238,8 @@ namespace FileExportScheduler
                             }
                             dgvDataProtocol.Rows.Remove(row);
                         }
-                        isValidatePassed = DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol);
-                        if (DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol))
+                        isValidatePassed = DuLieuNhapVao.KiemTraNullDuLieuNhapVao(dgvDataProtocol);
+                        if (DuLieuNhapVao.KiemTraNullDuLieuNhapVao(dgvDataProtocol))
                         {
                             LuuDanhMucDuLieuVaoJson();
                             MessageBox.Show("Xóa dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -329,8 +329,8 @@ namespace FileExportScheduler
                     }
                 }
                 dgvDataProtocol.DataSource = dt;
-                isValidatePassed = DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol);
-                if (DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol))
+                isValidatePassed = DuLieuNhapVao.KiemTraNullDuLieuNhapVao(dgvDataProtocol);
+                if (DuLieuNhapVao.KiemTraNullDuLieuNhapVao(dgvDataProtocol))
                 {
 
                     MessageBox.Show("Đọc dữ liệu thành công !", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -382,7 +382,7 @@ namespace FileExportScheduler
         {
             isClicked = true;
             EditDuocClick();
-            
+
         }
         #endregion
 
@@ -391,7 +391,7 @@ namespace FileExportScheduler
         {
             if (dgvDataProtocol.Rows.Count > 0)
             {
-                if (DuLieuNhapVao.KiemTraDuLieuNhapVao(dgvDataProtocol))
+                if (DuLieuNhapVao.KiemTraNullDuLieuNhapVao(dgvDataProtocol))
                 {
                     SaveFileDialog sfd = new SaveFileDialog();
                     sfd.Filter = "CSV (*.csv)|*.csv";
@@ -652,7 +652,7 @@ namespace FileExportScheduler
                 TVMain.SelectedNode.Parent.Nodes.Add(node);
                 formDataList.selectedNodeDouble = node;
             }
-            if(isClicked == true)
+            if (isClicked == true)
             {
                 MessageBox.Show("Lưu cấu hình thiết bị thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 isClicked = false;
@@ -847,18 +847,10 @@ namespace FileExportScheduler
             switch (e.ColumnIndex)
             {
                 case 0://tên
-                    if( DuLieuNhapVao.KiemTraTungCellCotTen(dgvDataProtocol, cellCanCheck))
-                    {
-                        checkLaiTrungTenSauKhiSua();
-                        checkLaiTrungDiemDoSauKhiSua();//
-                    }    
+                    DuLieuNhapVao.KiemTraTungCellCotTen(dgvDataProtocol, cellCanCheck);
                     break;
                 case 1://điểm đo
-                    if(DuLieuNhapVao.KiemTraTungCellCotDiemDo(dgvDataProtocol, cellCanCheck))
-                    {
-                        checkLaiTrungDiemDoSauKhiSua();
-                        checkLaiTrungTenSauKhiSua();//
-                    }
+                    DuLieuNhapVao.KiemTraTungCellCotDiemDo(dgvDataProtocol, cellCanCheck);
                     break;
                 case 2://địa chỉ
                     //kiểm tra trùng lặp kết hợp kiểm tra định dạng
@@ -866,7 +858,6 @@ namespace FileExportScheduler
                     {
                         //nếu sau khi trung lặp được sửa check lại 1 lần nữa để xóa hết error message trung lặp
                         checkLaiTrungDiaChiSauKhiSua();
-
                     }
                     break;
                 case 3://sacle
@@ -900,7 +891,7 @@ namespace FileExportScheduler
                     break;
                 }
                 DataGridViewCell cellTenUnit = rowUnit.Cells["ten"];
-                DuLieuNhapVao.KiemTraTungCellCotTen(dgvDataProtocol, cellTenUnit);
+                DuLieuNhapVao.KiemTraTrungTenTheoDiemDo(dgvDataProtocol, cellTenUnit);
             }
         }
         private void checkLaiTrungDiemDoSauKhiSua()
@@ -913,9 +904,9 @@ namespace FileExportScheduler
                     break;
                 }
                 DataGridViewCell cellDiemDoUnit = rowUnit.Cells["diemDo"];
-                DuLieuNhapVao.KiemTraTungCellCotTen(dgvDataProtocol, cellDiemDoUnit);
+                DuLieuNhapVao.KiemTraTrungDiemDoTheoTen(dgvDataProtocol, cellDiemDoUnit);
             }
         }
     }
-    
+
 }
