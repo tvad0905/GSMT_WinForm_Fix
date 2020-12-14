@@ -393,7 +393,7 @@ namespace FileExportScheduler.KiemTraDauVao
                 DataGridViewCell cellTenUnit = dr.Cells["ten"];
                 if (cellDiemDoUnit != cellCanCheck)//thêm các cặp tên và điểm đo vào danh sách exist (loại trừ tên đang modify)
                 {
-                    if (cellDiemDoUnit.Value != null && cellDiemDoUnit.Value != null)
+                    if (cellTenUnit.Value != null && cellDiemDoUnit.Value != null)
                     {
                         dsTenVaDiemDoExist.Add(cellTenUnit.Value.ToString() + cellDiemDoUnit.Value.ToString());
                     }

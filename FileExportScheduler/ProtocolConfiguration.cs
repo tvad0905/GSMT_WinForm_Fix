@@ -848,9 +848,11 @@ namespace FileExportScheduler
             {
                 case 0://tên
                     DuLieuNhapVao.KiemTraTungCellCotTen(dgvDataProtocol, cellCanCheck);
+                    checkLaiTrungTenSauKhiSua();
                     break;
                 case 1://điểm đo
                     DuLieuNhapVao.KiemTraTungCellCotDiemDo(dgvDataProtocol, cellCanCheck);
+                    checkLaiTrungDiemDoSauKhiSua();
                     break;
                 case 2://địa chỉ
                     //kiểm tra trùng lặp kết hợp kiểm tra định dạng
@@ -891,7 +893,10 @@ namespace FileExportScheduler
                     break;
                 }
                 DataGridViewCell cellTenUnit = rowUnit.Cells["ten"];
-                DuLieuNhapVao.KiemTraTrungTenTheoDiemDo(dgvDataProtocol, cellTenUnit);
+                if (cellTenUnit.ErrorText == "Cặp tên và điểm đo đã tồn tại")
+                {
+                    DuLieuNhapVao.KiemTraTrungTenTheoDiemDo(dgvDataProtocol, cellTenUnit);
+                }
             }
         }
         private void checkLaiTrungDiemDoSauKhiSua()
@@ -904,7 +909,10 @@ namespace FileExportScheduler
                     break;
                 }
                 DataGridViewCell cellDiemDoUnit = rowUnit.Cells["diemDo"];
-                DuLieuNhapVao.KiemTraTrungDiemDoTheoTen(dgvDataProtocol, cellDiemDoUnit);
+                if (cellDiemDoUnit.ErrorText == "Cặp tên và điểm đo đã tồn tại")
+                {
+                    DuLieuNhapVao.KiemTraTrungDiemDoTheoTen(dgvDataProtocol, cellDiemDoUnit);
+                }
             }
         }
     }
