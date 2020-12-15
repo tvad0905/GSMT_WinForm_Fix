@@ -127,7 +127,7 @@ namespace FileExportScheduler.KiemTraDauVao
             //Kiem tra null
             if (IsNullOrBlankValue(cellCanCheck))
             {
-                cellCanCheck.ErrorText = "Địa chỉ không được để trống";
+                cellCanCheck.ErrorText = "Địa chỉ không để trống";
                 return false;
             }
 
@@ -152,13 +152,10 @@ namespace FileExportScheduler.KiemTraDauVao
                 DataGridViewCell cellUnit = dr.Cells["diaChi"];
                 if (cellUnit != cellCanCheck)
                 {
-                    if (IsNullOrBlankValue(cellUnit))
+                    if (!IsNullOrBlankValue(cellUnit))
                     {
-                        cellUnit.ErrorText = "Địa chỉ không để trống";
-                        return false;
+                        dsDiaChiExist.Add(cellUnit.Value.ToString());
                     }
-
-                    dsDiaChiExist.Add(cellUnit.Value.ToString());
                 }
             }
 
@@ -196,49 +193,14 @@ namespace FileExportScheduler.KiemTraDauVao
                 return false;
             }
 
-            //Kiểm tra trùng lặp địa chỉ
-            List<String> dsTenVaDiemDoExist = new List<string>();
-
-            string capTenVaDiemDoCanCheck = "";//cặp tên và điểm đo tương ứng đang cần check
-
-            foreach (DataGridViewRow dr in dgvDsDuLieu.Rows)
+            //Kiểm tra trùng lặp cặp tên điểm đo
+            if (!KiemTraTrungDiemDoTheoTen(dgvDsDuLieu, cellCanCheck))
             {
-                //break when in last row because last row is null row
-                if (dr.Index == dgvDsDuLieu.Rows.Count - 1)
-                {
-                    break;
-                }
-
-                DataGridViewCell cellDiemDoUnit = dr.Cells["diemDo"];
-                DataGridViewCell cellTenUnit = dr.Cells["ten"];
-                if (cellDiemDoUnit != cellCanCheck)
-                {
-                    if (cellTenUnit.Value != null && cellDiemDoUnit.Value != null)
-                    {
-                        dsTenVaDiemDoExist.Add(cellTenUnit.Value.ToString() + cellDiemDoUnit.Value.ToString());
-                    }
-                }
-                else
-                {
-                    //lấy cặp tên điểm đo đang modify
-                    DataGridViewCell cellDiemDoDangModify = dr.Cells["diemDo"];
-                    DataGridViewCell cellTenDangModify = dr.Cells["ten"];
-                    if (!IsNullOrBlankValue(cellTenDangModify) && !IsNullOrBlankValue(cellDiemDoDangModify) && DinhDangTenOrDiemDo(cellTenDangModify.Value.ToString()))
-                    {
-                        RemoveErrorText(cellTenDangModify);
-                        capTenVaDiemDoCanCheck = cellTenDangModify.Value.ToString() + cellDiemDoDangModify.Value.ToString();
-                    }
-                }
-            }
-
-            if (dsTenVaDiemDoExist.Contains(capTenVaDiemDoCanCheck))
-            {
-                cellCanCheck.ErrorText = "Cặp tên và điểm đo đã tồn tại";
                 return false;
             }
 
+            //khi pass hết các điều kiện
             RemoveErrorText(cellCanCheck);
-
             return true;
 
         }
@@ -265,48 +227,13 @@ namespace FileExportScheduler.KiemTraDauVao
                 return false;
             }
 
-            //Kiểm tra trùng lặp địa chỉ
-            List<String> dsTenVaDiemDoExist = new List<string>();
-
-            string capTenVaDiemDoCanCheck = "";//cặp tên và điểm đo tương ứng đang cần check
-
-            foreach (DataGridViewRow dr in dgvDsDuLieu.Rows)
+            //Kiểm tra trùng lặp cặp tên điểm đo
+            if (!KiemTraTrungTenTheoDiemDo(dgvDsDuLieu, cellTenCanCheck))
             {
-
-                //break when in last row because last row is null row
-                if (dr.Index == dgvDsDuLieu.Rows.Count - 1)
-                {
-                    break;
-                }
-
-                DataGridViewCell cellDiemDoUnit = dr.Cells["diemDo"];
-                DataGridViewCell cellTenUnit = dr.Cells["ten"];
-                if (cellTenUnit != cellTenCanCheck)//thêm các cặp tên và điểm đo vào danh sách exist (loại trừ tên đang modify)
-                {
-                    if (cellTenUnit.Value != null && cellDiemDoUnit.Value != null)
-                    {
-                        dsTenVaDiemDoExist.Add(cellTenUnit.Value.ToString() + cellDiemDoUnit.Value.ToString());
-                    }
-                }
-                else
-                {
-                    //lấy cặp tên điểm đo đang modify
-                    DataGridViewCell cellDiemDoDangModify = dr.Cells["diemDo"];
-                    DataGridViewCell cellTenDangModify = dr.Cells["ten"];
-                    if (!IsNullOrBlankValue(cellTenDangModify) && !IsNullOrBlankValue(cellDiemDoDangModify) && DinhDangTenOrDiemDo(cellDiemDoDangModify.Value.ToString()))
-                    {
-                        RemoveErrorText(cellDiemDoDangModify);
-                        capTenVaDiemDoCanCheck = cellTenDangModify.Value.ToString() + cellDiemDoDangModify.Value.ToString();
-                    }
-                }
-            }
-
-            if (dsTenVaDiemDoExist.Contains(capTenVaDiemDoCanCheck))
-            {
-                cellTenCanCheck.ErrorText = "Cặp tên và điểm đo đã tồn tại";
                 return false;
             }
 
+            //khi pass hết các điều kiện
             RemoveErrorText(cellTenCanCheck);
             return true;
 
@@ -373,6 +300,94 @@ namespace FileExportScheduler.KiemTraDauVao
                 return false;
             }else if (!regex.IsMatch(scale))
             {
+                return false;
+            }
+            return true;
+        }
+        public static bool KiemTraTrungTenTheoDiemDo(DataGridView dgvDsDuLieu, DataGridViewCell cellCanCheck)
+        {
+            //Kiểm tra trùng lặp địa chỉ
+            List<String> dsTenVaDiemDoExist = new List<string>();
+
+            string capTenVaDiemDoCanCheck = "";//cặp tên và điểm đo tương ứng đang cần check
+
+            foreach (DataGridViewRow dr in dgvDsDuLieu.Rows)
+            {
+
+                //break when in last row because last row is null row
+                if (dr.Index == dgvDsDuLieu.Rows.Count - 1)
+                {
+                    break;
+                }
+
+                DataGridViewCell cellDiemDoUnit = dr.Cells["diemDo"];
+                DataGridViewCell cellTenUnit = dr.Cells["ten"];
+                if (cellTenUnit != cellCanCheck)//thêm các cặp tên và điểm đo vào danh sách exist (loại trừ tên đang modify)
+                {
+                    if (cellTenUnit.Value != null && cellDiemDoUnit.Value != null)
+                    {
+                        dsTenVaDiemDoExist.Add(cellTenUnit.Value.ToString() + cellDiemDoUnit.Value.ToString());
+                    }
+                }
+                else
+                {
+                    //lấy cặp tên điểm đo đang modify
+                    DataGridViewCell cellDiemDoDangModify = dr.Cells["diemDo"];
+                    DataGridViewCell cellTenDangModify = dr.Cells["ten"];
+                    if (!IsNullOrBlankValue(cellTenDangModify) && !IsNullOrBlankValue(cellDiemDoDangModify) && DinhDangTenOrDiemDo(cellDiemDoDangModify.Value.ToString()))
+                    {
+                        RemoveErrorText(cellTenDangModify);
+                        capTenVaDiemDoCanCheck = cellTenDangModify.Value.ToString() + cellDiemDoDangModify.Value.ToString();
+                    }
+                }
+            }
+            if (dsTenVaDiemDoExist.Contains(capTenVaDiemDoCanCheck))
+            {
+                cellCanCheck.ErrorText = "Cặp tên và điểm đo đã tồn tại";
+                return false;
+            }
+            return true;
+        }
+        public static bool KiemTraTrungDiemDoTheoTen(DataGridView dgvDsDuLieu, DataGridViewCell cellCanCheck)
+        {
+            //Kiểm tra trùng lặp địa chỉ
+            List<String> dsTenVaDiemDoExist = new List<string>();
+
+            string capTenVaDiemDoCanCheck = "";//cặp tên và điểm đo tương ứng đang cần check
+
+            foreach (DataGridViewRow dr in dgvDsDuLieu.Rows)
+            {
+
+                //break when in last row because last row is null row
+                if (dr.Index == dgvDsDuLieu.Rows.Count - 1)
+                {
+                    break;
+                }
+
+                DataGridViewCell cellDiemDoUnit = dr.Cells["diemDo"];
+                DataGridViewCell cellTenUnit = dr.Cells["ten"];
+                if (cellDiemDoUnit != cellCanCheck)//thêm các cặp tên và điểm đo vào danh sách exist (loại trừ tên đang modify)
+                {
+                    if (cellTenUnit.Value != null && cellDiemDoUnit.Value != null)
+                    {
+                        dsTenVaDiemDoExist.Add(cellTenUnit.Value.ToString() + cellDiemDoUnit.Value.ToString());
+                    }
+                }
+                else
+                {
+                    //lấy cặp tên điểm đo đang modify
+                    DataGridViewCell cellDiemDoDangModify = dr.Cells["diemDo"];
+                    DataGridViewCell cellTenDangModify = dr.Cells["ten"];
+                    if (!IsNullOrBlankValue(cellTenDangModify) && !IsNullOrBlankValue(cellDiemDoDangModify) && DinhDangTenOrDiemDo(cellDiemDoDangModify.Value.ToString()))
+                    {
+                        RemoveErrorText(cellDiemDoDangModify);
+                        capTenVaDiemDoCanCheck = cellTenDangModify.Value.ToString() + cellDiemDoDangModify.Value.ToString();
+                    }
+                }
+            }
+            if (dsTenVaDiemDoExist.Contains(capTenVaDiemDoCanCheck))
+            {
+                cellCanCheck.ErrorText = "Cặp tên và điểm đo đã tồn tại";
                 return false;
             }
             return true;

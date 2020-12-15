@@ -184,7 +184,7 @@ namespace FileExportScheduler
                 LuuDanhMucDuLieuVaoJson();
                 isSaved = true;
                 isTabDataHaveAnyChanged = false;
-                if(isClicked == true)
+                if (isClicked == true)
                 {
                     MessageBox.Show("Lưu dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     isClicked = false;
@@ -258,7 +258,7 @@ namespace FileExportScheduler
                         isTabDataHaveAnyChanged = false;
                         isSaved = true;
                     }
-                    
+
                 }
                 catch (Exception)
                 {
@@ -394,7 +394,7 @@ namespace FileExportScheduler
         {
             isClicked = true;
             EditDuocClick();
-            
+
         }
         #endregion
 
@@ -664,7 +664,7 @@ namespace FileExportScheduler
                 TVMain.SelectedNode.Parent.Nodes.Add(node);
                 formDataList.selectedNodeDouble = node;
             }
-            if(isClicked == true)
+            if (isClicked == true)
             {
                 MessageBox.Show("Lưu cấu hình thiết bị thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 isClicked = false;
@@ -808,7 +808,7 @@ namespace FileExportScheduler
             {
                 gbSerialSettingProtocol.Enabled = false;
                 gbTCPIPProtocol.Enabled = true;
-                
+
             }
             else
             {
@@ -863,18 +863,14 @@ namespace FileExportScheduler
             switch (e.ColumnIndex)
             {
                 case 0://tên
-                    if( DuLieuNhapVao.KiemTraTungCellCotTen(dgvDataProtocol, cellCanCheck))
-                    {
-                        checkLaiTrungTenSauKhiSua();
-                        checkLaiTrungDiemDoSauKhiSua();//
-                    }    
+                    DuLieuNhapVao.KiemTraTungCellCotTen(dgvDataProtocol, cellCanCheck);
+                    checkLaiTrungTenSauKhiSua();
+                    checkLaiTrungDiemDoSauKhiSua();
                     break;
                 case 1://điểm đo
-                    if(DuLieuNhapVao.KiemTraTungCellCotDiemDo(dgvDataProtocol, cellCanCheck))
-                    {
-                        checkLaiTrungDiemDoSauKhiSua();
-                        checkLaiTrungTenSauKhiSua();//
-                    }
+                    DuLieuNhapVao.KiemTraTungCellCotDiemDo(dgvDataProtocol, cellCanCheck);
+                    checkLaiTrungTenSauKhiSua();
+                    checkLaiTrungDiemDoSauKhiSua();
                     break;
                 case 2://địa chỉ
                     //kiểm tra trùng lặp kết hợp kiểm tra định dạng
@@ -882,7 +878,6 @@ namespace FileExportScheduler
                     {
                         //nếu sau khi trung lặp được sửa check lại 1 lần nữa để xóa hết error message trung lặp
                         checkLaiTrungDiaChiSauKhiSua();
-
                     }
                     break;
                 case 3://sacle
@@ -903,7 +898,10 @@ namespace FileExportScheduler
                     break;
                 }
                 DataGridViewCell cellDiaChiUnit = rowUnit.Cells["diaChi"];
-                DuLieuNhapVao.KiemTraTungCellCotDiaChi(dgvDataProtocol, cellDiaChiUnit);
+                if (cellDiaChiUnit.ErrorText == "Địa chỉ đã tồn tại")
+                {
+                    DuLieuNhapVao.KiemTraTungCellCotDiaChi(dgvDataProtocol, cellDiaChiUnit);
+                }
             }
         }
         private void checkLaiTrungTenSauKhiSua()
@@ -916,7 +914,10 @@ namespace FileExportScheduler
                     break;
                 }
                 DataGridViewCell cellTenUnit = rowUnit.Cells["ten"];
-                DuLieuNhapVao.KiemTraTungCellCotTen(dgvDataProtocol, cellTenUnit);
+                if (cellTenUnit.ErrorText == "Cặp tên và điểm đo đã tồn tại")
+                {
+                    DuLieuNhapVao.KiemTraTrungTenTheoDiemDo(dgvDataProtocol, cellTenUnit);
+                }
             }
         }
         private void checkLaiTrungDiemDoSauKhiSua()
@@ -929,12 +930,18 @@ namespace FileExportScheduler
                     break;
                 }
                 DataGridViewCell cellDiemDoUnit = rowUnit.Cells["diemDo"];
-                DuLieuNhapVao.KiemTraTungCellCotTen(dgvDataProtocol, cellDiemDoUnit);
+                if (cellDiemDoUnit.ErrorText == "Cặp tên và điểm đo đã tồn tại")
+                {
+                    DuLieuNhapVao.KiemTraTrungDiemDoTheoTen(dgvDataProtocol, cellDiemDoUnit);
+                }
             }
         }
         private void dgvDataProtocol_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
-            
+
+            e.Control.KeyPress -= new KeyPressEventHandler(DiaChi_KeyPress);
+            e.Control.KeyPress -= new KeyPressEventHandler(Scale_KeyPress);
+
             //nhap du lieu cot dia chi
             if (dgvDataProtocol.CurrentCell.ColumnIndex == 2)
             {
@@ -957,7 +964,6 @@ namespace FileExportScheduler
         }
         private void DiaChi_KeyPress(object sender, KeyPressEventArgs e)
         {
-            e.Handled = false;
 
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
             {
@@ -966,7 +972,6 @@ namespace FileExportScheduler
         }
         private void Scale_KeyPress(object sender, KeyPressEventArgs e)
         {
-            e.Handled = false;
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && !(e.KeyChar == '.'))
             {
                 e.Handled = true;
@@ -974,5 +979,5 @@ namespace FileExportScheduler
         }
 
     }
-    
+
 }
