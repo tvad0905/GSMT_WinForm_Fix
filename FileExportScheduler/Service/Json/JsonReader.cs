@@ -73,7 +73,7 @@ namespace FileExportScheduler.Service.Json
                         foreach (KeyValuePair<string, DiemDoModel> diemDo in thietbi.Value.dsDiemDoGiamSat)
                         {
                             string filePath = export.ExportFilePath +
-                               "\\" + $"log({diemDo.Value.TenDiemDo}){ DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_ss")}.csv";
+                               "\\" + $"log ({diemDo.Value.TenDiemDo}){ DateTime.Now.ToString(" yyyy_MM_dd_HH_mm_ss")}.csv";
                             dsDuongDanTheoTenThietBi.Add(filePath);
                         }
                     }

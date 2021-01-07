@@ -39,8 +39,9 @@ namespace FileExportScheduler.Service.FileService
                             csvData.Append(".");
                             csvData.Append(duLieu.Value.Ten);
                             csvData.Append(",");
-                            csvData.Append(duLieu.Value.ThoiGianDocGiuLieu.ToString("mm:ss.fff"));
+                            csvData.Append(duLieu.Value.ThoiGianDocGiuLieu.ToString("yyyy-MM-dd HH:mm:ss.fff"));
                             csvData.Append(",");
+
                             csvData.Append(Convert.ToInt32(duLieu.Value.GiaTri) / Convert.ToDouble(duLieu.Value.Scale));
                             csvData.Append(",");
                             csvData.Append(thietBi.Value.TrangThaiTinHieu);
@@ -52,7 +53,7 @@ namespace FileExportScheduler.Service.FileService
                             csvData.Append(".");
                             csvData.Append(duLieu.Value.Ten);
                             csvData.Append(",");
-                            csvData.Append(duLieu.Value.ThoiGianDocGiuLieu.ToString("mm:ss.fff"));
+                            csvData.Append(duLieu.Value.ThoiGianDocGiuLieu.ToString("yyyy-MM-dd HH:mm:ss.fff"));
                             csvData.Append(",");
                             csvData.Append(duLieu.Value.GiaTri);
                             csvData.Append(",");
