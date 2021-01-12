@@ -71,13 +71,14 @@ namespace FileExportScheduler
             btnSetting.Enabled = false;
 
             //set chu kì đọc dữ liệu
-            tmrDocDuLieu.Interval = 1000;
+            tmrDocDuLieu.Interval = 600;
 
             //set chu kỳ xóa file
             tmrChukyXoaFile.Interval = 30000;
 
             //set chu kỳ ghi ra file
-            tmrXuatFile.Interval = Service.Json.JsonReader.GetTimeInterval();
+            //tmrXuatFile.Interval = Service.Json.JsonReader.GetTimeInterval();
+            tmrXuatFile.Interval = 500;
 
             //quét danh sách thông số cho từng thiết bị từ json
             dsThietBi = Service.Json.JsonReader.LayDanhSachThongSoCuaTungThietBi();
@@ -200,13 +201,6 @@ namespace FileExportScheduler
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             WindowState = FormWindowState.Normal;
-            ShowInTaskbar = true;
-        }
-
-        private void openToolStripMenuItem_Click_1(object sender, EventArgs e)
-        {
-            WindowState = FormWindowState.Normal;
-            notifyIcon.Visible = false;
             ShowInTaskbar = true;
         }
 
@@ -668,7 +662,11 @@ namespace FileExportScheduler
             try
             {
                 tmrXuatFile.Stop();
-                XuatRaFileCSV();
+
+                if (DateTime.Now.Minute % Service.Json.JsonReader.GetTimeInterval() == 0 && DateTime.Now.Second == 0)
+                {
+                    XuatRaFileCSV();
+                }
             }
             catch
             {

@@ -6,11 +6,26 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{F9B36924-68CC-497E-A829-B43915432060}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>FileExportScheduler</RootNamespace>
-    <AssemblyName>FileExportScheduler</AssemblyName>
+    <RootNamespace>ESProtocolConverter</RootNamespace>
+    <AssemblyName>ESProtocolConverter</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,8 +47,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>Image\images.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EasyModbus">
@@ -180,7 +197,6 @@
     </EmbeddedResource>
     <None Include="bin\Debug\Configuration\Config.json" />
     <None Include="bin\Debug\Configuration\DeviceAndData.json" />
-    <None Include="bin\Debug\FileExportScheduler.exe.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -205,8 +221,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Debug\EasyModbus.dll" />
-    <Content Include="bin\Debug\FileExportScheduler.exe" />
-    <Content Include="bin\Debug\FileExportScheduler.pdb" />
     <Content Include="bin\Debug\IPAddressControlLib.dll" />
     <Content Include="bin\Debug\log4net.dll" />
     <Content Include="bin\Debug\Modbus.dll" />
@@ -218,6 +232,13 @@
     <Content Include="Image\logo.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

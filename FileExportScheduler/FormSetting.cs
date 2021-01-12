@@ -40,24 +40,36 @@ namespace FileExportScheduler
             setting.Interval = Int32.Parse(numChukyLuuDuLieu.Value.ToString());
             setting.ExportFilePath = txtExportFilePath.Text;
             setting.ChuKiXoaDuLieu = Int32.Parse(numChuKiXoaDuLieu.Value.ToString());
+            setting.FormatTime = txtFormatTime.Text;
 
             var path = GetPathJson.getPathConfig("Config.json");
 
-            if (txtExportFilePath.Text == "")
+            if (txtFormatTime.Text == "yyyy-MM-dd HH:mm:ss" || txtFormatTime.Text == "dd-MM-yyyy HH:mm:ss" || txtFormatTime.Text == "MM-dd-yyyy HH:mm:ss" || txtFormatTime.Text != "")
             {
-                errorProvider1.SetError(txtExportFilePath, "Không được để trống !");
-                return;
-            }
-            if (KiemTraDuongDan.TonTaiKhiLuu(txtExportFilePath.Text,setting))
-            {
-                MessageBox.Show("Đã lưu thành công!", "Thông báo", MessageBoxButtons.OK,MessageBoxIcon.Information);
-                this.Close();
+                if (txtExportFilePath.Text == "")
+                {
+                    errorProvider1.SetError(txtExportFilePath, "Không được để trống !");
+                    return;
+                }
+                if (KiemTraDuongDan.TonTaiKhiLuu(txtExportFilePath.Text, setting))
+                {
+                    MessageBox.Show("Đã lưu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Đường dẫn thư mục không tồn tại!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
             }
             else
             {
-                MessageBox.Show("Đường dẫn thư mục không tồn tại!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Định dạng thời gian sai!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
+            
+            
             
         }
 
@@ -81,10 +93,14 @@ namespace FileExportScheduler
                     txtExportFilePath.Text = export.ExportFilePath;
                     chkAutoRun.Checked = export.AutoRun;
                     numChuKiXoaDuLieu.Value = export.ChuKiXoaDuLieu;
+                    txtFormatTime.Text = export.FormatTime;
                 }
             }
         }
 
-        
+        private void txtFormatTime_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

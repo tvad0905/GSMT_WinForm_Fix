@@ -41,6 +41,8 @@
             this.numChukyLuuDuLieu = new System.Windows.Forms.NumericUpDown();
             this.numChuKiXoaDuLieu = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtFormatTime = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numChukyLuuDuLieu)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numChuKiXoaDuLieu)).BeginInit();
@@ -49,7 +51,7 @@
             // chkAutoRun
             // 
             this.chkAutoRun.AutoSize = true;
-            this.chkAutoRun.Location = new System.Drawing.Point(21, 145);
+            this.chkAutoRun.Location = new System.Drawing.Point(32, 203);
             this.chkAutoRun.Name = "chkAutoRun";
             this.chkAutoRun.Size = new System.Drawing.Size(116, 17);
             this.chkAutoRun.TabIndex = 5;
@@ -66,7 +68,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(18, 96);
+            this.label2.Location = new System.Drawing.Point(21, 96);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(111, 13);
             this.label2.TabIndex = 2;
@@ -84,7 +86,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(61, 168);
+            this.btnSave.Location = new System.Drawing.Point(72, 226);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 27);
             this.btnSave.TabIndex = 3;
@@ -95,7 +97,7 @@
             // btnClose
             // 
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(231, 168);
+            this.btnClose.Location = new System.Drawing.Point(242, 226);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 27);
             this.btnClose.TabIndex = 4;
@@ -166,13 +168,33 @@
             this.label3.TabIndex = 7;
             this.label3.Text = "Chu kì xóa dữ liệu (ngày)";
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(21, 144);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(102, 13);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "Định dạng thời gian:";
+            // 
+            // txtFormatTime
+            // 
+            this.txtFormatTime.Location = new System.Drawing.Point(21, 161);
+            this.txtFormatTime.Name = "txtFormatTime";
+            this.txtFormatTime.Size = new System.Drawing.Size(262, 20);
+            this.txtFormatTime.TabIndex = 9;
+            this.txtFormatTime.Text = "yyyy-MM-dd HH:mm:ss";
+            this.txtFormatTime.TextChanged += new System.EventHandler(this.txtFormatTime_TextChanged);
+            // 
             // FormSetting
             // 
             this.AcceptButton = this.btnSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(366, 200);
+            this.ClientSize = new System.Drawing.Size(368, 265);
+            this.Controls.Add(this.txtFormatTime);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.numChuKiXoaDuLieu);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.btnClose);
@@ -212,5 +234,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown numChukyLuuDuLieu;
         private System.Windows.Forms.Label label1;
+        public System.Windows.Forms.TextBox txtFormatTime;
+        private System.Windows.Forms.Label label4;
     }
 }

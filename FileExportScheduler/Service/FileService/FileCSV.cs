@@ -23,6 +23,7 @@ namespace FileExportScheduler.Service.FileService
         /// <param name="dsDiemDo">danh sách điểm đo</param>
         public static void XuatFileCSV(List<string> filePath, Dictionary<string, ThietBiModel> dsThietBi)
         {
+            FormSetting formSetting = new FormSetting();
             int i = 0;
             foreach (KeyValuePair<string, ThietBiModel> thietBi in dsThietBi)
             {
@@ -33,13 +34,13 @@ namespace FileExportScheduler.Service.FileService
                     csvData.Append("[Data]" + "\n" + "Tagname,TimeStamp,Value,DataQuality" + "\n");
                     foreach (KeyValuePair<string, DuLieuModel> duLieu in diemDo.Value.DsDulieu)
                     {
-                        if(int.TryParse(duLieu.Value.GiaTri, out _))
+                        if (int.TryParse(duLieu.Value.GiaTri, out _))
                         {
                             csvData.Append(duLieu.Value.DiemDo);
                             csvData.Append(".");
                             csvData.Append(duLieu.Value.Ten);
                             csvData.Append(",");
-                            csvData.Append(duLieu.Value.ThoiGianDocGiuLieu.ToString("yyyy-MM-dd HH:mm:ss.fff"));
+                            csvData.Append(duLieu.Value.ThoiGianDocGiuLieu.ToString(Service.Json.JsonReader.LayDinhDangThoiGian()));
                             csvData.Append(",");
 
                             csvData.Append(Convert.ToInt32(duLieu.Value.GiaTri) / Convert.ToDouble(duLieu.Value.Scale));
@@ -53,15 +54,20 @@ namespace FileExportScheduler.Service.FileService
                             csvData.Append(".");
                             csvData.Append(duLieu.Value.Ten);
                             csvData.Append(",");
-                            csvData.Append(duLieu.Value.ThoiGianDocGiuLieu.ToString("yyyy-MM-dd HH:mm:ss.fff"));
+                            csvData.Append(duLieu.Value.ThoiGianDocGiuLieu.ToString(Service.Json.JsonReader.LayDinhDangThoiGian()));
                             csvData.Append(",");
                             csvData.Append(duLieu.Value.GiaTri);
                             csvData.Append(",");
                             csvData.Append(thietBi.Value.TrangThaiTinHieu);
                             csvData.Append("\n");
                         }
-                        
+
                     }
+                    /*if (!File.Exists(filePath[i]))
+                    {
+                        File.AppendAllText(filePath[i], "[Data]" + "\n" + "Tagname,TimeStamp,Value,DataQuality" + "\n");
+                    }
+                    File.AppendAllText(filePath[i], csvData.ToString());*/
                     File.WriteAllText(filePath[i], csvData.ToString());
                     i++;
                 }

@@ -1,0 +1,5 @@
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\WapProjGSMT\bin\AnyCPU\Debug\System.Core.dll
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\WapProjGSMT\bin\AnyCPU\Debug\System.Core.xml
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\WapProjGSMT\obj\Debug\WapProjGSMT.wapprojAssemblyReference.cache
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\WapProjGSMT\obj\Debug\WapProjGSMT.wapproj.CoreCompileInputs.cache
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\WapProjGSMT\obj\Debug\WapProjGSMT.wapproj.CopyComplete

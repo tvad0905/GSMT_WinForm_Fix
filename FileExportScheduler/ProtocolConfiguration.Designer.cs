@@ -524,7 +524,7 @@
             this.Scale.DataPropertyName = "Scale";
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             this.Scale.DefaultCellStyle = dataGridViewCellStyle4;
-            this.Scale.HeaderText = "Scale";
+            this.Scale.HeaderText = "Hệ Số Nhân";
             this.Scale.MinimumWidth = 6;
             this.Scale.Name = "Scale";
             // 

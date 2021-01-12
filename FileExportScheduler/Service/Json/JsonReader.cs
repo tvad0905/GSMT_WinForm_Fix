@@ -29,7 +29,7 @@ namespace FileExportScheduler.Service.Json
             {
                 var obj = sr.ReadToEnd();
                 CaiDatChung export = JsonConvert.DeserializeObject<CaiDatChung>(obj.ToString());
-                timeInterval = export.Interval * 60000;
+                timeInterval = export.Interval;
             }
             return timeInterval;
         }
@@ -50,7 +50,18 @@ namespace FileExportScheduler.Service.Json
             }
             return thoiGianXoa;
         }
-
+        public static string LayDinhDangThoiGian()
+        {
+            string formatTime = "";
+            var path = GetPathJson.getPathConfig("Config.json");
+            using (System.IO.StreamReader sr = File.OpenText(path))
+            {
+                var obj = sr.ReadToEnd();
+                CaiDatChung export = JsonConvert.DeserializeObject<CaiDatChung>(obj.ToString());
+                formatTime = export.FormatTime;
+            }
+            return formatTime;
+        }
         /// <summary>
         /// lấy danh sách đường dẫn theo điểm đo
         /// </summary>

@@ -100,12 +100,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_F65492D9B65B487442EAF7B5F4AB513E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_698D9602361E476AA2829D0BBC2A52FB"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -149,6 +143,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_9FB6254E9933BC2597E6F51FC19CF320"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_F65492D9B65B487442EAF7B5F4AB513E"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -622,7 +622,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:ESProtocolConverter"
         "ProductCode" = "8:{58341B5A-5210-4B0F-9183-49AF1E7B88F1}"
-        "PackageCode" = "8:{F5D17158-4427-4835-A51E-789919AAFA7D}"
+        "PackageCode" = "8:{44BAFB89-E5DB-4386-99DA-7C33B0FC3D4A}"
         "UpgradeCode" = "8:{3BCEF7A7-E085-406D-BBAA-442116F7739C}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

@@ -13,5 +13,6 @@ namespace FileExportScheduler.Models
         public string ExportFilePath { get; set; }
 
         public int ChuKiXoaDuLieu { get; set; }
+        public string FormatTime { get; set; }
     }
 }
