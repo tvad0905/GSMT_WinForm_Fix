@@ -48,7 +48,20 @@ namespace FileExportScheduler.Service.FileService
                             csvData.Append(thietBi.Value.TrangThaiTinHieu);
                             csvData.Append("\n");
                         }
-                        else
+                        else if (duLieu.Value.GiaTri == null)
+                        {
+                            csvData.Append(duLieu.Value.DiemDo);
+                            csvData.Append(".");
+                            csvData.Append(duLieu.Value.Ten);
+                            csvData.Append(",");
+                            csvData.Append(DateTime.Now.ToString(Service.Json.JsonReader.LayDinhDangThoiGian()));
+                            csvData.Append(",");
+                            csvData.Append("0");
+                            csvData.Append(",");
+                            csvData.Append(thietBi.Value.TrangThaiTinHieu);
+                            csvData.Append("\n");
+                        }
+                        else if (char.TryParse(duLieu.Value.GiaTri, out _))
                         {
                             csvData.Append(duLieu.Value.DiemDo);
                             csvData.Append(".");
@@ -61,6 +74,7 @@ namespace FileExportScheduler.Service.FileService
                             csvData.Append(thietBi.Value.TrangThaiTinHieu);
                             csvData.Append("\n");
                         }
+
 
                     }
                     /*if (!File.Exists(filePath[i]))

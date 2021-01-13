@@ -35,6 +35,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormHienThiDuLieu));
             this.tmrHienThongSoSuLieu = new System.Windows.Forms.Timer(this.components);
             this.dgvHienThiDuLieu = new System.Windows.Forms.DataGridView();
@@ -42,6 +43,7 @@
             this.ThietBi = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Diachi_P = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DiaChi = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Donvido = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GiaTri = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TrangThaiTinHieu = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHienThiDuLieu)).BeginInit();
@@ -62,6 +64,7 @@
             this.ThietBi,
             this.Diachi_P,
             this.DiaChi,
+            this.Donvido,
             this.GiaTri,
             this.TrangThaiTinHieu});
             this.dgvHienThiDuLieu.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -118,12 +121,21 @@
             this.DiaChi.Name = "DiaChi";
             this.DiaChi.ReadOnly = true;
             // 
+            // Donvido
+            // 
+            this.Donvido.DataPropertyName = "DonViDo";
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.Donvido.DefaultCellStyle = dataGridViewCellStyle5;
+            this.Donvido.HeaderText = "Đơn Vị Đo";
+            this.Donvido.Name = "Donvido";
+            this.Donvido.ReadOnly = true;
+            // 
             // GiaTri
             // 
             this.GiaTri.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.GiaTri.DataPropertyName = "GiaTri";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.GiaTri.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.GiaTri.DefaultCellStyle = dataGridViewCellStyle6;
             this.GiaTri.HeaderText = "Giá Trị";
             this.GiaTri.MinimumWidth = 6;
             this.GiaTri.Name = "GiaTri";
@@ -132,8 +144,8 @@
             // TrangThaiTinHieu
             // 
             this.TrangThaiTinHieu.DataPropertyName = "TrangThaiTinHieu";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.TrangThaiTinHieu.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.TrangThaiTinHieu.DefaultCellStyle = dataGridViewCellStyle7;
             this.TrangThaiTinHieu.HeaderText = "Trạng Thái Tín Hiệu";
             this.TrangThaiTinHieu.MinimumWidth = 50;
             this.TrangThaiTinHieu.Name = "TrangThaiTinHieu";
@@ -164,6 +176,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ThietBi;
         private System.Windows.Forms.DataGridViewTextBoxColumn Diachi_P;
         private System.Windows.Forms.DataGridViewTextBoxColumn DiaChi;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Donvido;
         private System.Windows.Forms.DataGridViewTextBoxColumn GiaTri;
         private System.Windows.Forms.DataGridViewTextBoxColumn TrangThaiTinHieu;
     }

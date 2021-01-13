@@ -105,13 +105,13 @@ namespace FileExportScheduler.KiemTraDauVao
             }
 
             //Kiem tra dinh dang
-            var regex = new Regex(@"^[a-zA-Z0-9_.-]+$");
+            /*var regex = new Regex(@"^[a-zA-Z0-9_.-]+$");
             if (!regex.IsMatch(cell.Value.ToString()))
             {
                 cell.ErrorText = "Đơn vị đo sai định dạng";
                 return false;
             }
-
+*/
             RemoveErrorText(cell);
             return true;
         }

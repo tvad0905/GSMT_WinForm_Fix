@@ -20,6 +20,11 @@ namespace FileExportScheduler.Models.ThietBi.Base
         public ushort MaxAddressInputRegisters { get; set; }
         public ushort MaxAddressHoldingRegisters { get; set; }
 
+        public ushort MinAddressCoils { get; set; }
+        public ushort MinAddressInputs { get; set; }
+        public ushort MinAddressInputRegisters { get; set; }
+        public ushort MinAddressHoldingRegisters { get; set; }
+
         public Dictionary<string, DiemDoModel> dsDiemDoGiamSat = new Dictionary<string, DiemDoModel>();
 
     }

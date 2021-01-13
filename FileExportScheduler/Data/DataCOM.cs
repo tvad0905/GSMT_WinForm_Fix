@@ -28,7 +28,7 @@ namespace FileExportScheduler.Data
         /// <param name="quantityInputRegisters"></param>
         /// <param name="quantityHoldingRegisters"></param>
         /// <returns></returns>
-        public static bool[] LayDuLieuCOMCoils(SerialPort serialPort, ushort quantityCoils, ThietBiModel thietBiModel)
+        public static bool[] LayDuLieuCOMCoils(SerialPort serialPort, ushort quantityCoils, ushort minAddressCoils,ThietBiModel thietBiModel)
         {
             IModbusMaster master = ModbusSerialMaster.CreateRtu(serialPort);
             List<bool> readCoil = new List<bool>();
@@ -43,15 +43,15 @@ namespace FileExportScheduler.Data
 
                         if (i != soNguyenSauChia)
                         {
-                            int startAddress = i * DonViQuantityMoiLanDoc;
-                            int quantity = DonViQuantityMoiLanDoc;
+                            int startAddress = i * DonViQuantityMoiLanDoc + minAddressCoils;
+                            int quantity = DonViQuantityMoiLanDoc - minAddressCoils;
                             var temp = master.ReadCoils(slaveAddress, (ushort)startAddress, (ushort)(quantity));
                             readCoil.AddRange(temp.ToList());
                         }
                         else if (i == soNguyenSauChia)
                         {
-                            int startAddress = i * DonViQuantityMoiLanDoc;
-                            int quantity = quantityCoils % DonViQuantityMoiLanDoc;
+                            int startAddress = i * DonViQuantityMoiLanDoc + minAddressCoils;
+                            int quantity = quantityCoils % DonViQuantityMoiLanDoc - minAddressCoils;
                             if(quantity != 0)
                             {
                                 var temp = master.ReadCoils(slaveAddress, (ushort)startAddress, (ushort)(quantity));
@@ -79,7 +79,7 @@ namespace FileExportScheduler.Data
             }
             return readCoil.ToArray();
         }
-        public static bool[] LayDuLieuCOMInputs(SerialPort serialPort, ushort quantityInputs, ThietBiModel thietBiModel)
+        public static bool[] LayDuLieuCOMInputs(SerialPort serialPort, ushort quantityInputs, ushort minAddressInputs, ThietBiModel thietBiModel)
         {
             IModbusMaster master = ModbusSerialMaster.CreateRtu(serialPort);
             List<bool> discreteInput = new List<bool>();
@@ -94,15 +94,15 @@ namespace FileExportScheduler.Data
 
                         if (i != soNguyenSauChia)
                         {
-                            int startAddress = i * DonViQuantityMoiLanDoc;
-                            int quantity = DonViQuantityMoiLanDoc;
+                            int startAddress = i * DonViQuantityMoiLanDoc + minAddressInputs;
+                            int quantity = DonViQuantityMoiLanDoc - minAddressInputs;
                             var temp = master.ReadInputs(slaveAddress, (ushort)startAddress, (ushort)(quantity));
                             discreteInput.AddRange(temp.ToList());
                         }
                         else if (i == soNguyenSauChia)
                         {
-                            int startAddress = i * DonViQuantityMoiLanDoc;
-                            int quantity = quantityInputs % DonViQuantityMoiLanDoc;
+                            int startAddress = i * DonViQuantityMoiLanDoc + minAddressInputs;
+                            int quantity = quantityInputs % DonViQuantityMoiLanDoc - minAddressInputs;
                             if(quantity != 0)
                             {
                                 var temp = master.ReadInputs(slaveAddress, (ushort)startAddress, (ushort)(quantity));
@@ -130,7 +130,7 @@ namespace FileExportScheduler.Data
             }
             return discreteInput.ToArray();
         }
-        public static int[] LayDuLieuCOMInputRegisters(SerialPort serialPort, ushort quantityInputRegisters, ThietBiModel thietBiModel)
+        public static int[] LayDuLieuCOMInputRegisters(SerialPort serialPort, ushort quantityInputRegisters, ushort minAddressInputRegisters, ThietBiModel thietBiModel)
         {
             IModbusMaster master = ModbusSerialMaster.CreateRtu(serialPort);
             List<ushort> readRegister = new List<ushort>();
@@ -145,15 +145,15 @@ namespace FileExportScheduler.Data
 
                         if (i != soNguyenSauChia)
                         {
-                            int startAddress = i * DonViQuantityMoiLanDoc;
-                            int quantity = DonViQuantityMoiLanDoc;
+                            int startAddress = i * DonViQuantityMoiLanDoc + minAddressInputRegisters;
+                            int quantity = DonViQuantityMoiLanDoc - minAddressInputRegisters;
                             var temp = master.ReadInputRegisters(slaveAddress, (ushort)startAddress, (ushort)(quantity));
                             readRegister.AddRange(temp.ToList());
                         }
                         else if (i == soNguyenSauChia)
                         {
-                            int startAddress = i * DonViQuantityMoiLanDoc;
-                            int quantity = quantityInputRegisters % DonViQuantityMoiLanDoc;
+                            int startAddress = i * DonViQuantityMoiLanDoc + minAddressInputRegisters;
+                            int quantity = quantityInputRegisters % DonViQuantityMoiLanDoc - minAddressInputRegisters;
                             if(quantity != 0)
                             {
                                 var temp = master.ReadInputRegisters(slaveAddress, (ushort)startAddress, (ushort)(quantity));
@@ -182,7 +182,7 @@ namespace FileExportScheduler.Data
 
             return ConvertArrayUshortToIntArray(readRegister);
         }
-        public static int[] LayDuLieuCOMHoldingRegisters(SerialPort serialPort, ushort quantityHoldingRegisters, ThietBiModel thietBiModel)
+        public static int[] LayDuLieuCOMHoldingRegisters(SerialPort serialPort, ushort quantityHoldingRegisters, ushort minAddressHoldingRegisters, ThietBiModel thietBiModel)
         {
             IModbusMaster master = ModbusSerialMaster.CreateRtu(serialPort);
             List<ushort> readHoldingRegistersUshortTpye = new List<ushort>();
@@ -197,16 +197,16 @@ namespace FileExportScheduler.Data
 
                         if (i != soNguyenSauChia)
                         {
-                            int startAddress = i * DonViQuantityMoiLanDoc;
-                            int quantity = DonViQuantityMoiLanDoc;
+                            int startAddress = i * DonViQuantityMoiLanDoc + minAddressHoldingRegisters;
+                            int quantity = DonViQuantityMoiLanDoc - minAddressHoldingRegisters;
                             var temp = master.ReadHoldingRegisters(slaveAddress, (ushort)startAddress, (ushort)(quantity));
 
                             readHoldingRegistersUshortTpye.AddRange(temp.ToList());
                         }
                         else if (i == soNguyenSauChia)
                         {
-                            int startAddress = i * DonViQuantityMoiLanDoc;
-                            int quantity = quantityHoldingRegisters % DonViQuantityMoiLanDoc;
+                            int startAddress = i * DonViQuantityMoiLanDoc + minAddressHoldingRegisters;
+                            int quantity = quantityHoldingRegisters % DonViQuantityMoiLanDoc - minAddressHoldingRegisters;
                             if (quantity != 0)
                             {
                                 var temp = master.ReadHoldingRegisters(slaveAddress, (ushort)startAddress, (ushort)(quantity));

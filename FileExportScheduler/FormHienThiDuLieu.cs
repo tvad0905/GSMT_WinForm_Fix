@@ -85,6 +85,7 @@ namespace FileExportScheduler
             table.Columns.Add("DiaChi", typeof(string));
             table.Columns.Add("GiaTri", typeof(string));
             table.Columns.Add("TrangThaiTinHieu", typeof(string));
+            table.Columns.Add("DonViDo", typeof(string));
             table.PrimaryKey = new[] { table.Columns["Ten"], table.Columns["DiemDo"] };
 
 
@@ -97,6 +98,7 @@ namespace FileExportScheduler
                     dr["DiemDo"] = thongSoGiaTri.DiemDo;
                     dr["ThietBi"] = thongSoGiaTri.ThietBi;
                     dr["DiaChi"] = thongSoGiaTri.DiaChi;
+                    dr["DonViDo"] = thongSoGiaTri.DonViDo;
                     if (int.TryParse(thongSoGiaTri.GiaTri, out _))
                     {
                         dr["GiaTri"] = (Convert.ToDouble(thongSoGiaTri.GiaTri) / Convert.ToDouble(thongSoGiaTri.Scale)).ToString();

@@ -305,11 +305,17 @@ namespace FileExportScheduler
             {
                 var thietBiGiamSatDuocChon = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text];
                 thietBiGiamSatDuocChon.dsDiemDoGiamSat = DanhSachDiemDoService.LayDsDiemDoTuDgv(dgvDataProtocol);
-                var maxAddress = MaxAddress.Get(thietBiGiamSatDuocChon);
+                var maxAddress = MaxAddress.GetMax(thietBiGiamSatDuocChon);
+                var minAddress = MaxAddress.GetMin(thietBiGiamSatDuocChon);
                 thietBiGiamSatDuocChon.MaxAddressCoils = (ushort)maxAddress[0];
                 thietBiGiamSatDuocChon.MaxAddressInputs = (ushort)maxAddress[1];
                 thietBiGiamSatDuocChon.MaxAddressInputRegisters = (ushort)maxAddress[2];
                 thietBiGiamSatDuocChon.MaxAddressHoldingRegisters = (ushort)maxAddress[3];
+
+                thietBiGiamSatDuocChon.MinAddressCoils = (ushort)minAddress[0];
+                thietBiGiamSatDuocChon.MinAddressInputs = (ushort)minAddress[1];
+                thietBiGiamSatDuocChon.MinAddressInputRegisters = (ushort)minAddress[2];
+                thietBiGiamSatDuocChon.MinAddressHoldingRegisters = (ushort)minAddress[3];
                 GhiDsThietBiRaFileJson();
             }
             catch (Exception ex)
