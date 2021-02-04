@@ -53,6 +53,8 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevExpress.Data.v19.2, Version=19.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpo.v19.2, Version=19.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="EasyModbus">
       <HintPath>..\EasyModbusTCP .NET Package V5.5\EasyModbus.dll</HintPath>
     </Reference>
@@ -107,7 +109,10 @@
     <Compile Include="ModbusLib.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Models\Common\TreeName.cs" />
     <Compile Include="Models\DuLieu\ThongSoGiaTriModel.cs" />
+    <Compile Include="Models\NhaMay\NhaMayModel.cs" />
+    <Compile Include="Models\Slave\SlaveModel.cs" />
     <Compile Include="Service\DuLieu\DanhSachDuLieuService.cs" />
     <Compile Include="Service\FileService\FileCSV.cs" />
     <Compile Include="Service\FindMaxAddress\MaxAddress.cs" />

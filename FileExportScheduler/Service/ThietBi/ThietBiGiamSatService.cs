@@ -1,4 +1,6 @@
-﻿using FileExportScheduler.Models;
+﻿using ESProtocolConverter.Models.NhaMay;
+using ESProtocolConverter.Models.Slave;
+using FileExportScheduler.Models;
 using FileExportScheduler.Models.DiemDo;
 using FileExportScheduler.Models.DuLieu;
 using FileExportScheduler.Models.ThietBi.Base;
@@ -17,18 +19,20 @@ namespace FileExportScheduler.Service.ThietBi
     {
         public static KeyValuePair<string, ThietBiModel> SetTrangThaiBad(KeyValuePair<string, ThietBiModel> deviceUnit)
         {
-            foreach (KeyValuePair<string, DiemDoModel> diemDo in deviceUnit.Value.dsDiemDoGiamSat)
+            foreach (KeyValuePair<string, SlaveModel> slave in deviceUnit.Value.dsSlave)
             {
-                foreach (KeyValuePair<string, DuLieuModel> dulieu in diemDo.Value.DsDulieu)
+                foreach (KeyValuePair<string, DiemDoModel> diemDo in slave.Value.dsDiemDoGiamSat)
                 {
-                    dulieu.Value.ThoiGianDocGiuLieu = DateTime.Now;
+                    foreach (KeyValuePair<string, DuLieuModel> dulieu in diemDo.Value.DsDulieu)
+                    {
+                        dulieu.Value.ThoiGianDocGiuLieu = DateTime.Now;
+                    }
                 }
+                deviceUnit.Value.TrangThaiTinHieu = Constant.TrangThaiKetNoi.Bad;
             }
-            deviceUnit.Value.TrangThaiTinHieu = Constant.TrangThaiKetNoi.Bad;
-
             return deviceUnit;
         }
-        public static Dictionary<string, ThietBiModel> GetDsThietBi()
+        public static Dictionary<string, ThietBiModel> GetDsThietBi(NhaMayModel nhamay)
         {
             Dictionary<string, ThietBiModel> dsThietBiGiamSat = new Dictionary<string, ThietBiModel>();
             try
@@ -36,7 +40,17 @@ namespace FileExportScheduler.Service.ThietBi
 
                 var path = GetPathJson.getPathConfig("DeviceAndData.json");
                 JObject jsonObj = JObject.Parse(File.ReadAllText(path));
-                Dictionary<string, ThietBiTCPIP> deviceIP = jsonObj.ToObject<Dictionary<string, ThietBiTCPIP>>();
+
+                Dictionary<string, NhaMayModel> dicNhaMay = jsonObj.ToObject<Dictionary<string, NhaMayModel>>();
+                foreach (var nhaMay_item in dicNhaMay)
+                {
+                    if (nhaMay_item.Value.Name == nhamay.Name)
+                    {
+                        dsThietBiGiamSat = nhaMay_item.Value.dsThietBi;
+                    }
+                }
+
+                /*Dictionary<string, ThietBiTCPIP> deviceIP = jsonObj.ToObject<Dictionary<string, ThietBiTCPIP>>();
                 foreach (var deviceIPUnit in deviceIP)
                 {
                     if (deviceIPUnit.Value.Protocol == "Modbus TCP/IP" || deviceIPUnit.Value.Protocol == "Siemens S7-1200")
@@ -51,7 +65,7 @@ namespace FileExportScheduler.Service.ThietBi
                     {
                         dsThietBiGiamSat.Add(deviceComUnit.Key, deviceComUnit.Value);
                     }
-                }
+                }*/
             }
             catch { }
             return dsThietBiGiamSat;

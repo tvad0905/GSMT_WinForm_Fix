@@ -20,6 +20,8 @@ using FileExportScheduler.Service.Json;
 using FileExportScheduler.Service.DiemDo;
 using FileExportScheduler.Service.ThietBi;
 using FileExportScheduler.Service.FinMaxAddress;
+using ESProtocolConverter.Models.Slave;
+using ESProtocolConverter.Models.NhaMay;
 
 namespace FileExportScheduler
 {
@@ -61,7 +63,7 @@ namespace FileExportScheduler
             try
             {
                 dsThietBiGiamSat.Clear();
-                dsThietBiGiamSat = ThietBiGiamSatService.GetDsThietBi();
+                dsThietBiGiamSat = ThietBiGiamSatService.GetDsThietBi(new NhaMayModel("Quang Ninh"));
             }
             catch
             {
@@ -213,7 +215,7 @@ namespace FileExportScheduler
                             {
                                 try
                                 {
-                                    var diemDo = dsThietBiGiamSat[txtTenGiaoThuc.Text].dsDiemDoGiamSat[row.Cells[1].Value.ToString()];
+                                    var diemDo = dsThietBiGiamSat[txtTenGiaoThuc.Text].//lay ra slave.dsDiemDoGiamSat[row.Cells[1].Value.ToString()];
                                     if (diemDo.DsDulieu.Count() == 0)
                                     {
                                         dsThietBiGiamSat[txtTenGiaoThuc.Text].dsDiemDoGiamSat.Remove(diemDo.TenDiemDo);
@@ -675,7 +677,7 @@ namespace FileExportScheduler
                 MessageBox.Show("Lưu cấu hình thiết bị thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 isClicked = false;
             }
-            node.ContextMenuStrip = formDataList.tx2;
+            node.ContextMenuStrip = formDataList.xoa_Menu;
             //SaveData();
             isTabConfigHaveAnyChanged = false;
         }

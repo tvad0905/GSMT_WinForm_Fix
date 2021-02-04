@@ -1,4 +1,5 @@
-﻿using FileExportScheduler.Constant;
+﻿using ESProtocolConverter.Models.Slave;
+using FileExportScheduler.Constant;
 using FileExportScheduler.Models.DiemDo;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace FileExportScheduler.Models.ThietBi.Base
         public ushort MinAddressInputRegisters { get; set; }
         public ushort MinAddressHoldingRegisters { get; set; }
 
-        public Dictionary<string, DiemDoModel> dsDiemDoGiamSat = new Dictionary<string, DiemDoModel>();
+        public Dictionary<string, SlaveModel> dsSlave = new Dictionary<string, SlaveModel>();
 
     }
 }

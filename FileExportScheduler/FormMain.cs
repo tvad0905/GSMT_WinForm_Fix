@@ -1,5 +1,6 @@
 ﻿using EasyModbus;
 using EasyModbus.Exceptions;
+using ESProtocolConverter.Models.Slave;
 using FileExportScheduler.Constant;
 using FileExportScheduler.Models;
 using FileExportScheduler.Models.DiemDo;
@@ -466,7 +467,7 @@ namespace FileExportScheduler
             {
                 try
                 {
-                    dsDuLieuNhanDuoc.Add(Data.DataCOM.LayDuLieuCOMHoldingRegisters(serialPort, deviceUnit.Value.MaxAddressHoldingRegisters, deviceUnit.Value.MinAddressHoldingRegisters,deviceUnit.Value));
+                    dsDuLieuNhanDuoc.Add(Data.DataCOM.LayDuLieuCOMHoldingRegisters(serialPort, deviceUnit.Value.MaxAddressHoldingRegisters, deviceUnit.Value.MinAddressHoldingRegisters, deviceUnit.Value));
                     AddDataCOM(dsDuLieuNhanDuoc, deviceUnit);
                 }
                 catch (TimeoutException ex)
@@ -491,12 +492,15 @@ namespace FileExportScheduler
         private void AddDataCOM(ArrayList dsDuLieuNhanDuoc, KeyValuePair<string, ThietBiModel> deviceUnit)
         {
             #region Gán dữ liệu
-            foreach (KeyValuePair<string, DiemDoModel> diemDo in deviceUnit.Value.dsDiemDoGiamSat)
+            foreach (KeyValuePair<string, SlaveModel> slave in deviceUnit.Value.dsSlave)
             {
-                foreach (KeyValuePair<string, DuLieuModel> dulieu in diemDo.Value.DsDulieu)
+                foreach (KeyValuePair<string, DiemDoModel> diemDo in slave.Value.dsDiemDoGiamSat)
                 {
-                    //lấy dữ liệu thành công
-                    LuuTruDuLieuCOM(dulieu.Value, deviceUnit.Value, dsDuLieuNhanDuoc);
+                    foreach (KeyValuePair<string, DuLieuModel> dulieu in diemDo.Value.DsDulieu)
+                    {
+                        //lấy dữ liệu thành công
+                        LuuTruDuLieuCOM(dulieu.Value, deviceUnit.Value, dsDuLieuNhanDuoc);
+                    }
                 }
             }
             #endregion
@@ -505,12 +509,15 @@ namespace FileExportScheduler
         private void AddDataTCP(ArrayList dsDuLieuNhanDuoc, KeyValuePair<string, ThietBiModel> deviceUnit)
         {
             #region Gán dữ liệu
-            foreach (KeyValuePair<string, DiemDoModel> diemDo in deviceUnit.Value.dsDiemDoGiamSat)
+            foreach (KeyValuePair<string, SlaveModel> slave in deviceUnit.Value.dsSlave)
             {
-                foreach (KeyValuePair<string, DuLieuModel> dulieu in diemDo.Value.DsDulieu)
+                foreach (KeyValuePair<string, DiemDoModel> diemDo in slave.Value.dsDiemDoGiamSat)
                 {
-                    //lấy dữ liệu thành công
-                    LuuTruDuLieuTCP(dulieu.Value, deviceUnit.Value, dsDuLieuNhanDuoc);
+                    foreach (KeyValuePair<string, DuLieuModel> dulieu in diemDo.Value.DsDulieu)
+                    {
+                        //lấy dữ liệu thành công
+                        LuuTruDuLieuTCP(dulieu.Value, deviceUnit.Value, dsDuLieuNhanDuoc);
+                    }
                 }
             }
             #endregion
