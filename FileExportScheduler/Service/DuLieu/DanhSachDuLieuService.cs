@@ -1,4 +1,5 @@
-﻿using FileExportScheduler.Models.DiemDo;
+﻿using ESProtocolConverter.Models.Slave;
+using FileExportScheduler.Models.DiemDo;
 using FileExportScheduler.Models.DuLieu;
 using FileExportScheduler.Models.ThietBi.Base;
 using System;
@@ -21,29 +22,33 @@ namespace FileExportScheduler.Service.DuLieu
             foreach (KeyValuePair<string, ThietBiModel> thietBi in dsThietBi)
             {
 
-                foreach (KeyValuePair<string, DiemDoModel> diemDo in thietBi.Value.dsDiemDoGiamSat)
+                foreach (KeyValuePair<string, SlaveModel> slave in thietBi.Value.dsSlave)
                 {
 
-                    foreach (KeyValuePair<string, DuLieuModel> duLieu in diemDo.Value.DsDulieu)
+                    foreach (KeyValuePair<string, DiemDoModel> diemDo in slave.Value.dsDiemDoGiamSat)
                     {
-                        ThongSoGiaTriModel thongSoGiaTriTemp = new ThongSoGiaTriModel();
-                        thongSoGiaTriTemp.ThietBi = thietBi.Value.Name;
-                        thongSoGiaTriTemp.DiemDo = diemDo.Value.TenDiemDo;
-                        thongSoGiaTriTemp.Ten = duLieu.Value.Ten;
-                        if (int.TryParse(duLieu.Value.GiaTri, out _))
-                        {
-                            thongSoGiaTriTemp.GiaTri = Convert.ToInt32(duLieu.Value.GiaTri).ToString();
-                        }
-                        else
-                        {
-                            thongSoGiaTriTemp.GiaTri = duLieu.Value.GiaTri;
-                        }
 
-                        thongSoGiaTriTemp.DiaChi = duLieu.Value.DiaChi;
-                        thongSoGiaTriTemp.Scale = duLieu.Value.Scale;
-                        thongSoGiaTriTemp.TrangThaiTinHieu = thietBi.Value.TrangThaiTinHieu;
-                        thongSoGiaTriTemp.DonViDo = duLieu.Value.DonViDo;
-                        dsThongSoGiaTri.Add(thongSoGiaTriTemp);
+                        foreach (KeyValuePair<string, DuLieuModel> duLieu in diemDo.Value.DsDulieu)
+                        {
+                            ThongSoGiaTriModel thongSoGiaTriTemp = new ThongSoGiaTriModel();
+                            thongSoGiaTriTemp.ThietBi = thietBi.Value.Name;
+                            thongSoGiaTriTemp.DiemDo = diemDo.Value.TenDiemDo;
+                            thongSoGiaTriTemp.Ten = duLieu.Value.Ten;
+                            if (int.TryParse(duLieu.Value.GiaTri, out _))
+                            {
+                                thongSoGiaTriTemp.GiaTri = Convert.ToInt32(duLieu.Value.GiaTri).ToString();
+                            }
+                            else
+                            {
+                                thongSoGiaTriTemp.GiaTri = duLieu.Value.GiaTri;
+                            }
+
+                            thongSoGiaTriTemp.DiaChi = duLieu.Value.DiaChi;
+                            thongSoGiaTriTemp.Scale = duLieu.Value.Scale;
+                            thongSoGiaTriTemp.TrangThaiTinHieu = thietBi.Value.TrangThaiTinHieu;
+                            thongSoGiaTriTemp.DonViDo = duLieu.Value.DonViDo;
+                            dsThongSoGiaTri.Add(thongSoGiaTriTemp);
+                        }
                     }
                 }
             }
@@ -59,24 +64,27 @@ namespace FileExportScheduler.Service.DuLieu
             int row = 0;
             foreach (KeyValuePair<string, ThietBiModel> thietBi in dsThietBi)
             {
-
-                foreach (KeyValuePair<string, DiemDoModel> diemDo in thietBi.Value.dsDiemDoGiamSat)
+                foreach (KeyValuePair<string, SlaveModel> slave in thietBi.Value.dsSlave)
                 {
 
-                    foreach (KeyValuePair<string, DuLieuModel> duLieu in diemDo.Value.DsDulieu)
+                    foreach (KeyValuePair<string, DiemDoModel> diemDo in slave.Value.dsDiemDoGiamSat)
                     {
 
-                        if (int.TryParse(duLieu.Value.GiaTri, out _))
+                        foreach (KeyValuePair<string, DuLieuModel> duLieu in diemDo.Value.DsDulieu)
                         {
-                            dsThongSoGiaTri[row, 0] = (Convert.ToDouble(duLieu.Value.GiaTri) / Convert.ToDouble(duLieu.Value.Scale)).ToString();
-                        }
-                        else
-                        {
-                            dsThongSoGiaTri[row, 0] = (Convert.ToDouble(duLieu.Value.GiaTri) / Convert.ToDouble(duLieu.Value.Scale)).ToString();
-                        }
 
-                        dsThongSoGiaTri[row, 1] = thietBi.Value.TrangThaiTinHieu;
-                        row++;
+                            if (int.TryParse(duLieu.Value.GiaTri, out _))
+                            {
+                                dsThongSoGiaTri[row, 0] = (Convert.ToDouble(duLieu.Value.GiaTri) / Convert.ToDouble(duLieu.Value.Scale)).ToString();
+                            }
+                            else
+                            {
+                                dsThongSoGiaTri[row, 0] = (Convert.ToDouble(duLieu.Value.GiaTri) / Convert.ToDouble(duLieu.Value.Scale)).ToString();
+                            }
+
+                            dsThongSoGiaTri[row, 1] = thietBi.Value.TrangThaiTinHieu;
+                            row++;
+                        }
                     }
                 }
             }

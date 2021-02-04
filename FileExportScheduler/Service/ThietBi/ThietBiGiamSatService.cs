@@ -32,7 +32,7 @@ namespace FileExportScheduler.Service.ThietBi
             }
             return deviceUnit;
         }
-        public static Dictionary<string, ThietBiModel> GetDsThietBi(NhaMayModel nhamay)
+        public static Dictionary<string, ThietBiModel> GetDsThietBi(string nhaMay_name)
         {
             Dictionary<string, ThietBiModel> dsThietBiGiamSat = new Dictionary<string, ThietBiModel>();
             try
@@ -44,7 +44,7 @@ namespace FileExportScheduler.Service.ThietBi
                 Dictionary<string, NhaMayModel> dicNhaMay = jsonObj.ToObject<Dictionary<string, NhaMayModel>>();
                 foreach (var nhaMay_item in dicNhaMay)
                 {
-                    if (nhaMay_item.Value.Name == nhamay.Name)
+                    if (nhaMay_item.Value.Name == nhaMay_name)
                     {
                         dsThietBiGiamSat = nhaMay_item.Value.dsThietBi;
                     }
@@ -69,6 +69,53 @@ namespace FileExportScheduler.Service.ThietBi
             }
             catch { }
             return dsThietBiGiamSat;
+        }
+
+        public static ThietBiModel GetThietBiGiamSat(string nhamay_name, string thietBi_name)
+        {
+            try
+            {
+
+                var path = GetPathJson.getPathConfig("DeviceAndData.json");
+                JObject jsonObj = JObject.Parse(File.ReadAllText(path));
+
+                Dictionary<string, NhaMayModel> dicNhaMay = jsonObj.ToObject<Dictionary<string, NhaMayModel>>();
+                foreach (var nhaMay_item in dicNhaMay)
+                {
+                    if (nhaMay_item.Value.Name == nhamay_name)
+                    {
+                        foreach (var thietBi_item in nhaMay_item.Value.dsThietBi)
+                        {
+                            if (thietBi_item.Value.Name == thietBi_name)
+                            {
+                                return thietBi_item.Value;
+                            }
+                        }
+                    }
+                }
+
+                /*Dictionary<string, ThietBiTCPIP> deviceIP = jsonObj.ToObject<Dictionary<string, ThietBiTCPIP>>();
+                foreach (var deviceIPUnit in deviceIP)
+                {
+                    if (deviceIPUnit.Value.Protocol == "Modbus TCP/IP" || deviceIPUnit.Value.Protocol == "Siemens S7-1200")
+                    {
+                        dsThietBiGiamSat.Add(deviceIPUnit.Key, deviceIPUnit.Value);
+                    }
+                }
+                Dictionary<string, ThietBiCOM> deviceCom = jsonObj.ToObject<Dictionary<string, ThietBiCOM>>();
+                foreach (var deviceComUnit in deviceCom)
+                {
+                    if (deviceComUnit.Value.Protocol == "Serial Port")
+                    {
+                        dsThietBiGiamSat.Add(deviceComUnit.Key, deviceComUnit.Value);
+                    }
+                }*/
+            }
+            catch
+            {
+                return null;
+            }
+            return null;
         }
     }
 }

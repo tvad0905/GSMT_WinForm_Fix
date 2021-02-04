@@ -160,3 +160,24 @@ D:\Project\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.Fo
 D:\Project\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CoreCompileInputs.cache
 D:\Project\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CopyComplete
 D:\Project\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csprojAssemblyReference.cache
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csprojAssemblyReference.cache
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormAbout.resources
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormDataList.resources
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormHienThiDuLieu.resources
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormMain.resources
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormSetting.resources
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.DialogLicence.resources
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\ESProtocolConverter.Properties.Resources.resources
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.ProtocolConfiguration.resources
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.GenerateResource.cache
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CoreCompileInputs.cache
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\bin\Debug\Unme.Common.dll
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\Image\logo.jpg
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\ESProtocolConverter.exe.config
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\ESProtocolConverter.exe
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\ESProtocolConverter.pdb
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\NModbus.dll
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\NModbus.xml
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CopyComplete
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\ESProtocolConverter.exe
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\ESProtocolConverter.pdb

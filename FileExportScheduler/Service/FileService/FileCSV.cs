@@ -1,4 +1,5 @@
-﻿using FileExportScheduler.Models;
+﻿using ESProtocolConverter.Models.Slave;
+using FileExportScheduler.Models;
 using FileExportScheduler.Models.DiemDo;
 using FileExportScheduler.Models.DuLieu;
 using FileExportScheduler.Models.ThietBi.Base;
@@ -27,63 +28,65 @@ namespace FileExportScheduler.Service.FileService
             int i = 0;
             foreach (KeyValuePair<string, ThietBiModel> thietBi in dsThietBi)
             {
-
-                foreach (KeyValuePair<string, DiemDoModel> diemDo in thietBi.Value.dsDiemDoGiamSat)
+                foreach (KeyValuePair<string, SlaveModel> slave in thietBi.Value.dsSlave)
                 {
-                    StringBuilder csvData = new StringBuilder();
-                    csvData.Append("[Data]" + "\n" + "Tagname,TimeStamp,Value,DataQuality" + "\n");
-                    foreach (KeyValuePair<string, DuLieuModel> duLieu in diemDo.Value.DsDulieu)
+                    foreach (KeyValuePair<string, DiemDoModel> diemDo in slave.Value.dsDiemDoGiamSat)
                     {
-                        if (int.TryParse(duLieu.Value.GiaTri, out _))
+                        StringBuilder csvData = new StringBuilder();
+                        csvData.Append("[Data]" + "\n" + "Tagname,TimeStamp,Value,DataQuality" + "\n");
+                        foreach (KeyValuePair<string, DuLieuModel> duLieu in diemDo.Value.DsDulieu)
                         {
-                            csvData.Append(duLieu.Value.DiemDo);
-                            csvData.Append(".");
-                            csvData.Append(duLieu.Value.Ten);
-                            csvData.Append(",");
-                            csvData.Append(duLieu.Value.ThoiGianDocGiuLieu.ToString(Service.Json.JsonReader.LayDinhDangThoiGian()));
-                            csvData.Append(",");
+                            if (int.TryParse(duLieu.Value.GiaTri, out _))
+                            {
+                                csvData.Append(duLieu.Value.DiemDo);
+                                csvData.Append(".");
+                                csvData.Append(duLieu.Value.Ten);
+                                csvData.Append(",");
+                                csvData.Append(duLieu.Value.ThoiGianDocGiuLieu.ToString(Service.Json.JsonReader.LayDinhDangThoiGian()));
+                                csvData.Append(",");
 
-                            csvData.Append(Convert.ToInt32(duLieu.Value.GiaTri) / Convert.ToDouble(duLieu.Value.Scale));
-                            csvData.Append(",");
-                            csvData.Append(thietBi.Value.TrangThaiTinHieu);
-                            csvData.Append("\n");
+                                csvData.Append(Convert.ToInt32(duLieu.Value.GiaTri) / Convert.ToDouble(duLieu.Value.Scale));
+                                csvData.Append(",");
+                                csvData.Append(thietBi.Value.TrangThaiTinHieu);
+                                csvData.Append("\n");
+                            }
+                            else if (duLieu.Value.GiaTri == null)
+                            {
+                                csvData.Append(duLieu.Value.DiemDo);
+                                csvData.Append(".");
+                                csvData.Append(duLieu.Value.Ten);
+                                csvData.Append(",");
+                                csvData.Append(DateTime.Now.ToString(Service.Json.JsonReader.LayDinhDangThoiGian()));
+                                csvData.Append(",");
+                                csvData.Append("0");
+                                csvData.Append(",");
+                                csvData.Append(thietBi.Value.TrangThaiTinHieu);
+                                csvData.Append("\n");
+                            }
+                            else if (char.TryParse(duLieu.Value.GiaTri, out _))
+                            {
+                                csvData.Append(duLieu.Value.DiemDo);
+                                csvData.Append(".");
+                                csvData.Append(duLieu.Value.Ten);
+                                csvData.Append(",");
+                                csvData.Append(duLieu.Value.ThoiGianDocGiuLieu.ToString(Service.Json.JsonReader.LayDinhDangThoiGian()));
+                                csvData.Append(",");
+                                csvData.Append(duLieu.Value.GiaTri);
+                                csvData.Append(",");
+                                csvData.Append(thietBi.Value.TrangThaiTinHieu);
+                                csvData.Append("\n");
+                            }
+
+
                         }
-                        else if (duLieu.Value.GiaTri == null)
+                        /*if (!File.Exists(filePath[i]))
                         {
-                            csvData.Append(duLieu.Value.DiemDo);
-                            csvData.Append(".");
-                            csvData.Append(duLieu.Value.Ten);
-                            csvData.Append(",");
-                            csvData.Append(DateTime.Now.ToString(Service.Json.JsonReader.LayDinhDangThoiGian()));
-                            csvData.Append(",");
-                            csvData.Append("0");
-                            csvData.Append(",");
-                            csvData.Append(thietBi.Value.TrangThaiTinHieu);
-                            csvData.Append("\n");
+                            File.AppendAllText(filePath[i], "[Data]" + "\n" + "Tagname,TimeStamp,Value,DataQuality" + "\n");
                         }
-                        else if (char.TryParse(duLieu.Value.GiaTri, out _))
-                        {
-                            csvData.Append(duLieu.Value.DiemDo);
-                            csvData.Append(".");
-                            csvData.Append(duLieu.Value.Ten);
-                            csvData.Append(",");
-                            csvData.Append(duLieu.Value.ThoiGianDocGiuLieu.ToString(Service.Json.JsonReader.LayDinhDangThoiGian()));
-                            csvData.Append(",");
-                            csvData.Append(duLieu.Value.GiaTri);
-                            csvData.Append(",");
-                            csvData.Append(thietBi.Value.TrangThaiTinHieu);
-                            csvData.Append("\n");
-                        }
-
-
+                        File.AppendAllText(filePath[i], csvData.ToString());*/
+                        File.WriteAllText(filePath[i], csvData.ToString());
+                        i++;
                     }
-                    /*if (!File.Exists(filePath[i]))
-                    {
-                        File.AppendAllText(filePath[i], "[Data]" + "\n" + "Tagname,TimeStamp,Value,DataQuality" + "\n");
-                    }
-                    File.AppendAllText(filePath[i], csvData.ToString());*/
-                    File.WriteAllText(filePath[i], csvData.ToString());
-                    i++;
                 }
             }
 

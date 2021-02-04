@@ -64,16 +64,18 @@
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnAddData = new System.Windows.Forms.Button();
             this.dgvDataProtocol = new System.Windows.Forms.DataGridView();
-            this.errorPort = new System.Windows.Forms.ErrorProvider(this.components);
-            this.errorIP = new System.Windows.Forms.ErrorProvider(this.components);
-            this.errorTenGiaoThuc = new System.Windows.Forms.ErrorProvider(this.components);
-            this.errorGiaoThuc = new System.Windows.Forms.ErrorProvider(this.components);
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.ten = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.diemDo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.diaChi = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Scale = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.donViDo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.errorPort = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errorIP = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errorTenGiaoThuc = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errorGiaoThuc = new System.Windows.Forms.ErrorProvider(this.components);
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.lb_Slave = new System.Windows.Forms.Label();
+            this.txt_SlaveAddress = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPageCauHinh.SuspendLayout();
             this.gbTCPIPProtocol.SuspendLayout();
@@ -99,6 +101,8 @@
             // 
             // tabPageCauHinh
             // 
+            this.tabPageCauHinh.Controls.Add(this.txt_SlaveAddress);
+            this.tabPageCauHinh.Controls.Add(this.lb_Slave);
             this.tabPageCauHinh.Controls.Add(this.cbProtocol);
             this.tabPageCauHinh.Controls.Add(this.gbTCPIPProtocol);
             this.tabPageCauHinh.Controls.Add(this.btnEditProtocol);
@@ -114,6 +118,7 @@
             this.tabPageCauHinh.TabIndex = 0;
             this.tabPageCauHinh.Text = "Cấu hình";
             this.tabPageCauHinh.UseVisualStyleBackColor = true;
+            this.tabPageCauHinh.Click += new System.EventHandler(this.tabPageCauHinh_Click);
             // 
             // cbProtocol
             // 
@@ -134,7 +139,7 @@
             this.gbTCPIPProtocol.Controls.Add(this.label3);
             this.gbTCPIPProtocol.Controls.Add(this.txtIPAdress);
             this.gbTCPIPProtocol.Controls.Add(this.txtPort);
-            this.gbTCPIPProtocol.Location = new System.Drawing.Point(22, 68);
+            this.gbTCPIPProtocol.Location = new System.Drawing.Point(22, 97);
             this.gbTCPIPProtocol.Margin = new System.Windows.Forms.Padding(2);
             this.gbTCPIPProtocol.Name = "gbTCPIPProtocol";
             this.gbTCPIPProtocol.Padding = new System.Windows.Forms.Padding(2);
@@ -191,7 +196,7 @@
             // 
             // btnEditProtocol
             // 
-            this.btnEditProtocol.Location = new System.Drawing.Point(381, 298);
+            this.btnEditProtocol.Location = new System.Drawing.Point(381, 398);
             this.btnEditProtocol.Margin = new System.Windows.Forms.Padding(2);
             this.btnEditProtocol.Name = "btnEditProtocol";
             this.btnEditProtocol.Size = new System.Drawing.Size(75, 23);
@@ -202,7 +207,7 @@
             // 
             // btnSaveProtocol
             // 
-            this.btnSaveProtocol.Location = new System.Drawing.Point(381, 298);
+            this.btnSaveProtocol.Location = new System.Drawing.Point(381, 398);
             this.btnSaveProtocol.Margin = new System.Windows.Forms.Padding(2);
             this.btnSaveProtocol.Name = "btnSaveProtocol";
             this.btnSaveProtocol.Size = new System.Drawing.Size(75, 23);
@@ -223,7 +228,7 @@
             this.gbSerialSettingProtocol.Controls.Add(this.cbParity);
             this.gbSerialSettingProtocol.Controls.Add(this.cbDataBit);
             this.gbSerialSettingProtocol.Controls.Add(this.cbCOM);
-            this.gbSerialSettingProtocol.Location = new System.Drawing.Point(22, 145);
+            this.gbSerialSettingProtocol.Location = new System.Drawing.Point(22, 174);
             this.gbSerialSettingProtocol.Margin = new System.Windows.Forms.Padding(2);
             this.gbSerialSettingProtocol.Name = "gbSerialSettingProtocol";
             this.gbSerialSettingProtocol.Padding = new System.Windows.Forms.Padding(2);
@@ -472,22 +477,6 @@
             this.dgvDataProtocol.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvDataProtocol_EditingControlShowing);
             this.dgvDataProtocol.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvDataProtocol_KeyDown);
             // 
-            // errorPort
-            // 
-            this.errorPort.ContainerControl = this;
-            // 
-            // errorIP
-            // 
-            this.errorIP.ContainerControl = this;
-            // 
-            // errorTenGiaoThuc
-            // 
-            this.errorTenGiaoThuc.ContainerControl = this;
-            // 
-            // errorGiaoThuc
-            // 
-            this.errorGiaoThuc.ContainerControl = this;
-            // 
             // ten
             // 
             this.ten.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -537,6 +526,40 @@
             this.donViDo.HeaderText = "Đơn vị đo";
             this.donViDo.MinimumWidth = 50;
             this.donViDo.Name = "donViDo";
+            // 
+            // errorPort
+            // 
+            this.errorPort.ContainerControl = this;
+            // 
+            // errorIP
+            // 
+            this.errorIP.ContainerControl = this;
+            // 
+            // errorTenGiaoThuc
+            // 
+            this.errorTenGiaoThuc.ContainerControl = this;
+            // 
+            // errorGiaoThuc
+            // 
+            this.errorGiaoThuc.ContainerControl = this;
+            // 
+            // lb_Slave
+            // 
+            this.lb_Slave.AutoSize = true;
+            this.lb_Slave.Location = new System.Drawing.Point(54, 73);
+            this.lb_Slave.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lb_Slave.Name = "lb_Slave";
+            this.lb_Slave.Size = new System.Drawing.Size(34, 13);
+            this.lb_Slave.TabIndex = 17;
+            this.lb_Slave.Text = "Slave";
+            // 
+            // txt_SlaveAddress
+            // 
+            this.txt_SlaveAddress.Location = new System.Drawing.Point(111, 70);
+            this.txt_SlaveAddress.Margin = new System.Windows.Forms.Padding(2);
+            this.txt_SlaveAddress.Name = "txt_SlaveAddress";
+            this.txt_SlaveAddress.Size = new System.Drawing.Size(345, 20);
+            this.txt_SlaveAddress.TabIndex = 18;
             // 
             // ProtocolConfiguration
             // 
@@ -604,5 +627,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn diaChi;
         private System.Windows.Forms.DataGridViewTextBoxColumn Scale;
         private System.Windows.Forms.DataGridViewTextBoxColumn donViDo;
+        public System.Windows.Forms.TextBox txt_SlaveAddress;
+        private System.Windows.Forms.Label lb_Slave;
     }
 }

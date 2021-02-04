@@ -22,13 +22,17 @@ using FileExportScheduler.Service.ThietBi;
 using FileExportScheduler.Service.FinMaxAddress;
 using ESProtocolConverter.Models.Slave;
 using ESProtocolConverter.Models.NhaMay;
+using ESProtocolConverter.Service.Slave;
+using ESProtocolConverter.Service.Json;
 
 namespace FileExportScheduler
 {
     public partial class ProtocolConfiguration : UserControl
     {
         #region biến toàn cục
-        public Dictionary<string, ThietBiModel> dsThietBiGiamSat = new Dictionary<string, ThietBiModel>();
+        Dictionary<string, ThietBiModel> dsThietBiGiamSat = new Dictionary<string, ThietBiModel>();
+        ThietBiModel thietBi;
+        SlaveModel slave ;
         TreeView TVMain;
         public FormDataList formDataList;
         public string tenDuLieuDuocChon;
@@ -38,12 +42,24 @@ namespace FileExportScheduler
         public bool isTabConfigHaveAnyChanged { get; set; }
         public bool isTabDataHaveAnyChanged { get; set; }
         #endregion
+
+        public void SetThietBiAndSlave(ThietBiModel thietBi, string slave_name)
+        {
+            this.thietBi = thietBi;
+            this.slave = this.thietBi.dsSlave[slave_name];
+        }
+
+        public void SetDsThietBi(Dictionary<string, ThietBiModel> dsThietBiGiamSat)
+        {
+            this.dsThietBiGiamSat = dsThietBiGiamSat;
+        }
+
         public ProtocolConfiguration(FormDataList formDataList)
         {
             InitializeComponent();
             this.TVMain = formDataList.tvMain;
             this.formDataList = formDataList;
-            DocDsThietBiTuFileJson();
+            //DocDsThietBiTuFileJson();
             LoadDuLieuLenDgv();
             cbProtocol.SelectedIndex = cbProtocol.Items.IndexOf("Modbus TCP/IP");
             cbCOM.SelectedIndex = cbCOM.Items.IndexOf("COM1");
@@ -58,7 +74,7 @@ namespace FileExportScheduler
 
         #region Thao tác với json
         //Xuất từ file .json ra 1 list
-        private void DocDsThietBiTuFileJson()
+        /*private void DocDsThietBiTuFileJson()
         {
             try
             {
@@ -68,15 +84,15 @@ namespace FileExportScheduler
             catch
             {
             }
-        }
+        }*/
 
         //Viết từ list vào file .json
-        public void GhiDsThietBiRaFileJson()
+        /*public void GhiDsThietBiRaFileJson()
         {
             var path = GetPathJson.getPathConfig("DeviceAndData.json");
             string jsonString = (new JavaScriptSerializer()).Serialize((object)dsThietBiGiamSat);
             File.WriteAllText(path, jsonString);
-        }
+        }*/
         #endregion
 
         #region Kiểm tra nhập vào
@@ -106,6 +122,13 @@ namespace FileExportScheduler
                 errorTenGiaoThuc.SetError(txtTenGiaoThuc, "Tên thiết bị trùng lặp");
                 error = false;
             }
+
+            if (thietBi.dsSlave.ContainsKey(txt_SlaveAddress.Text) )
+            {
+                errorTenGiaoThuc.SetError(txtTenGiaoThuc, "Tên slave trùng lặp");
+                error = false;
+            }
+
             return error;
         }
 
@@ -215,10 +238,12 @@ namespace FileExportScheduler
                             {
                                 try
                                 {
-                                    var diemDo = dsThietBiGiamSat[txtTenGiaoThuc.Text].//lay ra slave.dsDiemDoGiamSat[row.Cells[1].Value.ToString()];
+                                    /*var diemDo = dsThietBiGiamSat[txtTenGiaoThuc.Text].dsDiemDoGiamSat[row.Cells[1].Value.ToString()];*/
+                                    var diemDo = slave.dsDiemDoGiamSat[row.Cells[1].Value.ToString()];
                                     if (diemDo.DsDulieu.Count() == 0)
                                     {
-                                        dsThietBiGiamSat[txtTenGiaoThuc.Text].dsDiemDoGiamSat.Remove(diemDo.TenDiemDo);
+                                        /*dsThietBiGiamSat[txtTenGiaoThuc.Text].dsDiemDoGiamSat.Remove(diemDo.TenDiemDo);*/
+                                        slave.dsDiemDoGiamSat.Remove(diemDo.TenDiemDo);
                                     }
                                 }
                                 catch (Exception ex)
@@ -305,7 +330,23 @@ namespace FileExportScheduler
         {
             try
             {
-                var thietBiGiamSatDuocChon = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text];
+                slave.dsDiemDoGiamSat = DanhSachDiemDoService.LayDsDiemDoTuDgv(dgvDataProtocol);
+                var maxAddress = MaxAddress.GetMax(thietBi);
+                var minAddress = MaxAddress.GetMin(thietBi);
+                thietBi.MaxAddressCoils = (ushort)maxAddress[0];
+                thietBi.MaxAddressInputs = (ushort)maxAddress[1];
+                thietBi.MaxAddressInputRegisters = (ushort)maxAddress[2];
+                thietBi.MaxAddressHoldingRegisters = (ushort)maxAddress[3];
+
+                thietBi.MinAddressCoils = (ushort)minAddress[0];
+                thietBi.MinAddressInputs = (ushort)minAddress[1];
+                thietBi.MinAddressInputRegisters = (ushort)minAddress[2];
+                thietBi.MinAddressHoldingRegisters = (ushort)minAddress[3];
+
+                JsonService.ToJsonAfterUpdateThietBi(thietBi, "Quang Ninh");
+                //GhiDsThietBiRaFileJson();
+
+                /*var thietBiGiamSatDuocChon = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text];
                 thietBiGiamSatDuocChon.dsDiemDoGiamSat = DanhSachDiemDoService.LayDsDiemDoTuDgv(dgvDataProtocol);
                 var maxAddress = MaxAddress.GetMax(thietBiGiamSatDuocChon);
                 var minAddress = MaxAddress.GetMin(thietBiGiamSatDuocChon);
@@ -318,7 +359,7 @@ namespace FileExportScheduler
                 thietBiGiamSatDuocChon.MinAddressInputs = (ushort)minAddress[1];
                 thietBiGiamSatDuocChon.MinAddressInputRegisters = (ushort)minAddress[2];
                 thietBiGiamSatDuocChon.MinAddressHoldingRegisters = (ushort)minAddress[3];
-                GhiDsThietBiRaFileJson();
+                GhiDsThietBiRaFileJson();*/
             }
             catch (Exception ex)
             {
@@ -478,8 +519,31 @@ namespace FileExportScheduler
             dgvDataProtocol.AutoGenerateColumns = false;
             try
             {
+                if (slave.dsDiemDoGiamSat.Count != 0)
+                {
+                    var dsDuLieuDiemDoHienThi = slave.dsDiemDoGiamSat.ElementAt(0).Value.DsDulieu.Select(x => x.Value).ToList();
 
-                var thietBiGiamSatDuocChon = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text];
+                    for (int i = 1; i < slave.dsDiemDoGiamSat.Count; i++)
+                    {
+                        var dsDuLieuDiemDoThuI = slave.dsDiemDoGiamSat.ElementAt(i).Value.DsDulieu.Select(x => x.Value).ToList();
+                        dsDuLieuDiemDoHienThi.AddRange(dsDuLieuDiemDoThuI);
+                    }
+                    var bindingSource = new BindingSource();
+                    bindingSource.DataSource = dsDuLieuDiemDoHienThi;
+                    dgvDataProtocol.DataSource = bindingSource;
+                }
+                else
+                {
+                    int rowCount = dgvDataProtocol.Rows.Count;
+                    for (int n = 0; n < rowCount; n++)
+                    {
+                        if (dgvDataProtocol.Rows[0].IsNewRow == false)
+                            dgvDataProtocol.Rows.RemoveAt(0);
+                    }
+                }
+
+
+                /*var thietBiGiamSatDuocChon = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text];
                 if (thietBiGiamSatDuocChon.dsDiemDoGiamSat.Count != 0)
                 {
                     var dsDuLieuDiemDoHienThi = thietBiGiamSatDuocChon.dsDiemDoGiamSat.ElementAt(0).Value.DsDulieu.Select(x => x.Value).ToList();
@@ -501,7 +565,7 @@ namespace FileExportScheduler
                         if (dgvDataProtocol.Rows[0].IsNewRow == false)
                             dgvDataProtocol.Rows.RemoveAt(0);
                     }
-                }
+                }*/
             }
             catch (Exception ex)
             {
@@ -589,7 +653,7 @@ namespace FileExportScheduler
         #region hàm sử lý nút lưu
         private void ThemMoiDuocClick()
         {
-            DocDsThietBiTuFileJson();
+            //DocDsThietBiTuFileJson();
 
             TreeNode nodeTemp = TVMain.SelectedNode;
             if (nodeTemp.Parent != null)
@@ -615,7 +679,7 @@ namespace FileExportScheduler
                         IP = txtIPAdress.Text,
                         Port = Convert.ToInt32(txtPort.Text),
                         Protocol = cbProtocol.SelectedItem.ToString(),
-                        dsDiemDoGiamSat = new Dictionary<string, DiemDoModel>(),
+                        dsSlave = new Dictionary<string, SlaveModel>(),
                     };
 
                     dsThietBiGiamSat.Add(deviceObj.Name, deviceObj);
@@ -646,7 +710,7 @@ namespace FileExportScheduler
                         Databit = int.Parse(cbDataBit.SelectedItem.ToString()),
                         StopBits = (StopBits)Enum.Parse(typeof(StopBits), cbStopBit.SelectedItem.ToString()),
                         Protocol = cbProtocol.SelectedItem.ToString(),
-                        dsDiemDoGiamSat = new Dictionary<string, DiemDoModel>(),
+                        dsSlave = new Dictionary<string, SlaveModel>(),
                     };
                     if (!KiemTraCongCOM(cbCOM.SelectedItem.ToString()))
                     {
@@ -660,7 +724,8 @@ namespace FileExportScheduler
                 }
             }
 
-            GhiDsThietBiRaFileJson();
+            JsonService.ToJsonAfterUpdateThietBi(thietBi, "Quang Ninh");
+            //GhiDsThietBiRaFileJson();
             TreeNode node = new TreeNode(txtTenGiaoThuc.Text);
             if (TVMain.SelectedNode.Parent == null)
             {
@@ -685,7 +750,7 @@ namespace FileExportScheduler
         private void EditDuocClick()
         {
             ThietBiTCPIP thietBi = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text] as ThietBiTCPIP;
-            DocDsThietBiTuFileJson();
+            //DocDsThietBiTuFileJson();
             if (cbProtocol.SelectedItem.ToString() == "Modbus TCP/IP")
             {
                 isValidatePassed = CheckValidateCauHinhIP();
@@ -712,9 +777,9 @@ namespace FileExportScheduler
                             IP = txtIPAdress.Text,
                             Port = Convert.ToInt32(txtPort.Text),
                             Protocol = cbProtocol.SelectedItem.ToString(),
-                            dsDiemDoGiamSat = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text].dsDiemDoGiamSat
+                            dsSlave = thietBi.dsSlave
                         };
-                        dsThietBiGiamSat.Remove(formDataList.selectedNodeDouble.Text);
+                        dsThietBiGiamSat.Remove(thietBi.Name);
                         dsThietBiGiamSat.Add(deviceObjIP.Name, deviceObjIP);
                     }
                 }
@@ -765,7 +830,8 @@ namespace FileExportScheduler
                             Databit = int.Parse(cbDataBit.SelectedItem.ToString()),
                             StopBits = (StopBits)Enum.Parse(typeof(StopBits), cbStopBit.SelectedItem.ToString()),
                             Protocol = cbProtocol.SelectedItem.ToString(),
-                            dsDiemDoGiamSat = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text].dsDiemDoGiamSat
+                            dsSlave = thietBi.dsSlave
+                            //dsDiemDoGiamSat = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text].dsDiemDoGiamSat
 
                         };
                         if (!KiemTraCongCOM(cbCOM.SelectedItem.ToString()))
@@ -781,7 +847,8 @@ namespace FileExportScheduler
                     }
                 }
             }
-            GhiDsThietBiRaFileJson();
+            JsonService.ToJsonAfterUpdateThietBi(thietBi, "Quang Ninh");
+            //GhiDsThietBiRaFileJson();
             formDataList.selectedNodeDouble.Text = txtTenGiaoThuc.Text;
             if (isClicked == true)
             {
@@ -986,6 +1053,10 @@ namespace FileExportScheduler
             }
         }
 
+        private void tabPageCauHinh_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
 }

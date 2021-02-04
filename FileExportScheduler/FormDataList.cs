@@ -1,8 +1,10 @@
 ﻿using ESProtocolConverter.Models.Common;
 using ESProtocolConverter.Models.NhaMay;
+using ESProtocolConverter.Service.Json;
 using FileExportScheduler.Models;
 using FileExportScheduler.Models.ThietBi.Base;
 using FileExportScheduler.Service.Json;
+using FileExportScheduler.Service.ThietBi;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -74,11 +76,9 @@ namespace FileExportScheduler
         {
             try
             {
-                var path = GetPathJson.getPathConfig("DeviceAndData.json");
                 dicNhaMay.Clear();
-                JObject jsonObj = JObject.Parse(File.ReadAllText(path));
 
-                dicNhaMay = jsonObj.ToObject<Dictionary<string, NhaMayModel>>();
+                dicNhaMay = JsonService.GetDicNhaMay();
 
                 /*foreach (var nhaMay in dicNhaMay)
                 {
@@ -113,8 +113,9 @@ namespace FileExportScheduler
                 }*/
 
             }
-            catch
+            catch(Exception ex)
             {
+
             }
         }
 
@@ -155,6 +156,7 @@ namespace FileExportScheduler
                         node_slave.Name = TreeName.Name.SlaveAddress.ToString(); ;
 
                         node_thietBi.Nodes.Add(node_slave);
+
 
                         foreach (var diemDo in slave.Value.dsDiemDoGiamSat)
                         {
@@ -247,6 +249,55 @@ namespace FileExportScheduler
             formProtocolConfiguration.isTabConfigHaveAnyChanged = false;
             formProtocolConfiguration.isTabDataHaveAnyChanged = false;
         }*/
+
+        private void tvMain_DoubleClick(object sender, EventArgs e)
+        {
+            TreeNode node = tvMain.SelectedNode; ;
+            var ports = SerialPort.GetPortNames();
+            //JsonToList();
+            splitContainer.Panel2.Controls.Clear();
+
+            if (node != null && node.Name == TreeName.Name.SlaveAddress.ToString())
+            {
+
+                ProtocolConfiguration protocolConfiguration = new ProtocolConfiguration(this);
+                protocolConfiguration.Dock = DockStyle.Fill;
+                protocolConfiguration.txtTenGiaoThuc.Text = node.Parent.Text;
+                protocolConfiguration.cbCOM.DataSource = ports;
+                protocolConfiguration.btnEditProtocol.Visible = true;
+                protocolConfiguration.btnSaveProtocol.Visible = false;
+                protocolConfiguration.txt_SlaveAddress.Text = node.Text;
+                ThietBiModel thietBi_model = ThietBiGiamSatService.GetThietBiGiamSat("Quang Ninh", node.Parent.Text);
+                protocolConfiguration.SetThietBiAndSlave(thietBi_model, node.Text);
+                protocolConfiguration.SetDsThietBi(ThietBiGiamSatService.GetDsThietBi("Quang Ninh1"));
+                try
+                {
+                    ThietBiTCPIP deviceTemp = (ThietBiTCPIP)thietBi_model;
+                    protocolConfiguration.txtIPAdress.Text = deviceTemp.IP;
+                    protocolConfiguration.txtPort.Text = deviceTemp.Port.ToString();
+                    protocolConfiguration.cbProtocol.Text = deviceTemp.Protocol.ToString();
+                }
+                catch
+                {
+                    ThietBiCOM deviceTemp = (ThietBiCOM)thietBi_model;
+                    protocolConfiguration.cbCOM.Text = deviceTemp.Com;
+                    protocolConfiguration.cbBaud.Text = deviceTemp.Baud.ToString();
+                    protocolConfiguration.cbParity.Text = deviceTemp.Parity.ToString();
+                    protocolConfiguration.cbDataBit.Text = deviceTemp.Databit.ToString();
+                    protocolConfiguration.cbStopBit.Text = deviceTemp.StopBits.ToString();
+                    protocolConfiguration.cbProtocol.Text = deviceTemp.Protocol.ToString();
+                }
+
+
+                splitContainer.Panel2.Controls.Add(protocolConfiguration);
+                formProtocolConfiguration = protocolConfiguration;//lưu vào biến toàn cục
+                isInFormEdit = true;
+                formProtocolConfiguration.isTabConfigHaveAnyChanged = false;
+                formProtocolConfiguration.isTabDataHaveAnyChanged = false;
+
+            }
+        }
+
 
         /*private void tvMain_DoubleClick(object sender, EventArgs e)
         {

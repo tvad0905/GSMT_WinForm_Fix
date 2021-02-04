@@ -1,4 +1,5 @@
-﻿using FileExportScheduler.Constant;
+﻿using ESProtocolConverter.Models.Slave;
+using FileExportScheduler.Constant;
 using FileExportScheduler.Models;
 using FileExportScheduler.Models.DiemDo;
 using FileExportScheduler.Models.ThietBi.Base;
@@ -81,11 +82,14 @@ namespace FileExportScheduler.Service.Json
                     CaiDatChung export = JsonConvert.DeserializeObject<CaiDatChung>(obj.ToString());
                     foreach (KeyValuePair<string, ThietBiModel> thietbi in dsThietBiGiamSat)
                     {
-                        foreach (KeyValuePair<string, DiemDoModel> diemDo in thietbi.Value.dsDiemDoGiamSat)
+                        foreach (KeyValuePair<string, SlaveModel> slave in thietbi.Value.dsSlave)
                         {
-                            string filePath = export.ExportFilePath +
-                               "\\" + $"log ({diemDo.Value.TenDiemDo}){ DateTime.Now.ToString(" yyyy_MM_dd_HH_mm_ss")}.csv";
-                            dsDuongDanTheoTenThietBi.Add(filePath);
+                            foreach (KeyValuePair<string, DiemDoModel> diemDo in slave.Value.dsDiemDoGiamSat)
+                            {
+                                string filePath = export.ExportFilePath +
+                                   "\\" + $"log ({diemDo.Value.TenDiemDo}){ DateTime.Now.ToString(" yyyy_MM_dd_HH_mm_ss")}.csv";
+                                dsDuongDanTheoTenThietBi.Add(filePath);
+                            }
                         }
                     }
                 }
@@ -126,13 +130,13 @@ namespace FileExportScheduler.Service.Json
                 {
                     if (deviceComUnit.Value.Protocol == "Serial Port")
                     {
-                        
+
                         dsThietBi.Add(deviceComUnit.Key, deviceComUnit.Value);
                         ThongBaoLoi.DanhSach.Add(deviceComUnit.Key, new List<string>());
                     }
                 }
             }
-            catch{}
+            catch { }
             return dsThietBi;
         }
 

@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Cấu hình", 2, 2);
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Cấu hình", 2, 2);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDataList));
             this.themThietBi_Menu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmsAddThietBi = new System.Windows.Forms.ToolStripMenuItem();
@@ -85,15 +85,16 @@
             this.tvMain.ImageList = this.imageList;
             this.tvMain.Location = new System.Drawing.Point(0, 0);
             this.tvMain.Name = "tvMain";
-            treeNode2.ImageIndex = 2;
-            treeNode2.Name = "root";
-            treeNode2.SelectedImageIndex = 2;
-            treeNode2.Text = "Cấu hình";
+            treeNode1.ImageIndex = 2;
+            treeNode1.Name = "root";
+            treeNode1.SelectedImageIndex = 2;
+            treeNode1.Text = "Cấu hình";
             this.tvMain.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode2});
+            treeNode1});
             this.tvMain.SelectedImageIndex = 0;
             this.tvMain.Size = new System.Drawing.Size(250, 633);
             this.tvMain.TabIndex = 0;
+            this.tvMain.DoubleClick += new System.EventHandler(this.tvMain_DoubleClick);
             // 
             // imageList
             // 

@@ -1,4 +1,5 @@
-﻿using FileExportScheduler.Models.DiemDo;
+﻿using ESProtocolConverter.Models.Slave;
+using FileExportScheduler.Models.DiemDo;
 using FileExportScheduler.Models.DuLieu;
 using FileExportScheduler.Models.ThietBi.Base;
 using System;
@@ -19,44 +20,47 @@ namespace FileExportScheduler.Service.FinMaxAddress
             ushort quantityMaxInputs = 0;
             ushort quantityMaxInputRegister = 0;
             ushort quantityMaxHoldingRegister = 0;
-            foreach (KeyValuePair<string, DiemDoModel> diemDo in ThietBi.dsDiemDoGiamSat)
+            foreach (KeyValuePair<string, SlaveModel> slave in ThietBi.dsSlave)
             {
 
-                foreach (KeyValuePair<string, DuLieuModel> duLieu in diemDo.Value.DsDulieu)
+                foreach (KeyValuePair<string, DiemDoModel> diemDo in slave.Value.dsDiemDoGiamSat)
                 {
 
-                    ushort timDiaChiMax = (ushort)(Convert.ToUInt16(duLieu.Value.DiaChi) + 1);
-                    if (duLieu.Value.DiaChi.StartsWith("0"))
+                    foreach (KeyValuePair<string, DuLieuModel> duLieu in diemDo.Value.DsDulieu)
                     {
-                        if (timDiaChiMax > quantityMaxCoils)
-                        {
-                            quantityMaxCoils = (ushort)(timDiaChiMax - ThietBi.MinAddressCoils);
-                        }
 
-                    }
-                    else if (duLieu.Value.DiaChi.StartsWith("1"))
-                    {
-                        if (timDiaChiMax - 10000 > quantityMaxInputs)
+                        ushort timDiaChiMax = (ushort)(Convert.ToUInt16(duLieu.Value.DiaChi) + 1);
+                        if (duLieu.Value.DiaChi.StartsWith("0"))
                         {
-                            quantityMaxInputs = (ushort)(timDiaChiMax - 10000);
+                            if (timDiaChiMax > quantityMaxCoils)
+                            {
+                                quantityMaxCoils = (ushort)(timDiaChiMax - ThietBi.MinAddressCoils);
+                            }
+
                         }
-                    }
-                    else if (duLieu.Value.DiaChi.StartsWith("3"))
-                    {
-                        if (timDiaChiMax - 30000 > quantityMaxInputRegister)
+                        else if (duLieu.Value.DiaChi.StartsWith("1"))
                         {
-                            quantityMaxInputRegister = (ushort)(timDiaChiMax - 30000);
+                            if (timDiaChiMax - 10000 > quantityMaxInputs)
+                            {
+                                quantityMaxInputs = (ushort)(timDiaChiMax - 10000);
+                            }
                         }
-                    }
-                    else if (duLieu.Value.DiaChi.StartsWith("4"))
-                    {
-                        if (timDiaChiMax - 40000 > quantityMaxHoldingRegister)
+                        else if (duLieu.Value.DiaChi.StartsWith("3"))
                         {
-                            quantityMaxHoldingRegister = (ushort)(timDiaChiMax - 40000);
+                            if (timDiaChiMax - 30000 > quantityMaxInputRegister)
+                            {
+                                quantityMaxInputRegister = (ushort)(timDiaChiMax - 30000);
+                            }
+                        }
+                        else if (duLieu.Value.DiaChi.StartsWith("4"))
+                        {
+                            if (timDiaChiMax - 40000 > quantityMaxHoldingRegister)
+                            {
+                                quantityMaxHoldingRegister = (ushort)(timDiaChiMax - 40000);
+                            }
                         }
                     }
                 }
-
             }
 
             listMaxAddress.Add(quantityMaxCoils);
@@ -74,39 +78,43 @@ namespace FileExportScheduler.Service.FinMaxAddress
             ushort minAddressInputs = 10000;
             ushort minAddressInputRegister = 10000;
             ushort minAddressHoldingRegister = 10000;
-            foreach (KeyValuePair<string, DiemDoModel> diemDo in ThietBi.dsDiemDoGiamSat)
+            foreach (KeyValuePair<string, SlaveModel> slave in ThietBi.dsSlave)
             {
-                foreach (KeyValuePair<string, DuLieuModel> duLieu in diemDo.Value.DsDulieu)
+                foreach (KeyValuePair<string, DiemDoModel> diemDo in slave.Value.dsDiemDoGiamSat)
                 {
-                    var min = (ushort)(Convert.ToUInt16(duLieu.Value.DiaChi));
-                    if (duLieu.Value.DiaChi.StartsWith("0"))
-                    {
-                        if (minAddressCoils > min)
-                        {
-                            minAddressCoils = min;
-                        }
 
-                    }
-                    else if (duLieu.Value.DiaChi.StartsWith("1"))
+                    foreach (KeyValuePair<string, DuLieuModel> duLieu in diemDo.Value.DsDulieu)
                     {
-                        if (min - 10000 < minAddressInputs)
+                        var min = (ushort)(Convert.ToUInt16(duLieu.Value.DiaChi));
+                        if (duLieu.Value.DiaChi.StartsWith("0"))
                         {
-                            minAddressInputs = (ushort)(min - 10000);
-                        }
-                    }
-                    else if (duLieu.Value.DiaChi.StartsWith("3"))
-                    {
-                        if (min - 30000 < minAddressInputRegister)
-                        {
-                            minAddressInputRegister = (ushort)(min - 30000);
-                        }
-                    }
-                    else if (duLieu.Value.DiaChi.StartsWith("4"))
-                    {
+                            if (minAddressCoils > min)
+                            {
+                                minAddressCoils = min;
+                            }
 
-                        if (min - 40000 < minAddressHoldingRegister)
+                        }
+                        else if (duLieu.Value.DiaChi.StartsWith("1"))
                         {
-                            minAddressHoldingRegister = (ushort)(min - 40000);
+                            if (min - 10000 < minAddressInputs)
+                            {
+                                minAddressInputs = (ushort)(min - 10000);
+                            }
+                        }
+                        else if (duLieu.Value.DiaChi.StartsWith("3"))
+                        {
+                            if (min - 30000 < minAddressInputRegister)
+                            {
+                                minAddressInputRegister = (ushort)(min - 30000);
+                            }
+                        }
+                        else if (duLieu.Value.DiaChi.StartsWith("4"))
+                        {
+
+                            if (min - 40000 < minAddressHoldingRegister)
+                            {
+                                minAddressHoldingRegister = (ushort)(min - 40000);
+                            }
                         }
                     }
                 }
