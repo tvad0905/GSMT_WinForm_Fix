@@ -60,7 +60,7 @@ namespace FileExportScheduler
             this.TVMain = formDataList.tvMain;
             this.formDataList = formDataList;
             //DocDsThietBiTuFileJson();
-            LoadDuLieuLenDgv();
+            //LoadDuLieuLenDgv();
             cbProtocol.SelectedIndex = cbProtocol.Items.IndexOf("Modbus TCP/IP");
             cbCOM.SelectedIndex = cbCOM.Items.IndexOf("COM1");
             cbBaud.SelectedIndex = cbBaud.Items.IndexOf("9600");
@@ -749,7 +749,7 @@ namespace FileExportScheduler
 
         private void EditDuocClick()
         {
-            ThietBiTCPIP thietBi = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text] as ThietBiTCPIP;
+            ThietBiTCPIP thietBi_TCPIP = (ThietBiTCPIP)thietBi;
             //DocDsThietBiTuFileJson();
             if (cbProtocol.SelectedItem.ToString() == "Modbus TCP/IP")
             {
@@ -761,13 +761,14 @@ namespace FileExportScheduler
                 }
                 else
                 {
-                    if (thietBi != null)
+                    if (thietBi_TCPIP != null)
                     {
-                        thietBi.Name = txtTenGiaoThuc.Text;
-                        thietBi.IP = txtIPAdress.Text;
-                        thietBi.Port = Convert.ToInt32(txtPort.Text);
-                        dsThietBiGiamSat.Remove(formDataList.selectedNodeDouble.Text);
-                        dsThietBiGiamSat.Add(thietBi.Name, thietBi);
+                        thietBi_TCPIP.Name = txtTenGiaoThuc.Text;
+                        thietBi_TCPIP.IP = txtIPAdress.Text;
+                        thietBi_TCPIP.Port = Convert.ToInt32(txtPort.Text);
+                        dsThietBiGiamSat.Remove(thietBi.Name);
+                        dsThietBiGiamSat.Add(thietBi_TCPIP.Name, thietBi_TCPIP);
+                        thietBi = thietBi_TCPIP;
                     }
                     else
                     {
@@ -777,9 +778,9 @@ namespace FileExportScheduler
                             IP = txtIPAdress.Text,
                             Port = Convert.ToInt32(txtPort.Text),
                             Protocol = cbProtocol.SelectedItem.ToString(),
-                            dsSlave = thietBi.dsSlave
+                            dsSlave = thietBi_TCPIP.dsSlave
                         };
-                        dsThietBiGiamSat.Remove(thietBi.Name);
+                        dsThietBiGiamSat.Remove(thietBi_TCPIP.Name);
                         dsThietBiGiamSat.Add(deviceObjIP.Name, deviceObjIP);
                     }
                 }
@@ -830,7 +831,7 @@ namespace FileExportScheduler
                             Databit = int.Parse(cbDataBit.SelectedItem.ToString()),
                             StopBits = (StopBits)Enum.Parse(typeof(StopBits), cbStopBit.SelectedItem.ToString()),
                             Protocol = cbProtocol.SelectedItem.ToString(),
-                            dsSlave = thietBi.dsSlave
+                            dsSlave = thietBi_TCPIP.dsSlave
                             //dsDiemDoGiamSat = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text].dsDiemDoGiamSat
 
                         };
@@ -847,7 +848,7 @@ namespace FileExportScheduler
                     }
                 }
             }
-            JsonService.ToJsonAfterUpdateThietBi(thietBi, "Quang Ninh");
+            JsonService.ToJsonAfterUpdateThietBi(thietBi_TCPIP, "Quang Ninh");
             //GhiDsThietBiRaFileJson();
             formDataList.selectedNodeDouble.Text = txtTenGiaoThuc.Text;
             if (isClicked == true)

@@ -1,5 +1,6 @@
 ﻿using ESProtocolConverter.Models.NhaMay;
 using ESProtocolConverter.Models.Slave;
+using ESProtocolConverter.Service.Json;
 using FileExportScheduler.Models;
 using FileExportScheduler.Models.DiemDo;
 using FileExportScheduler.Models.DuLieu;
@@ -38,10 +39,7 @@ namespace FileExportScheduler.Service.ThietBi
             try
             {
 
-                var path = GetPathJson.getPathConfig("DeviceAndData.json");
-                JObject jsonObj = JObject.Parse(File.ReadAllText(path));
-
-                Dictionary<string, NhaMayModel> dicNhaMay = jsonObj.ToObject<Dictionary<string, NhaMayModel>>();
+                Dictionary<string, NhaMayModel> dicNhaMay = JsonService.GetDicNhaMay();
                 foreach (var nhaMay_item in dicNhaMay)
                 {
                     if (nhaMay_item.Value.Name == nhaMay_name)
@@ -76,10 +74,7 @@ namespace FileExportScheduler.Service.ThietBi
             try
             {
 
-                var path = GetPathJson.getPathConfig("DeviceAndData.json");
-                JObject jsonObj = JObject.Parse(File.ReadAllText(path));
-
-                Dictionary<string, NhaMayModel> dicNhaMay = jsonObj.ToObject<Dictionary<string, NhaMayModel>>();
+                Dictionary<string, NhaMayModel> dicNhaMay = JsonService.GetDicNhaMay();
                 foreach (var nhaMay_item in dicNhaMay)
                 {
                     if (nhaMay_item.Value.Name == nhamay_name)

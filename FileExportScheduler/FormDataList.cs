@@ -252,7 +252,7 @@ namespace FileExportScheduler
 
         private void tvMain_DoubleClick(object sender, EventArgs e)
         {
-            TreeNode node = tvMain.SelectedNode; ;
+            TreeNode node = tvMain.SelectedNode;
             var ports = SerialPort.GetPortNames();
             //JsonToList();
             splitContainer.Panel2.Controls.Clear();
@@ -270,6 +270,7 @@ namespace FileExportScheduler
                 ThietBiModel thietBi_model = ThietBiGiamSatService.GetThietBiGiamSat("Quang Ninh", node.Parent.Text);
                 protocolConfiguration.SetThietBiAndSlave(thietBi_model, node.Text);
                 protocolConfiguration.SetDsThietBi(ThietBiGiamSatService.GetDsThietBi("Quang Ninh1"));
+                protocolConfiguration.LoadDuLieuLenDgv();
                 try
                 {
                     ThietBiTCPIP deviceTemp = (ThietBiTCPIP)thietBi_model;

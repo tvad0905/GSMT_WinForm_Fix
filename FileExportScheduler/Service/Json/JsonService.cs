@@ -1,4 +1,5 @@
 ﻿using ESProtocolConverter.Models.NhaMay;
+using FileExportScheduler.Models;
 using FileExportScheduler.Models.ThietBi.Base;
 using FileExportScheduler.Service.Json;
 using Newtonsoft.Json.Linq;
@@ -44,7 +45,56 @@ namespace ESProtocolConverter.Service.Json
                 var path = GetPathJson.getPathConfig("DeviceAndData.json");
                 JObject jsonObj = JObject.Parse(File.ReadAllText(path));
 
-                return jsonObj.ToObject<Dictionary<string, NhaMayModel>>();
+                Dictionary<string, NhaMayModel> dicNhaMay = new Dictionary<string, NhaMayModel>();
+
+                foreach (var nm_item in jsonObj)
+                {
+                    NhaMayModel nmM = new NhaMayModel();
+                    nmM.Name = nm_item.Key;
+
+                    try
+                    {
+                        JObject jOb_nm = JObject.Parse(nm_item.Value.ToString());
+                        foreach(var job_nm_item in jOb_nm)
+                        {
+                            if(job_nm_item.Key == "dsThietBi")
+                            {
+                                JObject jOb_tb = JObject.Parse(job_nm_item.Value.ToString());
+
+                                Dictionary<string, ThietBiTCPIP> deviceTCPIP = jOb_tb.ToObject<Dictionary<string, ThietBiTCPIP>>();
+                                foreach (var deviceIPUnit in deviceTCPIP)
+                                {
+                                    if (deviceIPUnit.Value.Protocol == "Modbus TCP/IP" || deviceIPUnit.Value.Protocol == "Siemens S7-1200")
+                                    {
+                                        nmM.dsThietBi.Add(deviceIPUnit.Key, deviceIPUnit.Value);
+                                    }
+                                }
+
+                                Dictionary<string, ThietBiCOM> deviceCom = jOb_tb.ToObject<Dictionary<string, ThietBiCOM>>();
+                                foreach(var deviceComUnit in deviceCom)
+                                {
+                                    if(deviceComUnit.Value.Protocol == "Serial Port")
+                                    {
+                                        nmM.dsThietBi.Add(deviceComUnit.Key, deviceComUnit.Value);
+                                    }
+                                }
+
+
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        continue;
+                    }
+
+
+                    dicNhaMay.Add(nmM.Name, nmM);
+
+                }
+
+
+                return dicNhaMay;
             }
             catch (Exception ex)
             {
