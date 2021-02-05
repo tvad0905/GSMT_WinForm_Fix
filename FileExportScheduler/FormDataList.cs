@@ -49,11 +49,9 @@ namespace FileExportScheduler
             {
                 //node.ContextMenuStrip = themThietBi_Menu;
             }
-            else if (node.Name == TreeName.Name.NhaMay.ToString()
-                || node.Name == TreeName.Name.ThietBi.ToString()
-                || node.Name == TreeName.Name.SlaveAddress.ToString())
+            else if (node.Name == TreeName.Name.ThietBi.ToString())
             {
-                node.ContextMenuStrip = them_xoa_Menu;
+                node.ContextMenuStrip = themThietBi_Menu;
             }
             else if (node.Name == TreeName.Name.DiemDo.ToString())
             {
@@ -139,7 +137,7 @@ namespace FileExportScheduler
 
                 node_nhaMay.Name = TreeName.Name.NhaMay.ToString();
 
-                tvMain.Nodes.Add(node_nhaMay);
+                //tvMain.Nodes[TreeName.Name.root.ToString()].Nodes.Add(node_nhaMay);
 
                 foreach (var thietBi in nhaMay.Value.dsThietBi)
                 {
@@ -147,7 +145,8 @@ namespace FileExportScheduler
 
                     node_thietBi.Name = TreeName.Name.ThietBi.ToString(); ;
 
-                    node_nhaMay.Nodes.Add(node_thietBi);
+                    //node_nhaMay.Nodes.Add(node_thietBi);
+                    tvMain.Nodes[TreeName.Name.root.ToString()].Nodes.Add(node_thietBi);
 
                     foreach (var slave in thietBi.Value.dsSlave)
                     {
@@ -155,19 +154,21 @@ namespace FileExportScheduler
 
                         node_slave.Name = TreeName.Name.SlaveAddress.ToString(); ;
 
+                        //node_thietBi.Nodes.Add(node_slave);
+
                         node_thietBi.Nodes.Add(node_slave);
 
-
-                        foreach (var diemDo in slave.Value.dsDiemDoGiamSat)
+                        /*foreach (var diemDo in slave.Value.dsDiemDoGiamSat)
                         {
                             TreeNode node_diemDo = new TreeNode(diemDo.Value.TenDiemDo);
 
                             node_diemDo.Name = TreeName.Name.DiemDo.ToString(); ;
 
+                            //node_slave.Nodes.Add(node_diemDo);
                             node_slave.Nodes.Add(node_diemDo);
 
                             setMenu(node_diemDo);
-                        }
+                        }*/
 
                         setMenu(node_slave);
                     }
@@ -175,7 +176,7 @@ namespace FileExportScheduler
                     setMenu(node_thietBi);
                 }
 
-                setMenu(node_nhaMay);
+                //setMenu(node_nhaMay);
             }
 
             /*foreach (KeyValuePair<string, ThietBiModel> device in deviceDic)
