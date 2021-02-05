@@ -15,7 +15,7 @@ namespace ESProtocolConverter.Service.Json
 {
     public static class JsonService
     {
-        public static void ToJsonAfterUpdateThietBi(ThietBiModel thietBi, string nhaMay_name)
+        public static void ReplayOldTbByNewTb(string oldName_thietBi, ThietBiModel thietBi, string nhaMay_name)
         {
             var path = GetPathJson.getPathConfig("DeviceAndData.json");
             Dictionary<string, NhaMayModel> dicNhaMay = GetDicNhaMay();
@@ -23,13 +23,10 @@ namespace ESProtocolConverter.Service.Json
             {
                 if (nhaMay_item.Value.Name == nhaMay_name)
                 {
-                    foreach (var thietBi_item in nhaMay_item.Value.dsThietBi)
+                    if (nhaMay_item.Value.dsThietBi.ContainsKey(oldName_thietBi))
                     {
-                        if (thietBi_item.Value.Name == thietBi.Name)
-                        {
-                            nhaMay_item.Value.dsThietBi.Remove(thietBi_item.Key);
-                            nhaMay_item.Value.dsThietBi.Add(thietBi.Name, thietBi);
-                        }
+                        nhaMay_item.Value.dsThietBi.Remove(oldName_thietBi);
+                        nhaMay_item.Value.dsThietBi.Add(thietBi.Name, thietBi);
                     }
                 }
             }
@@ -55,9 +52,9 @@ namespace ESProtocolConverter.Service.Json
                     try
                     {
                         JObject jOb_nm = JObject.Parse(nm_item.Value.ToString());
-                        foreach(var job_nm_item in jOb_nm)
+                        foreach (var job_nm_item in jOb_nm)
                         {
-                            if(job_nm_item.Key == "dsThietBi")
+                            if (job_nm_item.Key == "dsThietBi")
                             {
                                 JObject jOb_tb = JObject.Parse(job_nm_item.Value.ToString());
 
@@ -71,9 +68,9 @@ namespace ESProtocolConverter.Service.Json
                                 }
 
                                 Dictionary<string, ThietBiCOM> deviceCom = jOb_tb.ToObject<Dictionary<string, ThietBiCOM>>();
-                                foreach(var deviceComUnit in deviceCom)
+                                foreach (var deviceComUnit in deviceCom)
                                 {
-                                    if(deviceComUnit.Value.Protocol == "Serial Port")
+                                    if (deviceComUnit.Value.Protocol == "Serial Port")
                                     {
                                         nmM.dsThietBi.Add(deviceComUnit.Key, deviceComUnit.Value);
                                     }

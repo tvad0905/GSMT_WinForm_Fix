@@ -31,7 +31,7 @@ namespace FileExportScheduler
         //Dictionary<string, ThietBiModel> deviceDic = new Dictionary<string, ThietBiModel>();
         Dictionary<string, NhaMayModel> dicNhaMay = new Dictionary<string, NhaMayModel>();
         public TreeNode selectedNode = new TreeNode();
-        public TreeNode selectedNodeDouble = new TreeNode();
+        public TreeNode selectedNodeDouble ;
         private ProtocolConfiguration formProtocolConfiguration;
         private bool isInFormEdit;
 
@@ -254,6 +254,7 @@ namespace FileExportScheduler
         private void tvMain_DoubleClick(object sender, EventArgs e)
         {
             TreeNode node = tvMain.SelectedNode;
+            selectedNodeDouble = tvMain.SelectedNode;
             var ports = SerialPort.GetPortNames();
             //JsonToList();
             splitContainer.Panel2.Controls.Clear();

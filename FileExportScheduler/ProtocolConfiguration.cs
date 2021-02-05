@@ -348,7 +348,7 @@ namespace FileExportScheduler
                 thietBi.MinAddressInputRegisters = (ushort)minAddress[2];
                 thietBi.MinAddressHoldingRegisters = (ushort)minAddress[3];
 
-                JsonService.ToJsonAfterUpdateThietBi(thietBi, "Quang Ninh");
+                //JsonService.ToJsonAfterUpdateThietBi(thietBi, "Quang Ninh");
                 //GhiDsThietBiRaFileJson();
 
                 /*var thietBiGiamSatDuocChon = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text];
@@ -730,7 +730,7 @@ namespace FileExportScheduler
                 }
             }
 
-            JsonService.ToJsonAfterUpdateThietBi(thietBi, "Quang Ninh");
+            //JsonService.ToJsonAfterUpdateThietBi(thietBi, "Quang Ninh");
             //GhiDsThietBiRaFileJson();
             TreeNode node = new TreeNode(txtTenGiaoThuc.Text);
             if (TVMain.SelectedNode.Parent == null)
@@ -771,11 +771,15 @@ namespace FileExportScheduler
                     {
                         if (thietBi_TCPIP != null)
                         {
+                            string onlName_thietBi = thietBi.Name;
+
                             thietBi_TCPIP.Name = txtTenGiaoThuc.Text;
                             thietBi_TCPIP.IP = txtIPAdress.Text;
                             thietBi_TCPIP.Port = Convert.ToInt32(txtPort.Text);
-                            dsThietBiGiamSat.Remove(thietBi.Name);
+                            dsThietBiGiamSat.Remove(onlName_thietBi);
                             dsThietBiGiamSat.Add(thietBi_TCPIP.Name, thietBi_TCPIP);
+
+                            JsonService.ReplayOldTbByNewTb(onlName_thietBi, thietBi_TCPIP, "Quang Ninh");
                             thietBi = thietBi_TCPIP;
                         }
                         /*else
@@ -792,7 +796,6 @@ namespace FileExportScheduler
                             dsThietBiGiamSat.Add(deviceObjIP.Name, deviceObjIP);
                         }*/
                     }
-                    JsonService.ToJsonAfterUpdateThietBi(thietBi_TCPIP, "Quang Ninh");
                 }
             }
             else if (cbProtocol.SelectedItem.ToString() == "Serial Port")
@@ -808,6 +811,7 @@ namespace FileExportScheduler
                     if (thietBi.GetType() == typeof(ThietBiCOM))
                     {
                         //ThietBiCOM comTemp = dsThietBiGiamSat[formDataList.selectedNodeDouble.Text] as ThietBiCOM;
+                        string onlName_thietBi = thietBi.Name;
                         ThietBiCOM thietBiCOM = (ThietBiCOM)thietBi;
                         if (thietBiCOM != null)
                         {
@@ -829,8 +833,10 @@ namespace FileExportScheduler
                             }
                             else
                             {
-                                dsThietBiGiamSat.Remove(thietBi.Name);
+                                dsThietBiGiamSat.Remove(onlName_thietBi);
                                 dsThietBiGiamSat.Add(thietBiCOM.Name, thietBiCOM);
+
+                                JsonService.ReplayOldTbByNewTb(onlName_thietBi, thietBiCOM, "Quang Ninh");
                                 thietBi = thietBiCOM;
                             }
                         }
@@ -860,7 +866,6 @@ namespace FileExportScheduler
                                 dsThietBiGiamSat.Add(deviceObjCOM.Name, deviceObjCOM);
                             }
                         }*/
-                        JsonService.ToJsonAfterUpdateThietBi(thietBiCOM, "Quang Ninh");
                     }
                 }
             }
@@ -872,7 +877,7 @@ namespace FileExportScheduler
                 MessageBox.Show("Lưu cấu hình thiết bị thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 isClicked = false;
             }
-            SaveData();
+            //SaveData();
             isTabConfigHaveAnyChanged = false;
         }
         #endregion
