@@ -348,6 +348,10 @@ namespace FileExportScheduler
                 thietBi.MinAddressInputRegisters = (ushort)minAddress[2];
                 thietBi.MinAddressHoldingRegisters = (ushort)minAddress[3];
 
+                thietBi.dsSlave[slave.Name] = slave;
+
+                JsonService.ReplaceOldTbByNewTb(thietBi.Name, thietBi, "Quang Ninh");
+                //JsonService.UpdateDuLieuSlave("Quang Ninh", thietBi.Name, slave.Name, slave);
                 //JsonService.ToJsonAfterUpdateThietBi(thietBi, "Quang Ninh");
                 //GhiDsThietBiRaFileJson();
 
@@ -748,7 +752,7 @@ namespace FileExportScheduler
                 MessageBox.Show("Lưu cấu hình thiết bị thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 isClicked = false;
             }
-            node.ContextMenuStrip = formDataList.xoa_Menu;
+            node.ContextMenuStrip = formDataList.cms_Slave;
             //SaveData();
             isTabConfigHaveAnyChanged = false;
         }
@@ -779,7 +783,7 @@ namespace FileExportScheduler
                             dsThietBiGiamSat.Remove(onlName_thietBi);
                             dsThietBiGiamSat.Add(thietBi_TCPIP.Name, thietBi_TCPIP);
 
-                            JsonService.ReplayOldTbByNewTb(onlName_thietBi, thietBi_TCPIP, "Quang Ninh");
+                            JsonService.ReplaceOldTbByNewTb(onlName_thietBi, thietBi_TCPIP, "Quang Ninh");
                             thietBi = thietBi_TCPIP;
                         }
                         /*else
@@ -836,7 +840,7 @@ namespace FileExportScheduler
                                 dsThietBiGiamSat.Remove(onlName_thietBi);
                                 dsThietBiGiamSat.Add(thietBiCOM.Name, thietBiCOM);
 
-                                JsonService.ReplayOldTbByNewTb(onlName_thietBi, thietBiCOM, "Quang Ninh");
+                                JsonService.ReplaceOldTbByNewTb(onlName_thietBi, thietBiCOM, "Quang Ninh");
                                 thietBi = thietBiCOM;
                             }
                         }
@@ -1073,11 +1077,6 @@ namespace FileExportScheduler
             {
                 e.Handled = true;
             }
-        }
-
-        private void tabPageCauHinh_Click(object sender, EventArgs e)
-        {
-
         }
 
         public void HideTabDuLieu()

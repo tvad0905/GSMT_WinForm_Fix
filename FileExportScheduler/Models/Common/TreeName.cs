@@ -9,7 +9,6 @@ namespace ESProtocolConverter.Models.Common
     public class TreeName
     {
         public enum Name {
-            root,
             NhaMay,
             ThietBi,
             Protocols,

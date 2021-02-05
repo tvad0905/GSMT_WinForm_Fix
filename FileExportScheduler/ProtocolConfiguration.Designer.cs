@@ -114,7 +114,6 @@
             this.tabPageCauHinh.TabIndex = 0;
             this.tabPageCauHinh.Text = "Cấu hình";
             this.tabPageCauHinh.UseVisualStyleBackColor = true;
-            this.tabPageCauHinh.Click += new System.EventHandler(this.tabPageCauHinh_Click);
             // 
             // cbProtocol
             // 

@@ -1,4 +1,5 @@
 ﻿using ESProtocolConverter.Models.NhaMay;
+using ESProtocolConverter.Models.Slave;
 using FileExportScheduler.Models;
 using FileExportScheduler.Models.ThietBi.Base;
 using FileExportScheduler.Service.Json;
@@ -15,11 +16,18 @@ namespace ESProtocolConverter.Service.Json
 {
     public static class JsonService
     {
-        public static void ReplayOldTbByNewTb(string oldName_thietBi, ThietBiModel thietBi, string nhaMay_name)
+        public static void ReplaceOldTbByNewTb(string oldName_thietBi, ThietBiModel thietBi, string nhaMay_name)
         {
             var path = GetPathJson.getPathConfig("DeviceAndData.json");
             Dictionary<string, NhaMayModel> dicNhaMay = GetDicNhaMay();
-            foreach (var nhaMay_item in dicNhaMay)
+
+            NhaMayModel nhaMay = dicNhaMay[nhaMay_name];
+            if (nhaMay.dsThietBi.ContainsKey(oldName_thietBi))
+            {
+                nhaMay.dsThietBi.Remove(oldName_thietBi);
+                nhaMay.dsThietBi.Add(thietBi.Name, thietBi);
+            }
+            /*foreach (var nhaMay_item in dicNhaMay)
             {
                 if (nhaMay_item.Value.Name == nhaMay_name)
                 {
@@ -29,7 +37,7 @@ namespace ESProtocolConverter.Service.Json
                         nhaMay_item.Value.dsThietBi.Add(thietBi.Name, thietBi);
                     }
                 }
-            }
+            }*/
 
             string jsonString = (new JavaScriptSerializer()).Serialize((object)dicNhaMay);
             File.WriteAllText(path, jsonString);
@@ -97,6 +105,22 @@ namespace ESProtocolConverter.Service.Json
             {
                 return null;
             }
+        }
+
+        public static void UpdateDuLieuSlave(string tenNhaMay, string tenThietBi, string oldNameSlave, SlaveModel newSlave)
+        {
+            var path = GetPathJson.getPathConfig("DeviceAndData.json");
+            Dictionary<string, NhaMayModel> dicNhaMay = GetDicNhaMay();
+
+            ThietBiModel thietBi = dicNhaMay[tenNhaMay].dsThietBi[tenThietBi];
+            if (thietBi.dsSlave.ContainsKey(oldNameSlave))
+            {
+                thietBi.dsSlave.Remove(oldNameSlave);
+                thietBi.dsSlave.Add(newSlave.Name, newSlave);
+            }
+
+            string jsonString = (new JavaScriptSerializer()).Serialize((object)dicNhaMay);
+            File.WriteAllText(path, jsonString);
         }
     }
 }

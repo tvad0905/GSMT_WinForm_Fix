@@ -29,33 +29,32 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Cấu hình", 2, 2);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDataList));
-            this.themThietBi_Menu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cms_NhaMay = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmsAddThietBi = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.tvMain = new System.Windows.Forms.TreeView();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
-            this.xoa_Menu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cms_Slave = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.delToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.them_xoa_Menu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cms_ThietBi = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.thêmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.xóaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.themThietBi_Menu.SuspendLayout();
+            this.cms_NhaMay.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.SuspendLayout();
-            this.xoa_Menu.SuspendLayout();
-            this.them_xoa_Menu.SuspendLayout();
+            this.cms_Slave.SuspendLayout();
+            this.cms_ThietBi.SuspendLayout();
             this.SuspendLayout();
             // 
-            // themThietBi_Menu
+            // cms_NhaMay
             // 
-            this.themThietBi_Menu.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.themThietBi_Menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cms_NhaMay.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.cms_NhaMay.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cmsAddThietBi});
-            this.themThietBi_Menu.Name = "ctxMenu";
-            this.themThietBi_Menu.Size = new System.Drawing.Size(105, 26);
+            this.cms_NhaMay.Name = "ctxMenu";
+            this.cms_NhaMay.Size = new System.Drawing.Size(105, 26);
             // 
             // cmsAddThietBi
             // 
@@ -85,16 +84,11 @@
             this.tvMain.ImageList = this.imageList;
             this.tvMain.Location = new System.Drawing.Point(0, 0);
             this.tvMain.Name = "tvMain";
-            treeNode1.ImageIndex = 2;
-            treeNode1.Name = "root";
-            treeNode1.SelectedImageIndex = 2;
-            treeNode1.Text = "Cấu hình";
-            this.tvMain.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1});
             this.tvMain.SelectedImageIndex = 0;
             this.tvMain.Size = new System.Drawing.Size(250, 633);
             this.tvMain.TabIndex = 0;
-            this.tvMain.DoubleClick += new System.EventHandler(this.tvMain_DoubleClick);
+            this.tvMain.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvMain_NodeMouseClick);
+            this.tvMain.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvMain_NodeMouseDoubleClick);
             // 
             // imageList
             // 
@@ -104,39 +98,42 @@
             this.imageList.Images.SetKeyName(1, "Device.ico");
             this.imageList.Images.SetKeyName(2, "network.ico");
             // 
-            // xoa_Menu
+            // cms_Slave
             // 
-            this.xoa_Menu.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.xoa_Menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cms_Slave.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.cms_Slave.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.delToolStripMenuItem});
-            this.xoa_Menu.Name = "tx2";
-            this.xoa_Menu.Size = new System.Drawing.Size(95, 26);
+            this.cms_Slave.Name = "tx2";
+            this.cms_Slave.Size = new System.Drawing.Size(181, 48);
             // 
             // delToolStripMenuItem
             // 
             this.delToolStripMenuItem.Name = "delToolStripMenuItem";
-            this.delToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.delToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.delToolStripMenuItem.Text = "Xóa";
+            this.delToolStripMenuItem.Click += new System.EventHandler(this.cms_Xoa_SlaveAddress);
             // 
-            // them_xoa_Menu
+            // cms_ThietBi
             // 
-            this.them_xoa_Menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cms_ThietBi.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.thêmToolStripMenuItem,
             this.xóaToolStripMenuItem});
-            this.them_xoa_Menu.Name = "them_xoa_Menu";
-            this.them_xoa_Menu.Size = new System.Drawing.Size(105, 48);
+            this.cms_ThietBi.Name = "them_xoa_Menu";
+            this.cms_ThietBi.Size = new System.Drawing.Size(105, 48);
             // 
             // thêmToolStripMenuItem
             // 
             this.thêmToolStripMenuItem.Name = "thêmToolStripMenuItem";
             this.thêmToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
             this.thêmToolStripMenuItem.Text = "Thêm";
+            this.thêmToolStripMenuItem.Click += new System.EventHandler(this.cms_Them_SlaveAddress);
             // 
             // xóaToolStripMenuItem
             // 
             this.xóaToolStripMenuItem.Name = "xóaToolStripMenuItem";
             this.xóaToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
             this.xóaToolStripMenuItem.Text = "Xóa";
+            this.xóaToolStripMenuItem.Click += new System.EventHandler(this.cms_Xoa_ThietBi);
             // 
             // FormDataList
             // 
@@ -151,12 +148,12 @@
             this.Text = "Quản lý dữ liệu";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormDataList_FormClosing);
             this.Load += new System.EventHandler(this.FormDataList_Load);
-            this.themThietBi_Menu.ResumeLayout(false);
+            this.cms_NhaMay.ResumeLayout(false);
             this.splitContainer.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
             this.splitContainer.ResumeLayout(false);
-            this.xoa_Menu.ResumeLayout(false);
-            this.them_xoa_Menu.ResumeLayout(false);
+            this.cms_Slave.ResumeLayout(false);
+            this.cms_ThietBi.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -166,11 +163,11 @@
         private System.Windows.Forms.SplitContainer splitContainer;
         public System.Windows.Forms.TreeView tvMain;
         private System.Windows.Forms.ImageList imageList;
-        private System.Windows.Forms.ContextMenuStrip themThietBi_Menu;
+        private System.Windows.Forms.ContextMenuStrip cms_NhaMay;
         private System.Windows.Forms.ToolStripMenuItem cmsAddThietBi;
-        public System.Windows.Forms.ContextMenuStrip xoa_Menu;
+        public System.Windows.Forms.ContextMenuStrip cms_Slave;
         private System.Windows.Forms.ToolStripMenuItem delToolStripMenuItem;
-        private System.Windows.Forms.ContextMenuStrip them_xoa_Menu;
+        private System.Windows.Forms.ContextMenuStrip cms_ThietBi;
         private System.Windows.Forms.ToolStripMenuItem thêmToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem xóaToolStripMenuItem;
     }
