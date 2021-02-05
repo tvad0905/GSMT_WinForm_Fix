@@ -258,20 +258,37 @@ namespace FileExportScheduler
             //JsonToList();
             splitContainer.Panel2.Controls.Clear();
 
-            if (node != null && node.Name == TreeName.Name.SlaveAddress.ToString())
+            if (node != null && ( node.Name == TreeName.Name.SlaveAddress.ToString() || node.Name == TreeName.Name.ThietBi.ToString()))
             {
 
                 ProtocolConfiguration protocolConfiguration = new ProtocolConfiguration(this);
                 protocolConfiguration.Dock = DockStyle.Fill;
-                protocolConfiguration.txtTenGiaoThuc.Text = node.Parent.Text;
+
                 protocolConfiguration.cbCOM.DataSource = ports;
                 protocolConfiguration.btnEditProtocol.Visible = true;
                 protocolConfiguration.btnSaveProtocol.Visible = false;
-                protocolConfiguration.txt_SlaveAddress.Text = node.Text;
-                ThietBiModel thietBi_model = ThietBiGiamSatService.GetThietBiGiamSat("Quang Ninh", node.Parent.Text);
-                protocolConfiguration.SetThietBiAndSlave(thietBi_model, node.Text);
+
+                string thietBi_name = node.Name == TreeName.Name.ThietBi.ToString() ? node.Text : node.Parent.Text;
+                string slave_name = node.Name == TreeName.Name.SlaveAddress.ToString() ? node.Text : null;
+
+                protocolConfiguration.txtTenGiaoThuc.Text = thietBi_name;
+
+                ThietBiModel thietBi_model = ThietBiGiamSatService.GetThietBiGiamSat("Quang Ninh", thietBi_name);
+        
+                protocolConfiguration.SetThietBiAndSlave(thietBi_model, slave_name);
                 protocolConfiguration.SetDsThietBi(ThietBiGiamSatService.GetDsThietBi("Quang Ninh1"));
-                protocolConfiguration.LoadDuLieuLenDgv();
+                
+                if(node.Name == TreeName.Name.SlaveAddress.ToString())
+                {
+                    protocolConfiguration.LoadDuLieuLenDgv();
+                }
+                
+                
+                if(node.Name == TreeName.Name.ThietBi.ToString())
+                {
+                    protocolConfiguration.HideTabDuLieu();
+                }
+                
                 try
                 {
                     ThietBiTCPIP deviceTemp = (ThietBiTCPIP)thietBi_model;

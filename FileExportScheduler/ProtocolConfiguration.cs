@@ -32,7 +32,7 @@ namespace FileExportScheduler
         #region biến toàn cục
         Dictionary<string, ThietBiModel> dsThietBiGiamSat = new Dictionary<string, ThietBiModel>();
         ThietBiModel thietBi;
-        SlaveModel slave;
+        SlaveModel slave = null;
         TreeView TVMain;
         public FormDataList formDataList;
         public string tenDuLieuDuocChon;
@@ -46,7 +46,10 @@ namespace FileExportScheduler
         public void SetThietBiAndSlave(ThietBiModel thietBi, string slave_name)
         {
             this.thietBi = thietBi;
-            this.slave = this.thietBi.dsSlave[slave_name];
+            if (slave_name != null)
+            {
+                this.slave = this.thietBi.dsSlave[slave_name];
+            }
         }
 
         public void SetDsThietBi(Dictionary<string, ThietBiModel> dsThietBiGiamSat)
@@ -123,11 +126,11 @@ namespace FileExportScheduler
                 error = false;
             }
 
-            if (thietBi.dsSlave.ContainsKey(txt_SlaveAddress.Text))
+            /*if (thietBi.dsSlave.ContainsKey(txt_SlaveAddress.Text))
             {
                 errorTenGiaoThuc.SetError(txtTenGiaoThuc, "Tên slave trùng lặp");
                 error = false;
-            }
+            }*/
 
             return error;
         }
@@ -225,6 +228,7 @@ namespace FileExportScheduler
         //Xóa dữ liệu protocol
         private void btnDelete_Click(object sender, EventArgs e)
         {
+            if (slave == null) return;
             if (dgvDataProtocol.SelectedRows.Count > 0)
             {
                 try
@@ -330,6 +334,7 @@ namespace FileExportScheduler
         {
             try
             {
+                if (slave == null) return;
                 slave.dsDiemDoGiamSat = DanhSachDiemDoService.LayDsDiemDoTuDgv(dgvDataProtocol);
                 var maxAddress = MaxAddress.GetMax(thietBi);
                 var minAddress = MaxAddress.GetMin(thietBi);
@@ -516,6 +521,7 @@ namespace FileExportScheduler
         //Load dữ liệu từ json lên datagridview
         public void LoadDuLieuLenDgv()
         {
+            if (slave == null) return;
             dgvDataProtocol.AutoGenerateColumns = false;
             try
             {
@@ -792,7 +798,7 @@ namespace FileExportScheduler
             else if (cbProtocol.SelectedItem.ToString() == "Serial Port")
             {
                 isValidatePassed = CheckValidateCauHinhCOM();
-                if (CheckValidateCauHinhCOM() == false)
+                if (isValidatePassed == false)
                 {
                     MessageBox.Show("Kiểm tra lại dữ liệu nhập vào!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
@@ -858,7 +864,7 @@ namespace FileExportScheduler
                     }
                 }
             }
-            
+
             //GhiDsThietBiRaFileJson();
             formDataList.selectedNodeDouble.Text = txtTenGiaoThuc.Text;
             if (isClicked == true)
@@ -1067,6 +1073,11 @@ namespace FileExportScheduler
         private void tabPageCauHinh_Click(object sender, EventArgs e)
         {
 
+        }
+
+        public void HideTabDuLieu()
+        {
+            this.tabControl1.TabPages.Remove(this.tabPageDuLieu);
         }
     }
 
