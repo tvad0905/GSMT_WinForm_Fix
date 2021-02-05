@@ -122,5 +122,20 @@ namespace ESProtocolConverter.Service.Json
             string jsonString = (new JavaScriptSerializer()).Serialize((object)dicNhaMay);
             File.WriteAllText(path, jsonString);
         }
+
+        public static void AddThietBiToNhaMay(string tenNhaMay, ThietBiModel newThietBi)
+        {
+            var path = GetPathJson.getPathConfig("DeviceAndData.json");
+            Dictionary<string, NhaMayModel> dicNhaMay = GetDicNhaMay();
+
+            if (dicNhaMay.ContainsKey(tenNhaMay))
+            {
+                dicNhaMay[tenNhaMay].dsThietBi.Add(newThietBi.Name, newThietBi);
+            }
+            
+
+            string jsonString = (new JavaScriptSerializer()).Serialize((object)dicNhaMay);
+            File.WriteAllText(path, jsonString);
+        }
     }
 }

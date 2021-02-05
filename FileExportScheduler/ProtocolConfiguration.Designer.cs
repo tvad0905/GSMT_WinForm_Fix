@@ -43,7 +43,7 @@
             this.txtIPAdress = new IPAddressControlLib.IPAddressControl();
             this.txtPort = new System.Windows.Forms.TextBox();
             this.btnEditProtocol = new System.Windows.Forms.Button();
-            this.btnSaveProtocol = new System.Windows.Forms.Button();
+            this.btnAddNewProtocol = new System.Windows.Forms.Button();
             this.gbSerialSettingProtocol = new System.Windows.Forms.GroupBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -102,7 +102,7 @@
             this.tabPageCauHinh.Controls.Add(this.cbProtocol);
             this.tabPageCauHinh.Controls.Add(this.gbTCPIPProtocol);
             this.tabPageCauHinh.Controls.Add(this.btnEditProtocol);
-            this.tabPageCauHinh.Controls.Add(this.btnSaveProtocol);
+            this.tabPageCauHinh.Controls.Add(this.btnAddNewProtocol);
             this.tabPageCauHinh.Controls.Add(this.gbSerialSettingProtocol);
             this.tabPageCauHinh.Controls.Add(this.txtTenGiaoThuc);
             this.tabPageCauHinh.Controls.Add(this.label10);
@@ -200,16 +200,16 @@
             this.btnEditProtocol.UseVisualStyleBackColor = true;
             this.btnEditProtocol.Click += new System.EventHandler(this.btnEditProtocol_Click);
             // 
-            // btnSaveProtocol
+            // btnAddNewProtocol
             // 
-            this.btnSaveProtocol.Location = new System.Drawing.Point(381, 301);
-            this.btnSaveProtocol.Margin = new System.Windows.Forms.Padding(2);
-            this.btnSaveProtocol.Name = "btnSaveProtocol";
-            this.btnSaveProtocol.Size = new System.Drawing.Size(75, 23);
-            this.btnSaveProtocol.TabIndex = 1;
-            this.btnSaveProtocol.Text = "Lưu";
-            this.btnSaveProtocol.UseVisualStyleBackColor = true;
-            this.btnSaveProtocol.Click += new System.EventHandler(this.btnSaveProtocol_Click);
+            this.btnAddNewProtocol.Location = new System.Drawing.Point(381, 301);
+            this.btnAddNewProtocol.Margin = new System.Windows.Forms.Padding(2);
+            this.btnAddNewProtocol.Name = "btnAddNewProtocol";
+            this.btnAddNewProtocol.Size = new System.Drawing.Size(75, 23);
+            this.btnAddNewProtocol.TabIndex = 1;
+            this.btnAddNewProtocol.Text = "Lưu";
+            this.btnAddNewProtocol.UseVisualStyleBackColor = true;
+            this.btnAddNewProtocol.Click += new System.EventHandler(this.btnAddNewProtocol_Click);
             // 
             // gbSerialSettingProtocol
             // 
@@ -570,7 +570,7 @@
         public System.Windows.Forms.TextBox txtTenGiaoThuc;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        public System.Windows.Forms.Button btnSaveProtocol;
+        public System.Windows.Forms.Button btnAddNewProtocol;
         public IPAddressControlLib.IPAddressControl txtIPAdress;
         public System.Windows.Forms.TextBox txtPort;
         public System.Windows.Forms.GroupBox gbTCPIPProtocol;

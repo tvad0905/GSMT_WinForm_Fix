@@ -24,6 +24,7 @@ using ESProtocolConverter.Models.Slave;
 using ESProtocolConverter.Models.NhaMay;
 using ESProtocolConverter.Service.Slave;
 using ESProtocolConverter.Service.Json;
+using ESProtocolConverter.Models.Common;
 
 namespace FileExportScheduler
 {
@@ -33,7 +34,6 @@ namespace FileExportScheduler
         Dictionary<string, ThietBiModel> dsThietBiGiamSat = new Dictionary<string, ThietBiModel>();
         ThietBiModel thietBi;
         SlaveModel slave = null;
-        TreeView TVMain;
         public FormDataList formDataList;
         public string tenDuLieuDuocChon;
         private bool isSaved = true;
@@ -60,7 +60,6 @@ namespace FileExportScheduler
         public ProtocolConfiguration(FormDataList formDataList)
         {
             InitializeComponent();
-            this.TVMain = formDataList.tvMain;
             this.formDataList = formDataList;
             //DocDsThietBiTuFileJson();
             //LoadDuLieuLenDgv();
@@ -302,7 +301,7 @@ namespace FileExportScheduler
         }
 
         //lưu cấu hình protocol
-        private void btnSaveProtocol_Click(object sender, EventArgs e)
+        private void btnAddNewProtocol_Click(object sender, EventArgs e)
         {
             isClicked = true;
             ThemMoiDuocClick();
@@ -665,7 +664,7 @@ namespace FileExportScheduler
         {
             //DocDsThietBiTuFileJson();
 
-            TreeNode nodeTemp = TVMain.SelectedNode;
+            TreeNode nodeTemp = this.formDataList.tvMain.SelectedNode;
             if (nodeTemp.Parent != null)
             {
                 if (nodeTemp.Parent.Parent == null)
@@ -683,7 +682,7 @@ namespace FileExportScheduler
                 }
                 else
                 {
-                    ThietBiModel deviceObj = new ThietBiTCPIP
+                    thietBi = new ThietBiTCPIP
                     {
                         Name = txtTenGiaoThuc.Text,
                         IP = txtIPAdress.Text,
@@ -692,7 +691,7 @@ namespace FileExportScheduler
                         dsSlave = new Dictionary<string, SlaveModel>(),
                     };
 
-                    dsThietBiGiamSat.Add(deviceObj.Name, deviceObj);
+                    dsThietBiGiamSat.Add(thietBi.Name, thietBi);
                 }
             }
             else if (cbProtocol.SelectedItem.ToString() == "Serial Port")
@@ -711,7 +710,7 @@ namespace FileExportScheduler
                         return;
                     }
 
-                    ThietBiModel deviceObj1 = new ThietBiCOM
+                    thietBi = new ThietBiCOM
                     {
                         Name = txtTenGiaoThuc.Text,
                         Com = cbCOM.SelectedItem.ToString(),
@@ -729,15 +728,16 @@ namespace FileExportScheduler
                     }
                     else
                     {
-                        dsThietBiGiamSat.Add(deviceObj1.Name, deviceObj1);
+                        dsThietBiGiamSat.Add(thietBi.Name, thietBi);
                     }
                 }
             }
 
-            //JsonService.ToJsonAfterUpdateThietBi(thietBi, "Quang Ninh");
+            JsonService.AddThietBiToNhaMay("Quang Ninh", thietBi);
             //GhiDsThietBiRaFileJson();
             TreeNode node = new TreeNode(txtTenGiaoThuc.Text);
-            if (TVMain.SelectedNode.Parent == null)
+            node.Name = TreeName.Name.ThietBi.ToString();
+            /*if (TVMain.SelectedNode.Parent == null)
             {
                 TVMain.SelectedNode.Nodes.Add(node);
                 formDataList.selectedNodeDouble = node;
@@ -746,13 +746,16 @@ namespace FileExportScheduler
             {
                 TVMain.SelectedNode.Parent.Nodes.Add(node);
                 formDataList.selectedNodeDouble = node;
-            }
+            }*/
             if (isClicked == true)
             {
                 MessageBox.Show("Lưu cấu hình thiết bị thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 isClicked = false;
             }
-            node.ContextMenuStrip = formDataList.cms_Slave;
+            node.ContextMenuStrip = formDataList.cms_ThietBi;
+
+            formDataList.LoadTreeView();
+            formDataList.tvMain.ExpandAll();
             //SaveData();
             isTabConfigHaveAnyChanged = false;
         }

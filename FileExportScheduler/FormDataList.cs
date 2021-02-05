@@ -20,7 +20,10 @@ namespace FileExportScheduler
         // List<Device> lstDevices;
         //Dictionary<string, ThietBiModel> deviceDic = new Dictionary<string, ThietBiModel>();
         Dictionary<string, NhaMayModel> dicNhaMay = new Dictionary<string, NhaMayModel>();
+        //use for ProtocolConfiguration form
         public TreeNode selectedNodeDouble;
+
+        public TreeNode rightClickNode;
         private ProtocolConfiguration formProtocolConfiguration;
         private bool isInFormEdit;
 
@@ -78,6 +81,8 @@ namespace FileExportScheduler
         public void LoadTreeView()
         {
             JsonToList();
+
+            tvMain.Nodes.Clear();
 
             foreach (KeyValuePair<string, NhaMayModel> nhaMay in dicNhaMay)
             {
@@ -261,7 +266,8 @@ namespace FileExportScheduler
 
             if (e.Button == MouseButtons.Right)
             {
-                tvMain.SelectedNode = e.Node;
+                //tvMain.SelectedNode = e.Node;
+                rightClickNode = e.Node;
             }
 
         }
@@ -274,10 +280,22 @@ namespace FileExportScheduler
             ProtocolConfiguration protocolConfiguration = new ProtocolConfiguration(this);
             protocolConfiguration.Dock = DockStyle.Fill;
             protocolConfiguration.btnEditProtocol.Visible = false;
-            protocolConfiguration.btnSaveProtocol.Visible = true;
-            splitContainer.Panel2.Controls.Add(protocolConfiguration);
+            protocolConfiguration.btnAddNewProtocol.Visible = true;
             protocolConfiguration.cbCOM.DataSource = ports;
             protocolConfiguration.dgvDataProtocol.DataSource = null;
+
+            protocolConfiguration.SetThietBiAndSlave(null, null);
+            protocolConfiguration.SetDsThietBi(ThietBiGiamSatService.GetDsThietBi("Quang Ninh"));
+
+            protocolConfiguration.HideTabDuLieu();
+
+            splitContainer.Panel2.Controls.Add(protocolConfiguration);
+
+
+            formProtocolConfiguration = protocolConfiguration;//lưu vào biến toàn cục
+            isInFormEdit = true;
+            formProtocolConfiguration.isTabConfigHaveAnyChanged = false;
+            formProtocolConfiguration.isTabDataHaveAnyChanged = false;
 
             formProtocolConfiguration = protocolConfiguration;
             isInFormEdit = false;
@@ -329,7 +347,7 @@ namespace FileExportScheduler
 
                 protocolConfiguration.cbCOM.DataSource = ports;
                 protocolConfiguration.btnEditProtocol.Visible = true;
-                protocolConfiguration.btnSaveProtocol.Visible = false;
+                protocolConfiguration.btnAddNewProtocol.Visible = false;
 
                 string thietBi_name = node.Name == TreeName.Name.ThietBi.ToString() ? node.Text : node.Parent.Text;
                 string slave_name = node.Name == TreeName.Name.SlaveAddress.ToString() ? node.Text : null;
@@ -394,6 +412,7 @@ namespace FileExportScheduler
         {
 
         }
+
     }
 }
 

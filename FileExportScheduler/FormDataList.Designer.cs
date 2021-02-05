@@ -167,7 +167,7 @@
         private System.Windows.Forms.ToolStripMenuItem cmsAddThietBi;
         public System.Windows.Forms.ContextMenuStrip cms_Slave;
         private System.Windows.Forms.ToolStripMenuItem delToolStripMenuItem;
-        private System.Windows.Forms.ContextMenuStrip cms_ThietBi;
+        public System.Windows.Forms.ContextMenuStrip cms_ThietBi;
         private System.Windows.Forms.ToolStripMenuItem thêmToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem xóaToolStripMenuItem;
     }
