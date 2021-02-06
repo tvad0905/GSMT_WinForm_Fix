@@ -602,7 +602,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ten;
         private System.Windows.Forms.DataGridViewTextBoxColumn diemDo;
         private System.Windows.Forms.DataGridViewTextBoxColumn diaChi;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Scale;
+        private new System.Windows.Forms.DataGridViewTextBoxColumn Scale;
         private System.Windows.Forms.DataGridViewTextBoxColumn donViDo;
     }
 }

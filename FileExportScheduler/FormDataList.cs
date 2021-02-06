@@ -145,128 +145,11 @@ namespace FileExportScheduler
             LoadTreeView();
         }
 
-        /*private void addThietBi(object sender, TreeViewEventArgs e)
-        {
-            TreeNode node = e.Node;
-            //selectedNodeDouble = sender.;
-            var ports = SerialPort.GetPortNames();
-            //JsonToList();
-
-            splitContainer.Panel2.Controls.Clear();
-
-            ProtocolConfiguration protocolConfiguration = new ProtocolConfiguration(this);
-            protocolConfiguration.Dock = DockStyle.Fill;
-            protocolConfiguration.txtTenGiaoThuc.Text = node.Text;
-            protocolConfiguration.cbCOM.DataSource = ports;
-            protocolConfiguration.btnEditProtocol.Visible = true;
-            protocolConfiguration.btnSaveProtocol.Visible = false;
-            ThietBiTCPIP deviceTemp = deviceDic[protocolConfiguration.txtTenGiaoThuc.Text] as ThietBiTCPIP;
-            if (deviceTemp == null)
-            {
-                ThietBiCOM comTemp = deviceDic[protocolConfiguration.txtTenGiaoThuc.Text] as ThietBiCOM;
-                protocolConfiguration.cbCOM.Text = comTemp.Com;
-                protocolConfiguration.cbBaud.Text = comTemp.Baud.ToString();
-                protocolConfiguration.cbParity.Text = comTemp.Parity.ToString();
-                protocolConfiguration.cbDataBit.Text = comTemp.Databit.ToString();
-                protocolConfiguration.cbStopBit.Text = comTemp.StopBits.ToString();
-                protocolConfiguration.cbProtocol.Text = comTemp.Protocol.ToString();
-            }
-            else
-            {
-                protocolConfiguration.txtIPAdress.Text = deviceTemp.IP;
-                protocolConfiguration.txtPort.Text = deviceTemp.Port.ToString();
-                protocolConfiguration.cbProtocol.Text = deviceTemp.Protocol.ToString();
-
-            }
-            splitContainer.Panel2.Controls.Add(protocolConfiguration);
-            formProtocolConfiguration = protocolConfiguration;//lưu vào biến toàn cục
-            isInFormEdit = true;
-            formProtocolConfiguration.isTabConfigHaveAnyChanged = false;
-            formProtocolConfiguration.isTabDataHaveAnyChanged = false;
-        }*/
-
-
-
-        /*private void tvMain_DoubleClick(object sender, EventArgs e)
-        {
-            selectedNodeDouble = tvMain.SelectedNode;
-            var ports = SerialPort.GetPortNames();
-            JsonToList();
-            if (tvMain.SelectedNode.Parent != null)
-            {
-                if (tvMain.SelectedNode.Parent.Name.ToLower() == "protocols")
-                {
-                    splitContainer.Panel2.Controls.Clear();
-
-                    ProtocolConfiguration protocolConfiguration = new ProtocolConfiguration(this);
-                    protocolConfiguration.Dock = DockStyle.Fill;
-                    protocolConfiguration.txtTenGiaoThuc.Text = tvMain.SelectedNode.Text;
-                    protocolConfiguration.cbCOM.DataSource = ports;
-                    protocolConfiguration.btnEditProtocol.Visible = true;
-                    protocolConfiguration.btnSaveProtocol.Visible = false;
-                    ThietBiTCPIP deviceTemp = deviceDic[protocolConfiguration.txtTenGiaoThuc.Text] as ThietBiTCPIP;
-                    if (deviceTemp == null)
-                    {
-                        ThietBiCOM comTemp = deviceDic[protocolConfiguration.txtTenGiaoThuc.Text] as ThietBiCOM;
-                        protocolConfiguration.cbCOM.Text = comTemp.Com;
-                        protocolConfiguration.cbBaud.Text = comTemp.Baud.ToString();
-                        protocolConfiguration.cbParity.Text = comTemp.Parity.ToString();
-                        protocolConfiguration.cbDataBit.Text = comTemp.Databit.ToString();
-                        protocolConfiguration.cbStopBit.Text = comTemp.StopBits.ToString();
-                        protocolConfiguration.cbProtocol.Text = comTemp.Protocol.ToString();
-                    }
-                    else
-                    {
-                        protocolConfiguration.txtIPAdress.Text = deviceTemp.IP;
-                        protocolConfiguration.txtPort.Text = deviceTemp.Port.ToString();
-                        protocolConfiguration.cbProtocol.Text = deviceTemp.Protocol.ToString();
-
-                    }
-                    splitContainer.Panel2.Controls.Add(protocolConfiguration);
-                    formProtocolConfiguration = protocolConfiguration;//lưu vào biến toàn cục
-                    isInFormEdit = true;
-                    formProtocolConfiguration.isTabConfigHaveAnyChanged = false;
-                    formProtocolConfiguration.isTabDataHaveAnyChanged = false;
-                }
-            }
-        }*/
-
-        /*private void delToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DialogResult result = MessageBox.Show("Bạn có muốn xóa ?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            switch (result)
-            {
-                case DialogResult.No:
-                    break;
-                case DialogResult.Yes:
-                    if (tvMain.SelectedNode != null)
-                    {
-                        if (tvMain.SelectedNode.Parent == null)
-                        {
-                            //tvMain.Nodes.Remove(tvMain.SelectedNode);
-                            return;
-                        }
-                        else
-                        {
-                            deviceDic.Remove(tvMain.SelectedNode.Text);
-                            WriteListObjectToJson();
-                            tvMain.SelectedNode.Parent.Nodes.Remove(tvMain.SelectedNode);
-                        }
-                    }
-                    splitContainer.Panel2.Controls.Clear();
-                    break;
-                default:
-                    break;
-            }
-
-        }*/
-
         private void tvMain_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
 
             if (e.Button == MouseButtons.Right)
             {
-                //tvMain.SelectedNode = e.Node;
                 rightClickNode = e.Node;
             }
 
@@ -410,8 +293,6 @@ namespace FileExportScheduler
                 splitContainer.Panel2.Controls.Clear();
                 formProtocolConfiguration = null;           
             }
-            /*LoadTreeView();
-            tvMain.ExpandAll();*/
 
         }
 

@@ -159,7 +159,6 @@ D:\Project\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\NModbus.xml
 D:\Project\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormMain.resources
 D:\Project\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CoreCompileInputs.cache
 D:\Project\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CopyComplete
-D:\Project\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csprojAssemblyReference.cache
 D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csprojAssemblyReference.cache
 D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormAbout.resources
 D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormDataList.resources
