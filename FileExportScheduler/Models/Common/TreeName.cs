@@ -15,5 +15,6 @@ namespace ESProtocolConverter.Models.Common
             SlaveAddress,
             DiemDo
         }
+
     }
 }

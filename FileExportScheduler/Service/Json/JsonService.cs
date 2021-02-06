@@ -137,5 +137,24 @@ namespace ESProtocolConverter.Service.Json
             string jsonString = (new JavaScriptSerializer()).Serialize((object)dicNhaMay);
             File.WriteAllText(path, jsonString);
         }
+
+        public static void RemoveThietBiInNhaMay(string tenNhaMay, string oldNameThietBi)
+        {
+            var path = GetPathJson.getPathConfig("DeviceAndData.json");
+            Dictionary<string, NhaMayModel> dicNhaMay = GetDicNhaMay();
+
+            if (dicNhaMay.ContainsKey(tenNhaMay))
+            {
+                NhaMayModel nm = dicNhaMay[tenNhaMay];
+                if (nm.dsThietBi.ContainsKey(oldNameThietBi))
+                {
+                    nm.dsThietBi.Remove(oldNameThietBi);
+                }
+            }
+
+
+            string jsonString = (new JavaScriptSerializer()).Serialize((object)dicNhaMay);
+            File.WriteAllText(path, jsonString);
+        }
     }
 }

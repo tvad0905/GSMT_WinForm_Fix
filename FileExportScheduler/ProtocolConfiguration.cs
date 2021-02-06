@@ -52,6 +52,11 @@ namespace FileExportScheduler
             }
         }
 
+        public ThietBiModel GetCurrentThietBi()
+        {
+            return this.thietBi;
+        }
+
         public void SetDsThietBi(Dictionary<string, ThietBiModel> dsThietBiGiamSat)
         {
             this.dsThietBiGiamSat = dsThietBiGiamSat;

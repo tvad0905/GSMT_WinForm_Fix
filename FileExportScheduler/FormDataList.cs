@@ -400,6 +400,18 @@ namespace FileExportScheduler
 
         private void cms_Xoa_ThietBi(object sender, EventArgs e)
         {
+            string oldName_ThietBi = rightClickNode.Text;
+            JsonService.RemoveThietBiInNhaMay("Quang Ninh", oldName_ThietBi);
+
+            rightClickNode.Remove();
+
+            if(formProtocolConfiguration.GetCurrentThietBi() != null && formProtocolConfiguration.GetCurrentThietBi().Name == oldName_ThietBi)
+            {
+                splitContainer.Panel2.Controls.Clear();
+                formProtocolConfiguration = null;           
+            }
+            /*LoadTreeView();
+            tvMain.ExpandAll();*/
 
         }
 
