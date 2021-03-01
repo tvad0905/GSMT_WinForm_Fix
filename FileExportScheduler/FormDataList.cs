@@ -1,19 +1,14 @@
-﻿using FileExportScheduler.Controller;
+﻿using ESProtocolConverter.Models.Common;
+using ESProtocolConverter.Models.NhaMay;
+using ESProtocolConverter.Service.Json;
 using FileExportScheduler.Models;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using FileExportScheduler.Models.ThietBi.Base;
+using FileExportScheduler.Service.Json;
+using FileExportScheduler.Service.ThietBi;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.IO.Ports;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Windows.Forms;
 
@@ -23,9 +18,15 @@ namespace FileExportScheduler
     {
         #region biến toàn cục
         // List<Device> lstDevices;
-        Dictionary<string, ThietBiGiamSat> deviceDic = new Dictionary<string, ThietBiGiamSat>();
-        public TreeNode selectedNode = new TreeNode();
-        public TreeNode selectedNodeDouble = new TreeNode();
+        //Dictionary<string, ThietBiModel> deviceDic = new Dictionary<string, ThietBiModel>();
+        Dictionary<string, NhaMayModel> dicNhaMay = new Dictionary<string, NhaMayModel>();
+        //use for ProtocolConfiguration form
+        public TreeNode selectedNodeDouble;
+
+        public TreeNode rightClickNode;
+        private ProtocolConfiguration formProtocolConfiguration;
+        private bool isInFormEdit;
+
         #endregion
         public FormDataList()
         {
@@ -36,14 +37,19 @@ namespace FileExportScheduler
         private void setMenu(TreeNode node)
         {
 
-            if (node.Name.ToLower() == "devices" || node.Name.ToLower() == "protocols")
+            if (node.Name == TreeName.Name.NhaMay.ToString())
             {
-                node.ContextMenuStrip = ctxMenu;
+                node.ContextMenuStrip = cms_NhaMay;
             }
-            else
+            else if (node.Name == TreeName.Name.ThietBi.ToString())
             {
-                node.ContextMenuStrip = tx2;
+                node.ContextMenuStrip = cms_ThietBi;
             }
+            else if (node.Name == TreeName.Name.SlaveAddress.ToString())
+            {
+                node.ContextMenuStrip = cms_Slave;
+            }
+
         }
 
         //đọc file json ra list
@@ -51,28 +57,14 @@ namespace FileExportScheduler
         {
             try
             {
-                var path = GetPathJson.getPathConfig("DeviceAndData.json");
-                deviceDic.Clear();
-                JObject jsonObj = JObject.Parse(File.ReadAllText(path));
-                Dictionary<string, ThietBiIP> deviceIP = jsonObj.ToObject<Dictionary<string, ThietBiIP>>();
-                foreach (var deviceIPUnit in deviceIP)
-                {
-                    if (deviceIPUnit.Value.Protocol == "Modbus TCP/IP" || deviceIPUnit.Value.Protocol == "Siemens S7-1200")
-                    {
-                        deviceDic.Add(deviceIPUnit.Key, deviceIPUnit.Value);
-                    }
-                }
-                Dictionary<string, ComConfigModel> deviceCom = jsonObj.ToObject<Dictionary<string, ComConfigModel>>();
-                foreach (var deviceComUnit in deviceCom)
-                {
-                    if (deviceComUnit.Value.Protocol == "Serial Port")
-                    {
-                        deviceDic.Add(deviceComUnit.Key, deviceComUnit.Value);
-                    }
-                }
+                dicNhaMay.Clear();
+
+                dicNhaMay = JsonService.GetDicNhaMay();
+
             }
             catch (Exception ex)
             {
+
             }
         }
 
@@ -80,7 +72,7 @@ namespace FileExportScheduler
         private void WriteListObjectToJson()
         {
             var path = GetPathJson.getPathConfig("DeviceAndData.json");
-            string jsonString = (new JavaScriptSerializer()).Serialize((object)deviceDic);
+            string jsonString = (new JavaScriptSerializer()).Serialize((object)dicNhaMay);
             File.WriteAllText(path, jsonString);
 
         }
@@ -90,126 +82,80 @@ namespace FileExportScheduler
         {
             JsonToList();
 
-            foreach (KeyValuePair<string, ThietBiGiamSat> device in deviceDic)
+            tvMain.Nodes.Clear();
+
+            foreach (KeyValuePair<string, NhaMayModel> nhaMay in dicNhaMay)
             {
-                if (device.Value.TypeModel == TypeEnum.Device)
+                TreeNode node_nhaMay = new TreeNode(nhaMay.Value.Name);
+
+                node_nhaMay.Name = TreeName.Name.NhaMay.ToString();
+                node_nhaMay.Text = "Cấu hình";
+
+                node_nhaMay.ImageKey = "network.ico";
+                node_nhaMay.SelectedImageKey = "network.ico";
+
+                tvMain.Nodes.Add(node_nhaMay);
+
+                foreach (var thietBi in nhaMay.Value.dsThietBi)
                 {
-                    TreeNode node = new TreeNode(device.Value.Name);
-                    tvMain.Nodes["Devices"].Nodes.Add(node);
+                    TreeNode node_thietBi = new TreeNode(thietBi.Value.Name);
+
+                    node_thietBi.Name = TreeName.Name.ThietBi.ToString(); ;
+
+                    node_nhaMay.Nodes.Add(node_thietBi);
+
+                    foreach (var slave in thietBi.Value.dsSlave)
+                    {
+                        TreeNode node_slave = new TreeNode(slave.Value.Name);
+
+                        node_slave.Name = TreeName.Name.SlaveAddress.ToString(); ;
+
+
+                        node_thietBi.Nodes.Add(node_slave);
+
+                        /*foreach (var diemDo in slave.Value.dsDiemDoGiamSat)
+                        {
+                            TreeNode node_diemDo = new TreeNode(diemDo.Value.TenDiemDo);
+
+                            node_diemDo.Name = TreeName.Name.DiemDo.ToString(); ;
+
+                            //node_slave.Nodes.Add(node_diemDo);
+                            node_slave.Nodes.Add(node_diemDo);
+
+                            setMenu(node_diemDo);
+                        }*/
+
+                        setMenu(node_slave);
+                    }
+
+                    setMenu(node_thietBi);
                 }
-                else if (device.Value.TypeModel == TypeEnum.Protocol)
-                {
-                    TreeNode node = new TreeNode(device.Value.Name);
-                    tvMain.Nodes["Protocols"].Nodes.Add(node);
-                }
+
+                setMenu(node_nhaMay);
+
             }
-            foreach (TreeNode node in tvMain.Nodes)
-            {
-                foreach (TreeNode _node in node.Nodes)
-                {
-                    setMenu(_node);
-                }
-                setMenu(node);
-            }
+
             WindowState = FormWindowState.Maximized;
         }
+
+
 
         private void FormDataList_Load(object sender, EventArgs e)
         {
             LoadTreeView();
-            ProtocolConfiguration protocolConfiguration = new ProtocolConfiguration(this);
-
-            var ports = SerialPort.GetPortNames();
-            protocolConfiguration.cbCOM.DataSource = ports;
-        }
-
-        private void tvMain_DoubleClick(object sender, EventArgs e)
-        {
-            selectedNodeDouble = tvMain.SelectedNode;
-            var ports = SerialPort.GetPortNames();
-            JsonToList();
-            if (tvMain.SelectedNode.Parent != null)
-            {
-                if (tvMain.SelectedNode.Parent.Name.ToLower() == "protocols")
-                {
-                    splitContainer.Panel2.Controls.Clear();
-
-                    ProtocolConfiguration protocolConfiguration = new ProtocolConfiguration(this);
-                    protocolConfiguration.Dock = DockStyle.Fill;
-                    protocolConfiguration.txtTenGiaoThuc.Text = tvMain.SelectedNode.Text;
-                    protocolConfiguration.cbCOM.DataSource = ports;
-                    protocolConfiguration.btnEditProtocol.Visible = true;
-                    protocolConfiguration.btnSaveProtocol.Visible = false;
-
-                    //
-                    ThietBiIP deviceTemp = deviceDic[protocolConfiguration.txtTenGiaoThuc.Text] as ThietBiIP;
-                    if (deviceTemp == null)
-                    {
-                        ComConfigModel comTemp = deviceDic[protocolConfiguration.txtTenGiaoThuc.Text] as ComConfigModel;
-                        protocolConfiguration.cbCOM.Text = comTemp.Com;
-                        protocolConfiguration.cbBaud.Text = comTemp.Baud.ToString();
-                        protocolConfiguration.cbParity.Text = comTemp.parity.ToString();
-                        protocolConfiguration.cbDataBit.Text = comTemp.Databit.ToString();
-                        protocolConfiguration.cbStopBit.Text = comTemp.stopBits.ToString();
-                        protocolConfiguration.cbProtocol.Text = comTemp.Protocol.ToString();
-                    }
-                    else
-                    {
-                        protocolConfiguration.txtIPAdress.Text = deviceTemp.IP;
-                        protocolConfiguration.txtPort.Text = deviceTemp.Port.ToString();
-                        protocolConfiguration.cbProtocol.Text = deviceTemp.Protocol.ToString();
-
-                    }
-                    splitContainer.Panel2.Controls.Add(protocolConfiguration);
-                }
-            }
-        }
-
-        private void delToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DialogResult result = MessageBox.Show("Bạn có muốn xóa ?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            switch (result)
-            {
-                case DialogResult.No:
-                    break;
-                case DialogResult.Yes:
-                    if (tvMain.SelectedNode != null)
-                    {
-                        if (tvMain.SelectedNode.Parent == null)
-                        {
-                            //tvMain.Nodes.Remove(tvMain.SelectedNode);
-                            return;
-                        }
-                        else
-                        {
-                            deviceDic.Remove(tvMain.SelectedNode.Text);
-                            WriteListObjectToJson();
-                            tvMain.SelectedNode.Parent.Nodes.Remove(tvMain.SelectedNode);
-                        }
-                    }
-                    splitContainer.Panel2.Controls.Clear();
-                    break;
-                default:
-                    break;
-            }
-
         }
 
         private void tvMain_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            selectedNode = e.Node;
+
             if (e.Button == MouseButtons.Right)
             {
-                tvMain.SelectedNode = e.Node;
+                rightClickNode = e.Node;
             }
 
-            if (e.Node.Level == 2)
-            {
-                e.Node.ContextMenuStrip = tx2;
-            }
         }
 
-        private void mnuAdd_Click(object sender, EventArgs e)
+        private void cmsAddThietBi_Click(object sender, EventArgs e)
         {
             var ports = SerialPort.GetPortNames();
             splitContainer.Panel2.Controls.Clear();
@@ -217,17 +163,181 @@ namespace FileExportScheduler
             ProtocolConfiguration protocolConfiguration = new ProtocolConfiguration(this);
             protocolConfiguration.Dock = DockStyle.Fill;
             protocolConfiguration.btnEditProtocol.Visible = false;
-            protocolConfiguration.btnSaveProtocol.Visible = true;
-            splitContainer.Panel2.Controls.Add(protocolConfiguration);
+            protocolConfiguration.btnAddNewProtocol.Visible = true;
             protocolConfiguration.cbCOM.DataSource = ports;
-            protocolConfiguration.dgvDataProtocol.DataSource = null;
+            //protocolConfiguration.dgvDataProtocol.DataSource = null;
+
+            protocolConfiguration.SetThietBiAndSlave(null, null);
+            protocolConfiguration.SetDsThietBi(ThietBiGiamSatService.GetDsThietBi("Quang Ninh"));
+
+            protocolConfiguration.HideTabDuLieu();
+            protocolConfiguration.HideTabSlave();
+            
+            splitContainer.Panel2.Controls.Add(protocolConfiguration);
+
+
+            formProtocolConfiguration = protocolConfiguration;//lưu vào biến toàn cục
+            isInFormEdit = true;
+            formProtocolConfiguration.isTabConfigHaveAnyChanged = false;
+            formProtocolConfiguration.isTabDataHaveAnyChanged = false;
+
+            formProtocolConfiguration = protocolConfiguration;
+            isInFormEdit = false;
         }
         #endregion
 
         private void FormDataList_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (formProtocolConfiguration == null)
+            {
+                e.Cancel = false;
+            }
+            else if (formProtocolConfiguration.IsFormHaveAnyChanged())
+            {
+                DialogResult dr = MessageBox.Show("Bạn muốn lưu những thay đổi trước khi đóng form không ?", "Chú ý", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+
+                if (dr == DialogResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
+                else if (dr == DialogResult.Yes)
+                {
+                    formProtocolConfiguration.DongForm(isInFormEdit);
+                    if (!formProtocolConfiguration.isValidatePassed)
+                    {
+                        e.Cancel = true;
+                    }
+                }
+            }
+        }
+
+        private void tvMain_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            e.Node.Expand();
+
+            TreeNode node = tvMain.SelectedNode;
+
+            //use for in ProtocolConfiguration
+            selectedNodeDouble = tvMain.SelectedNode;
+
+            var ports = SerialPort.GetPortNames();
+
+            if (node != null && (node.Name == TreeName.Name.SlaveAddress.ToString() || node.Name == TreeName.Name.ThietBi.ToString()))
+            {
+                splitContainer.Panel2.Controls.Clear();
+
+                ProtocolConfiguration protocolConfiguration = new ProtocolConfiguration(this);
+                protocolConfiguration.Dock = DockStyle.Fill;
+
+                protocolConfiguration.cbCOM.DataSource = ports;
+                protocolConfiguration.btnEditProtocol.Visible = true;
+                protocolConfiguration.btnAddNewProtocol.Visible = false;
+
+                string thietBi_name = node.Name == TreeName.Name.ThietBi.ToString() ? node.Text : node.Parent.Text;
+                string slave_name = node.Name == TreeName.Name.SlaveAddress.ToString() ? node.Text : null;
+
+                protocolConfiguration.txtTenGiaoThuc.Text = thietBi_name;
+
+                ThietBiModel thietBi_model = ThietBiGiamSatService.GetThietBiGiamSat("Quang Ninh", thietBi_name);
+
+                protocolConfiguration.SetThietBiAndSlave(thietBi_model, slave_name);
+                protocolConfiguration.SetDsThietBi(ThietBiGiamSatService.GetDsThietBi("Quang Ninh"));
+
+                if (node.Name == TreeName.Name.SlaveAddress.ToString())
+                {
+                    protocolConfiguration.LoadDuLieuLenDgv();
+                }
+
+
+                if (node.Name == TreeName.Name.ThietBi.ToString())
+                {
+                    protocolConfiguration.HideTabDuLieu();
+                    protocolConfiguration.HideTabSlave();
+                }
+
+                try
+                {
+                    ThietBiTCPIP deviceTemp = (ThietBiTCPIP)thietBi_model;
+                    protocolConfiguration.txtIPAdress.Text = deviceTemp.IP;
+                    protocolConfiguration.txtPort.Text = deviceTemp.Port.ToString();
+                    protocolConfiguration.cbProtocol.Text = deviceTemp.Protocol.ToString();
+                }
+                catch
+                {
+                    ThietBiCOM deviceTemp = (ThietBiCOM)thietBi_model;
+                    protocolConfiguration.cbCOM.Text = deviceTemp.Com;
+                    protocolConfiguration.cbBaud.Text = deviceTemp.Baud.ToString();
+                    protocolConfiguration.cbParity.Text = deviceTemp.Parity.ToString();
+                    protocolConfiguration.cbDataBit.Text = deviceTemp.Databit.ToString();
+                    protocolConfiguration.cbStopBit.Text = deviceTemp.StopBits.ToString();
+                    protocolConfiguration.cbProtocol.Text = deviceTemp.Protocol.ToString();
+                }
+
+
+                splitContainer.Panel2.Controls.Add(protocolConfiguration);
+                formProtocolConfiguration = protocolConfiguration;//lưu vào biến toàn cục
+                isInFormEdit = true;
+                formProtocolConfiguration.isTabConfigHaveAnyChanged = false;
+                formProtocolConfiguration.isTabDataHaveAnyChanged = false;
+
+            }
+        }
+
+        private void cms_Xoa_ThietBi(object sender, EventArgs e)
+        {
+            string oldName_ThietBi = rightClickNode.Text;
+            JsonService.RemoveThietBiInNhaMay("Quang Ninh", oldName_ThietBi);
+
+            rightClickNode.Remove();
+
+            if(formProtocolConfiguration.GetCurrentThietBi() != null && formProtocolConfiguration.GetCurrentThietBi().Name == oldName_ThietBi)
+            {
+                splitContainer.Panel2.Controls.Clear();
+                formProtocolConfiguration = null;           
+            }
 
         }
+
+        private void cms_Them_SlaveAddress(object sender, EventArgs e)
+        {
+            TreeNode node = rightClickNode;
+
+            splitContainer.Panel2.Controls.Clear();
+
+            ProtocolConfiguration protocolConfiguration = new ProtocolConfiguration(this);
+            protocolConfiguration.Dock = DockStyle.Fill;
+            protocolConfiguration.dgvDataProtocol.DataSource = null;
+            protocolConfiguration.HideTabCauHinh();
+
+            // get Thiet Bi
+            string thietBi_name = node.Name == TreeName.Name.ThietBi.ToString() ? node.Text : "";
+
+            if (!String.IsNullOrEmpty(thietBi_name))
+            {
+                ThietBiModel thietBi_model = ThietBiGiamSatService.GetThietBiGiamSat("Quang Ninh", thietBi_name);
+                protocolConfiguration.SetThietBiAndSlave(thietBi_model, null);
+            }
+                   
+            protocolConfiguration.SetDsThietBi(ThietBiGiamSatService.GetDsThietBi("Quang Ninh"));
+
+            //
+            splitContainer.Panel2.Controls.Add(protocolConfiguration);
+
+
+            formProtocolConfiguration = protocolConfiguration;//lưu vào biến toàn cục
+            isInFormEdit = true;
+            formProtocolConfiguration.isTabConfigHaveAnyChanged = false;
+            formProtocolConfiguration.isTabDataHaveAnyChanged = false;
+
+            formProtocolConfiguration = protocolConfiguration;
+            isInFormEdit = false;
+        }
+
+        private void cms_Xoa_SlaveAddress(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }
 

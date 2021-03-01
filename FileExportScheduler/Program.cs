@@ -18,15 +18,15 @@ namespace FileExportScheduler
         [STAThread]
         static void Main()
         {
+            
             if (PriorProcess() != null)
             {
 
-                MessageBox.Show("Ứng dụng đang chạy");
+                MessageBox.Show("Ứng dụng đang chạy", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
 
             TrialMaker maker = new TrialMaker("FileExportScheduler", Application.StartupPath + @"\Register.reg", Application.StartupPath + @"\ESSetp.dbf", "", 0xA, 10, "246813579");
             //TrialMaker maker = new TrialMaker("ESMRServer", Application.StartupPath + @"\Register.reg", Environment.GetFolderPath(Environment.SpecialFolder.System) + @"\ATSetp.dbf", "", 0x2d, 0, "246813579");
@@ -67,7 +67,7 @@ namespace FileExportScheduler
                     }
                     GC.Collect();
 
-                    
+
                     Application.Run(new FormMain());
                 }
             }

@@ -1,16 +1,3 @@
-C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\FileExportScheduler.exe.config
-C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\FileExportScheduler.exe
-C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\FileExportScheduler.pdb
-C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormDataList.resources
-C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormMain.resources
-C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormSetting.resources
-C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.Properties.Resources.resources
-C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.ProtocolConfiguration.resources
-C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.GenerateResource.cache
-C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CoreCompileInputs.cache
-C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CopyComplete
-C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.exe
-C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.pdb
 C:\Users\admin\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csprojAssemblyReference.cache
 C:\Users\admin\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormDataList.resources
 C:\Users\admin\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormMain.resources
@@ -25,11 +12,7 @@ C:\Users\admin\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\FileE
 C:\Users\admin\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\FileExportScheduler.exe
 C:\Users\admin\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\FileExportScheduler.pdb
 C:\Users\admin\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\Unme.Common.dll
-C:\Users\admin\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\log4net.xml
 C:\Users\admin\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CopyComplete
-C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\bin\Debug\Unme.Common.dll
-C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\Unme.Common.dll
-C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csprojAssemblyReference.cache
 C:\Users\admin\Source\Repos\GSMT_WinForm_Fix2\FileExportScheduler\bin\Debug\bin\Debug\Unme.Common.dll
 C:\Users\admin\Source\Repos\GSMT_WinForm_Fix2\FileExportScheduler\bin\Debug\FileExportScheduler.exe.config
 C:\Users\admin\Source\Repos\GSMT_WinForm_Fix2\FileExportScheduler\bin\Debug\FileExportScheduler.exe
@@ -46,7 +29,175 @@ C:\Users\admin\Source\Repos\GSMT_WinForm_Fix2\FileExportScheduler\obj\Debug\File
 C:\Users\admin\Source\Repos\GSMT_WinForm_Fix2\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CopyComplete
 C:\Users\admin\Source\Repos\GSMT_WinForm_Fix2\FileExportScheduler\obj\Debug\FileExportScheduler.exe
 C:\Users\admin\Source\Repos\GSMT_WinForm_Fix2\FileExportScheduler\obj\Debug\FileExportScheduler.pdb
-C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.frmDangKyLicense.resources
-C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.DialogLicence.resources
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormAbout.resources
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.DialogLicence.resources
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\bin\Debug\Unme.Common.dll
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\Image\logo.jpg
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix2\FileExportScheduler\obj\Debug\FileExportScheduler.FormAbout.resources
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix2\FileExportScheduler\obj\Debug\FileExportScheduler.FormHienThiDuLieu.resources
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix2\FileExportScheduler\obj\Debug\FileExportScheduler.DialogLicence.resources
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix2\FileExportScheduler\bin\Debug\Image\logo.jpg
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix4\FileExportScheduler\bin\Debug\bin\Debug\Unme.Common.dll
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix4\FileExportScheduler\bin\Debug\Image\logo.jpg
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix4\FileExportScheduler\bin\Debug\FileExportScheduler.exe.config
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix4\FileExportScheduler\bin\Debug\FileExportScheduler.exe
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix4\FileExportScheduler\bin\Debug\FileExportScheduler.pdb
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix4\FileExportScheduler\bin\Debug\Unme.Common.dll
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix4\FileExportScheduler\obj\Debug\FileExportScheduler.csprojAssemblyReference.cache
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix4\FileExportScheduler\obj\Debug\FileExportScheduler.FormAbout.resources
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix4\FileExportScheduler\obj\Debug\FileExportScheduler.FormDataList.resources
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix4\FileExportScheduler\obj\Debug\FileExportScheduler.FormHienThiDuLieu.resources
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix4\FileExportScheduler\obj\Debug\FileExportScheduler.FormMain.resources
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix4\FileExportScheduler\obj\Debug\FileExportScheduler.FormSetting.resources
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix4\FileExportScheduler\obj\Debug\FileExportScheduler.DialogLicence.resources
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix4\FileExportScheduler\obj\Debug\FileExportScheduler.Properties.Resources.resources
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix4\FileExportScheduler\obj\Debug\FileExportScheduler.ProtocolConfiguration.resources
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix4\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.GenerateResource.cache
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix4\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CoreCompileInputs.cache
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix4\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CopyComplete
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix4\FileExportScheduler\obj\Debug\FileExportScheduler.exe
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix4\FileExportScheduler\obj\Debug\FileExportScheduler.pdb
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix5\FileExportScheduler\bin\Debug\bin\Debug\Unme.Common.dll
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix5\FileExportScheduler\bin\Debug\Image\logo.jpg
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix5\FileExportScheduler\bin\Debug\FileExportScheduler.exe.config
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix5\FileExportScheduler\bin\Debug\FileExportScheduler.exe
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix5\FileExportScheduler\bin\Debug\FileExportScheduler.pdb
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix5\FileExportScheduler\bin\Debug\Unme.Common.dll
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix5\FileExportScheduler\obj\Debug\FileExportScheduler.csprojAssemblyReference.cache
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix5\FileExportScheduler\obj\Debug\FileExportScheduler.FormAbout.resources
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix5\FileExportScheduler\obj\Debug\FileExportScheduler.FormDataList.resources
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix5\FileExportScheduler\obj\Debug\FileExportScheduler.FormHienThiDuLieu.resources
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix5\FileExportScheduler\obj\Debug\FileExportScheduler.FormMain.resources
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix5\FileExportScheduler\obj\Debug\FileExportScheduler.FormSetting.resources
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix5\FileExportScheduler\obj\Debug\FileExportScheduler.DialogLicence.resources
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix5\FileExportScheduler\obj\Debug\FileExportScheduler.Properties.Resources.resources
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix5\FileExportScheduler\obj\Debug\FileExportScheduler.ProtocolConfiguration.resources
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix5\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.GenerateResource.cache
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix5\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CoreCompileInputs.cache
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix5\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CopyComplete
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix5\FileExportScheduler\obj\Debug\FileExportScheduler.exe
+C:\Users\admin\Source\Repos\GSMT_WinForm_Fix5\FileExportScheduler\obj\Debug\FileExportScheduler.pdb
+C:\Users\kieum\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\bin\Debug\Unme.Common.dll
+C:\Users\kieum\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\Image\logo.jpg
+C:\Users\kieum\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\FileExportScheduler.exe.config
+C:\Users\kieum\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\FileExportScheduler.exe
+C:\Users\kieum\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\FileExportScheduler.pdb
+C:\Users\kieum\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\Unme.Common.dll
+C:\Users\kieum\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csprojAssemblyReference.cache
+C:\Users\kieum\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormAbout.resources
+C:\Users\kieum\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormDataList.resources
+C:\Users\kieum\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormHienThiDuLieu.resources
+C:\Users\kieum\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormMain.resources
+C:\Users\kieum\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormSetting.resources
+C:\Users\kieum\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.DialogLicence.resources
+C:\Users\kieum\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.Properties.Resources.resources
+C:\Users\kieum\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.ProtocolConfiguration.resources
+C:\Users\kieum\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.GenerateResource.cache
+C:\Users\kieum\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CoreCompileInputs.cache
+C:\Users\kieum\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CopyComplete
+C:\Users\kieum\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.exe
+C:\Users\kieum\Source\Repos\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.pdb
+D:\GSMT\FileExportScheduler\bin\Debug\bin\Debug\Unme.Common.dll
+D:\GSMT\FileExportScheduler\bin\Debug\Image\logo.jpg
+D:\GSMT\FileExportScheduler\bin\Debug\FileExportScheduler.exe.config
+D:\GSMT\FileExportScheduler\bin\Debug\FileExportScheduler.exe
+D:\GSMT\FileExportScheduler\bin\Debug\FileExportScheduler.pdb
+D:\GSMT\FileExportScheduler\bin\Debug\NModbus.dll
+D:\GSMT\FileExportScheduler\bin\Debug\NModbus.xml
+D:\GSMT\FileExportScheduler\obj\Debug\FileExportScheduler.csprojAssemblyReference.cache
+D:\GSMT\FileExportScheduler\obj\Debug\FileExportScheduler.FormAbout.resources
+D:\GSMT\FileExportScheduler\obj\Debug\FileExportScheduler.FormDataList.resources
+D:\GSMT\FileExportScheduler\obj\Debug\FileExportScheduler.FormHienThiDuLieu.resources
+D:\GSMT\FileExportScheduler\obj\Debug\FileExportScheduler.FormMain.resources
+D:\GSMT\FileExportScheduler\obj\Debug\FileExportScheduler.FormSetting.resources
+D:\GSMT\FileExportScheduler\obj\Debug\FileExportScheduler.DialogLicence.resources
+D:\GSMT\FileExportScheduler\obj\Debug\FileExportScheduler.Properties.Resources.resources
+D:\GSMT\FileExportScheduler\obj\Debug\FileExportScheduler.ProtocolConfiguration.resources
+D:\GSMT\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.GenerateResource.cache
+D:\GSMT\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CoreCompileInputs.cache
+D:\GSMT\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CopyComplete
+D:\GSMT\FileExportScheduler\obj\Debug\FileExportScheduler.exe
+D:\GSMT\FileExportScheduler\obj\Debug\FileExportScheduler.pdb
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\bin\Debug\Unme.Common.dll
 C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\Image\logo.jpg
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\ESProtocolConverter.exe.config
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\ESProtocolConverter.exe
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\ESProtocolConverter.pdb
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\NModbus.dll
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\NModbus.xml
 C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormAbout.resources
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormDataList.resources
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormHienThiDuLieu.resources
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormMain.resources
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormSetting.resources
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.DialogLicence.resources
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\ESProtocolConverter.Properties.Resources.resources
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.ProtocolConfiguration.resources
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.GenerateResource.cache
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CoreCompileInputs.cache
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CopyComplete
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\ESProtocolConverter.exe
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\ESProtocolConverter.pdb
+C:\Users\kaka\Documents\GitHub\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csprojAssemblyReference.cache
+D:\Project\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormAbout.resources
+D:\Project\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormDataList.resources
+D:\Project\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormHienThiDuLieu.resources
+D:\Project\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormSetting.resources
+D:\Project\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.DialogLicence.resources
+D:\Project\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\ESProtocolConverter.Properties.Resources.resources
+D:\Project\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.ProtocolConfiguration.resources
+D:\Project\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.GenerateResource.cache
+D:\Project\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\ESProtocolConverter.exe
+D:\Project\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\ESProtocolConverter.pdb
+D:\Project\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\bin\Debug\Unme.Common.dll
+D:\Project\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\Image\logo.jpg
+D:\Project\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\ESProtocolConverter.exe.config
+D:\Project\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\ESProtocolConverter.exe
+D:\Project\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\ESProtocolConverter.pdb
+D:\Project\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\NModbus.dll
+D:\Project\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\NModbus.xml
+D:\Project\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormMain.resources
+D:\Project\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CoreCompileInputs.cache
+D:\Project\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CopyComplete
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csprojAssemblyReference.cache
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormAbout.resources
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormDataList.resources
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormHienThiDuLieu.resources
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormMain.resources
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.FormSetting.resources
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.DialogLicence.resources
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\ESProtocolConverter.Properties.Resources.resources
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.ProtocolConfiguration.resources
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.GenerateResource.cache
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CoreCompileInputs.cache
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\bin\Debug\Unme.Common.dll
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\Image\logo.jpg
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\ESProtocolConverter.exe.config
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\ESProtocolConverter.exe
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\ESProtocolConverter.pdb
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\NModbus.dll
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\bin\Debug\NModbus.xml
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CopyComplete
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\ESProtocolConverter.exe
+D:\E-Solution\Dự Án\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\ESProtocolConverter.pdb
+D:\E-Solutions Code\ES_GSMT_Version2\FileExportScheduler\bin\Debug\bin\Debug\Unme.Common.dll
+D:\E-Solutions Code\ES_GSMT_Version2\FileExportScheduler\bin\Debug\Image\logo.jpg
+D:\E-Solutions Code\ES_GSMT_Version2\FileExportScheduler\bin\Debug\ESProtocolConverter.exe.config
+D:\E-Solutions Code\ES_GSMT_Version2\FileExportScheduler\bin\Debug\ESProtocolConverter.exe
+D:\E-Solutions Code\ES_GSMT_Version2\FileExportScheduler\bin\Debug\ESProtocolConverter.pdb
+D:\E-Solutions Code\ES_GSMT_Version2\FileExportScheduler\bin\Debug\NModbus.dll
+D:\E-Solutions Code\ES_GSMT_Version2\FileExportScheduler\bin\Debug\NModbus.xml
+D:\E-Solutions Code\ES_GSMT_Version2\FileExportScheduler\obj\Debug\FileExportScheduler.csprojAssemblyReference.cache
+D:\E-Solutions Code\ES_GSMT_Version2\FileExportScheduler\obj\Debug\FileExportScheduler.FormAbout.resources
+D:\E-Solutions Code\ES_GSMT_Version2\FileExportScheduler\obj\Debug\FileExportScheduler.FormDataList.resources
+D:\E-Solutions Code\ES_GSMT_Version2\FileExportScheduler\obj\Debug\FileExportScheduler.FormHienThiDuLieu.resources
+D:\E-Solutions Code\ES_GSMT_Version2\FileExportScheduler\obj\Debug\FileExportScheduler.FormMain.resources
+D:\E-Solutions Code\ES_GSMT_Version2\FileExportScheduler\obj\Debug\FileExportScheduler.FormSetting.resources
+D:\E-Solutions Code\ES_GSMT_Version2\FileExportScheduler\obj\Debug\FileExportScheduler.DialogLicence.resources
+D:\E-Solutions Code\ES_GSMT_Version2\FileExportScheduler\obj\Debug\ESProtocolConverter.Properties.Resources.resources
+D:\E-Solutions Code\ES_GSMT_Version2\FileExportScheduler\obj\Debug\FileExportScheduler.ProtocolConfiguration.resources
+D:\E-Solutions Code\ES_GSMT_Version2\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.GenerateResource.cache
+D:\E-Solutions Code\ES_GSMT_Version2\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CoreCompileInputs.cache
+D:\E-Solutions Code\ES_GSMT_Version2\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CopyComplete
+D:\E-Solutions Code\ES_GSMT_Version2\FileExportScheduler\obj\Debug\ESProtocolConverter.exe
+D:\E-Solutions Code\ES_GSMT_Version2\FileExportScheduler\obj\Debug\ESProtocolConverter.pdb

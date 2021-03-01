@@ -62,7 +62,6 @@
                 return SoftwareName.ToUpper();
             }
             return SoftwareName.ToUpper();
-            //return "48090RYF2B3E06BBF55A3S280F003CC18FS5407";
         }
 
         public static string leerMACaddress()
@@ -105,7 +104,10 @@
             {
                 try
                 {
-                    return obj2[MethodName].ToString();
+                    if(obj2[MethodName] != null)
+                    {
+                        return obj2[MethodName].ToString();
+                    }
                 }
                 catch (Exception)
                 {

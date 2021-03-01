@@ -11,7 +11,8 @@ using System.Windows.Forms;
 using Newtonsoft.Json;
 using System.IO;
 using System.Reflection;
-using FileExportScheduler.Controller;
+using FileExportScheduler.Service.Json;
+using FileExportScheduler.Service.KiemTra;
 
 namespace FileExportScheduler
 {
@@ -24,45 +25,52 @@ namespace FileExportScheduler
 
         private void btnBrowse_Click(object sender, EventArgs e)
         {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "CSV (*.csv)|*.csv";
-            //sfd.FileName = $"{DateTime.Now.ToString("yyyyMMddHHmmss")}.csv";
-            sfd.FileName = "DataLog.csv";
-            if (sfd.ShowDialog() == DialogResult.OK)
+            FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog();
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
             {
-                txtExportFilePath.Text = sfd.FileName;
-            }
-            else
-            {
-                txtExportFilePath.Text = "";
+                txtExportFilePath.Text = folderBrowserDialog1.SelectedPath;
             }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            SettingModel settingModel = new SettingModel();
+            CaiDatChung setting = new CaiDatChung();
 
-            settingModel.AutoRun = chkAutoRun.Checked;
-            settingModel.Interval = Int32.Parse(udInterval.Value.ToString());
-            settingModel.ExportFilePath = txtExportFilePath.Text;
-            settingModel.ChuKiXoaDuLieu = Int32.Parse(numChuKiXoaDuLieu.Value.ToString());
+            setting.AutoRun = chkAutoRun.Checked;
+            setting.Interval = Int32.Parse(numChukyLuuDuLieu.Value.ToString());
+            setting.ExportFilePath = txtExportFilePath.Text;
+            setting.ChuKiXoaDuLieu = Int32.Parse(numChuKiXoaDuLieu.Value.ToString());
+            setting.FormatTime = txtFormatTime.Text;
 
             var path = GetPathJson.getPathConfig("Config.json");
 
-            if (txtExportFilePath.Text == "")
+            if (txtFormatTime.Text == "yyyy-MM-dd HH:mm:ss" || txtFormatTime.Text == "dd-MM-yyyy HH:mm:ss" || txtFormatTime.Text == "MM-dd-yyyy HH:mm:ss" || txtFormatTime.Text != "")
             {
-                errorProvider1.SetError(txtExportFilePath, "Không được để trống !");
+                if (txtExportFilePath.Text == "")
+                {
+                    errorProvider1.SetError(txtExportFilePath, "Không được để trống !");
+                    return;
+                }
+                if (KiemTraDuongDan.TonTaiKhiLuu(txtExportFilePath.Text, setting))
+                {
+                    MessageBox.Show("Đã lưu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Đường dẫn thư mục không tồn tại!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Định dạng thời gian sai!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            using (StreamWriter sw = File.CreateText(path))
-            {
-                var loadData = JsonConvert.SerializeObject(settingModel);
-                sw.WriteLine(loadData);
-            }
-
-            MessageBox.Show("Đã lưu thành công!");
-            this.Close();
+            
+            
+            
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -80,13 +88,19 @@ namespace FileExportScheduler
                 using (StreamReader sr = File.OpenText(path))
                 {
                     var obj = sr.ReadToEnd();
-                    SettingModel export = JsonConvert.DeserializeObject<SettingModel>(obj.ToString());
-                    udInterval.Value = export.Interval;
+                    CaiDatChung export = JsonConvert.DeserializeObject<CaiDatChung>(obj.ToString());
+                    numChukyLuuDuLieu.Value = export.Interval;
                     txtExportFilePath.Text = export.ExportFilePath;
                     chkAutoRun.Checked = export.AutoRun;
                     numChuKiXoaDuLieu.Value = export.ChuKiXoaDuLieu;
+                    txtFormatTime.Text = export.FormatTime;
                 }
             }
+        }
+
+        private void txtFormatTime_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

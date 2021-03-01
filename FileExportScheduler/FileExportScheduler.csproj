@@ -6,11 +6,26 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{F9B36924-68CC-497E-A829-B43915432060}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>FileExportScheduler</RootNamespace>
-    <AssemblyName>FileExportScheduler</AssemblyName>
+    <RootNamespace>ESProtocolConverter</RootNamespace>
+    <AssemblyName>ESProtocolConverter</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,7 +46,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Image\images.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevExpress.Data.v19.2, Version=19.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpo.v19.2, Version=19.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="EasyModbus">
       <HintPath>..\EasyModbusTCP .NET Package V5.5\EasyModbus.dll</HintPath>
     </Reference>
@@ -41,12 +64,16 @@
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <HintPath>packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Modbus, Version=1.11.0.0, Culture=neutral, PublicKeyToken=b5aba55fcbc8d946, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Download\NModbus_net-3.5_1.11.0.0\bin\net\Modbus.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\Demo Project\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NModbus, Version=3.0.62.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\NModbus.3.0.62\lib\net45\NModbus.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -62,19 +89,42 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="Unme.Common, Version=1.1.0.0, Culture=neutral, PublicKeyToken=da57c01ae4598fdd, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\ESProjects\ReadDataModbus\bin\Debug\Unme.Common.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constant\LanDoc.cs" />
     <Compile Include="Constant\ThongBaoLoi.cs" />
     <Compile Include="Constant\TrangThaiKetNoi.cs" />
-    <Compile Include="Controller\Communication.cs" />
-    <Compile Include="Controller\FileCSVController.cs" />
-    <Compile Include="Controller\GetPathJson.cs" />
-    <Compile Include="Controller\JsonReader.cs" />
-    <Compile Include="Controller\ThietBiGiamSatController.cs" />
-    <Compile Include="Controller\ThongBaoController.cs" />
-    <Compile Include="Controller\XuLyDanhSachDiemDo.cs" />
-    <Compile Include="Data\Data.cs" />
+    <Compile Include="Data\DataTCPIP.cs" />
+    <Compile Include="FormHienThiDuLieu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormHienThiDuLieu.Designer.cs">
+      <DependentUpon>FormHienThiDuLieu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModbusLib.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Models\Common\TreeName.cs" />
+    <Compile Include="Models\DuLieu\ThongSoGiaTriModel.cs" />
+    <Compile Include="Models\NhaMay\NhaMayModel.cs" />
+    <Compile Include="Models\Slave\SlaveModel.cs" />
+    <Compile Include="Service\DuLieu\DanhSachDuLieuService.cs" />
+    <Compile Include="Service\FileService\FileCSV.cs" />
+    <Compile Include="Service\FindMaxAddress\MaxAddress.cs" />
+    <Compile Include="Service\Json\JsonService.cs" />
+    <Compile Include="Service\Json\PathJson.cs" />
+    <Compile Include="Service\Json\JsonReader.cs" />
+    <Compile Include="Service\KiemTra\KiemTraDuongDan.cs" />
+    <Compile Include="Service\Slave\SlaveService.cs" />
+    <Compile Include="Service\ThietBi\ThietBiGiamSatService.cs" />
+    <Compile Include="Service\ThongBao\ThongBaoService.cs" />
+    <Compile Include="Service\DiemDo\DanhSachDiemDoService.cs" />
+    <Compile Include="Data\DataCOM.cs" />
     <Compile Include="FormAbout.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -99,7 +149,7 @@
     <Compile Include="FormSetting.Designer.cs">
       <DependentUpon>FormSetting.cs</DependentUpon>
     </Compile>
-    <Compile Include="KiemTra\DuLieuNhapVao.cs" />
+    <Compile Include="KiemTraDauVao\DuLieuNhapVao.cs" />
     <Compile Include="License\DialogLicence.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -107,13 +157,12 @@
     <Compile Include="License\FileReadWrite.cs" />
     <Compile Include="License\SystemInfo.cs" />
     <Compile Include="License\TrialMaker.cs" />
-    <Compile Include="Models\ComConfigModel.cs" />
-    <Compile Include="Models\DiemDoGiamSat.cs" />
-    <Compile Include="Models\IPConfigModel.cs" />
-    <Compile Include="Models\DuLieuGiamSat.cs" />
-    <Compile Include="Models\ThietBiGiamSat.cs" />
-    <Compile Include="Models\SettingModel.cs" />
-    <Compile Include="Models\Type.cs" />
+    <Compile Include="Models\ThietBi\ThietBiCOM.cs" />
+    <Compile Include="Models\DiemDo\DiemDoModel.cs" />
+    <Compile Include="Models\ThietBi\ThietBiTCPIP.cs" />
+    <Compile Include="Models\DuLieu\DuLieuModel.cs" />
+    <Compile Include="Models\ThietBi\Base\ThietBiModel.cs" />
+    <Compile Include="Models\CaiDatChung.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProtocolConfiguration.cs">
@@ -127,6 +176,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormDataList.resx">
       <DependentUpon>FormDataList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormHienThiDuLieu.resx">
+      <DependentUpon>FormHienThiDuLieu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
@@ -152,7 +204,6 @@
     </EmbeddedResource>
     <None Include="bin\Debug\Configuration\Config.json" />
     <None Include="bin\Debug\Configuration\DeviceAndData.json" />
-    <None Include="bin\Debug\FileExportScheduler.exe.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -172,12 +223,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Release\" />
+    <Folder Include="ErrorCustom\" />
     <Folder Include="Export Data\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Debug\EasyModbus.dll" />
-    <Content Include="bin\Debug\FileExportScheduler.exe" />
-    <Content Include="bin\Debug\FileExportScheduler.pdb" />
     <Content Include="bin\Debug\IPAddressControlLib.dll" />
     <Content Include="bin\Debug\log4net.dll" />
     <Content Include="bin\Debug\Modbus.dll" />
@@ -185,9 +235,17 @@
     <Content Include="bin\Debug\Unme.Common.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Image\images.ico" />
     <Content Include="Image\logo.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
