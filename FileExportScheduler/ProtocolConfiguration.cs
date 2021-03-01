@@ -69,7 +69,7 @@ namespace FileExportScheduler
             //DocDsThietBiTuFileJson();
             //LoadDuLieuLenDgv();
             cbProtocol.SelectedIndex = cbProtocol.Items.IndexOf("Modbus TCP/IP");
-            cbCOM.SelectedIndex = cbCOM.Items.IndexOf("COM1");
+            cbCOM.SelectedIndex = cbCOM.Items.IndexOf(1);
             cbBaud.SelectedIndex = cbBaud.Items.IndexOf("9600");
             cbDataBit.SelectedIndex = cbDataBit.Items.IndexOf("8");
             cbParity.SelectedIndex = cbParity.Items.IndexOf("Even");
@@ -309,7 +309,7 @@ namespace FileExportScheduler
         private void btnAddNewProtocol_Click(object sender, EventArgs e)
         {
             isClicked = true;
-            ThemMoiDuocClick();
+            ThemMoiThietBi();
         }
 
         private void btnImport_Click(object sender, EventArgs e)
@@ -455,7 +455,7 @@ namespace FileExportScheduler
         private void btnEditProtocol_Click(object sender, EventArgs e)
         {
             isClicked = true;
-            EditDuocClick();
+            EditThietBi();
 
         }
         #endregion
@@ -606,11 +606,11 @@ namespace FileExportScheduler
                 if (isTabDataHaveAnyChanged == true && isTabConfigHaveAnyChanged == true)
                 {
                     SaveData();
-                    ThemMoiDuocClick();
+                    ThemMoiThietBi();
                 }
                 else if (isTabConfigHaveAnyChanged == true)
                 {
-                    ThemMoiDuocClick();
+                    ThemMoiThietBi();
                 }
                 else
                 {
@@ -622,11 +622,11 @@ namespace FileExportScheduler
                 if (isTabDataHaveAnyChanged == true && isTabConfigHaveAnyChanged == true)
                 {
                     SaveData();
-                    EditDuocClick();
+                    EditThietBi();
                 }
                 else if (isTabConfigHaveAnyChanged == true)
                 {
-                    EditDuocClick();
+                    EditThietBi();
                 }
                 else
                 {
@@ -665,7 +665,7 @@ namespace FileExportScheduler
         }
 
         #region hàm sử lý nút lưu
-        private void ThemMoiDuocClick()
+        private void ThemMoiThietBi()
         {
             //DocDsThietBiTuFileJson();
 
@@ -679,7 +679,7 @@ namespace FileExportScheduler
             }
             if (cbProtocol.SelectedItem.ToString() == "Modbus TCP/IP")
             {
-                isValidatePassed = CheckValidateCauHinhIP();
+                //isValidatePassed = CheckValidateCauHinhIP();
                 if (CheckValidateCauHinhIP() == false)
                 {
                     MessageBox.Show("Kiểm tra dữ liệu nhập vào!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -701,7 +701,7 @@ namespace FileExportScheduler
             }
             else if (cbProtocol.SelectedItem.ToString() == "Serial Port")
             {
-                isValidatePassed = CheckValidateCauHinhCOM();
+                //isValidatePassed = CheckValidateCauHinhCOM();
                 if (CheckValidateCauHinhCOM() == false)
                 {
                     MessageBox.Show("Kiểm tra lại dữ liệu nhập vào!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -765,7 +765,7 @@ namespace FileExportScheduler
             isTabConfigHaveAnyChanged = false;
         }
 
-        private void EditDuocClick()
+        private void EditThietBi()
         {
             //DocDsThietBiTuFileJson();
             if (cbProtocol.SelectedItem.ToString() == "Modbus TCP/IP")
@@ -1090,6 +1090,46 @@ namespace FileExportScheduler
         public void HideTabDuLieu()
         {
             this.tabControl1.TabPages.Remove(this.tabPageDuLieu);
+        }
+
+        public void HideTabSlave()
+        {
+            this.tabControl1.TabPages.Remove(this.tabPageSlave);
+        }
+
+        public void HideTabCauHinh()
+        {
+            this.tabControl1.TabPages.Remove(this.tabPageCauHinh);
+        }
+
+        private void btnSaveSlave_Click(object sender, EventArgs e)
+        {
+            slave = new SlaveModel();
+
+            // set data cho slave
+            slave.Name = txtSlaveAddress.Text;
+            slave.ScanRate = int.Parse(txtScanRate.Text);
+            //
+            try
+            {
+                thietBi.dsSlave.Add(slave.Name, slave);
+
+                var rs = JsonService.AddSlaveToTb("Quang Ninh", thietBi.Name, slave);
+                if (rs)
+                {
+                    MessageBox.Show("Add Slave success");
+                    formDataList.LoadTreeView();
+                    formDataList.tvMain.ExpandAll();
+                }
+                else
+                {
+                    MessageBox.Show("Error when insert slave !!");
+                }
+            }catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
         }
     }
 

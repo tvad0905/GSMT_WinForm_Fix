@@ -156,5 +156,35 @@ namespace ESProtocolConverter.Service.Json
             string jsonString = (new JavaScriptSerializer()).Serialize((object)dicNhaMay);
             File.WriteAllText(path, jsonString);
         }
+
+        public static bool AddSlaveToTb(string nhaMay_name, string thietBi_name, SlaveModel slave)
+        {
+            var path = GetPathJson.getPathConfig("DeviceAndData.json");
+            Dictionary<string, NhaMayModel> dicNhaMay = GetDicNhaMay();
+
+            NhaMayModel nhaMay = dicNhaMay[nhaMay_name];
+            if (nhaMay.dsThietBi.ContainsKey(thietBi_name))
+            {
+                ThietBiModel thietbi = nhaMay.dsThietBi[thietBi_name];
+                if (!thietbi.dsSlave.ContainsKey(slave.Name))
+                {
+                    thietbi.dsSlave.Add(slave.Name, slave);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+            
+
+            string jsonString = (new JavaScriptSerializer()).Serialize((object)dicNhaMay);
+            File.WriteAllText(path, jsonString);
+
+            return true;
+        }
     }
 }

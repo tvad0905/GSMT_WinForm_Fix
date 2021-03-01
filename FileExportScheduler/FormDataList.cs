@@ -165,13 +165,14 @@ namespace FileExportScheduler
             protocolConfiguration.btnEditProtocol.Visible = false;
             protocolConfiguration.btnAddNewProtocol.Visible = true;
             protocolConfiguration.cbCOM.DataSource = ports;
-            protocolConfiguration.dgvDataProtocol.DataSource = null;
+            //protocolConfiguration.dgvDataProtocol.DataSource = null;
 
             protocolConfiguration.SetThietBiAndSlave(null, null);
             protocolConfiguration.SetDsThietBi(ThietBiGiamSatService.GetDsThietBi("Quang Ninh"));
 
             protocolConfiguration.HideTabDuLieu();
-
+            protocolConfiguration.HideTabSlave();
+            
             splitContainer.Panel2.Controls.Add(protocolConfiguration);
 
 
@@ -251,6 +252,7 @@ namespace FileExportScheduler
                 if (node.Name == TreeName.Name.ThietBi.ToString())
                 {
                     protocolConfiguration.HideTabDuLieu();
+                    protocolConfiguration.HideTabSlave();
                 }
 
                 try
@@ -298,7 +300,37 @@ namespace FileExportScheduler
 
         private void cms_Them_SlaveAddress(object sender, EventArgs e)
         {
+            TreeNode node = rightClickNode;
 
+            splitContainer.Panel2.Controls.Clear();
+
+            ProtocolConfiguration protocolConfiguration = new ProtocolConfiguration(this);
+            protocolConfiguration.Dock = DockStyle.Fill;
+            protocolConfiguration.dgvDataProtocol.DataSource = null;
+            protocolConfiguration.HideTabCauHinh();
+
+            // get Thiet Bi
+            string thietBi_name = node.Name == TreeName.Name.ThietBi.ToString() ? node.Text : "";
+
+            if (!String.IsNullOrEmpty(thietBi_name))
+            {
+                ThietBiModel thietBi_model = ThietBiGiamSatService.GetThietBiGiamSat("Quang Ninh", thietBi_name);
+                protocolConfiguration.SetThietBiAndSlave(thietBi_model, null);
+            }
+                   
+            protocolConfiguration.SetDsThietBi(ThietBiGiamSatService.GetDsThietBi("Quang Ninh"));
+
+            //
+            splitContainer.Panel2.Controls.Add(protocolConfiguration);
+
+
+            formProtocolConfiguration = protocolConfiguration;//lưu vào biến toàn cục
+            isInFormEdit = true;
+            formProtocolConfiguration.isTabConfigHaveAnyChanged = false;
+            formProtocolConfiguration.isTabDataHaveAnyChanged = false;
+
+            formProtocolConfiguration = protocolConfiguration;
+            isInFormEdit = false;
         }
 
         private void cms_Xoa_SlaveAddress(object sender, EventArgs e)
