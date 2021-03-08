@@ -5,7 +5,7 @@
 /.vs/slnx.sqlite
 /FileExportScheduler/obj/Release
 /FileExportScheduler/Export Data
-/FileExportScheduler/obj/*
+/FileExportScheduler/obj
 
 #Ignore thumbnails created by Windows
 Thumbs.db
