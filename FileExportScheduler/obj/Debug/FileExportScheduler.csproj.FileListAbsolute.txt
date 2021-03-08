@@ -222,3 +222,4 @@ F:\GSMTv2\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CoreCompileIn
 F:\GSMTv2\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CopyComplete
 F:\GSMTv2\FileExportScheduler\obj\Debug\ESProtocolConverter.exe
 F:\GSMTv2\FileExportScheduler\obj\Debug\ESProtocolConverter.pdb
+D:\Project\GSMT_WinForm_Fix\FileExportScheduler\obj\Debug\FileExportScheduler.csprojAssemblyReference.cache
