@@ -112,5 +112,37 @@ namespace FileExportScheduler.Service.ThietBi
             }
             return null;
         }
+
+        public static SlaveModel GetDsSlave(string nhamay_name, string thietbi_name, string slave_name)
+        {
+            try
+            {
+                Dictionary<string, NhaMayModel> dicNhaMay = JsonService.GetDicNhaMay();
+
+                if (dicNhaMay.ContainsKey(nhamay_name))
+                {
+                    NhaMayModel nhaMayModel = dicNhaMay[nhamay_name];
+                    var nhamay_item = nhaMayModel.dsThietBi;
+                    foreach (var thietBi_item in nhamay_item)
+                    {
+                        if (thietBi_item.Value.Name == thietbi_name)
+                        {
+                            foreach (var slave_item in thietBi_item.Value.dsSlave)
+                            {
+                                if (slave_item.Value.Name == slave_name)
+                                {
+                                    return slave_item.Value;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                return null;
+            }
+            return null;
+        }
     }
 }

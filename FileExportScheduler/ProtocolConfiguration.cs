@@ -35,12 +35,13 @@ namespace FileExportScheduler
         ThietBiModel thietBi;
         SlaveModel slave = null;
         public FormDataList formDataList;
-        public string tenDuLieuDuocChon;
         private bool isSaved = true;
         public bool isClicked { get; set; }
         public bool isValidatePassed { get; set; }
         public bool isTabConfigHaveAnyChanged { get; set; }
         public bool isTabDataHaveAnyChanged { get; set; }
+        public bool isTabSlaveChanged { get; set; }
+        public bool isAddSlave { get; set; }
         #endregion
 
         public void SetThietBiAndSlave(ThietBiModel thietBi, string slave_name)
@@ -76,7 +77,9 @@ namespace FileExportScheduler
             cbStopBit.SelectedIndex = cbStopBit.Items.IndexOf("1");
             isClicked = false;
             isTabConfigHaveAnyChanged = false;
-
+            isTabDataHaveAnyChanged = false;
+            isAddSlave = false;
+            isTabSlaveChanged = false;
         }
 
         #region Thao tác với json
@@ -128,6 +131,10 @@ namespace FileExportScheduler
             {
                 errorTenGiaoThuc.SetError(txtTenGiaoThuc, "Tên thiết bị trùng lặp");
                 error = false;
+            }
+            else
+            {
+                errorTenGiaoThuc.SetError(txtTenGiaoThuc, "");
             }
 
             /*if (thietBi.dsSlave.ContainsKey(txt_SlaveAddress.Text))
@@ -191,6 +198,49 @@ namespace FileExportScheduler
             }
 
             return error;
+        }
+
+        string regexSlaveAddress = @"^[1-9][0-9]{0,2}(?:,[0-9]{3}){0,3}$";
+        string regexScanRate = @"^[1-9]\d*$";
+        public bool CheckValidateCauHinhSlave()
+        {
+            bool isError = true;
+            if (txtSlaveAddress.Text.Trim() == "")
+            {
+                errorSlaveAddress.SetError(txtSlaveAddress, "Slave Address trống!");
+                isError = false;
+            }
+            else if (!Regex.IsMatch(txtSlaveAddress.Text, regexSlaveAddress))
+            {
+                errorSlaveAddress.SetError(txtSlaveAddress, "Slave Address là số nguyên dương");
+                isError = false;
+            }
+            else if (int.Parse(txtSlaveAddress.Text) > 255)
+            {
+                errorSlaveAddress.SetError(txtSlaveAddress, "Slave Address chỉ từ 1 - 255");
+                isError = false;
+            }
+            else
+            {
+                errorSlaveAddress.SetError(txtSlaveAddress, "");
+            }
+
+            if(txtScanRate.Text.Trim() == "")
+            {
+                errorScanRate.SetError(txtScanRate, "ScanRate trống!");
+                isError = false;
+            }
+            else if (!Regex.IsMatch(txtScanRate.Text, regexScanRate))
+            {
+                errorScanRate.SetError(txtScanRate, "ScanRate là số nguyên dương");
+                isError = false;
+            }
+            else
+            {
+                errorScanRate.SetError(txtScanRate, "");
+            }
+
+            return isError;
         }
         #endregion
 
@@ -603,10 +653,15 @@ namespace FileExportScheduler
 
             if (isInFormEdit == false)
             {
-                if (isTabDataHaveAnyChanged == true && isTabConfigHaveAnyChanged == true)
+                if (isTabDataHaveAnyChanged == true && isTabConfigHaveAnyChanged == true && isTabSlaveChanged == true)
                 {
                     SaveData();
                     ThemMoiThietBi();
+                    LuuSlaveAddress();
+                }
+                else if(isTabSlaveChanged == true)
+                {
+                    LuuSlaveAddress();
                 }
                 else if (isTabConfigHaveAnyChanged == true)
                 {
@@ -619,10 +674,15 @@ namespace FileExportScheduler
             }
             else if (isInFormEdit == true)
             {
-                if (isTabDataHaveAnyChanged == true && isTabConfigHaveAnyChanged == true)
+                if (isTabDataHaveAnyChanged == true && isTabConfigHaveAnyChanged == true && isTabSlaveChanged == true)
                 {
                     SaveData();
                     EditThietBi();
+                    LuuSlaveAddress();
+                }
+                else if (isTabSlaveChanged == true)
+                {
+                    LuuSlaveAddress();
                 }
                 else if (isTabConfigHaveAnyChanged == true)
                 {
@@ -637,7 +697,7 @@ namespace FileExportScheduler
         public bool IsFormHaveAnyChanged()
         {
             this.dgvDataProtocol.EndEdit();
-            if (isTabDataHaveAnyChanged == true || isTabConfigHaveAnyChanged == true)
+            if (isTabDataHaveAnyChanged == true || isTabConfigHaveAnyChanged == true || isTabSlaveChanged == true)
             {
                 return true;
             }
@@ -892,78 +952,97 @@ namespace FileExportScheduler
             //SaveData();
             isTabConfigHaveAnyChanged = false;
         }
-        #endregion
 
-        #region event controller value change
-        private void dgvDataProtocol_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        private void LuuSlaveAddress()
         {
-            if (e.RowIndex > -1)
+            if (!CheckValidateCauHinhSlave())
             {
-                isTabDataHaveAnyChanged = true;
-                isSaved = false;
+                MessageBox.Show("Lỗi lưu slave!!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
             }
-        }
-
-        private void txtTenGiaoThuc_TextChanged(object sender, EventArgs e)
-        {
-            isTabConfigHaveAnyChanged = true;
-        }
-
-        private void cbProtocol_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            isTabConfigHaveAnyChanged = true;
-
-            if (cbProtocol.SelectedIndex == 0)
+            var dsSlaveItem = dsThietBiGiamSat[thietBi.Name].dsSlave;
+            if (dsSlaveItem.ContainsKey(txtSlaveAddress.Text) && txtSlaveAddress.Text != formDataList.selectedNodeDouble.Text)
             {
-                gbSerialSettingProtocol.Enabled = false;
-                gbTCPIPProtocol.Enabled = true;
-
+                errorSlaveAddress.SetError(txtSlaveAddress, "Slave bị trùng");
+                MessageBox.Show("SlaveAddress bị trùng", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else
             {
-                gbSerialSettingProtocol.Enabled = true;
-                gbTCPIPProtocol.Enabled = false;
-                txtIPAdress.Clear();
-                txtPort.Text = "";
+                if (isAddSlave)
+                {
+
+                    slave = new SlaveModel();
+
+                    // set data cho slave
+                    slave.Name = txtSlaveAddress.Text;
+                    slave.ScanRate = int.Parse(txtScanRate.Text);
+                    //
+                    try
+                    {
+                        thietBi.dsSlave.Add(slave.Name, slave);
+
+                        var rs = JsonService.AddSlaveToTb("Quang Ninh", thietBi.Name, slave);
+                        if (rs)
+                        {
+                            if(isClicked == true)
+                            {
+                                MessageBox.Show("Lưu slave thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                isClicked = false;
+                            }
+                            formDataList.LoadTreeView();
+                            formDataList.tvMain.ExpandAll();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Lỗi lưu slave!!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+                else
+                {
+                    //slave = new SlaveModel();
+
+                    // set data cho slave
+                    string old_name_slave = slave.Name;
+                    slave.Name = txtSlaveAddress.Text;
+                    slave.ScanRate = int.Parse(txtScanRate.Text);
+                    //
+                    try
+                    {
+                        //thietBi.dsSlave.Add(slave.Name, slave);
+
+                        var rs = JsonService.EditSlave("Quang Ninh", thietBi.Name, old_name_slave, slave);
+                        if (rs)
+                        {
+                            if(isClicked == true)
+                            {
+                                MessageBox.Show("Lưu slave thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                isClicked = false;
+                            }
+                            formDataList.LoadTreeView();
+                            formDataList.tvMain.ExpandAll();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Lỗi lưu slave!!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
             }
+            isValidatePassed = true;
+            isTabSlaveChanged = false;
         }
-
-        private void txtIPAdress_TextChanged(object sender, EventArgs e)
-        {
-            isTabConfigHaveAnyChanged = true;
-        }
-
-        private void txtPort_TextChanged(object sender, EventArgs e)
-        {
-            isTabConfigHaveAnyChanged = true;
-        }
-
-        private void cbCOM_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            isTabConfigHaveAnyChanged = true;
-        }
-
-        private void cbBaud_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            isTabConfigHaveAnyChanged = true;
-        }
-
-        private void cbDataBit_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            isTabConfigHaveAnyChanged = true;
-        }
-
-        private void cbParity_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            isTabConfigHaveAnyChanged = true;
-        }
-
-        private void cbStopBit_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            isTabConfigHaveAnyChanged = true;
-        }
-
         #endregion
+
+        
 
         private void dgvDataProtocol_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
@@ -982,7 +1061,7 @@ namespace FileExportScheduler
                     checkLaiTrungDiemDoSauKhiSua();
                     break;
                 case 2://địa chỉ
-                    //kiểm tra trùng lặp kết hợp kiểm tra định dạng
+                       //kiểm tra trùng lặp kết hợp kiểm tra định dạng
                     if (DuLieuNhapVao.KiemTraTungCellCotDiaChi(dgvDataProtocol, cellCanCheck))
                     {
                         //nếu sau khi trung lặp được sửa check lại 1 lần nữa để xóa hết error message trung lặp
@@ -1104,32 +1183,105 @@ namespace FileExportScheduler
 
         private void btnSaveSlave_Click(object sender, EventArgs e)
         {
-            slave = new SlaveModel();
+            isClicked = true;
+            LuuSlaveAddress();
+        }
 
-            // set data cho slave
-            slave.Name = txtSlaveAddress.Text;
-            slave.ScanRate = int.Parse(txtScanRate.Text);
-            //
+        public void AfterRemoveSlave()
+        {
             try
             {
-                thietBi.dsSlave.Add(slave.Name, slave);
-
-                var rs = JsonService.AddSlaveToTb("Quang Ninh", thietBi.Name, slave);
-                if (rs)
-                {
-                    MessageBox.Show("Add Slave success");
-                    formDataList.LoadTreeView();
-                    formDataList.tvMain.ExpandAll();
-                }
-                else
-                {
-                    MessageBox.Show("Error when insert slave !!");
-                }
-            }catch(Exception ex)
+                this.dsThietBiGiamSat[thietBi.Name].dsSlave.Remove(slave.Name);
+                this.slave = null;
+                tabControl1.TabPages.Remove(tabPageSlave);
+                tabControl1.TabPages.Remove(tabPageDuLieu);
+            }
+            catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             
+        }
+
+        #region event controller value change
+        private void dgvDataProtocol_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex > -1)
+            {
+                isTabDataHaveAnyChanged = true;
+                isSaved = false;
+            }
+        }
+
+        private void txtTenGiaoThuc_TextChanged(object sender, EventArgs e)
+        {
+            isTabConfigHaveAnyChanged = true;
+        }
+
+        private void cbProtocol_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            isTabConfigHaveAnyChanged = true;
+
+            if (cbProtocol.SelectedIndex == 0)
+            {
+                gbSerialSettingProtocol.Enabled = false;
+                gbTCPIPProtocol.Enabled = true;
+
+            }
+            else
+            {
+                gbSerialSettingProtocol.Enabled = true;
+                gbTCPIPProtocol.Enabled = false;
+                txtIPAdress.Clear();
+                txtPort.Text = "";
+            }
+        }
+
+        private void txtIPAdress_TextChanged(object sender, EventArgs e)
+        {
+            isTabConfigHaveAnyChanged = true;
+        }
+
+        private void txtPort_TextChanged(object sender, EventArgs e)
+        {
+            isTabConfigHaveAnyChanged = true;
+        }
+
+        private void cbCOM_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            isTabConfigHaveAnyChanged = true;
+        }
+
+        private void cbBaud_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            isTabConfigHaveAnyChanged = true;
+        }
+
+        private void cbDataBit_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            isTabConfigHaveAnyChanged = true;
+        }
+
+        private void cbParity_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            isTabConfigHaveAnyChanged = true;
+        }
+
+        private void cbStopBit_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            isTabConfigHaveAnyChanged = true;
+        }
+
+        #endregion
+
+        private void txtSlaveAddress_TextChanged(object sender, EventArgs e)
+        {
+            isTabSlaveChanged = true;
+        }
+
+        private void txtScanRate_TextChanged(object sender, EventArgs e)
+        {
+            isTabSlaveChanged = true;
         }
     }
 

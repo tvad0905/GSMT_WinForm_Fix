@@ -1,5 +1,6 @@
 ﻿using ESProtocolConverter.Models.Common;
 using ESProtocolConverter.Models.NhaMay;
+using ESProtocolConverter.Models.Slave;
 using ESProtocolConverter.Service.Json;
 using FileExportScheduler.Models;
 using FileExportScheduler.Models.ThietBi.Base;
@@ -180,9 +181,9 @@ namespace FileExportScheduler
             isInFormEdit = true;
             formProtocolConfiguration.isTabConfigHaveAnyChanged = false;
             formProtocolConfiguration.isTabDataHaveAnyChanged = false;
-
-            formProtocolConfiguration = protocolConfiguration;
-            isInFormEdit = false;
+            formProtocolConfiguration.isTabSlaveChanged = false;
+            /*formProtocolConfiguration = protocolConfiguration;
+            isInFormEdit = false;*/
         }
         #endregion
 
@@ -237,8 +238,14 @@ namespace FileExportScheduler
                 string slave_name = node.Name == TreeName.Name.SlaveAddress.ToString() ? node.Text : null;
 
                 protocolConfiguration.txtTenGiaoThuc.Text = thietBi_name;
+                protocolConfiguration.txtSlaveAddress.Text = slave_name;
 
                 ThietBiModel thietBi_model = ThietBiGiamSatService.GetThietBiGiamSat("Quang Ninh", thietBi_name);
+                SlaveModel slave_model = ThietBiGiamSatService.GetDsSlave("Quang Ninh", thietBi_name, slave_name);
+                if (node.Name == TreeName.Name.SlaveAddress.ToString()) {
+                    protocolConfiguration.txtScanRate.Text = slave_model.ScanRate.ToString();
+                }
+                    
 
                 protocolConfiguration.SetThietBiAndSlave(thietBi_model, slave_name);
                 protocolConfiguration.SetDsThietBi(ThietBiGiamSatService.GetDsThietBi("Quang Ninh"));
@@ -279,7 +286,7 @@ namespace FileExportScheduler
                 isInFormEdit = true;
                 formProtocolConfiguration.isTabConfigHaveAnyChanged = false;
                 formProtocolConfiguration.isTabDataHaveAnyChanged = false;
-
+                formProtocolConfiguration.isTabSlaveChanged = false;
             }
         }
 
@@ -308,6 +315,7 @@ namespace FileExportScheduler
             protocolConfiguration.Dock = DockStyle.Fill;
             protocolConfiguration.dgvDataProtocol.DataSource = null;
             protocolConfiguration.HideTabCauHinh();
+            protocolConfiguration.isAddSlave = true;
 
             // get Thiet Bi
             string thietBi_name = node.Name == TreeName.Name.ThietBi.ToString() ? node.Text : "";
@@ -328,14 +336,18 @@ namespace FileExportScheduler
             isInFormEdit = true;
             formProtocolConfiguration.isTabConfigHaveAnyChanged = false;
             formProtocolConfiguration.isTabDataHaveAnyChanged = false;
+            formProtocolConfiguration.isTabSlaveChanged = false;
 
-            formProtocolConfiguration = protocolConfiguration;
-            isInFormEdit = false;
+            /*formProtocolConfiguration = protocolConfiguration;
+            isInFormEdit = false;*/
         }
 
         private void cms_Xoa_SlaveAddress(object sender, EventArgs e)
         {
-
+            string oldName_ThietBi = rightClickNode.Text;
+            JsonService.RemoveSlave("Quang Ninh", oldName_ThietBi);
+            formProtocolConfiguration.AfterRemoveSlave();
+            rightClickNode.Remove();
         }
 
     }

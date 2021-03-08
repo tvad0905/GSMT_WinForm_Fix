@@ -201,3 +201,24 @@ D:\E-Solutions Code\ES_GSMT_Version2\FileExportScheduler\obj\Debug\FileExportSch
 D:\E-Solutions Code\ES_GSMT_Version2\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CopyComplete
 D:\E-Solutions Code\ES_GSMT_Version2\FileExportScheduler\obj\Debug\ESProtocolConverter.exe
 D:\E-Solutions Code\ES_GSMT_Version2\FileExportScheduler\obj\Debug\ESProtocolConverter.pdb
+F:\GSMTv2\FileExportScheduler\bin\Debug\bin\Debug\Unme.Common.dll
+F:\GSMTv2\FileExportScheduler\bin\Debug\Image\logo.jpg
+F:\GSMTv2\FileExportScheduler\bin\Debug\ESProtocolConverter.exe.config
+F:\GSMTv2\FileExportScheduler\bin\Debug\ESProtocolConverter.exe
+F:\GSMTv2\FileExportScheduler\bin\Debug\ESProtocolConverter.pdb
+F:\GSMTv2\FileExportScheduler\bin\Debug\NModbus.dll
+F:\GSMTv2\FileExportScheduler\bin\Debug\NModbus.xml
+F:\GSMTv2\FileExportScheduler\obj\Debug\FileExportScheduler.csprojAssemblyReference.cache
+F:\GSMTv2\FileExportScheduler\obj\Debug\FileExportScheduler.FormAbout.resources
+F:\GSMTv2\FileExportScheduler\obj\Debug\FileExportScheduler.FormDataList.resources
+F:\GSMTv2\FileExportScheduler\obj\Debug\FileExportScheduler.FormHienThiDuLieu.resources
+F:\GSMTv2\FileExportScheduler\obj\Debug\FileExportScheduler.FormMain.resources
+F:\GSMTv2\FileExportScheduler\obj\Debug\FileExportScheduler.FormSetting.resources
+F:\GSMTv2\FileExportScheduler\obj\Debug\FileExportScheduler.DialogLicence.resources
+F:\GSMTv2\FileExportScheduler\obj\Debug\ESProtocolConverter.Properties.Resources.resources
+F:\GSMTv2\FileExportScheduler\obj\Debug\FileExportScheduler.ProtocolConfiguration.resources
+F:\GSMTv2\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.GenerateResource.cache
+F:\GSMTv2\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CoreCompileInputs.cache
+F:\GSMTv2\FileExportScheduler\obj\Debug\FileExportScheduler.csproj.CopyComplete
+F:\GSMTv2\FileExportScheduler\obj\Debug\ESProtocolConverter.exe
+F:\GSMTv2\FileExportScheduler\obj\Debug\ESProtocolConverter.pdb

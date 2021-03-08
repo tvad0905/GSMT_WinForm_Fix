@@ -126,7 +126,7 @@ namespace FileExportScheduler
 
             serialPort.Close();
             tmrDocDuLieu.Stop();
-            tmrChukyXoaFile.Stop();
+            tmrChukyXoaFile.Stop();                                                                                                                                                                                                                                                                                                                                                                                 
             tmrXuatFile.Stop();
 
             //lblStatus.Text = "Hệ thống đã dừng !";
