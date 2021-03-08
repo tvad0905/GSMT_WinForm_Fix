@@ -46,6 +46,10 @@
             this.Donvido = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GiaTri = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TrangThaiTinHieu = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cb_thietBi = new System.Windows.Forms.ComboBox();
+            this.cb_slaveAddress = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHienThiDuLieu)).BeginInit();
             this.SuspendLayout();
             // 
@@ -67,14 +71,14 @@
             this.Donvido,
             this.GiaTri,
             this.TrangThaiTinHieu});
-            this.dgvHienThiDuLieu.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvHienThiDuLieu.Location = new System.Drawing.Point(0, 0);
+            this.dgvHienThiDuLieu.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.dgvHienThiDuLieu.Location = new System.Drawing.Point(0, 75);
             this.dgvHienThiDuLieu.Margin = new System.Windows.Forms.Padding(2);
             this.dgvHienThiDuLieu.Name = "dgvHienThiDuLieu";
             this.dgvHienThiDuLieu.ReadOnly = true;
             this.dgvHienThiDuLieu.RowHeadersWidth = 51;
             this.dgvHienThiDuLieu.RowTemplate.Height = 24;
-            this.dgvHienThiDuLieu.Size = new System.Drawing.Size(1067, 445);
+            this.dgvHienThiDuLieu.Size = new System.Drawing.Size(1067, 370);
             this.dgvHienThiDuLieu.TabIndex = 4;
             // 
             // ten
@@ -152,11 +156,51 @@
             this.TrangThaiTinHieu.ReadOnly = true;
             this.TrangThaiTinHieu.Width = 130;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Times New Roman", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(51, 29);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(63, 17);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "Thiết bị : ";
+            // 
+            // cb_thietBi
+            // 
+            this.cb_thietBi.FormattingEnabled = true;
+            this.cb_thietBi.Location = new System.Drawing.Point(130, 25);
+            this.cb_thietBi.Name = "cb_thietBi";
+            this.cb_thietBi.Size = new System.Drawing.Size(121, 21);
+            this.cb_thietBi.TabIndex = 6;
+            // 
+            // cb_slaveAddress
+            // 
+            this.cb_slaveAddress.FormattingEnabled = true;
+            this.cb_slaveAddress.Location = new System.Drawing.Point(414, 25);
+            this.cb_slaveAddress.Name = "cb_slaveAddress";
+            this.cb_slaveAddress.Size = new System.Drawing.Size(121, 21);
+            this.cb_slaveAddress.TabIndex = 8;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Times New Roman", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(305, 29);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(103, 17);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "Slave Address : ";
+            // 
             // FormHienThiDuLieu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1067, 445);
+            this.Controls.Add(this.cb_slaveAddress);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.cb_thietBi);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.dgvHienThiDuLieu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
@@ -166,6 +210,7 @@
             this.Load += new System.EventHandler(this.FormHienThiDuLieu_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvHienThiDuLieu)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -179,5 +224,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Donvido;
         private System.Windows.Forms.DataGridViewTextBoxColumn GiaTri;
         private System.Windows.Forms.DataGridViewTextBoxColumn TrangThaiTinHieu;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox cb_thietBi;
+        private System.Windows.Forms.ComboBox cb_slaveAddress;
+        private System.Windows.Forms.Label label2;
     }
 }
